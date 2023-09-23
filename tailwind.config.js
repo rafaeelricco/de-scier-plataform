@@ -7,10 +7,17 @@ const config = {
          screens: {}
       },
       screens: {
-         mobile: { max: '375px' },
-         tablet: { max: '640px' },
-         laptop: { max: '1024px' },
-         desktop: { max: '1280px' }
+         tablet: '640px',
+         // => @media (min-width: 640px) { ... }
+
+         laptop: '1024px',
+         // => @media (min-width: 1024px) { ... }
+
+         desktop: '1280px'
+         // => @media (min-width: 1280px) { ... }
+      },
+      boxShadow: {
+         dialog: 'hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px'
       },
       fontSize: {
          xxs: '0.625rem',

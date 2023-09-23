@@ -1,7 +1,14 @@
+'use client'
+
+import * as Dialog from '@components/common/Dialog/Digalog'
+
 export default function Home() {
    return (
       <main className="container">
-         <h1 className="font-semibold text-4xl">deScier Plataform</h1>
+         <Dialog.Root open={true}>
+            <Dialog.Overlay />
+            <Dialog.Content>ksksk</Dialog.Content>
+         </Dialog.Root>
       </main>
    )
 }
