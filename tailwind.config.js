@@ -67,58 +67,47 @@ const config = {
       },
       colors: {
          primary: {
-            main: '#14CB6B',
-            pastel: '#20E37C',
-            alternative: '#009245',
-            hover: '#20E37C'
+            main: '#70468C',
+            hover: '#4E1B70'
          },
-         white: {
-            main: '#FFFFFF',
-            hover: '#EDEEF4'
+         secundary: {
+            main: '#F2AEB4'
          },
-         black: {
-            primary: '#141318',
-            secondary: '#313036',
-            hover: '#3E3C47'
+         secundary_blue: {
+            main: '#0C1934'
          },
-         background: {
-            primary: '#F6F6F6',
-            secondary: '#313036',
-            black: '#141318',
-            header: '#2f2f2f',
-            white_hover: '#edeef4'
+         secundary_purple: {
+            main: '#4D308C',
+            hover: '#644E94',
+            alternative: '#9486B2'
          },
-         tags: {
-            yellow: '#FFE092',
-            orange: '#FF8743',
-            blue: '#007BC0',
-            lime: '#B8F587',
-            purple: '#9C7EF1',
-            grey: '#A4A4A4',
-            sea_blue: '#75F1E2'
+         terciary: {
+            main: '#4065A9'
+         },
+         neutral: {
+            white: '#F4F4F4',
+            gray: '#5F5F5F',
+            stroke_light: '#DFDFEB',
+            light_gray: '#A9A9A9',
+            black: '#222222'
          },
          status: {
-            red: '#EC0000',
-            red_hover: '#CB1414',
-            green: '#099817',
-            blue: '#2D29F8',
-            gray: '#A4A4A4',
-            pending: '#EC9C00',
-            purple: '#9C7EF1',
-            yellow: '#FFE092'
+            green: '#53AA22',
+            green_bg: '#ECF8E5',
+            pending: '#FA9963',
+            pending_bg: '#FFF5DC',
+            error: '#FF0D0D',
+            disable_text: '#7E7E7E',
+            disable_bg: '#C2C2C2',
+            pink_bg: '#F7ECFF'
          },
-         gray: {
-            dark: '#C8C8C8',
-            stroke: '#DBDBDB',
-            light: '#C5C5C5',
-            black: '#555555',
-            header: '#4d4d4d',
-            main: '#6A6A6A',
-            skeleton: '#D9D9D9',
-            dark_variant: '#989898'
+         background: {
+            white: '#F2F3F9'
          },
          gradients: {
-            primary: 'linear-gradient(90.09deg, #06A429 0%, #4BB061 100%)'
+            primary: 'linear-gradient(45deg, #F3ADB5 0%, #70478D 100%)',
+            secunday: 'linear-gradient(45deg, #BF81AA 0%, #70478D 100%)',
+            terciary: 'linear-gradient(45deg, #4D308C 0.01%, #70478D 100%)'
          }
       },
       extend: {
