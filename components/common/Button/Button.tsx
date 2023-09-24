@@ -11,7 +11,7 @@ const btn = tv({
    variants: {
       color: {
          primary: 'bg-primary-main hover:bg-primary-hover transition-all duration-200 hover:scale-[1.01] text-neutral-white',
-         outline: 'border border-primary-main text-primary-main bg-transparent transition-all duration-200 hover:scale-[1.01]',
+         outline: 'border border-primary-main text-primary-main bg-transparent transition-all duration-200 hover:scale-[1.01] hover:bg-secundary-hover',
          disabled: 'bg-status-disable_bg text-status-disable_text cursor-not-allowed fill-status-disable_text'
       }
    }

@@ -38,7 +38,7 @@ const LoginModal: React.FC = () => {
                      <h2 className="font-semibold text-lg text-center text-neutral-gray">or</h2>
                      <Input.Root>
                         <Input.Label>E-mail</Input.Label>
-                        <Input.Input placeholder="Type your best email" />
+                        <Input.Input type="email" placeholder="Type your best email" />
                      </Input.Root>
                      <Input.Root>
                         <Input.Label>Password</Input.Label>
@@ -46,7 +46,9 @@ const LoginModal: React.FC = () => {
                      </Input.Root>
                   </div>
                   <Button.Button>Login</Button.Button>
-                  <p className="text-secundary_blue-main underline text-sm text-center cursor-pointer">Forgot your password? Click here.</p>
+                  <p className="text-secundary_blue-main text-sm text-center cursor-pointer transition-all hover:underline hover:text-primary-hover underline hover:font-semibold duration-300">
+                     Forgot your password? Click here.
+                  </p>
                   <div className="divider-h" />
                </div>
                <Button.Button variant="outline">Not a user? Register now</Button.Button>

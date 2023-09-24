@@ -81,7 +81,8 @@ const config = {
             hover: '#4E1B70'
          },
          secundary: {
-            main: '#F2AEB4'
+            main: '#F2AEB4',
+            hover: '#F4E8FF'
          },
          secundary_blue: {
             main: '#0C1934'
