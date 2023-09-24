@@ -47,9 +47,7 @@
    transform: translate(-50%, -50%);
    height: fit-content;
    max-height: 95%;
-   width: 40%;
    border-radius: 16px;
-   padding: 1.5rem;
    overflow-y: scroll;
    z-index: 999;
    outline: none;

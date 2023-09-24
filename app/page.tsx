@@ -8,7 +8,7 @@ export default function Home() {
       <main className="container">
          <Dialog.Root open={true}>
             <Dialog.Overlay />
-            <Dialog.Content className="max-w-[1000px]">
+            <Dialog.Content className="w-[80%] max-w-[1024px] p-0">
                <LoginModal />
             </Dialog.Content>
          </Dialog.Root>

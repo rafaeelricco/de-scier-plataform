@@ -1,0 +1,33 @@
+.login-animation-container {
+   background: linear-gradient(338.76deg, #231269 1.24%, #20509a 99.44%);
+}
+
+.login-animation {
+   position: absolute;
+   top: 30%;
+   right: 30%;
+   transform: translate(50%, -50%);
+   width: 500px;
+}
+
+.login-blob-shape {
+   position: absolute;
+   bottom: -2rem;
+}
+
+.login-stamp {
+   position: absolute;
+   bottom: 2rem;
+   right: 2.75rem;
+}
+
+.login-text {
+   display: grid;
+   gap: 2rem;
+   position: absolute;
+   width: 100%;
+   top: 65%;
+   left: 2rem;
+   transform: translate(-0, -65%);
+   z-index: 1000;
+}

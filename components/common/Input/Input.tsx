@@ -57,7 +57,7 @@ const Root: React.FC<WrapperInputProps> = ({ children }: WrapperInputProps) => {
  */
 const Label: React.FC<LabelProps> = ({ children, optional, ...props }: LabelProps) => {
    return (
-      <label className="text-base text-black-primary font-semibold pl-2" {...props}>
+      <label className="text-sm text-black-primary font-semibold pl-2" {...props}>
          {children} {optional && <span className="text-gray-main font-regular">(Opcional)</span>}
       </label>
    )

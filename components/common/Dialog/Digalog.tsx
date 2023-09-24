@@ -53,7 +53,7 @@ const Overlay: React.FC<Dialog.DialogOverlayProps> = ({ children, className, ...
 const Content: React.FC<Dialog.DialogContentProps> = ({ children, className, ...props }: Dialog.DialogContentProps) => {
    return (
       <React.Fragment>
-         <Dialog.Content className={twMerge('content', 'bg-background-primary', className)} {...props}>
+         <Dialog.Content className={twMerge('content', 'bg-background-primary w-[50%] p-6', className)} {...props}>
             {children}
          </Dialog.Content>
       </React.Fragment>
