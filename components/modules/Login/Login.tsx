@@ -25,7 +25,7 @@ const LoginModal: React.FC = () => {
                </div>
                <Animation className="login-animation" />
                <BlobShape className="login-blob-shape" />
-               <Image width={116} height={116} src={deScierStamp} alt="deScier stamp" className="login-stamp" />
+               <Image width={124} height={124} src={deScierStamp} alt="deScier stamp" className="login-stamp" />
             </div>
             <div className="w-ful grid gap-6 py-16 px-14">
                <h2 className="font-semibold text-1xl">Sign in</h2>
