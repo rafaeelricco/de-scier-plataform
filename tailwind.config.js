@@ -114,7 +114,8 @@ const config = {
          gradients: {
             primary: 'linear-gradient(45deg, #F3ADB5 0%, #70478D 100%)',
             secunday: 'linear-gradient(45deg, #BF81AA 0%, #70478D 100%)',
-            terciary: 'linear-gradient(45deg, #4D308C 0.01%, #70478D 100%)'
+            terciary: 'linear-gradient(45deg, #4D308C 0.01%, #70478D 100%)',
+            blue: 'linear-gradient(338.76deg, #231269 1.24%, #20509A 99.44%)'
          }
       },
       extend: {

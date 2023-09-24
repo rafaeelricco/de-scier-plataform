@@ -11,10 +11,8 @@ const btn = tv({
    variants: {
       color: {
          primary: 'bg-primary-main hover:bg-primary-hover transition-all duration-200 hover:scale-[1.01] text-neutral-white',
-         outline: 'border border-black-primary text-black-primary bg-transparent hover:bg-white-hover transition-all duration-200 hover:scale-[1.01]',
-         warning: 'bg-status-red text-white-main hover:bg-status-red_hover transition-all duration-200 hover:scale-[1.01]',
-         warining_outline: 'border bg-transparent text-status-red hover:bg-status-red_hover transition-all duration-200 hover:scale-[1.01] hover:text-status-red_hover',
-         disabled: 'bg-gray-light text-white-main cursor-not-allowed pointer-events-none fill-white-main'
+         outline: 'border border-primary-main text-primary-main bg-transparent transition-all duration-200 hover:scale-[1.01]',
+         disabled: 'bg-status-disable_bg text-status-disable_text cursor-not-allowed fill-status-disable_text'
       }
    }
 })

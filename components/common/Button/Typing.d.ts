@@ -1,12 +1,7 @@
 import { ComponentProps } from 'react'
 
 type ButtonProps = ComponentProps<'button'> & {
-   variant?:
-      | 'primary'
-      | 'outline'
-      | 'warning'
-      | 'warining_outline'
-      | 'disabled'
+   variant?: 'primary' | 'outline' | 'disabled'
    loading?: boolean
    icon?: React.ReactNode
 }
