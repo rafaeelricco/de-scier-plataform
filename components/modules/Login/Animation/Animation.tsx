@@ -1,11 +1,18 @@
 import '@styles/login.css'
 import Image from 'next/image'
-import Animation from 'public/svgs/modules/login/deScier - Login animation.svg'
 import deScierStamp from 'public/svgs/modules/login/selo.png'
 import BlobShape from 'public/svgs/modules/login/shape.svg'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const LoginAnimation: React.FC = () => {
+   useEffect(() => {
+      const svgatorObject: any = document?.getElementById('animated-svg')
+      const svgatorDocument =
+         svgatorObject?.contentDocument || svgatorObject?.contentWindow.document
+      const svgatorElement = svgatorDocument.getElementById('descier-login-animation')
+      svgatorElement?.svgatorPlayer?.play()
+   }, [])
+
    return (
       <React.Fragment>
          <div className="w-full relative overflow-hidden login-animation-container">
@@ -24,7 +31,12 @@ const LoginAnimation: React.FC = () => {
                   Join the DeSci movement!
                </h2>
             </div>
-            <Animation className="login-animation" />
+            <object
+               className="login-animation"
+               id="animated-svg"
+               type="image/svg+xml"
+               data="/svgs/modules/login/deScier - Login animation (1).svg"
+            />
             <BlobShape className="login-blob-shape" />
             <Image
                width={124}
