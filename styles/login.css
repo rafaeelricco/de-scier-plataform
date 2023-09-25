@@ -6,16 +6,13 @@
    position: absolute;
    top: 0%;
    right: 15%;
-   transform: translate(30%, -10%);
-   width: 500px;
-   height: 500px;
-   scale: 1.25;
+   transform: translate(42%, -25%) rotate(4deg);
+   width: 800px;
+   height: 800px;
    image-rendering: optimizeQuality;
    image-rendering: -moz-crisp-edges;
    image-rendering: -webkit-optimize-contrast;
    image-rendering: -o-crisp-edges;
-   image-rendering: pixelated;
-   -ms-interpolation-mode: nearest-neighbor;
 }
 
 .login-blob-shape {
@@ -26,7 +23,7 @@
 .login-stamp {
    position: absolute;
    bottom: 2rem;
-   right: 2.75rem;
+   right: 6rem;
 }
 
 .login-text {
@@ -34,7 +31,7 @@
    gap: 2rem;
    position: absolute;
    width: 100%;
-   top: 65%;
+   top: 60%;
    left: 2rem;
    transform: translate(-0, -65%);
    z-index: 1000;
