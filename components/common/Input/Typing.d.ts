@@ -14,8 +14,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
    visible?: boolean
 }
 
-interface TextAreaProps
-   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
    start?: React.ReactNode
    end?: React.ReactNode
    icon?: React.ReactNode
@@ -31,8 +30,7 @@ export type Option = {
    value: string
 }
 
-interface SelectInputProps
-   extends React.InputHTMLAttributes<HTMLInputElement> {
+interface SelectInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
    start?: React.ReactNode
    end?: React.ReactNode
    icon?: React.ReactNode
@@ -44,8 +42,7 @@ interface SelectInputProps
    onValueChange?: (value: string) => void
 }
 
-interface LabelWithTrashIconProps
-   extends React.HTMLAttributes<HTMLDivElement> {
+interface LabelWithTrashIconProps extends React.HTMLAttributes<HTMLDivElement> {
    text: string
    optional?: boolean
    onDelete: () => void

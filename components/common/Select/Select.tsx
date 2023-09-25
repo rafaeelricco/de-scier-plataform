@@ -28,10 +28,7 @@ const select = tv({
  * @param {ReactNode} children - The children components or nodes.
  * @returns JSX.Element - A Root Select component.
  */
-const Root: React.FC<Select.SelectProps> = ({
-   children,
-   ...props
-}: Select.SelectProps) => {
+const Root: React.FC<Select.SelectProps> = ({ children, ...props }: Select.SelectProps) => {
    return <Select.Root {...props}>{children}</Select.Root>
 }
 
@@ -45,11 +42,7 @@ const Icon: React.FC<Select.SelectIconProps> = ({
    children,
    className
 }: Select.SelectIconProps) => {
-   return (
-      <Select.Icon className={twMerge('text-black-primary', className)}>
-         {children}
-      </Select.Icon>
-   )
+   return <Select.Icon className={twMerge('text-black-primary', className)}>{children}</Select.Icon>
 }
 
 /**
@@ -66,10 +59,7 @@ const Trigger: React.FC<TriggerProps> = ({
    ...props
 }: TriggerProps) => {
    return (
-      <Select.Trigger
-         className={twMerge(select({ type: variant }), className)}
-         {...props}
-      >
+      <Select.Trigger className={twMerge(select({ type: variant }), className)} {...props}>
          {children}
       </Select.Trigger>
    )
@@ -158,10 +148,7 @@ const Value: React.FC<Select.SelectValueProps> = ({
 }: Select.SelectValueProps) => {
    return (
       <Select.Value
-         className={twMerge(
-            'text-black-primary select-none font-regular text-sm',
-            className
-         )}
+         className={twMerge('text-black-primary select-none font-regular text-sm', className)}
          {...props}
       >
          {children}
@@ -206,11 +193,7 @@ const Portal: React.FC<Select.SelectPortalProps> = ({
  * @param {ReactNode} props.children The children components or nodes.
  * @param {string} [props.className] Additional classes for styling the component.
  */
-const Group: React.FC<Select.SelectGroupProps> = ({
-   children,
-   className,
-   ...props
-}) => {
+const Group: React.FC<Select.SelectGroupProps> = ({ children, className, ...props }) => {
    return (
       <Select.Group className={twMerge(className)} {...props}>
          {children}
@@ -218,16 +201,4 @@ const Group: React.FC<Select.SelectGroupProps> = ({
    )
 }
 
-export {
-   Content,
-   Group,
-   Icon,
-   Item,
-   ItemText,
-   Portal,
-   Root,
-   Trigger,
-   Value,
-   Viewport,
-   select
-}
+export { Content, Group, Icon, Item, ItemText, Portal, Root, Trigger, Value, Viewport, select }
