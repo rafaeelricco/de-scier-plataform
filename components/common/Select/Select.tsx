@@ -80,7 +80,7 @@ const Content: React.FC<Select.SelectContentProps> = ({
       <Select.Content
          position="popper"
          className={twMerge(
-            'bg-white-main rounded-sm shadow-content overflow-hidden p-1 z-[9998] absolute',
+            'bg-neutral-white rounded-sm shadow-content overflow-hidden p-1 z-[9998] absolute',
             className
          )}
          {...props}

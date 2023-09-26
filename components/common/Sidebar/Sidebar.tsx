@@ -13,7 +13,7 @@ const Sidebar: React.FC = () => {
 
    return (
       <React.Fragment>
-         <div className="flex flex-col gap-8 fixed left-0 h-full py-10 px-6 w-[17.625rem] justify-between bg-[#FEFEFE]">
+         <div className="flex flex-col gap-8 fixed left-0 h-full pt-10 pb-14 px-6 w-[17.625rem] justify-between bg-[#FEFEFE]">
             <div className="flex flex-col gap-8">
                <LogoDeScier className="w-20 mx-auto my-0" />
                <Button.Button variant="primary" className="mx-auto my-0 p-3 text-sm">

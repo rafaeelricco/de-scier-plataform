@@ -7,7 +7,7 @@ export default function AboutLayout({ children }: { children: React.ReactNode })
       <React.Fragment>
          <section className="home">
             <Sidebar />
-            <div className="col-2 row-1 m-16 mb-8">{children}</div>
+            <div className="col-2 row-1 m-16 pb-16">{children}</div>
          </section>
       </React.Fragment>
    )

@@ -76,7 +76,7 @@ const Back: React.FC<BackProps> = ({ text }: BackProps) => {
       <div className="flex items-center gap-4">
          <button
             type="button"
-            className="w-fit p-2 bg-white-main border border-black-primary rounded-md"
+            className="w-fit p-2 bg-neutral-white border border-black-primary rounded-md"
             onClick={() => router.back()}
          >
             <svg viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
