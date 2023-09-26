@@ -23,8 +23,8 @@
 
 .login-stamp {
    position: absolute;
-   bottom: 1.5rem;
-   left: 7rem;
+   bottom: 2.25rem;
+   left: calc(7rem - 2.5rem);
 }
 
 .login-text {
