@@ -7,8 +7,10 @@ import React, { useEffect } from 'react'
 const LoginAnimation: React.FC = () => {
    useEffect(() => {
       const svgatorObject: any = document?.getElementById('animated-svg')
+
       const svgatorDocument =
          svgatorObject?.contentDocument || svgatorObject?.contentWindow.document
+
       const svgatorElement = svgatorDocument.getElementById('descier-login-animation')
       svgatorElement?.svgatorPlayer?.play()
    }, [])
@@ -39,8 +41,9 @@ const LoginAnimation: React.FC = () => {
             />
             <BlobShape className="login-blob-shape" />
             <Image
-               width={124}
-               height={124}
+               quality={100}
+               width={172}
+               height={172}
                src={deScierStamp}
                alt="deScier stamp"
                className="login-stamp"

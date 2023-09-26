@@ -16,14 +16,15 @@
 }
 
 .login-blob-shape {
+   max-width: 354px;
    position: absolute;
-   bottom: -2rem;
+   bottom: -0rem;
 }
 
 .login-stamp {
    position: absolute;
-   bottom: 2rem;
-   right: 6rem;
+   bottom: 1.5rem;
+   left: 7rem;
 }
 
 .login-text {
@@ -31,8 +32,8 @@
    gap: 2rem;
    position: absolute;
    width: 100%;
-   top: 60%;
+   top: 52%;
    left: 2rem;
-   transform: translate(-0, -65%);
+   transform: translate(-0, -52%);
    z-index: 1000;
 }

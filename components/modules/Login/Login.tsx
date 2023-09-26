@@ -4,7 +4,7 @@ import '@styles/login.css'
 import GoogleIcon from 'public/svgs/modules/login/google_icon.svg'
 import React from 'react'
 import { X } from 'react-bootstrap-icons'
-import LoginAnimation from './Animation/Animation'
+import LoginAnimation from '../Animation/Animation'
 import { LoginModalProps } from './Typing'
 
 const LoginModal: React.FC<LoginModalProps> = ({
@@ -17,7 +17,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
       <React.Fragment>
          <div className="grid grid-cols-2">
             <LoginAnimation />
-            <div className="w-ful grid gap-6 py-16 px-14 relative">
+            <div className="w-ful grid gap-6 p-16 relative">
                <X
                   size={32}
                   className="absolute right-4 top-4 cursor-pointer hover:scale-110 transition-all duration-200"
@@ -47,7 +47,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
                   >
                      Forgot your password? Click here.
                   </p>
-                  <div className="divider-h" />
+                  <div className="divider-h my-6" />
                </div>
                <Button.Button variant="outline" onClick={onRegister}>
                   Not a user? Register now

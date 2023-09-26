@@ -6,7 +6,7 @@ import GoogleIcon from 'public/svgs/modules/login/google_icon.svg'
 import SuccessIllustration from 'public/svgs/modules/login/register-success.svg'
 import React from 'react'
 import { ArrowLeft, BoxArrowRight, X } from 'react-bootstrap-icons'
-import LoginAnimation from '../Login/Animation/Animation'
+import LoginAnimation from '../Animation/Animation'
 import { RegisterModalProps } from './Typing'
 
 const RegisterModal: React.FC<RegisterModalProps> = ({
@@ -36,7 +36,7 @@ const RegisterModal: React.FC<RegisterModalProps> = ({
       <form onSubmit={onSubmit}>
          <div className="grid grid-cols-2">
             <LoginAnimation />
-            <div className="w-ful grid gap-6 py-16 px-14 relative">
+            <div className="w-ful grid gap-6 py-14 px-16 relative">
                {component !== success_component && (
                   <React.Fragment>
                      <X
