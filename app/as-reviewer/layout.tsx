@@ -7,7 +7,7 @@ export default function AsReviewerLayout({ children }: { children: React.ReactNo
       <React.Fragment>
          <section className="home">
             <Sidebar />
-            <div className="col-2 row-1">{children}</div>
+            <div className="col-2 row-1 m-16 mb-8">{children}</div>
          </section>
       </React.Fragment>
    )

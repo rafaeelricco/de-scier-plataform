@@ -18,7 +18,7 @@ const Root: React.FC<{
       <React.Fragment>
          <div
             className={twMerge(
-               'grid gap-4 grid-flow-col justify-start items-center mt-16 mb-8',
+               'grid gap-4 grid-flow-col justify-start items-center mb-8',
                className
             )}
          >
