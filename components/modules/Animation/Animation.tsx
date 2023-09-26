@@ -42,8 +42,8 @@ const LoginAnimation: React.FC = () => {
             <BlobShape className="login-blob-shape" />
             <Image
                quality={100}
-               width={172}
-               height={172}
+               width={184}
+               height={184}
                src={deScierStamp}
                alt="deScier stamp"
                className="login-stamp"

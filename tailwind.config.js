@@ -1,5 +1,9 @@
 const config = {
-   content: ['./pages/**/*.{js,ts,jsx,tsx,mdx}', './components/**/*.{js,ts,jsx,tsx,mdx}', './app/**/*.{js,ts,jsx,tsx,mdx}'],
+   content: [
+      './pages/**/*.{js,ts,jsx,tsx,mdx}',
+      './components/**/*.{js,ts,jsx,tsx,mdx}',
+      './app/**/*.{js,ts,jsx,tsx,mdx}'
+   ],
    theme: {
       container: {
          center: true,
@@ -17,7 +21,8 @@ const config = {
          // => @media (min-width: 1280px) { ... }
       },
       boxShadow: {
-         dialog: 'hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px'
+         dialog:
+            'hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px'
       },
       fontSize: {
          xxs: '0.625rem',
@@ -119,7 +124,9 @@ const config = {
             primary: 'linear-gradient(45deg, #F3ADB5 0%, #70478D 100%)',
             secunday: 'linear-gradient(45deg, #BF81AA 0%, #70478D 100%)',
             terciary: 'linear-gradient(45deg, #4D308C 0.01%, #70478D 100%)',
-            blue: 'linear-gradient(338.76deg, #231269 1.24%, #20509A 99.44%)'
+            blue: 'linear-gradient(338.76deg, #231269 1.24%, #20509A 99.44%)',
+            aquarela:
+               'linear-gradient(108deg, #E2E6FF 0%, #DCE8FF 37.72%, #EBDEFF 68.82%, #FFE5E5 97.88%)'
          }
       },
       extend: {
