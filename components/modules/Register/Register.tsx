@@ -6,7 +6,7 @@ import GoogleIcon from 'public/svgs/modules/login/google_icon.svg'
 import SuccessIllustration from 'public/svgs/modules/login/register-success.svg'
 import React from 'react'
 import { ArrowLeft, BoxArrowRight, X } from 'react-bootstrap-icons'
-import LoginAnimation from '../Animation/Animation'
+import LoginAnimation from '../Login/Animation/Animation'
 import { RegisterModalProps } from './Typing'
 
 const RegisterModal: React.FC<RegisterModalProps> = ({

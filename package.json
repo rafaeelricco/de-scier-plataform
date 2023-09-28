@@ -29,6 +29,7 @@
     "react": "18.2.0",
     "react-bootstrap-icons": "^1.10.3",
     "react-dom": "18.2.0",
+    "recharts": "^2.8.0",
     "sharp": "^0.32.6",
     "tailwind-merge": "^1.14.0",
     "tailwind-variants": "^0.1.14",

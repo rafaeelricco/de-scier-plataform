@@ -100,6 +100,9 @@ const config = {
          terciary: {
             main: '#4065A9'
          },
+         blue: {
+            light: '#0BD2E2'
+         },
          neutral: {
             white: '#F4F4F4',
             gray: '#5F5F5F',

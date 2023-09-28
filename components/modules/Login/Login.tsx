@@ -4,7 +4,7 @@ import '@styles/login.css'
 import GoogleIcon from 'public/svgs/modules/login/google_icon.svg'
 import React from 'react'
 import { X } from 'react-bootstrap-icons'
-import LoginAnimation from '../Animation/Animation'
+import LoginAnimation from './Animation/Animation'
 import { LoginModalProps } from './Typing'
 
 const LoginModal: React.FC<LoginModalProps> = ({
