@@ -1,6 +1,6 @@
 import React from 'react'
 
-export interface PublicationItemProps {
+export interface InReviewItemProps {
    id?: string
    status_editor?: 'pending' | 'approved'
    status_reviewer?: 'pending' | 'approved'
@@ -10,14 +10,14 @@ export interface PublicationItemProps {
    link: string
 }
 
-const PublicationItem: React.FC<PublicationItemProps> = ({
+const InReviewItem: React.FC<InReviewItemProps> = ({
    date,
    link,
    ready_to_publish,
    status_editor,
    status_reviewer,
    title
-}: PublicationItemProps) => {
+}: InReviewItemProps) => {
    return (
       <React.Fragment>
          <div className="flex items-center gap-4">
@@ -59,4 +59,4 @@ const PublicationItem: React.FC<PublicationItemProps> = ({
    )
 }
 
-export default PublicationItem
+export default InReviewItem

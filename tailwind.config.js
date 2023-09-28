@@ -101,7 +101,8 @@ const config = {
             main: '#4065A9'
          },
          blue: {
-            light: '#0BD2E2'
+            light: '#0BD2E2',
+            gray: '#5E6992'
          },
          neutral: {
             white: '#F4F4F4',

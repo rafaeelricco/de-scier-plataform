@@ -1,9 +1,26 @@
-import Item, { PublicationItemProps } from '@/components/common/Publication/Item/Item'
+import PaginationComponent from '@/components/common/Pagination/Pagination'
+import InReviewItem, { InReviewItemProps } from '@/components/common/Publication/Item/InReview'
+import PublicationItem, {
+   PublicationItemProps
+} from '@/components/common/Publication/Item/Published'
 import React from 'react'
 
 const Publications: React.FC = () => {
    const [underReview, setUnderReview] = React.useState(false)
    const [publications, setPublications] = React.useState(true)
+
+   const per_page = 3
+
+   const [page, setPage] = React.useState(1)
+   const [pageReview, setPageReview] = React.useState(1)
+
+   const [results, setResults] = React.useState(published_mock)
+   const [resultsReview, setResultsReview] = React.useState(under_review)
+
+   const [totalPages, setTotalPages] = React.useState(Math.ceil(results.length / per_page))
+   const [totalPagesReview, setTotalPagesReview] = React.useState(
+      Math.ceil(resultsReview.length / per_page)
+   )
 
    return (
       <React.Fragment>
@@ -16,6 +33,9 @@ const Publications: React.FC = () => {
                   onClick={() => {
                      setPublications(true)
                      setUnderReview(false)
+                     setPage(1)
+                     setResults(published_mock)
+                     setTotalPages(Math.ceil(published_mock.length / per_page))
                   }}
                >
                   Published articles
@@ -26,6 +46,9 @@ const Publications: React.FC = () => {
                   onClick={() => {
                      setPublications(false)
                      setUnderReview(true)
+                     setPageReview(1)
+                     setResultsReview(under_review)
+                     setTotalPagesReview(Math.ceil(under_review.length / per_page))
                   }}
                >
                   Under review
@@ -34,15 +57,48 @@ const Publications: React.FC = () => {
             {publications && (
                <div className="bg-[#F1FFFF] h-full rounded-md transition-all duration-200 p-4">
                   <div className="grid gap-4">
-                     {publications_mock.map((item) => (
-                        <Item key={item.id} {...item} />
+                     {results.slice((page - 1) * per_page, page * per_page).map((item) => (
+                        <PublicationItem
+                           key={item.id}
+                           date={item.date}
+                           likes={item.likes}
+                           link={item.link}
+                           title={item.title}
+                           views={item.views}
+                        />
                      ))}
+                     <div className="mx-auto my-0">
+                        <PaginationComponent
+                           key={totalPages}
+                           current={page}
+                           total={totalPages}
+                           perPage={per_page}
+                           handleNextPage={() => setPage(page + 1)}
+                           handlePreviousPage={() => setPage(page - 1)}
+                        />
+                     </div>
                   </div>
                </div>
             )}
             {underReview && (
                <div className="bg-[#FFF4DE] h-full rounded-md transition-all duration-200 p-4">
-                  Container
+                  <div className="grid gap-4">
+                     {resultsReview
+                        .slice((pageReview - 1) * per_page, pageReview * per_page)
+                        .map((item) => (
+                           <InReviewItem key={item.id} {...item} />
+                        ))}
+                     <div className="mx-auto my-0">
+                        <PaginationComponent
+                           key={totalPagesReview}
+                           current={pageReview}
+                           total={totalPagesReview}
+                           perPage={per_page}
+                           handleNextPage={() => setPageReview(pageReview + 1)}
+                           handlePreviousPage={() => setPageReview(pageReview - 1)}
+                        />
+                     </div>
+                  </div>
                </div>
             )}
          </div>
@@ -50,22 +106,7 @@ const Publications: React.FC = () => {
    )
 }
 
-{
-   /* <PaginationComponent
-key={totalPages}
-current={page}
-total={totalPages}
-perPage={6}
-handleNextPage={() => {
-   setPage(page + 1)
-}}
-handlePreviousPage={() => {
-   setPage(page - 1)
-}}
-/> */
-}
-
-const publications_mock: PublicationItemProps[] = [
+const under_review: InReviewItemProps[] = [
    {
       date: '25/04/2023',
       link: 'https://www.google.com',
@@ -92,88 +133,171 @@ const publications_mock: PublicationItemProps[] = [
       ready_to_publish: false,
       status_editor: 'pending',
       status_reviewer: 'approved'
+   },
+   {
+      date: '15/05/2023',
+      link: 'https://www.example3.com',
+      title: 'O futuro da realidade virtual',
+      id: '4',
+      ready_to_publish: true,
+      status_editor: 'approved',
+      status_reviewer: 'pending'
+   },
+   {
+      date: '20/05/2023',
+      link: 'https://www.example4.com',
+      title: 'Desenvolvimento sustentável com tecnologia',
+      id: '5',
+      ready_to_publish: false,
+      status_editor: 'pending',
+      status_reviewer: 'pending'
+   },
+   {
+      date: '25/05/2023',
+      link: 'https://www.example5.com',
+      title: 'Inovações em software de código aberto',
+      id: '6',
+      ready_to_publish: true,
+      status_editor: 'approved',
+      status_reviewer: 'approved'
+   },
+   {
+      date: '30/05/2023',
+      link: 'https://www.example6.com',
+      title: 'A revolução das fintechs no mercado',
+      id: '7',
+      ready_to_publish: true,
+      status_editor: 'pending',
+      status_reviewer: 'approved'
+   },
+   {
+      date: '05/06/2023',
+      link: 'https://www.example7.com',
+      title: 'Segurança cibernética e privacidade',
+      id: '8',
+      ready_to_publish: false,
+      status_editor: 'approved',
+      status_reviewer: 'pending'
+   },
+   {
+      date: '10/06/2023',
+      link: 'https://www.example8.com',
+      title: 'IoT: O mundo interconectado',
+      id: '9',
+      ready_to_publish: true,
+      status_editor: 'approved',
+      status_reviewer: 'approved'
+   },
+   {
+      date: '15/06/2023',
+      link: 'https://www.example9.com',
+      title: 'A importância do Big Data',
+      id: '10',
+      ready_to_publish: false,
+      status_editor: 'pending',
+      status_reviewer: 'approved'
+   },
+   {
+      date: '20/06/2023',
+      link: 'https://www.example10.com',
+      title: 'A evolução da computação quântica',
+      id: '11',
+      ready_to_publish: true,
+      status_editor: 'approved',
+      status_reviewer: 'pending'
+   },
+   {
+      date: '25/06/2023',
+      link: 'https://www.example11.com',
+      title: 'O impacto da tecnologia na medicina',
+      id: '12',
+      ready_to_publish: false,
+      status_editor: 'approved',
+      status_reviewer: 'pending'
    }
-   //    {
-   //       date: '15/05/2023',
-   //       link: 'https://www.example3.com',
-   //       title: 'O futuro da realidade virtual',
-   //       id: '4',
-   //       ready_to_publish: true,
-   //       status_editor: 'approved',
-   //       status_reviewer: 'pending'
-   //    },
-   //    {
-   //       date: '20/05/2023',
-   //       link: 'https://www.example4.com',
-   //       title: 'Desenvolvimento sustentável com tecnologia',
-   //       id: '5',
-   //       ready_to_publish: false,
-   //       status_editor: 'pending',
-   //       status_reviewer: 'pending'
-   //    },
-   //    {
-   //       date: '25/05/2023',
-   //       link: 'https://www.example5.com',
-   //       title: 'Inovações em software de código aberto',
-   //       id: '6',
-   //       ready_to_publish: true,
-   //       status_editor: 'approved',
-   //       status_reviewer: 'approved'
-   //    },
-   //    {
-   //       date: '30/05/2023',
-   //       link: 'https://www.example6.com',
-   //       title: 'A revolução das fintechs no mercado',
-   //       id: '7',
-   //       ready_to_publish: true,
-   //       status_editor: 'pending',
-   //       status_reviewer: 'approved'
-   //    },
-   //    {
-   //       date: '05/06/2023',
-   //       link: 'https://www.example7.com',
-   //       title: 'Segurança cibernética e privacidade',
-   //       id: '8',
-   //       ready_to_publish: false,
-   //       status_editor: 'approved',
-   //       status_reviewer: 'pending'
-   //    },
-   //    {
-   //       date: '10/06/2023',
-   //       link: 'https://www.example8.com',
-   //       title: 'IoT: O mundo interconectado',
-   //       id: '9',
-   //       ready_to_publish: true,
-   //       status_editor: 'approved',
-   //       status_reviewer: 'approved'
-   //    },
-   //    {
-   //       date: '15/06/2023',
-   //       link: 'https://www.example9.com',
-   //       title: 'A importância do Big Data',
-   //       id: '10',
-   //       ready_to_publish: false,
-   //       status_editor: 'pending',
-   //       status_reviewer: 'approved'
-   //    },
-   //    {
-   //       date: '20/06/2023',
-   //       link: 'https://www.example10.com',
-   //       title: 'A evolução da computação quântica',
-   //       id: '11',
-   //       ready_to_publish: true,
-   //       status_editor: 'approved',
-   //       status_reviewer: 'pending'
-   //    },
-   //    {
-   //       date: '25/06/2023',
-   //       link: 'https://www.example11.com',
-   //       title: 'O impacto da tecnologia na medicina',
-   //       id: '12',
-   //       ready_to_publish: false,
-   //       status_editor: 'approved',
-   //       status_reviewer: 'pending'
-   //    }
+]
+
+const published_mock: PublicationItemProps[] = [
+   {
+      id: '1',
+      date: '25/04/2023',
+      likes: '10',
+      link: 'https://www.google.com',
+      title: 'Computação e blockchain na nova era digital',
+      views: '100'
+   },
+   {
+      id: '2',
+      date: '28/04/2023',
+      likes: '50',
+      link: 'https://www.example1.com',
+      title: 'A ascensão da inteligência artificial',
+      views: '230'
+   },
+   {
+      id: '3',
+      date: '01/05/2023',
+      likes: '23',
+      link: 'https://www.example2.com',
+      title: 'Tecnologia e sociedade no século XXI',
+      views: '500'
+   },
+   {
+      id: '4',
+      date: '05/05/2023',
+      likes: '120',
+      link: 'https://www.example3.com',
+      title: 'O futuro da realidade virtual',
+      views: '450'
+   },
+   {
+      id: '5',
+      date: '08/05/2023',
+      likes: '65',
+      link: 'https://www.example4.com',
+      title: 'Desenvolvimento sustentável com tecnologia',
+      views: '760'
+   },
+   {
+      id: '6',
+      date: '12/05/2023',
+      likes: '78',
+      link: 'https://www.example5.com',
+      title: 'Inovações em software de código aberto',
+      views: '320'
+   },
+   {
+      id: '7',
+      date: '15/05/2023',
+      likes: '31',
+      link: 'https://www.example6.com',
+      title: 'A revolução das fintechs no mercado',
+      views: '125'
+   },
+   {
+      id: '8',
+      date: '18/05/2023',
+      likes: '92',
+      link: 'https://www.example7.com',
+      title: 'Segurança cibernética e privacidade',
+      views: '890'
+   },
+   {
+      id: '9',
+      date: '21/05/2023',
+      likes: '104',
+      link: 'https://www.example8.com',
+      title: 'IoT: O mundo interconectado',
+      views: '670'
+   },
+   {
+      id: '10',
+      date: '25/05/2023',
+      likes: '42',
+      link: 'https://www.example9.com',
+      title: 'A importância do Big Data',
+      views: '540'
+   }
 ]
 
 export default Publications
