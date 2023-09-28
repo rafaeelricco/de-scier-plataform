@@ -19,7 +19,7 @@ const Box: React.FC<{ children: React.ReactNode; className?: string }> = ({
       <React.Fragment>
          <div
             className={twMerge(
-               'inline-grid w-full box-border rounded-md bg-neutral-white shadow-box py-4 px-6 ',
+               'inline-grid w-full box-border rounded-md bg-[#FEFEFE] shadow-box py-4 px-6 ',
                className
             )}
          >

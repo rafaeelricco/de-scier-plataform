@@ -1,9 +1,11 @@
 'use client'
 
 import Box from '@/components/common/Box/Box'
+import Publications from '@/components/modules/Summary/Publications/Publications'
 import Submission from '@/components/modules/Summary/Submission/Submission'
 import * as Title from '@components/common/Title/Page'
 import React from 'react'
+import './summary.css'
 
 export default function HomePage() {
    return (
@@ -12,9 +14,9 @@ export default function HomePage() {
             <Title.Title>My performance</Title.Title>
          </Title.Root>
          <div className="grid gap-8 h-full">
-            <Box className="grid grid-flow-col gap-6 justify-start h-fit py-6 px-8">
+            <Box className="submission-layout h-fit py-6 px-8">
                <Submission />
-               <div className="divider-v" />
+               <Publications />
             </Box>
             <div className="grid grid-cols-2 gap-8">
                <Box className="h-full">

@@ -1,0 +1,5 @@
+.submission-layout {
+   display: grid;
+   grid-template-columns: auto 1px auto;
+   gap: 1.5rem;
+}

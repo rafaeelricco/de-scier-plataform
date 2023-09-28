@@ -6,13 +6,13 @@ import { PlusCircle } from 'react-bootstrap-icons'
 const Submission: React.FC = () => {
    return (
       <React.Fragment>
-         <div className="grid gap-12 justify-start">
+         <div className="grid gap-12">
             <h3 className="text-xl font-[500]">Submissions</h3>
             <div className="mx-auto my-0">
                <PieChartComponent />
             </div>
             <div className="grid gap-6">
-               <div className="grid grid-cols-2 gap-6 items-center">
+               <div className="grid grid-cols-2 gap-6 items-center justify-items-center">
                   <div className="flex items-center gap-3">
                      <div className="w-3 h-3 bg-status-pending rounded-full" />
                      <p className="text-base text-secundary_blue-main">Under Review</p>
