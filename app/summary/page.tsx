@@ -15,7 +15,7 @@ export default function HomePage() {
          <Title.Root>
             <Title.Title>My performance</Title.Title>
          </Title.Root>
-         <div className="grid gap-8 h-full">
+         <div className="grid gap-8">
             <Box className="submission-layout h-fit py-6 px-8">
                <Submission />
                <Publications />

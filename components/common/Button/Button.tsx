@@ -7,7 +7,7 @@ import { twMerge } from 'tailwind-merge'
 import { tv } from 'tailwind-variants'
 
 const btn = tv({
-   base: 'flex gap-2 items-center justify-center w-full p-4 rounded-md font-semibold focus-visible:outline-none',
+   base: 'flex gap-2 items-center justify-center w-full px-4 py-4 rounded-md font-semibold focus-visible:outline-none',
    variants: {
       color: {
          primary:
