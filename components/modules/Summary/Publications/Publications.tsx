@@ -21,6 +21,7 @@ const Publications: React.FC = () => {
    const [totalPagesReview, setTotalPagesReview] = React.useState(
       Math.ceil(resultsReview.length / per_page)
    )
+   console.log(totalPagesReview)
 
    return (
       <React.Fragment>
@@ -71,10 +72,12 @@ const Publications: React.FC = () => {
                         <PaginationComponent
                            key={totalPages}
                            current={page}
-                           total={totalPages}
+                           total={results.length}
                            perPage={per_page}
                            handleNextPage={() => setPage(page + 1)}
                            handlePreviousPage={() => setPage(page - 1)}
+                           handleFirstPage={() => setPage(1)}
+                           handleLastPage={() => setPage(totalPages)}
                         />
                      </div>
                   </div>
@@ -92,10 +95,14 @@ const Publications: React.FC = () => {
                         <PaginationComponent
                            key={totalPagesReview}
                            current={pageReview}
-                           total={totalPagesReview}
+                           total={resultsReview.length}
                            perPage={per_page}
                            handleNextPage={() => setPageReview(pageReview + 1)}
                            handlePreviousPage={() => setPageReview(pageReview - 1)}
+                           handleFirstPage={() => setPageReview(1)}
+                           handleLastPage={() => {
+                              setPageReview(totalPagesReview)
+                           }}
                         />
                      </div>
                   </div>
@@ -296,6 +303,22 @@ export const published_mock: PublicationItemProps[] = [
       likes: '42',
       link: 'https://www.example9.com',
       title: 'A importância do Big Data',
+      views: '540'
+   },
+   {
+      id: '11',
+      date: '25/05/2023',
+      likes: '42',
+      link: 'https://www.example9.com',
+      title: 'A importância da computação quântica',
+      views: '540'
+   },
+   {
+      id: '12',
+      date: '25/05/2023',
+      likes: '42',
+      link: 'https://www.example9.com',
+      title: 'Como a tecnologia impacta a medicina',
       views: '540'
    }
 ]

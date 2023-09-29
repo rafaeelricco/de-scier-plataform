@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { CaretLeft, CaretRight } from 'react-bootstrap-icons'
+import { CaretLeft, CaretLeftSquare, CaretRight, CaretRightSquare } from 'react-bootstrap-icons'
 import { PaginationProps } from './Typing'
 
 export default function PaginationComponent({
@@ -7,7 +7,9 @@ export default function PaginationComponent({
    current,
    perPage,
    handleNextPage,
-   handlePreviousPage
+   handlePreviousPage,
+   handleFirstPage,
+   handleLastPage
 }: PaginationProps) {
    // States for pagination component
    const [totalRecords, setTotalRecords] = useState(total)
@@ -26,22 +28,14 @@ export default function PaginationComponent({
       setCurrentPage(current)
    }, [current])
 
-   // Handle input change
-   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newPage = parseInt(e.target.value, 10)
-      if (newPage > 0 && newPage <= totalPages()) {
-         setCurrentPage(newPage)
-         if (newPage > current) {
-            handleNextPage()
-         } else if (newPage < current) {
-            handlePreviousPage()
-         }
-      }
-   }
-
    return (
       <>
          <div className="flex items-center gap-2">
+            <CaretLeftSquare
+               size={24}
+               className="transition-all duration-200 hover:scale-110 rounded-xs fill-[#5E6992] cursor-pointer"
+               onClick={() => handleFirstPage?.()}
+            />
             <CaretLeft
                size={24}
                className="transition-all duration-200 hover:scale-110"
@@ -67,6 +61,11 @@ export default function PaginationComponent({
                   opacity: currentPage === totalPages() ? 0.5 : 1
                }}
                onClick={() => handleNextPage?.()}
+            />
+            <CaretRightSquare
+               size={24}
+               className="transition-all duration-200 hover:scale-110 rounded-xs fill-[#5E6992] cursor-pointer"
+               onClick={() => handleLastPage?.()}
             />
          </div>
       </>

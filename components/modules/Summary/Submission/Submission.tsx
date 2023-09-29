@@ -24,7 +24,7 @@ const Submission: React.FC = () => {
                </div>
                <div className="divider-h" />
                <Button.Button variant="outline" className="py-3 px-4">
-                  Submit new paper
+                  Submit new document
                   <PlusCircle className="w-4" />
                </Button.Button>
             </div>
