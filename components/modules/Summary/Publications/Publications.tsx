@@ -106,7 +106,7 @@ const Publications: React.FC = () => {
    )
 }
 
-const under_review: InReviewItemProps[] = [
+export const under_review: InReviewItemProps[] = [
    {
       date: '25/04/2023',
       link: 'https://www.google.com',
@@ -217,7 +217,7 @@ const under_review: InReviewItemProps[] = [
    }
 ]
 
-const published_mock: PublicationItemProps[] = [
+export const published_mock: PublicationItemProps[] = [
    {
       id: '1',
       date: '25/04/2023',
