@@ -1,3 +1,4 @@
+import Footer from '@/components/common/Footer/Footer'
 import Profile from '@/components/common/Profile/Profile'
 import Sidebar from '@/components/common/Sidebar/Sidebar'
 import '@styles/layout.css'
@@ -11,6 +12,7 @@ export default function SummaryLayout({ children }: { children: React.ReactNode 
             <div className="col-2 row-1 mt-16 m-6">{children}</div>
             <Profile />
          </section>
+         <Footer />
       </React.Fragment>
    )
 }
