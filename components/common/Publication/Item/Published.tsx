@@ -34,6 +34,8 @@ const PublicationItem: React.FC<PublicationItemProps> = ({
                      <Eye size={20} className="text-terciary-main" />
                      <span className="text-base text-neutral-gray">{views}</span>
                   </div>
+                  <span className="text-neutral-light_gray">•</span>
+                  <p className="text-base text-neutral-gray">{date}</p>
                </div>
             </div>
          </div>
