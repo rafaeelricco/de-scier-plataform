@@ -1,9 +1,11 @@
 'use client'
 
 import * as Button from '@components/common/Button/Button'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import React from 'react'
 import { PlusCircle } from 'react-bootstrap-icons'
+import SubmitedItem from './SubmitedItem/SubmitedItem'
 
 const Profile: React.FC = () => {
    // See more about in https://nextjs.org/docs/app/api-reference/functions/use-pathname
@@ -12,31 +14,71 @@ const Profile: React.FC = () => {
 
    return (
       <React.Fragment>
-         <div className="flex flex-col gap-8 fixed right-0 h-full pt-10 pb-14 px-6 w-[17.625rem] justify-between bg-[#FEFEFE]">
-            <div className="flex flex-col gap-8">
+         <div className="flex flex-col gap-8 fixed right-0 h-full pt-16 pb-14 px-6 w-[17.625rem] justify-between bg-[#FEFEFE]">
+            <div className="flex flex-col gap-6">
                <div className="flex justify-between items-center">
-                  <h3 className="text-xl font-[500]">My profile</h3>
-                  <p className="text-base text-secundary_purple-main font-regular">Edit profile</p>
+                  <h3 className="text-xl font-semibold">My profile</h3>
+                  <p className="text-base text-secundary_purple-main font-regular hover:underline select-none cursor-pointer">
+                     Edit profile
+                  </p>
                </div>
-               <div className="w-40 h-40 bg-status-pending rounded-full mx-auto my-0" />
-               <div className="grid gap-2">
-                  <h1 className="text-1xl text-secundary_blue-main font-semibold flex justify-center">
-                     Caroline Nunes
-                  </h1>
-                  <Button.Button variant="outline" className="mx-auto px-2 py-3 my-0 text-sm">
-                     Connect a wallet
-                     <PlusCircle size={20} />
-                  </Button.Button>
+               <div className="grid gap-4">
+                  <Image
+                     src="/svgs/common/sidebar/placeholder-image.jpeg"
+                     className="w-36 h-36 bg-status-pending rounded-full mx-auto my-0"
+                     quality={50}
+                     width={144}
+                     height={144}
+                     alt="profile-image"
+                  />
+                  <div className="grid gap-2">
+                     <h1 className="text-xl text-secundary_blue-main font-semibold flex justify-center">
+                        Caroline Nunes
+                     </h1>
+                     <Button.Button variant="outline" className="mx-auto px-2 py-3 my-0 text-sm">
+                        Connect a wallet
+                        <PlusCircle size={20} />
+                     </Button.Button>
+                  </div>
                </div>
                <div className="bg-terciary-main rounded-lg w-full p-4 h-20" />
                <div className="divider-h" />
-               <div>
+               <div className="grid gap-4">
                   <p className="text-base font-semibold text-[#3F3F44]">Last Submitted</p>
+                  {submited_item_mock.map((item) => (
+                     <SubmitedItem
+                        key={item.id}
+                        date={item.date}
+                        status={item.status as 'published' | 'in_review'}
+                        title={item.title}
+                     />
+                  ))}
                </div>
             </div>
          </div>
       </React.Fragment>
    )
 }
+
+const submited_item_mock = [
+   {
+      id: 1,
+      title: 'LCDs - How the technology was concieved ....',
+      date: 'Aug 21, 2021',
+      status: 'published'
+   },
+   {
+      id: 2,
+      title: 'Blockchain and financial technology - How can we integrate with the te...',
+      date: 'Aug 21, 2021',
+      status: 'in_review'
+   },
+   {
+      id: 3,
+      title: 'Biology and isolated islands - How are the spieces influenciated by scarrce',
+      date: 'Aug 21, 2021',
+      status: 'published'
+   }
+]
 
 export default Profile
