@@ -107,3 +107,23 @@ input:-webkit-autofill {
 .gradient-grad-dark {
    background: linear-gradient(264deg, #0c1934 0.74%, #1e0f4a 100%);
 }
+
+.chart-box-shadow {
+   box-shadow: 0px 0px 24px 0px rgba(153, 100, 189, 0.31);
+}
+
+@keyframes fadeIn {
+   from {
+      opacity: 0;
+   }
+   to {
+      opacity: 1;
+   }
+}
+
+.fade-in {
+   animation-name: fadeIn;
+   animation-duration: 3s;
+   animation-timing-function: linear;
+   animation-fill-mode: forwards;
+}

@@ -66,6 +66,7 @@ const Publications: React.FC = () => {
                            link={item.link}
                            title={item.title}
                            views={item.views}
+                           image={item.image}
                         />
                      ))}
                      <div className="mx-auto my-0">
@@ -121,7 +122,8 @@ export const under_review: InReviewItemProps[] = [
       id: '1',
       ready_to_publish: false,
       status_editor: 'approved',
-      status_reviewer: 'pending'
+      status_reviewer: 'pending',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       date: '01/05/2023',
@@ -130,7 +132,8 @@ export const under_review: InReviewItemProps[] = [
       id: '2',
       ready_to_publish: true,
       status_editor: 'approved',
-      status_reviewer: 'approved'
+      status_reviewer: 'approved',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       date: '10/05/2023',
@@ -139,7 +142,8 @@ export const under_review: InReviewItemProps[] = [
       id: '3',
       ready_to_publish: false,
       status_editor: 'pending',
-      status_reviewer: 'approved'
+      status_reviewer: 'approved',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       date: '15/05/2023',
@@ -148,7 +152,8 @@ export const under_review: InReviewItemProps[] = [
       id: '4',
       ready_to_publish: true,
       status_editor: 'approved',
-      status_reviewer: 'pending'
+      status_reviewer: 'pending',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       date: '20/05/2023',
@@ -157,7 +162,8 @@ export const under_review: InReviewItemProps[] = [
       id: '5',
       ready_to_publish: false,
       status_editor: 'pending',
-      status_reviewer: 'pending'
+      status_reviewer: 'pending',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       date: '25/05/2023',
@@ -166,7 +172,8 @@ export const under_review: InReviewItemProps[] = [
       id: '6',
       ready_to_publish: true,
       status_editor: 'approved',
-      status_reviewer: 'approved'
+      status_reviewer: 'approved',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       date: '30/05/2023',
@@ -175,7 +182,8 @@ export const under_review: InReviewItemProps[] = [
       id: '7',
       ready_to_publish: true,
       status_editor: 'pending',
-      status_reviewer: 'approved'
+      status_reviewer: 'approved',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       date: '05/06/2023',
@@ -184,7 +192,8 @@ export const under_review: InReviewItemProps[] = [
       id: '8',
       ready_to_publish: false,
       status_editor: 'approved',
-      status_reviewer: 'pending'
+      status_reviewer: 'pending',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       date: '10/06/2023',
@@ -193,7 +202,8 @@ export const under_review: InReviewItemProps[] = [
       id: '9',
       ready_to_publish: true,
       status_editor: 'approved',
-      status_reviewer: 'approved'
+      status_reviewer: 'approved',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       date: '15/06/2023',
@@ -202,7 +212,8 @@ export const under_review: InReviewItemProps[] = [
       id: '10',
       ready_to_publish: false,
       status_editor: 'pending',
-      status_reviewer: 'approved'
+      status_reviewer: 'approved',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       date: '20/06/2023',
@@ -211,7 +222,8 @@ export const under_review: InReviewItemProps[] = [
       id: '11',
       ready_to_publish: true,
       status_editor: 'approved',
-      status_reviewer: 'pending'
+      status_reviewer: 'pending',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       date: '25/06/2023',
@@ -220,7 +232,8 @@ export const under_review: InReviewItemProps[] = [
       id: '12',
       ready_to_publish: false,
       status_editor: 'approved',
-      status_reviewer: 'pending'
+      status_reviewer: 'pending',
+      image: 'https://random.imagecdn.app/150/150'
    }
 ]
 
@@ -231,7 +244,8 @@ export const published_mock: PublicationItemProps[] = [
       likes: '10',
       link: 'https://www.google.com',
       title: 'Computação e blockchain na nova era digital',
-      views: '100'
+      views: '100',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       id: '2',
@@ -239,7 +253,8 @@ export const published_mock: PublicationItemProps[] = [
       likes: '50',
       link: 'https://www.example1.com',
       title: 'A ascensão da inteligência artificial',
-      views: '230'
+      views: '230',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       id: '3',
@@ -247,7 +262,8 @@ export const published_mock: PublicationItemProps[] = [
       likes: '23',
       link: 'https://www.example2.com',
       title: 'Tecnologia e sociedade no século XXI',
-      views: '500'
+      views: '500',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       id: '4',
@@ -255,7 +271,8 @@ export const published_mock: PublicationItemProps[] = [
       likes: '120',
       link: 'https://www.example3.com',
       title: 'O futuro da realidade virtual',
-      views: '450'
+      views: '450',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       id: '5',
@@ -263,7 +280,8 @@ export const published_mock: PublicationItemProps[] = [
       likes: '65',
       link: 'https://www.example4.com',
       title: 'Desenvolvimento sustentável com tecnologia',
-      views: '760'
+      views: '760',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       id: '6',
@@ -271,7 +289,8 @@ export const published_mock: PublicationItemProps[] = [
       likes: '78',
       link: 'https://www.example5.com',
       title: 'Inovações em software de código aberto',
-      views: '320'
+      views: '320',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       id: '7',
@@ -279,7 +298,8 @@ export const published_mock: PublicationItemProps[] = [
       likes: '31',
       link: 'https://www.example6.com',
       title: 'A revolução das fintechs no mercado',
-      views: '125'
+      views: '125',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       id: '8',
@@ -287,7 +307,8 @@ export const published_mock: PublicationItemProps[] = [
       likes: '92',
       link: 'https://www.example7.com',
       title: 'Segurança cibernética e privacidade',
-      views: '890'
+      views: '890',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       id: '9',
@@ -295,7 +316,8 @@ export const published_mock: PublicationItemProps[] = [
       likes: '104',
       link: 'https://www.example8.com',
       title: 'IoT: O mundo interconectado',
-      views: '670'
+      views: '670',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       id: '10',
@@ -303,7 +325,8 @@ export const published_mock: PublicationItemProps[] = [
       likes: '42',
       link: 'https://www.example9.com',
       title: 'A importância do Big Data',
-      views: '540'
+      views: '540',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       id: '11',
@@ -311,7 +334,8 @@ export const published_mock: PublicationItemProps[] = [
       likes: '42',
       link: 'https://www.example9.com',
       title: 'A importância da computação quântica',
-      views: '540'
+      views: '540',
+      image: 'https://random.imagecdn.app/150/150'
    },
    {
       id: '12',
@@ -319,7 +343,8 @@ export const published_mock: PublicationItemProps[] = [
       likes: '42',
       link: 'https://www.example9.com',
       title: 'Como a tecnologia impacta a medicina',
-      views: '540'
+      views: '540',
+      image: 'https://random.imagecdn.app/150/150'
    }
 ]
 

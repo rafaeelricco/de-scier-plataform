@@ -15,7 +15,9 @@ const SubmitedItem: React.FC<SubmitedItemProps> = ({
 }: SubmitedItemProps) => {
    return (
       <div>
-         <p className="text-sm">{title}</p>
+         <p className="text-sm cursor-pointer hover:text-primary-hover hover:underline transition-all duration-200">
+            {title}
+         </p>
          <div className="flex items-center justify-between">
             <p className="text-sm text-neutral-light_gray">{date}</p>
             <Badge status={status} />
@@ -32,13 +34,13 @@ const Badge: React.FC<BadgeProps> = ({ status }: BadgeProps) => {
    return (
       <React.Fragment>
          {status === 'published' && (
-            <div className="bg-[#ECF8E5] py-1 px-2 rounded-[2px]">
-               <p className="font-semibold text-sm text-status-green">{status_text}</p>
+            <div className="bg-[#ECF8E5] py-1 px-2 rounded-xs">
+               <p className="font-[500] text-sm text-status-green select-none">Published</p>
             </div>
          )}
          {status === 'in_review' && (
-            <div className="bg-[#FFF7E7] py-1 px-2 rounded-[2px]">
-               <p className="font-semibold text-sm text-status-pending">{status_text}</p>
+            <div className="bg-[#FFF7E7] py-1 px-2 rounded-xs">
+               <p className="font-[500] text-sm text-status-pending select-none">In review</p>
             </div>
          )}
       </React.Fragment>

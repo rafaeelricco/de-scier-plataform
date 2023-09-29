@@ -54,7 +54,7 @@ export default function PaginationComponent({
             <p>{totalPages()}</p>
             <CaretRight
                size={24}
-               className="transition-all duration-200 hover:scale-110 fill-blue-gray"
+               className="transition-all duration-200 hover:scale-110 rounded-xs fill-[#5E6992] cursor-pointer"
                style={{
                   cursor: 'pointer',
                   pointerEvents: currentPage === totalPages() ? 'none' : 'auto',

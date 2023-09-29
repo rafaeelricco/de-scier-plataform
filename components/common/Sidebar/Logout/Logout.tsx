@@ -7,7 +7,7 @@ const Logout: React.FC<{ onLogout: () => void }> = ({ onLogout }: { onLogout: ()
    return (
       <React.Fragment>
          <div className="grid grid-flow-col items-center justify-start gap-4">
-            <div className="relative w-12 h-12 overflow-hidden rounded-full border border-gray-light">
+            <div className="relative w-12 h-12 overflow-hidden rounded-full">
                <Image
                   width={200}
                   height={200}

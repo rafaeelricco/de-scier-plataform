@@ -15,6 +15,7 @@ const TopPapers: React.FC = () => {
                   link={item.link}
                   title={item.title}
                   views={item.views}
+                  image={item.image}
                />
             ))}
          </div>

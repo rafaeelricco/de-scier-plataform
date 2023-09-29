@@ -25,6 +25,9 @@ const nextConfig = {
 
       return config
    },
+   images: {
+      domains: ['random.imagecdn.app']
+   },
    // See more in: https://nextjs.org/docs/app/api-reference/next-config-js/redirects
    async redirects() {
       return [
