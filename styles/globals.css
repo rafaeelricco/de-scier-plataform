@@ -14,18 +14,14 @@ body {
    scroll-behavior: smooth;
    -webkit-overflow-scrolling: touch;
    background-color: #f6f6f6;
-   font:
-      400 1rem 'Poppins',
-      sans-serif;
+   font: 400 1rem 'Poppins', sans-serif;
 }
 
 body,
 input,
 textarea,
 button {
-   font:
-      400 1rem 'Poppins',
-      sans-serif;
+   font: 400 1rem 'Poppins', sans-serif;
 
    input[type='number']::-webkit-inner-spin-button,
    input[type='number']::-webkit-outer-spin-button {
@@ -99,4 +95,11 @@ input:-webkit-autofill {
          background: #c5c5c5;
       }
    }
+}
+
+.gradient-grad-2 {
+   background: var(--gradient-grad-2, linear-gradient(45deg, #bf81aa 0%, #70478d 100%));
+   background-clip: text;
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
 }
