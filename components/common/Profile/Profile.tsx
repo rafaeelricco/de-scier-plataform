@@ -17,7 +17,7 @@ const Profile: React.FC = () => {
 
    return (
       <React.Fragment>
-         <div className="flex flex-col gap-8 fixed right-0 h-full pt-16 pb-14 px-6 w-[17.625rem] justify-between bg-[#FEFEFE]">
+         <div className="flex flex-col gap-8 sticky h-[100vh] right-0 pt-16 pb-14 px-6 w-[17.625rem] justify-between bg-[#FEFEFE]">
             <div className="flex flex-col gap-6">
                <div className="flex justify-between items-center">
                   <h3 className="text-xl font-semibold">My profile</h3>
