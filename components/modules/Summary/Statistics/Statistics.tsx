@@ -51,7 +51,10 @@ const Statistics: React.FC = () => {
    return (
       <React.Fragment>
          <div className="grid grid-flow-col items-center gap-4">
-            <CaretLeft className="slider-arrow slider-arrow-left" onClick={handlePrevClick} />
+            <CaretLeft
+               className="slider-arrow slider-arrow-left cursor-pointer hover:scale-125 transition-all duration-200"
+               onClick={handlePrevClick}
+            />
             <div ref={sliderRef} className="keen-slider">
                {carrousel.map((c) => (
                   <div
@@ -72,7 +75,10 @@ const Statistics: React.FC = () => {
                   </div>
                ))}
             </div>
-            <CaretRight className="slider-arrow slider-arrow-right" onClick={handleNextClick} />
+            <CaretRight
+               className="slider-arrow slider-arrow-right cursor-pointer hover:scale-125 transition-all duration-200"
+               onClick={handleNextClick}
+            />
          </div>
       </React.Fragment>
    )

@@ -1,6 +1,7 @@
 'use client'
 
 import Box from '@/components/common/Box/Box'
+import Earnings from '@/components/modules/Summary/Earnings/Earnings'
 import Publications from '@/components/modules/Summary/Publications/Publications'
 import Statistics from '@/components/modules/Summary/Statistics/Statistics'
 import Submission from '@/components/modules/Summary/Submission/Submission'
@@ -26,9 +27,12 @@ export default function HomePage() {
                   <Statistics />
                </Box>
                <Box className="h-fit py-6 px-8">
-                  <TopPapers />
+                  <Earnings />
                </Box>
             </div>
+            <Box className="h-fit w-full py-6 px-8">
+               <TopPapers />
+            </Box>
          </div>
       </React.Fragment>
    )
