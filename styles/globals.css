@@ -103,3 +103,7 @@ input:-webkit-autofill {
    -webkit-background-clip: text;
    -webkit-text-fill-color: transparent;
 }
+
+.gradient-grad-dark {
+   background: linear-gradient(264deg, #0c1934 0.74%, #1e0f4a 100%);
+}
