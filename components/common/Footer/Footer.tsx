@@ -10,9 +10,9 @@ import React from 'react'
 const Footer: React.FC = () => {
    return (
       <React.Fragment>
-         <div className="bg-[#110838] flex gap-40 w-full h-fit py-14 px-56">
-            <div className="grid gap-4">
-               <LogoDeScier className="w-40" />
+         <div className="bg-[#110838] grid grid-flow-col justify-items-center gap-40 w-full h-fit py-14 px-56 lg:px-56 lg:gap-20 2xl:gap-40 2xl:px-56">
+            <div className="grid gap-4 items-center justify-items-center content-center">
+               <LogoDeScier className="w-full max-w-[160px] lg:w-32 2xl:w-40" />
                <p className="text-sm text-neutral-light_gray max-w-[20ch] text-center">
                   Copyright © deScier 2023. All rights reserved.
                </p>

@@ -9,7 +9,7 @@ export default function SummaryLayout({ children }: { children: React.ReactNode 
       <React.Fragment>
          <section className="home">
             <Sidebar />
-            <div className="col-2 row-1 my-16 mx-6">{children}</div>
+            <div className="col-2 row-1 lg:my-10 lg:mx-2  2xl:my-16 2xl:mx-6">{children}</div>
             <Profile />
          </section>
          <Footer />

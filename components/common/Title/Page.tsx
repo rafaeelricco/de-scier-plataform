@@ -44,7 +44,7 @@ const Title: React.FC<{ children: React.ReactNode }> = ({
 }) => {
    return (
       <React.Fragment>
-         <h1 className="text-2xl font-semibold">{children}</h1>
+         <h1 className="text-2xl font-semibold lg:text-1xl 2xl:text-2xl">{children}</h1>
       </React.Fragment>
    )
 }

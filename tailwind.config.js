@@ -7,18 +7,7 @@ const config = {
    theme: {
       container: {
          center: true,
-         padding: '2rem',
-         screens: {}
-      },
-      screens: {
-         tablet: '640px',
-         // => @media (min-width: 640px) { ... }
-
-         laptop: '1024px',
-         // => @media (min-width: 1024px) { ... }
-
-         desktop: '1280px'
-         // => @media (min-width: 1280px) { ... }
+         padding: '2rem'
       },
       boxShadow: {
          dialog:
@@ -73,12 +62,6 @@ const config = {
          40: '10rem',
          64: '16rem',
          80: '20rem'
-      },
-      screens: {
-         mobile: { max: '375px' },
-         tablet: { max: '640px' },
-         laptop: { max: '1024px' },
-         desktop: { max: '1280px' }
       },
       colors: {
          primary: {

@@ -22,11 +22,12 @@ export default function HomePage() {
                <Publications />
             </Box>
             <div className="grid grid-cols-2 gap-8">
-               <Box className="h-fit py-6 px-8">
-                  <h3 className="text-xl font-[500]">Statistics</h3>
+               <Box className="h-full py-6 px-8">
+                  <h3 className="text-xl font-[500] lg:text-lg 2xl:text-xl">Statistics</h3>
                   <Statistics />
                </Box>
                <Box className="h-fit py-6 px-8">
+                  <h3 className="text-xl font-[500] lg:text-lg 2xl:text-xl">Earnings</h3>
                   <Earnings />
                </Box>
             </div>

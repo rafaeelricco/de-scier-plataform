@@ -1,0 +1,4 @@
+.grid-in-review {
+   display: grid;
+   grid-template-columns: max-content auto;
+}

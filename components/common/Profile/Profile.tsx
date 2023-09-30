@@ -17,7 +17,7 @@ const Profile: React.FC = () => {
 
    return (
       <React.Fragment>
-         <div className="flex flex-col gap-8 sticky h-[100vh] right-0 pt-16 pb-14 px-6 w-[17.625rem] justify-between bg-[#FEFEFE]">
+         <div className="flex flex-col gap-8 sticky h-[100vh] right-0 py-14 px-6 w-fit justify-between bg-[#FEFEFE] overflow-y-scroll">
             <div className="flex flex-col gap-6">
                <div className="flex justify-between items-center">
                   <h3 className="text-xl font-semibold">My profile</h3>
@@ -28,14 +28,14 @@ const Profile: React.FC = () => {
                <div className="grid gap-4">
                   <Image
                      src="/svgs/common/sidebar/placeholder-image.jpeg"
-                     className="w-36 h-36 bg-status-pending rounded-full mx-auto my-0"
                      quality={50}
                      width={144}
                      height={144}
                      alt="profile-image"
+                     className="w-36 h-36 bg-status-pending rounded-full mx-auto my-0 lg:w-24 lg:h-24 2xl:w-36 2xl:h-36"
                   />
-                  <div className="grid gap-2">
-                     <h1 className="text-xl text-secundary_blue-main font-semibold flex justify-center">
+                  <div className="grid gap-2 lg:gap-3 2xl:gap-2">
+                     <h1 className="text-xl text-secundary_blue-main font-semibold flex justify-center lg:text-lg 2xl:text-xl">
                         Caroline Nunes
                      </h1>
                      <Button.Button variant="outline" className="mx-auto px-2 py-3 my-0 text-sm">

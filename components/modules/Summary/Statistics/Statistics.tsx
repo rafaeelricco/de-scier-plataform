@@ -11,7 +11,7 @@ const Statistics: React.FC = () => {
    const [currentSlide, setCurrentSlide] = React.useState(0)
    const [sliderRef, instanceRef] = useKeenSlider({
       slides: { perView: 1, spacing: 0 },
-      loop: true,
+      loop: false,
       mode: 'snap',
       breakpoints: {
          '(max-width: 728px)': {}
@@ -50,12 +50,12 @@ const Statistics: React.FC = () => {
 
    return (
       <React.Fragment>
-         <div className="grid grid-flow-col items-center gap-4">
+         <div className="grid grid-flow-col items-center gap-4 lg:gap-2 2xl:gap-4">
             <CaretLeft
                className="slider-arrow slider-arrow-left cursor-pointer hover:scale-125 transition-all duration-200"
                onClick={handlePrevClick}
             />
-            <div ref={sliderRef} className="keen-slider">
+            <div ref={sliderRef} className="keen-slider h-full">
                {carrousel.map((c) => (
                   <div
                      key={c.id}
@@ -68,7 +68,7 @@ const Statistics: React.FC = () => {
                               key={index}
                               className={`w-3 h-3 mx-auto ${
                                  index === currentSlide ? 'bg-primary-main' : 'bg-[#D9D9D9]'
-                              } rounded-sm`}
+                              } rounded-sm lg:w-2 lg:h-2 2xl:w-3 2xl:h-3`}
                            />
                         ))}
                      </div>
@@ -86,11 +86,11 @@ const Statistics: React.FC = () => {
 
 const TotalArticles: React.FC<{ total_articles: number }> = ({ total_articles }) => {
    return (
-      <div className="grid grid-flow-col justify-center items-center">
+      <div className="grid grid-flow-col items-center">
          <StatisticsIllustration className="w-full max-w-[14rem] mx-auto my-0" />
          <div className="grid justify-items-center content-center">
-            <h3 className="gradient-grad-2 font-bold text-5xl">33</h3>
-            <p className="text-lg text-secundary_blue-main max-w-[12ch] text-center">
+            <h3 className="gradient-grad-2 font-bold text-5xl lg:text-3xl 2xl:text-5xl">33</h3>
+            <p className="text-lg text-secundary_blue-main max-w-[12ch] text-center lg:text-base 2xl:text-lg">
                Total articles published
             </p>
          </div>
@@ -100,11 +100,11 @@ const TotalArticles: React.FC<{ total_articles: number }> = ({ total_articles })
 
 const TotalLikes: React.FC<{ total_likes: number }> = ({ total_likes }) => {
    return (
-      <div className="grid grid-flow-col justify-center items-center">
+      <div className="grid grid-flow-col items-center">
          <LikesIllustration className="w-full max-w-[14rem] mx-auto my-0" />
          <div className="grid justify-items-center content-center">
-            <h3 className="gradient-grad-2 font-bold text-5xl">123k</h3>
-            <p className="text-lg text-secundary_blue-main max-w-[12ch] text-center">
+            <h3 className="gradient-grad-2 font-bold text-5xl lg:text-3xl 2xl:text-5xl">123k</h3>
+            <p className="text-lg text-secundary_blue-main max-w-[12ch] text-center lg:text-base 2xl:text-lg">
                Total likes on articles
             </p>
          </div>
@@ -114,11 +114,11 @@ const TotalLikes: React.FC<{ total_likes: number }> = ({ total_likes }) => {
 
 const TotalViews: React.FC<{ total_views: number }> = ({ total_views }) => {
    return (
-      <div className="grid grid-flow-col justify-center items-center">
+      <div className="grid grid-flow-col items-center">
          <ViewsIllustration className="w-full max-w-[14rem] mx-auto my-0" />
          <div className="grid justify-items-center content-center">
-            <h3 className="gradient-grad-2 font-bold text-5xl">10m</h3>
-            <p className="text-lg text-secundary_blue-main max-w-[12ch] text-center">
+            <h3 className="gradient-grad-2 font-bold text-5xl lg:text-3xl 2xl:text-5xl">10m</h3>
+            <p className="text-lg text-secundary_blue-main max-w-[12ch] text-center lg:text-base 2xl:text-lg">
                Total views on articles
             </p>
          </div>

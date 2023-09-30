@@ -21,7 +21,6 @@ const Publications: React.FC = () => {
    const [totalPagesReview, setTotalPagesReview] = React.useState(
       Math.ceil(resultsReview.length / per_page)
    )
-   console.log(totalPagesReview)
 
    return (
       <React.Fragment>
@@ -30,7 +29,7 @@ const Publications: React.FC = () => {
             <div className="grid grid-cols-2 items-start w-full h-fit">
                <button
                   data-active={publications}
-                  className="py-2 px-4 font-semibold text-base text-[#009EAB] rounded-[32px] w-full data-[active='true']:bg-[#F1FFFF] transition-all duration-200 data-[active='false']:text-neutral-light_gray data-[active='false']:font-regular"
+                  className="py-2 px-4 font-semibold text-base text-[#009EAB] rounded-[32px] w-full data-[active='true']:bg-[#F1FFFF] transition-all duration-200 data-[active='false']:text-neutral-light_gray data-[active='false']:font-regular lg:text-sm 2xl:text-base"
                   onClick={() => {
                      setPublications(true)
                      setUnderReview(false)
@@ -43,7 +42,7 @@ const Publications: React.FC = () => {
                </button>
                <button
                   data-active={underReview}
-                  className="py-2 px-4 font-semibold text-base text-[#FA9963] rounded-[32px] w-full data-[active='true']:bg-[#FFF4DE] transition-all duration-200 data-[active='false']:text-neutral-light_gray data-[active='false']:font-regular"
+                  className="py-2 px-4 font-semibold text-base text-[#FA9963] rounded-[32px] w-full data-[active='true']:bg-[#FFF4DE] transition-all duration-200 data-[active='false']:text-neutral-light_gray data-[active='false']:font-regular lg:text-sm 2xl:text-base"
                   onClick={() => {
                      setPublications(false)
                      setUnderReview(true)
@@ -57,7 +56,7 @@ const Publications: React.FC = () => {
             </div>
             {publications && (
                <div className="bg-[#F1FFFF] h-full rounded-md transition-all duration-200 p-4">
-                  <div className="grid gap-4">
+                  <div className="grid gap-4 h-full">
                      {results.slice((page - 1) * per_page, page * per_page).map((item) => (
                         <PublicationItem
                            key={item.id}
@@ -86,7 +85,7 @@ const Publications: React.FC = () => {
             )}
             {underReview && (
                <div className="bg-[#FFF4DE] h-full rounded-md transition-all duration-200 p-4">
-                  <div className="grid gap-4">
+                  <div className="grid gap-4 h-full">
                      {resultsReview
                         .slice((pageReview - 1) * per_page, pageReview * per_page)
                         .map((item) => (

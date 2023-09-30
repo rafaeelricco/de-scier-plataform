@@ -13,7 +13,7 @@ const Sidebar: React.FC = () => {
 
    return (
       <React.Fragment>
-         <div className="flex flex-col gap-8 left-0 sticky h-[100vh] pt-10 pb-14 px-6 w-[17.625rem] justify-between bg-[#FEFEFE]">
+         <div className="flex flex-col gap-8 left-0 sticky h-[100vh] pt-10 pb-14 px-6 w-fit justify-between bg-[#FEFEFE]">
             <div className="flex flex-col gap-8">
                <LogoDeScier className="w-20 mx-auto my-0" />
                <Button.Button variant="primary" className="mx-auto my-0 p-3 text-sm">
@@ -53,43 +53,43 @@ const items = [
    {
       id: 1,
       text: 'Summary',
-      icon: <SummaryIcon className="w-6 fill-neutral-light_gray" />,
+      icon: <SummaryIcon className="w-6 fill-neutral-light_gray lg:w-5 2xl:w-6" />,
       path: home_routes.summary
    },
    {
       id: 2,
       text: 'Articles under Review',
-      icon: <ArticlesIcon className="w-6 fill-neutral-light_gray" />,
+      icon: <ArticlesIcon className="w-6 fill-neutral-light_gray lg:w-5 2xl:w-6" />,
       path: home_routes.articles_under_review
    },
    {
       id: 8,
       text: 'As Reviewer/Editor',
-      icon: <AsReviewerIcon className="w-6 fill-neutral-light_gray" />,
+      icon: <AsReviewerIcon className="w-6 fill-neutral-light_gray lg:w-5 2xl:w-6" />,
       path: home_routes.as_reviewer
    },
    {
       id: 3,
       text: 'Profile',
-      icon: <ProfileIcon className="w-6 fill-neutral-light_gray" />,
+      icon: <ProfileIcon className="w-6 fill-neutral-light_gray lg:w-5 2xl:w-6" />,
       path: home_routes.profile
    },
    {
       id: 4,
       text: 'Home',
-      icon: <HomeIcon className="w-6 fill-neutral-light_gray" />,
+      icon: <HomeIcon className="w-6 fill-neutral-light_gray lg:w-5 2xl:w-6" />,
       path: home_routes.home
    },
    {
       id: 5,
       text: 'About us',
-      icon: <AboutUsIcon className="w-6 fill-neutral-light_gray" />,
+      icon: <AboutUsIcon className="w-6 fill-neutral-light_gray lg:w-5 2xl:w-6" />,
       path: home_routes.about_us
    },
    {
       id: 6,
       text: 'My IP',
-      icon: <MyIPIcon className="w-6 fill-neutral-light_gray" />,
+      icon: <MyIPIcon className="w-6 fill-neutral-light_gray lg:w-5 2xl:w-6" />,
       path: home_routes.my_ip
    }
 ]
