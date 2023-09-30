@@ -76,27 +76,6 @@ input:-webkit-autofill {
    all: unset;
 }
 
-.scrollbar-hidden {
-   scrollbar-width: none;
-   overflow: -moz-scrollbars-none;
-   -ms-overflow-style: none;
-
-   &::-webkit-scrollbar {
-      display: none;
-   }
-
-   ::-webkit-scrollbar {
-      display: none;
-      z-index: 1;
-
-      &-thumb {
-         cursor: pointer;
-         border-radius: 8px;
-         background: #c5c5c5;
-      }
-   }
-}
-
 .gradient-grad-2 {
    background: var(--gradient-grad-2, linear-gradient(45deg, #bf81aa 0%, #70478d 100%));
    background-clip: text;

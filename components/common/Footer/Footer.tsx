@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
                   Copyright © deScier 2023. All rights reserved.
                </p>
             </div>
-            <div className="grid gap-4">
+            <div className="grid gap-4 content-start">
                <p className="text-lg font-semibold text-neutral-white">Social media</p>
                {social_media.map((item) => (
                   <React.Fragment key={item.id}>
@@ -30,7 +30,7 @@ const Footer: React.FC = () => {
                   </React.Fragment>
                ))}
             </div>
-            <div className="grid gap-4">
+            <div className="grid gap-4 content-start">
                <p className="text-lg font-semibold text-neutral-white">Links</p>
                {links.map((item) => (
                   <React.Fragment key={item.id}>
@@ -42,7 +42,7 @@ const Footer: React.FC = () => {
                   </React.Fragment>
                ))}
             </div>
-            <div className="grid gap-4">
+            <div className="grid gap-4 content-start">
                <p className="text-lg font-semibold text-neutral-white">Contact</p>
                <div className="grid gap-1">
                   <div className="flex items-center gap-3">
@@ -140,6 +140,11 @@ const links = [
    },
    {
       id: 4,
+      name: 'Privacy Policy',
+      link: ''
+   },
+   {
+      id: 5,
       name: 'Join our DAO',
       link: ''
    }

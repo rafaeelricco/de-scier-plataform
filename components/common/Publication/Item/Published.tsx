@@ -30,7 +30,8 @@ const PublicationItem: React.FC<PublicationItemProps> = ({
                height={80}
                alt={title}
                style={{ objectFit: 'cover' }}
-               className="rounded-md lg:w-16 lg:h-16 2xl:w-20 2xl:h-20"
+               className="rounded-md"
+               /*  lg:w-16 lg:h-16 2xl:w-20 2xl:h-20 */
             />
             <div className="grid gap-2">
                <h6 className="text-lg font-semibold text-secundary_blue-main lg:text-sm 2xl:text-lg">

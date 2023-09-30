@@ -56,17 +56,20 @@ const Publications: React.FC = () => {
             </div>
             {publications && (
                <div className="bg-[#F1FFFF] h-full rounded-md transition-all duration-200 p-4">
-                  <div className="grid gap-4 h-full">
+                  <div className="grid gap-3 h-full">
                      {results.slice((page - 1) * per_page, page * per_page).map((item) => (
-                        <PublicationItem
-                           key={item.id}
-                           date={item.date}
-                           likes={item.likes}
-                           link={item.link}
-                           title={item.title}
-                           views={item.views}
-                           image={item.image}
-                        />
+                        <React.Fragment key={item.id}>
+                           <PublicationItem
+                              key={item.id}
+                              date={item.date}
+                              likes={item.likes}
+                              link={item.link}
+                              title={item.title}
+                              views={item.views}
+                              image={item.image}
+                           />
+                           <div className="divider-h" />
+                        </React.Fragment>
                      ))}
                      <div className="mx-auto my-0">
                         <PaginationComponent

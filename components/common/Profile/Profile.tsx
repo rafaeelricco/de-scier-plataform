@@ -17,7 +17,7 @@ const Profile: React.FC = () => {
 
    return (
       <React.Fragment>
-         <div className="flex flex-col gap-8 sticky h-[100vh] right-0 py-14 px-6 w-fit justify-between bg-[#FEFEFE] overflow-y-scroll">
+         <div className="flex flex-col gap-8 sticky h-[100vh] right-0 py-14 px-6 w-fit justify-between bg-[#FEFEFE]">
             <div className="flex flex-col gap-6">
                <div className="flex justify-between items-center">
                   <h3 className="text-xl font-semibold">My profile</h3>
@@ -75,6 +75,11 @@ const Profile: React.FC = () => {
       </React.Fragment>
    )
 }
+
+// Atualizar o published e under review do submissions
+// Statistics bolinhas
+// Bolinha não deve estar linkada com o componente
+// barra de scroll para profile e top papers
 
 const submited_item_mock = [
    {
