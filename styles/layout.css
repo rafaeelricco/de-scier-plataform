@@ -3,7 +3,6 @@
    grid-template-columns: 17.625rem 1fr 17.625rem;
    gap: 1.5rem;
    width: 100%;
-   height: 100vh;
    overflow-x: hidden;
    box-sizing: border-box;
    background-image: linear-gradient(
@@ -13,24 +12,6 @@
       #ebdeff 68.82%,
       #ffe5e5 97.88%
    );
-}
-
-.templates {
-   display: grid;
-   grid-template-columns: 15rem 1fr auto;
-   gap: 1.5rem;
-   width: 100%;
-   height: 100vh;
-   overflow-x: hidden;
-   box-sizing: border-box;
-   position: relative;
-}
-
-.divider-template {
-   margin-left: -1.5rem;
-   width: 105%;
-   height: 1px;
-   background-color: #dbdbdb;
 }
 
 .col-2 {
@@ -44,22 +25,4 @@
 
 .row-1 {
    grid-row-start: 1;
-}
-
-.tokens {
-   display: grid;
-   grid-template-columns: 1fr;
-   gap: 1.5rem;
-   height: 100dvh;
-   width: 100%;
-   overflow-x: hidden;
-   box-sizing: border-box;
-}
-
-.default-columns {
-   display: grid;
-   grid-template-columns: 1fr 1fr;
-   gap: 1.5rem;
-   align-items: start;
-   width: 100%;
 }
