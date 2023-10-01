@@ -3,3 +3,9 @@
    grid-template-columns: 0.4fr 1px 1fr;
    gap: 1.5rem;
 }
+
+@media (min-width: 1280px) {
+   .submission-layout {
+      grid-template-columns: 0.45fr 1px 1fr;
+   }
+}

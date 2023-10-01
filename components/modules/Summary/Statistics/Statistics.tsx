@@ -11,13 +11,14 @@ const Statistics: React.FC = () => {
    const [currentSlide, setCurrentSlide] = React.useState(0)
    const [sliderRef, instanceRef] = useKeenSlider({
       slides: { perView: 1, spacing: 0 },
-      loop: false,
+      loop: true,
       mode: 'snap',
       breakpoints: {
          '(max-width: 728px)': {}
       },
       slideChanged(s) {
-         setCurrentSlide(s.track.details.abs)
+         const realIndex = s.track.details.rel
+         setCurrentSlide(realIndex)
       }
    })
 
@@ -50,35 +51,37 @@ const Statistics: React.FC = () => {
 
    return (
       <React.Fragment>
-         <div className="grid grid-flow-col items-center gap-4 lg:gap-2 2xl:gap-4">
-            <CaretLeft
-               className="slider-arrow slider-arrow-left cursor-pointer hover:scale-125 transition-all duration-200"
-               onClick={handlePrevClick}
-            />
-            <div ref={sliderRef} className="keen-slider h-full">
-               {carrousel.map((c) => (
-                  <div
-                     key={c.id}
-                     className={twMerge(`keen-slider__slide slider-${c.id}`, 'grid gap-4')}
-                  >
-                     {c.component}
-                     <div className="grid grid-flow-col justify-center gap-2">
-                        {carrousel.map((_, index) => (
-                           <div
-                              key={index}
-                              className={`w-3 h-3 mx-auto ${
-                                 index === currentSlide ? 'bg-primary-main' : 'bg-[#D9D9D9]'
-                              } rounded-sm lg:w-2 lg:h-2 2xl:w-3 2xl:h-3`}
-                           />
-                        ))}
+         <div className="grid content-start gap-6">
+            <div className="grid grid-flow-col items-center gap-4 lg:gap-2 2xl:gap-4">
+               <CaretLeft
+                  className="slider-arrow slider-arrow-left cursor-pointer hover:scale-125 transition-all duration-200"
+                  onClick={handlePrevClick}
+               />
+               <div ref={sliderRef} className="keen-slider h-full">
+                  {carrousel.map((c) => (
+                     <div
+                        key={c.id}
+                        className={twMerge(`keen-slider__slide slider-${c.id}`, 'grid gap-4')}
+                     >
+                        {c.component}
                      </div>
-                  </div>
+                  ))}
+               </div>
+               <CaretRight
+                  className="slider-arrow slider-arrow-right cursor-pointer hover:scale-125 transition-all duration-200"
+                  onClick={handleNextClick}
+               />
+            </div>
+            <div className="grid grid-flow-col justify-center gap-2 content-start">
+               {carrousel.map((_, index) => (
+                  <div
+                     key={index}
+                     className={`w-3 h-3 mx-auto ${
+                        index === currentSlide ? 'bg-primary-main' : 'bg-[#D9D9D9]'
+                     } rounded-sm lg:w-2 lg:h-2 2xl:w-3 2xl:h-3`}
+                  />
                ))}
             </div>
-            <CaretRight
-               className="slider-arrow slider-arrow-right cursor-pointer hover:scale-125 transition-all duration-200"
-               onClick={handleNextClick}
-            />
          </div>
       </React.Fragment>
    )

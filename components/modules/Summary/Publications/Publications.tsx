@@ -29,7 +29,7 @@ const Publications: React.FC = () => {
             <div className="grid grid-cols-2 items-start w-full h-fit">
                <button
                   data-active={publications}
-                  className="py-2 px-4 font-semibold text-base text-[#009EAB] rounded-[32px] w-full data-[active='true']:bg-[#F1FFFF] transition-all duration-200 data-[active='false']:text-neutral-light_gray data-[active='false']:font-regular lg:text-sm 2xl:text-base"
+                  className="py-2 px-4 font-semibold text-base text-[#009EAB] rounded-[32px] w-full data-[active='true']:bg-[#F1FFFF] transition-all duration-200 data-[active='false']:text-neutral-light_gray data-[active='false']:font-regular lg:text-sm 2xl:text-base select-none"
                   onClick={() => {
                      setPublications(true)
                      setUnderReview(false)
@@ -42,7 +42,7 @@ const Publications: React.FC = () => {
                </button>
                <button
                   data-active={underReview}
-                  className="py-2 px-4 font-semibold text-base text-[#FA9963] rounded-[32px] w-full data-[active='true']:bg-[#FFF4DE] transition-all duration-200 data-[active='false']:text-neutral-light_gray data-[active='false']:font-regular lg:text-sm 2xl:text-base"
+                  className="py-2 px-4 font-semibold text-base text-[#FA9963] rounded-[32px] w-full data-[active='true']:bg-[#FFF4DE] transition-all duration-200 data-[active='false']:text-neutral-light_gray data-[active='false']:font-regular lg:text-sm 2xl:text-base select-none"
                   onClick={() => {
                      setPublications(false)
                      setUnderReview(true)
@@ -56,30 +56,30 @@ const Publications: React.FC = () => {
             </div>
             {publications && (
                <div className="bg-[#F1FFFF] h-full rounded-md transition-all duration-200 p-4">
-                  <div className="grid gap-3 h-full">
+                  <div className="grid gap-4 h-full">
                      {results.slice((page - 1) * per_page, page * per_page).map((item) => (
                         <React.Fragment key={item.id}>
                            <PublicationItem
                               key={item.id}
                               date={item.date}
-                              likes={item.likes}
                               link={item.link}
+                              likes={item.likes}
                               title={item.title}
                               views={item.views}
                               image={item.image}
                            />
-                           <div className="divider-h" />
+                           <hr className="divider-h" />
                         </React.Fragment>
                      ))}
                      <div className="mx-auto my-0">
                         <PaginationComponent
                            key={totalPages}
                            current={page}
-                           total={results.length}
                            perPage={per_page}
+                           total={results.length}
+                           handleFirstPage={() => setPage(1)}
                            handleNextPage={() => setPage(page + 1)}
                            handlePreviousPage={() => setPage(page - 1)}
-                           handleFirstPage={() => setPage(1)}
                            handleLastPage={() => setPage(totalPages)}
                         />
                      </div>
@@ -92,20 +92,21 @@ const Publications: React.FC = () => {
                      {resultsReview
                         .slice((pageReview - 1) * per_page, pageReview * per_page)
                         .map((item) => (
-                           <InReviewItem key={item.id} {...item} />
+                           <React.Fragment key={item.id}>
+                              <InReviewItem key={item.id} {...item} />
+                              <hr className="divider-h" />
+                           </React.Fragment>
                         ))}
                      <div className="mx-auto my-0">
                         <PaginationComponent
-                           key={totalPagesReview}
-                           current={pageReview}
-                           total={resultsReview.length}
                            perPage={per_page}
-                           handleNextPage={() => setPageReview(pageReview + 1)}
+                           current={pageReview}
+                           key={totalPagesReview}
+                           total={resultsReview.length}
                            handlePreviousPage={() => setPageReview(pageReview - 1)}
                            handleFirstPage={() => setPageReview(1)}
-                           handleLastPage={() => {
-                              setPageReview(totalPagesReview)
-                           }}
+                           handleLastPage={() => setPageReview(totalPagesReview)}
+                           handleNextPage={() => setPageReview(pageReview + 1)}
                         />
                      </div>
                   </div>
