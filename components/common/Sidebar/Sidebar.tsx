@@ -16,10 +16,12 @@ const Sidebar: React.FC = () => {
          <div className="flex flex-col gap-8 left-0 sticky h-[100vh] pt-10 pb-14 px-6 w-fit justify-between bg-[#FEFEFE]">
             <div className="flex flex-col gap-8">
                <LogoDeScier className="w-20 mx-auto my-0" />
-               <Button.Button variant="primary" className="mx-auto my-0 p-3 text-sm">
-                  Submit new document
-                  <PlusCircle size={20} />
-               </Button.Button>
+               <Button.Link href={home_routes.summary_routes.new_document}>
+                  <Button.Button variant="primary" className="mx-auto my-0 p-3 text-sm">
+                     Submit new document
+                     <PlusCircle size={20} />
+                  </Button.Button>
+               </Button.Link>
                <div>
                   {items.map((item) => (
                      <Item

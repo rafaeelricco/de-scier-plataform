@@ -5,5 +5,8 @@ export const home_routes = {
    as_reviewer: '/as-reviewer',
    profile: '/profile',
    about_us: '/about',
-   my_ip: '/my-ip'
+   my_ip: '/my-ip',
+   summary_routes: {
+      new_document: '/summary/new-document'
+   }
 }
