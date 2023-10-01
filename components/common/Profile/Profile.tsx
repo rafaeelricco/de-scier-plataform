@@ -50,7 +50,7 @@ const Profile: React.FC = () => {
                      <IllustrationHandBook />
                      <div className="grid items-center">
                         <p className="text-sm font-semibold text-[#F4F4F4] select-none">
-                           Descier Handbook
+                           deScier handbook
                         </p>
                         <div className="flex justify-between items-center">
                            <p className="text-[13px] select-none text-[#F4F4F4]">

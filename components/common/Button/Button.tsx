@@ -1,5 +1,7 @@
+'use client'
 import { ButtonProps, LinkProps } from '@components/common/Button/Typing'
 import Spinner from '@components/common/Loading/Spinner'
+import { motion } from 'framer-motion'
 import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -32,7 +34,7 @@ const Button: React.FC<ButtonProps> = ({
    const hasDisabled = disabled || loading
 
    return (
-      <React.Fragment>
+      <motion.div whileHover={{ scale: 1.025 }} whileTap={{ scale: 0.99 }}>
          <button
             type="button"
             disabled={hasDisabled}
@@ -48,7 +50,7 @@ const Button: React.FC<ButtonProps> = ({
                </React.Fragment>
             )}
          </button>
-      </React.Fragment>
+      </motion.div>
    )
 }
 

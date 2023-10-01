@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
                   <React.Fragment key={item.id}>
                      <div className="flex items-center gap-6">
                         <span className="text-neutral-white">{item.icon}</span>
-                        <p className="text-sm text-neutral-white font-semibold underline select-none hover:text-secundary-main cursor-pointer">
+                        <p className="text-sm text-neutral-white font-semibold select-none hover:text-secundary-main cursor-pointer">
                            {item.name}
                         </p>
                      </div>
@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
                {links.map((item) => (
                   <React.Fragment key={item.id}>
                      <div className="flex items-center gap-6">
-                        <p className="text-sm text-neutral-white font-semibold underline select-none hover:text-secundary-main cursor-pointer">
+                        <p className="text-sm text-neutral-white font-semibold select-none hover:text-secundary-main cursor-pointer">
                            {item.name}
                         </p>
                      </div>
@@ -47,9 +47,7 @@ const Footer: React.FC = () => {
                <div className="grid gap-1">
                   <div className="flex items-center gap-3">
                      <LocationIcon className="w-4 h-4" />
-                     <p className="text-sm text-neutral-white font-semibold underline select-none hover:text-secundary-main cursor-pointer">
-                        Adress:
-                     </p>
+                     <p className="text-sm text-neutral-white font-semibold select-none">Adress:</p>
                   </div>
                   <p className="text-sm text-neutral-white font-regular select-none hover:text-secundary-main cursor-pointer">
                      R. da Consolação, 2302 - Consolação, São Paulo - SP, 01301-000
@@ -98,7 +96,7 @@ import YoutubeIcon from 'public/svgs/common/footer/icons-footer/youtube.svg'
 const social_media = [
    {
       id: 1,
-      name: '/descier',
+      name: '/desciers',
       icon: <XIcon className="w-5 h-5" />,
       link: ''
    },

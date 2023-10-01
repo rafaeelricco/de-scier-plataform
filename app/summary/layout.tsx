@@ -7,7 +7,7 @@ import React from 'react'
 export default function SummaryLayout({ children }: { children: React.ReactNode }) {
    return (
       <React.Fragment>
-         <section className="home">
+         <section className="home scrollbar-hidden">
             <Sidebar />
             <div className="col-2 row-1 lg:my-10 lg:mx-2  2xl:my-16 2xl:mx-6">{children}</div>
             <Profile />

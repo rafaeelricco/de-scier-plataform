@@ -60,23 +60,6 @@ input:-webkit-autofill {
    -webkit-background-clip: text;
 }
 
-.divider-h {
-   width: 100%;
-   height: 1px;
-   background-color: #dbdbdb;
-   color: #dbdbdb;
-}
-
-.divider-v {
-   width: 1px;
-   height: 100%;
-   background-color: #dbdbdb;
-}
-
-.unset {
-   all: unset;
-}
-
 .gradient-grad-2 {
    background: var(--gradient-grad-2, linear-gradient(45deg, #bf81aa 0%, #70478d 100%));
    background-clip: text;

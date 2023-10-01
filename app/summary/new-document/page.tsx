@@ -1,6 +1,7 @@
 'use client'
 import Box from '@/components/common/Box/Box'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Pills } from '@/components/common/Button/Pill/Pill'
+import { document_types } from '@/mock/document_types'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
@@ -14,7 +15,7 @@ export default function NewDocumentPage() {
             <Title.Title>Submit new document</Title.Title>
          </Title.Root>
          <div className="grid gap-6">
-            <Box className="grid gap-6 h-fit py-6 px-8">
+            <Box className="grid gap-8 h-fit py-6 px-8">
                <h3 className="text-xl font-semibold lg:text-lg 2xl:text-xl">Upload new document</h3>
                <div className="grid gap-x-6 gap-y-4">
                   <div className="grid grid-cols-2 gap-6">
@@ -60,13 +61,10 @@ export default function NewDocumentPage() {
                      </Input.Root>
                   </div>
                </div>
-               <h3 className="text-base font-semibold">Document type</h3>
-               <Tabs defaultValue="account" className="w-[400px]">
-                  <TabsList>
-                     <TabsTrigger value="account">Account</TabsTrigger>
-                     <TabsTrigger value="password">Password</TabsTrigger>
-                  </TabsList>
-               </Tabs>
+               <div className="grid gap-2">
+                  <h3 className="text-sm font-semibold">Document type</h3>
+                  <Pills items={document_types} />
+               </div>
             </Box>
          </div>
       </React.Fragment>

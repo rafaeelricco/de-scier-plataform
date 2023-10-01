@@ -1,8 +1,9 @@
 import '@styles/globals.css'
+import '@styles/utils.css'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-   title: 'deScier Plataform – Decentralized Science',
+   title: 'deScier Plataform - Decentralized Science',
    description:
       'A decentralized science-DeSci publishing platform uses blockchain technology and smart contracts to enable the publication and distribution of academic papers.'
 }
