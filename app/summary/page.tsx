@@ -7,8 +7,8 @@ import Statistics from '@/components/modules/Summary/Statistics/Statistics'
 import Submission from '@/components/modules/Summary/Submission/Submission'
 import TopPapers from '@/components/modules/Summary/TopPapers/TopPapers'
 import * as Title from '@components/common/Title/Page'
+import '@styles/summary.css'
 import React from 'react'
-import './summary.css'
 
 export default function HomePage() {
    return (

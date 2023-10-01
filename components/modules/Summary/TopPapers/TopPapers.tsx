@@ -10,17 +10,18 @@ const TopPapers: React.FC = () => {
             <div className="grid grid-min-max gap-4 max-h-[13rem] overflow-y-scroll">
                {published_mock.map((item, index) => (
                   <React.Fragment key={item.id}>
-                     <PublicationItem
-                        key={item.id}
-                        date={item.date}
-                        likes={item.likes}
-                        link={item.link}
-                        title={item.title}
-                        views={item.views}
-                        image={item.image}
-                     />
-                     {/* só não adiciona no último */}
-                     {index !== published_mock.length - 1 && <hr className="divider-h" />}
+                     <div className="grid gap-4">
+                        <PublicationItem
+                           key={item.id}
+                           date={item.date}
+                           likes={item.likes}
+                           link={item.link}
+                           title={item.title}
+                           views={item.views}
+                           image={item.image}
+                        />
+                        {index !== published_mock.length - 1 && <hr className="divider-h" />}
+                     </div>
                   </React.Fragment>
                ))}
             </div>
