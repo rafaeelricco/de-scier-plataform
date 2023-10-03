@@ -16,7 +16,7 @@ export default function HomePage() {
 
    return (
       <main className="container">
-         <Dialog.Root open={false}>
+         <Dialog.Root open={true}>
             <Dialog.Overlay />
             <Dialog.Content
                className={twMerge(
