@@ -14,6 +14,7 @@ import { Clipboard, PlusCircle, PlusCircleDotted } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 
 export default function NewDocumentPage() {
+   const [typeOfAccess, setTypeOfAccess] = useState('open-access')
    const [items, setItems] = useState(authors)
    const [dialog, setDialog] = useState({
       author: false,
@@ -108,7 +109,7 @@ export default function NewDocumentPage() {
          <Title.Root>
             <Title.Title>Submit new document</Title.Title>
          </Title.Root>
-         <div className="grid gap-6">
+         <div className="grid gap-6 pb-14">
             <Box className="grid gap-8 h-fit py-6 px-8">
                <h3 className="text-xl font-semibold lg:text-lg 2xl:text-xl">Upload new document</h3>
                <div className="grid gap-x-6 gap-y-4">
@@ -159,11 +160,7 @@ export default function NewDocumentPage() {
                   <h3 className="text-sm font-semibold">Document type</h3>
                   <Pills items={document_types} />
                </div>
-               <Dropzone
-                  setSelectedFile={(file) => {
-                     console.log(file)
-                  }}
-               />
+               <Dropzone setSelectedFile={(file) => console.log(file)} />
                <Input.Root>
                   <Input.Label className="flex gap-2 items-center">
                      <span className="text-sm font-semibold">Abstract</span>
@@ -171,12 +168,12 @@ export default function NewDocumentPage() {
                         0/2000 words
                      </span>
                   </Input.Label>
-                  <Input.TextArea placeholder="Title of the field" />
+                  <Input.TextArea rows={4} placeholder="Title of the field" />
                </Input.Root>
                <div className="flex items-center gap-4">
-                  <Button.Button className="px-4 py-3 w-fit text-sm">
+                  <Button.Button variant="outline" className="px-4 py-3 w-fit text-sm">
                      Generate abstract with AI
-                     <PlusCircleDotted size={18} className="fill-neutral-white" />
+                     <PlusCircleDotted size={18} className="fill-primary-main" />
                   </Button.Button>
                   <p className="text-sm">
                      Careful! You can only generate the abstract once per file.
@@ -292,6 +289,7 @@ export default function NewDocumentPage() {
                      <Input.Select
                         label={'Type of access'}
                         placeholder="Select the type of access"
+                        onValueChange={(value) => setTypeOfAccess(value)}
                         options={[
                            {
                               label: 'Open Access',
@@ -304,15 +302,25 @@ export default function NewDocumentPage() {
                         ]}
                      />
                   </Input.Root>
-                  <Input.Root>
-                     <Input.Label>Valor total</Input.Label>
-                     <CurrencyInput
-                        onChangeValue={(event, originalValue, maskedValue) => {
-                           console.log(event, originalValue, maskedValue)
-                        }}
-                        InputElement={<Input.Input placeholder="R$" />}
-                     />
-                  </Input.Root>
+                  {typeOfAccess == 'open-access' && (
+                     <Input.Root>
+                        <Input.Label className="text-neutral-gray text-sm font-semibold pl-2">
+                           Valor total
+                        </Input.Label>
+                        <Input.Input disabled placeholder="R$" />
+                     </Input.Root>
+                  )}
+                  {typeOfAccess == 'paid-access' && (
+                     <Input.Root>
+                        <Input.Label>Valor total</Input.Label>
+                        <CurrencyInput
+                           onChangeValue={(event, originalValue, maskedValue) => {
+                              console.log(event, originalValue, maskedValue)
+                           }}
+                           InputElement={<Input.Input placeholder="R$" />}
+                        />
+                     </Input.Root>
+                  )}
                </div>
             </Box>
             <Button.Button variant="primary">

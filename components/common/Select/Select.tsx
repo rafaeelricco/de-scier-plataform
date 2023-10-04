@@ -17,7 +17,7 @@ import { tv } from 'tailwind-variants'
 const select = tv({
    variants: {
       type: {
-         small: 'rounded-md  bg-transparent shadow-sm py-1 px-4 border border-gray-stroke inline-flex items-center gap-2 data-[placeholder]:text-gray-main data-[placeholder]:font-regular data-[placeholder]:text-sm focus:outline-none select-none text-sm font-regular text-gray-main',
+         small: 'rounded-md bg-transparent shadow-sm py-1 px-4 border border-gray-stroke inline-flex items-center gap-2 data-[placeholder]:font-regular data-[placeholder]:text-sm focus:outline-none select-none text-sm font-regular text-gray-main',
          input: 'bg-transparent text-base shadow-sm border-b-[1px] p-2 pt-0 border-neutral-light_gray inline-flex items-center justify-between gap-2 data-[placeholder]:text-gray-light data-[placeholder]:text-base data-[placeholder]:text-base data-[placeholder]:text-start focus:outline-none focus:text-neutral-black select-none text-base font-regular text-black-primary w-full'
       }
    }
@@ -59,7 +59,14 @@ const Trigger: React.FC<TriggerProps> = ({
    ...props
 }: TriggerProps) => {
    return (
-      <Select.Trigger className={twMerge(select({ type: variant }), className)} {...props}>
+      <Select.Trigger
+         className={twMerge(
+            select({ type: variant }),
+            className,
+            'data-[placeholder]:text-neutral-light_gray data-[placeholder]:font-regular data-[placeholder]:text-base'
+         )}
+         {...props}
+      >
          {children}
       </Select.Trigger>
    )
@@ -103,7 +110,7 @@ const Item: React.FC<Select.SelectItemProps> = ({
    return (
       <Select.Item
          className={twMerge(
-            'text-black-primary select-none font-regular hover:bg-white-hover px-4 py-1 rounded-sm hover:outline-none focus:outline-none text-sm w-full relative data-[highlighted]:bg-primary-main cursor-pointer',
+            'text-black-primary select-none font-regular hover:bg-white-hover hover:text-neutral-white px-4 py-1 rounded-sm hover:outline-none focus:outline-none text-sm w-full relative data-[highlighted]:bg-primary-main cursor-pointer',
             className
          )}
          {...props}

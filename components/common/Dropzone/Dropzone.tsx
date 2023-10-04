@@ -1,6 +1,6 @@
 import * as Button from '@components/common/Button/Button'
 import React from 'react'
-import { FileEarmark, Upload } from 'react-bootstrap-icons'
+import { FileEarmarkText, Upload } from 'react-bootstrap-icons'
 import { useDropzone } from 'react-dropzone'
 import { DropzoneProps, StoredFile } from './Typing'
 
@@ -51,62 +51,62 @@ const Dropzone = React.forwardRef(
             multiple: false
          })
 
-      const isViewSelected = viewSelected ? viewSelected && files.length > 0 : false
-
       return (
          <>
             <div>
                <div className="grid border-[1px] border-dashed border-blue-light bg-[#F1FFFF] rounded-lg p-4 transition duration-300 ease-in-out items-center">
                   <div {...getRootProps({ className: 'dropzone' })}>
                      <input {...getInputProps()} />
-                     {isViewSelected ? (
+                     {files.length === 0 ? (
                         <React.Fragment>
-                           <div className="grid justify-items-center gap-4 grid-flow-col justify-center items-center">
-                              <FileEarmark className="w-5" />
-                              <p className="text-base text-center">{files[0]?.name}</p>
-                              {/* <Button
-                                 variant="outline"
-                                 padding="0.5rem"
-                                 icon={<XLg size={12} color={text} />}
-                                 onClick={() => {
-                                    dispatch(removeAllFiles())
-                                    setValue?.('file.attachment', '')
-                                    setValue?.('file.name', '')
-                                 }}
-                              /> */}
+                           <div className="justify-items-center gap-4">
+                              <div className="grid gap-2">
+                                 <div>
+                                    <p className="text-sm font-semibold text-center">
+                                       Upload Paper File (.docx)
+                                    </p>
+                                    <p className="text-sm font-regular text-center">
+                                       Drop your file here or
+                                    </p>
+                                 </div>
+                                 <Button.Button
+                                    variant="outline"
+                                    className="py-2 px-4 text-sm w-fit mx-auto my-0"
+                                 >
+                                    <Upload size={18} />
+                                    Select a file from my computer
+                                 </Button.Button>
+                              </div>
                            </div>
                         </React.Fragment>
                      ) : (
-                        <div className="justify-items-center gap-4">
-                           <div className="grid gap-2">
-                              <div>
+                        <React.Fragment>
+                           <div className="grid justify-items-center gap-2">
+                              <div className="grid justify-items-center gap-2 grid-flow-col justify-center items-center">
+                                 <FileEarmarkText size={18} />
                                  <p className="text-sm font-semibold text-center">
-                                    Upload Paper File (.docx)
-                                 </p>
-                                 <p className="text-sm font-regular text-center">
-                                    Drop your file here or
+                                    {files[0]?.name}
                                  </p>
                               </div>
                               <Button.Button
                                  variant="outline"
-                                 className="py-2 px-4 text-sm w-fit mx-auto my-0"
+                                 className="px-4 p-2 text-sm w-fit"
+                                 onClick={() => {
+                                    setFiles([])
+                                    setSelectedFile?.(null)
+                                    setValue?.('file.attachment', '')
+                                    setValue?.('file.name', '')
+                                 }}
                               >
+                                 Swap uploaded file
                                  <Upload size={18} />
-                                 Select a file from my computer
                               </Button.Button>
                            </div>
-                           {/* <AddButton
-                              width="clamp(200px, 50%, 300px)"
-                              variant="primary"
-                              text={language.components.common.dropzone.button[locale as string]}
-                              icon={<Upload size={18} />}
-                           /> */}
-                        </div>
+                        </React.Fragment>
                      )}
                   </div>
                </div>
             </div>
-            {/* <ErrorMessage errorMessage={error_message as string} /> */}
          </>
       )
    }

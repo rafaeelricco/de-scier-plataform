@@ -32,7 +32,7 @@ const input = tv({
          none: ''
       },
       disabled: {
-         true: 'bg-[#ededed] text-[#6c6c6c] cursor-not-allowed',
+         true: 'bg-[#FEFEFE] text-[#6c6c6c] cursor-not-allowed',
          false: ''
       }
    }
@@ -71,7 +71,10 @@ const Root: React.FC<WrapperInputProps> = ({ children }: WrapperInputProps) => {
  */
 const Label: React.FC<LabelProps> = ({ children, optional, ...props }: LabelProps) => {
    return (
-      <label className="text-sm text-black-primary font-semibold pl-2" {...props}>
+      <label
+         className={twMerge('text-sm text-black-primary font-semibold pl-2', props.className)}
+         {...props}
+      >
          {children} {optional && <span className="text-gray-main font-regular">(Opcional)</span>}
       </label>
    )
