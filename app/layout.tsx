@@ -1,3 +1,4 @@
+import ProgressBar from '@/lib/nprogress'
 import '@styles/globals.css'
 import '@styles/utils.css'
 import type { Metadata } from 'next'
@@ -20,7 +21,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                rel="stylesheet"
             />
          </head>
-         <body>{children}</body>
+         <body>
+            <ProgressBar />
+            {children}
+         </body>
       </html>
    )
 }

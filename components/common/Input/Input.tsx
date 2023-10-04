@@ -24,7 +24,7 @@ import { twMerge } from 'tailwind-merge'
 import { tv } from 'tailwind-variants'
 
 const input = tv({
-   base: 'flex border-b-[1px] border-neutral-light_gray p-2 pt-0 placeholder:text-gray-light placeholder:text-base focus:outline-none focus:text-neutral-black w-full placeholder-shown:text-neutral-black bg-transparent focus:border-b-primary-main',
+   base: 'flex items-center border-b-[1px] border-neutral-light_gray p-2 pt-0 placeholder:text-gray-light placeholder:text-base focus:outline-none focus:text-neutral-black w-full placeholder-shown:text-neutral-black bg-transparent focus:border-b-primary-main',
    variants: {
       hasIcon: {
          start: 'data-[start=true]:px-11',
@@ -228,11 +228,11 @@ const Search = React.forwardRef<HTMLInputElement, InputProps>(
                ref={ref}
                disabled={disabled}
                className={twMerge(
-                  'px-4 py-3 border-none bg-neutral-white shadow-search rounded-md text-sm',
+                  'px-4 py-3 h-fit border-none bg-neutral-white shadow-search rounded-md text-sm',
                   className
                )}
                {...props}
-               icon={<SearchIcon className="" />}
+               icon={<SearchIcon className="text-neutral-gray w-[1.125rem] h-[1.125rem]" />}
             />
          </Root>
       )

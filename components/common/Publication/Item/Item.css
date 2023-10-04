@@ -2,3 +2,8 @@
    display: grid;
    grid-template-columns: max-content auto;
 }
+
+.grid-article-under-review {
+   display: grid;
+   grid-template-columns: max-content 1px auto;
+}
