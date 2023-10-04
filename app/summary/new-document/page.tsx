@@ -15,7 +15,7 @@ import { CurrencyInput } from 'react-currency-mask'
 
 export default function NewDocumentPage() {
    const [typeOfAccess, setTypeOfAccess] = useState('open-access')
-   const [items, setItems] = useState(authors)
+   const [items, setItems] = useState(authors_mock)
    const [dialog, setDialog] = useState({
       author: false,
       share_split: false,
@@ -215,10 +215,10 @@ export default function NewDocumentPage() {
                      "
                      />
                   </Button.Button>
-                  <p className="text-sm">Drag the authors to reorder the list.</p>
+                  <p className="text-sm">Drag the authors_mock to reorder the list.</p>
                   <div className="grid gap-2">
                      <div className="grid grid-cols-3">
-                        {headers_authors_order.map((header, index) => (
+                        {authors_headers.map((header, index) => (
                            <React.Fragment key={index}>
                               <p className="text-sm font-semibold">{header.label}</p>
                            </React.Fragment>
@@ -260,9 +260,9 @@ export default function NewDocumentPage() {
                      </h3>
                      <p className="text-sm">
                         At least 1 editor and 2 reviewers’ approval are required to publish the
-                        paper. The editors and reviewers cannot be authors in the project. Invite
-                        them to the platform through a link, that will be generated after you submit
-                        it for review.
+                        paper. The editors and reviewers cannot be authors_mock in the project.
+                        Invite them to the platform through a link, that will be generated after you
+                        submit it for review.
                      </p>
                   </div>
                   <div>
@@ -290,6 +290,7 @@ export default function NewDocumentPage() {
                         label={'Type of access'}
                         placeholder="Select the type of access"
                         onValueChange={(value) => setTypeOfAccess(value)}
+                        value={typeOfAccess}
                         options={[
                            {
                               label: 'Open Access',
@@ -311,17 +312,35 @@ export default function NewDocumentPage() {
                      </Input.Root>
                   )}
                   {typeOfAccess == 'paid-access' && (
-                     <Input.Root>
-                        <Input.Label>Valor total</Input.Label>
-                        <CurrencyInput
-                           onChangeValue={(event, originalValue, maskedValue) => {
-                              console.log(event, originalValue, maskedValue)
-                           }}
-                           InputElement={<Input.Input placeholder="R$" />}
-                        />
-                     </Input.Root>
+                     <React.Fragment>
+                        <Input.Root>
+                           <Input.Label>Price</Input.Label>
+                           <CurrencyInput
+                              currency="USD"
+                              onChangeValue={(event, originalValue, maskedValue) =>
+                                 console.log(maskedValue)
+                              }
+                              InputElement={<Input.Input placeholder="USD" />}
+                           />
+                        </Input.Root>
+                     </React.Fragment>
                   )}
                </div>
+               {typeOfAccess == 'paid-access' && (
+                  <React.Fragment>
+                     <div className="grid gap-2">
+                        <p className="text-sm font-semibold">Authorship settings</p>
+                        <p className="text-sm font-regular">
+                           The total added up authorship value must be 100%
+                        </p>
+                     </div>
+                     <div>
+                        {authorship_headers.map((header, index) => (
+                           <React.Fragment key={index}>{header.label}</React.Fragment>
+                        ))}
+                     </div>
+                  </React.Fragment>
+               )}
             </Box>
             <Button.Button variant="primary">
                Submit paper for review
@@ -332,7 +351,7 @@ export default function NewDocumentPage() {
    )
 }
 
-const authors = [
+const authors_mock = [
    {
       id: 1,
       name: 'Caroline Nunes',
@@ -365,7 +384,7 @@ const authors = [
    }
 ]
 
-const headers_authors_order = [
+const authors_headers = [
    {
       id: 1,
       label: 'Name'
@@ -377,5 +396,20 @@ const headers_authors_order = [
    {
       id: 1,
       label: 'E-mail'
+   }
+]
+
+const authorship_headers = [
+   {
+      id: 1,
+      label: 'Name'
+   },
+   {
+      id: 1,
+      label: 'Authorship Share'
+   },
+   {
+      id: 1,
+      label: 'Wallet'
    }
 ]
