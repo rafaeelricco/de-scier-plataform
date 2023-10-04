@@ -1,12 +1,13 @@
 import * as Button from '@components/common/Button/Button'
 import React from 'react'
-import { Upload } from 'react-bootstrap-icons'
+import { FileEarmark, Upload } from 'react-bootstrap-icons'
 import { useDropzone } from 'react-dropzone'
 import { DropzoneProps, StoredFile } from './Typing'
 
 const Dropzone = React.forwardRef(
    ({ setSelectedFile, error_message, setValue, viewSelected }: DropzoneProps) => {
       const [files, setFiles] = React.useState<Array<StoredFile>>([])
+
       // function to create file preview
       const createFilePreview = (file: StoredFile) => {
          const fileWithPreview = {
@@ -61,7 +62,7 @@ const Dropzone = React.forwardRef(
                      {isViewSelected ? (
                         <React.Fragment>
                            <div className="grid justify-items-center gap-4 grid-flow-col justify-center items-center">
-                              {/* <FileEarmark size={24} color={text} /> */}
+                              <FileEarmark className="w-5" />
                               <p className="text-base text-center">{files[0]?.name}</p>
                               {/* <Button
                                  variant="outline"

@@ -86,7 +86,7 @@ const Content: React.FC<Dialog.DialogContentProps> = ({
 const Title: React.FC<TitleProps> = ({ onClear, onClose, title }: TitleProps) => {
    return (
       <div className="flex justify-between items-center">
-         <h2 className="text-2xl font-semibold mb-1">{title || 'Filtros'}</h2>
+         <h2 className="text-1xl font-semibold mb-1">{title || 'Filtros'}</h2>
          <div className="flex items-center gap-4">
             {onClear && (
                <p
@@ -97,7 +97,7 @@ const Title: React.FC<TitleProps> = ({ onClear, onClose, title }: TitleProps) =>
                </p>
             )}
             <X
-               className="w-h-8 h-8 cursor-pointer transform duration-300 transition-transform hover:rotate-360"
+               className="w-8 h-8 cursor-pointer transform duration-300 transition-transform hover:rotate-360 hover:scale-125"
                onClick={onClose}
             />
          </div>

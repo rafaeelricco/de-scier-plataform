@@ -18,7 +18,7 @@ const select = tv({
    variants: {
       type: {
          small: 'rounded-md  bg-transparent shadow-sm py-1 px-4 border border-gray-stroke inline-flex items-center gap-2 data-[placeholder]:text-gray-main data-[placeholder]:font-regular data-[placeholder]:text-sm focus:outline-none select-none text-sm font-regular text-gray-main',
-         input: 'rounded-md bg-transparent shadow-sm py-2 px-3 h-12 border border-gray-stroke inline-flex items-center justify-between gap-2 data-[placeholder]:text-gray-light data-[placeholder]:font-regular data-[placeholder]:text-base data-[placeholder]:text-start focus:outline-none select-none text-base font-regular text-black-primary w-full'
+         input: 'bg-transparent text-base shadow-sm border-b-[1px] p-2 pt-0 border-neutral-light_gray inline-flex items-center justify-between gap-2 data-[placeholder]:text-gray-light data-[placeholder]:text-base data-[placeholder]:text-base data-[placeholder]:text-start focus:outline-none focus:text-neutral-black select-none text-base font-regular text-black-primary w-full'
       }
    }
 })
