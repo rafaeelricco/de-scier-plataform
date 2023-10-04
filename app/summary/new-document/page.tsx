@@ -22,6 +22,18 @@ export default function NewDocumentPage() {
       edit_author: false
    })
 
+   type Authorship = {
+      name: string
+      share: string
+      wallet: string
+      email: string
+   }
+   const [share, setShare] = useState('')
+   const [authors, setAuthors] = useState<Author[]>(authors_mock)
+   console.log(authors)
+   const [authorship, setAuthorship] = useState<Authorship[]>([])
+   const [authorship_settings, setAuthorshipSettings] = useState<Author>()
+
    return (
       <React.Fragment>
          <Dialog.Root open={dialog.author || dialog.share_split || dialog.edit_author}>
@@ -65,14 +77,49 @@ export default function NewDocumentPage() {
                            <div className="flex items-center gap-6">
                               <Input.Root>
                                  <Input.Label>Share</Input.Label>
-                                 <Input.Input placeholder="% of the revenue" />
+                                 <Input.Input
+                                    type="number"
+                                    placeholder="% of the revenue"
+                                    onChange={(e) => {
+                                       setShare(e.target.value)
+                                    }}
+                                 />
                               </Input.Root>
                               <Input.Root>
                                  <Input.Label optional>Wallet</Input.Label>
                                  <Input.Input placeholder="Crypto wallet adress to recieve the revenue" />
                               </Input.Root>
                            </div>
-                           <Button.Button variant="primary">Add share split</Button.Button>
+                           <Button.Button
+                              variant="primary"
+                              onClick={() => {
+                                 if (!authorship_settings!.id) {
+                                    console.error('Authorship settings does not have an ID!')
+                                    return
+                                 }
+
+                                 const updatedAuthor: Author = {
+                                    id: authorship_settings!.id,
+                                    name: authorship_settings!.name,
+                                    title: authorship_settings!.title,
+                                    email: authorship_settings!.email,
+                                    wallet: authorship_settings!.wallet,
+                                    share: share.includes('%') ? share : share + '%'
+                                 }
+
+                                 const authorIndex = authors.findIndex(
+                                    (author) => author.id === authorship_settings!.id
+                                 )
+
+                                 const updatedAuthors = [...authors]
+                                 updatedAuthors[authorIndex] = updatedAuthor
+                                 setAuthors(updatedAuthors)
+
+                                 setDialog({ ...dialog, share_split: false })
+                              }}
+                           >
+                              Add share split
+                           </Button.Button>
                         </div>
                      </div>
                   </React.Fragment>
@@ -334,10 +381,57 @@ export default function NewDocumentPage() {
                            The total added up authorship value must be 100%
                         </p>
                      </div>
-                     <div>
-                        {authorship_headers.map((header, index) => (
-                           <React.Fragment key={index}>{header.label}</React.Fragment>
-                        ))}
+                     <div className="grid gap-2">
+                        <div className="grid grid-cols-3">
+                           {authorship_headers.map((header, index) => (
+                              <React.Fragment key={index}>
+                                 <p className="text-sm font-semibold">{header.label}</p>
+                              </React.Fragment>
+                           ))}
+                        </div>
+                        <div>
+                           <div>
+                              {authors.map((author, index) => (
+                                 <React.Fragment key={index}>
+                                    <div className="grid grid-cols-3 items-center py-3">
+                                       <div>
+                                          <p className="text-sm text-secundary_blue-main">
+                                             {author.name}
+                                          </p>
+                                       </div>
+                                       <div>
+                                          {author.share ? (
+                                             <div className="flex gap-2 px-4 py-1 border rounded-md border-terciary-main w-fit">
+                                                <p className="text-sm text-center text-terciary-main w-8">
+                                                   {author.share}
+                                                </p>
+                                                <p className="text-sm text-terciary-main">
+                                                   Authorship
+                                                </p>
+                                             </div>
+                                          ) : (
+                                             <Button.Button
+                                                variant="outline"
+                                                className="px-4 py-2 w-fit text-sm"
+                                                onClick={() => {
+                                                   setDialog({ ...dialog, share_split: true })
+                                                   setAuthorshipSettings(author)
+                                                }}
+                                             >
+                                                Add authorship settings
+                                                <PlusCircleDotted
+                                                   size={18}
+                                                   className="fill-primary-main"
+                                                />
+                                             </Button.Button>
+                                          )}
+                                       </div>
+                                    </div>
+                                    <hr className="divider-h" />
+                                 </React.Fragment>
+                              ))}
+                           </div>
+                        </div>
                      </div>
                   </React.Fragment>
                )}
@@ -351,36 +445,55 @@ export default function NewDocumentPage() {
    )
 }
 
-const authors_mock = [
+type Author = {
+   id: number
+   name: string
+   title: string
+   email: string
+   share?: string | null
+   wallet?: string | null
+}
+
+const authors_mock: Author[] = [
    {
       id: 1,
       name: 'Caroline Nunes',
       title: 'Neurologist',
-      email: 'caroline@gmail.com'
+      email: 'caroline@gmail.com',
+      share: null,
+      wallet: null
    },
    {
       id: 2,
       name: 'Roberto Silva',
       title: 'Cardiologist',
-      email: 'roberto@gmail.com'
+      email: 'roberto@gmail.com',
+      share: null,
+      wallet: null
    },
    {
       id: 3,
       name: 'Luciana Menezes',
       title: 'Dermatologist',
-      email: 'luciana@gmail.com'
+      email: 'luciana@gmail.com',
+      share: null,
+      wallet: null
    },
    {
       id: 4,
       name: 'Paulo Fernandes',
       title: 'Orthopedist',
-      email: 'paulo@gmail.com'
+      email: 'paulo@gmail.com',
+      share: null,
+      wallet: null
    },
    {
       id: 5,
       name: 'Juliana Ramos',
       title: 'Endocrinologist',
-      email: 'juliana@gmail.com'
+      email: 'juliana@gmail.com',
+      share: null,
+      wallet: null
    }
 ]
 
