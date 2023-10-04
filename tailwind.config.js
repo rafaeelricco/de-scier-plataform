@@ -11,7 +11,8 @@ const config = {
       },
       boxShadow: {
          dialog:
-            'hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px'
+            'hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px',
+         search: '0px 4px 8px 0px rgba(39, 0, 90, 0.07)'
       },
       fontSize: {
          xxs: '0.625rem',

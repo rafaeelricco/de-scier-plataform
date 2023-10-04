@@ -227,9 +227,12 @@ const Search = React.forwardRef<HTMLInputElement, InputProps>(
             <Input
                ref={ref}
                disabled={disabled}
-               className={twMerge('px-4 py-2 h-10', className)}
+               className={twMerge(
+                  'px-4 py-3 border-none bg-neutral-white shadow-search rounded-md text-sm',
+                  className
+               )}
                {...props}
-               icon={<SearchIcon className="w-[1.125rem] h-[1.125rem] text-gray-400" />}
+               icon={<SearchIcon className="" />}
             />
          </Root>
       )
