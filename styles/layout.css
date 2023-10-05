@@ -1,6 +1,6 @@
 .home {
    display: grid;
-   grid-template-columns: max-content 1fr 17.625rem;
+   grid-template-columns: 17.5rem 1fr 17.5rem;
    gap: 1.5rem;
    width: 100%;
    overflow-x: hidden;
