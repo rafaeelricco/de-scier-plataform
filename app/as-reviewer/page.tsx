@@ -1,7 +1,8 @@
 'use client'
 
 import PaginationComponent from '@/components/common/Pagination/Pagination'
-import ReviewerItem, { ReviewerItemProps } from '@/components/modules/AsReviewer/ReviewerItem'
+import ReviewerItem from '@/components/modules/AsReviewer/ReviewerItem'
+import { ReviewerItemProps } from '@/components/modules/AsReviewer/Typing'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
@@ -17,7 +18,7 @@ export default function AsReviewerPage() {
 
    return (
       <React.Fragment>
-         <Title.Root>
+         <Title.Root className="m-0 mb-4">
             <Title.Title>As Reviewer/Editor</Title.Title>
          </Title.Root>
          <Tabs defaultValue="account">

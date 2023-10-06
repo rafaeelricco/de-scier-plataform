@@ -6,6 +6,8 @@ interface DropzoneProps {
    fileName?: FileWithPreview['name']
    setValue?: UseFormSetValue<any>
    viewSelected?: boolean
+   placeholder?: string
+   message?: string
 }
 
 interface FileWithPreview {

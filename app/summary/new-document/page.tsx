@@ -245,7 +245,10 @@ export default function NewDocumentPage() {
                </div>
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
-                  <Dropzone setSelectedFile={(file) => console.log(file)} />
+                  <Dropzone
+                     placeholder="Upload cover picture (.png, .jpg)"
+                     setSelectedFile={(file) => console.log(file)}
+                  />
                </div>
             </Box>
             <Box className="grid gap-8 h-fit py-6 px-8">

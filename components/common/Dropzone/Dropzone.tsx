@@ -5,7 +5,7 @@ import { useDropzone } from 'react-dropzone'
 import { DropzoneProps, StoredFile } from './Typing'
 
 const Dropzone = React.forwardRef(
-   ({ setSelectedFile, error_message, setValue, viewSelected }: DropzoneProps) => {
+   ({ setSelectedFile, setValue, placeholder, message }: DropzoneProps) => {
       const [files, setFiles] = React.useState<Array<StoredFile>>([])
 
       // function to create file preview
@@ -63,10 +63,10 @@ const Dropzone = React.forwardRef(
                               <div className="grid gap-2">
                                  <div>
                                     <p className="text-sm font-semibold text-center">
-                                       Upload Paper File (.docx)
+                                       {placeholder || 'Upload Paper File (.docx)'}
                                     </p>
                                     <p className="text-sm font-regular text-center">
-                                       Drop your file here or
+                                       {message || 'Drop your file here or'}
                                     </p>
                                  </div>
                                  <Button.Button
