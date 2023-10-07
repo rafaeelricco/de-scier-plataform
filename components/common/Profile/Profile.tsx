@@ -1,5 +1,6 @@
 'use client'
 
+import { ScrollArea } from '@/components/ui/scroll-area'
 import * as Button from '@components/common/Button/Button'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
@@ -69,16 +70,18 @@ const Profile: React.FC = () => {
                   <hr className="divider-h" />
                   <div className="grid gap-4 pb-8">
                      <p className="text-base font-semibold text-[#3F3F44]">Last Submitted</p>
-                     <div className="grid gap-4 overflow-scroll lg:h-[224px] 2xl:h-[424px]">
-                        {submited_item_mock.map((item) => (
-                           <SubmitedItem
-                              key={item.id}
-                              date={item.date}
-                              status={item.status as 'published' | 'in_review'}
-                              title={item.title}
-                           />
-                        ))}
-                     </div>
+                     <ScrollArea className="lg:h-[300px] 2xl:h-[400px] pr-2">
+                        <div className="grid gap-4">
+                           {submited_item_mock.map((item) => (
+                              <SubmitedItem
+                                 key={item.id}
+                                 date={item.date}
+                                 status={item.status as 'published' | 'in_review'}
+                                 title={item.title}
+                              />
+                           ))}
+                        </div>
+                     </ScrollArea>
                   </div>
                </div>
             </div>
