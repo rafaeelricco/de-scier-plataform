@@ -5,13 +5,7 @@
    width: 100%;
    overflow-x: hidden;
    box-sizing: border-box;
-   background-image: linear-gradient(
-      108deg,
-      #e2e6ff 0%,
-      #dce8ff 37.72%,
-      #ebdeff 68.82%,
-      #ffe5e5 97.88%
-   );
+   background-image: linear-gradient(108deg, #e2e6ff 0%, #dce8ff 37.72%, #ebdeff 68.82%, #ffe5e5 97.88%);
 }
 
 .col-2 {

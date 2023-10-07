@@ -19,10 +19,7 @@ export default function HomePage() {
          <Dialog.Root open={false}>
             <Dialog.Overlay />
             <Dialog.Content
-               className={twMerge(
-                  'w-[80%] max-w-[1200px] p-0',
-                  component === forgot_password_component && 'max-w-[500px]'
-               )}
+               className={twMerge('w-[80%] max-w-[1200px] p-0', component === forgot_password_component && 'max-w-[500px]')}
             >
                {component === login_component && (
                   <LoginModal

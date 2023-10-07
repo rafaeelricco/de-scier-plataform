@@ -50,11 +50,7 @@ export default function AsReviewerPage() {
                      />
                   </div>
                   <div className="flex items-center gap-2">
-                     <Dropdown
-                        items={filter_order_by}
-                        label="Order by:"
-                        onSelect={(value) => console.log(value)}
-                     />
+                     <Dropdown items={filter_order_by} label="Order by:" onSelect={(value) => console.log(value)} />
                      <Dropdown
                         label="Status:"
                         className="min-w-[180px]"
@@ -67,11 +63,7 @@ export default function AsReviewerPage() {
                   <TabsContent value="account">
                      <div className="grid grid-cols-2 gap-4">
                         {results
-                           .filter((article) =>
-                              article.title
-                                 .toLowerCase()
-                                 .includes(debouncedSearchTerm.toLowerCase())
-                           )
+                           .filter((article) => article.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
                            .filter((article) => article.access_type === null)
                            .slice((page - 1) * per_page, page * per_page)
                            .map((article) => (
@@ -84,11 +76,7 @@ export default function AsReviewerPage() {
                   <TabsContent value="password">
                      <div className="grid grid-cols-2 gap-4">
                         {results
-                           .filter((article) =>
-                              article.title
-                                 .toLowerCase()
-                                 .includes(debouncedSearchTerm.toLowerCase())
-                           )
+                           .filter((article) => article.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
                            .filter((article) => article.access_type !== null)
                            .slice((page - 1) * per_page, page * per_page)
                            .map((article) => (

@@ -38,10 +38,7 @@ const Root: React.FC<Select.SelectProps> = ({ children, ...props }: Select.Selec
  * @param {string} [className] - Additional classes for styling the component.
  * @returns JSX.Element - A Select Icon component.
  */
-const Icon: React.FC<Select.SelectIconProps> = ({
-   children,
-   className
-}: Select.SelectIconProps) => {
+const Icon: React.FC<Select.SelectIconProps> = ({ children, className }: Select.SelectIconProps) => {
    return <Select.Icon className={twMerge('text-black-primary', className)}>{children}</Select.Icon>
 }
 
@@ -52,12 +49,7 @@ const Icon: React.FC<Select.SelectIconProps> = ({
  * @param {string} [variant='small'] - Defines the visual variant of the trigger. Available options: 'small', 'input'.
  * @returns JSX.Element - A Trigger component for the Select dropdown.
  */
-const Trigger: React.FC<TriggerProps> = ({
-   children,
-   className,
-   variant = 'small',
-   ...props
-}: TriggerProps) => {
+const Trigger: React.FC<TriggerProps> = ({ children, className, variant = 'small', ...props }: TriggerProps) => {
    return (
       <Select.Trigger
          className={twMerge(
@@ -78,18 +70,11 @@ const Trigger: React.FC<TriggerProps> = ({
  * @param {string} [className] - Additional classes for styling the component.
  * @returns JSX.Element - A Content container for Select options.
  */
-const Content: React.FC<Select.SelectContentProps> = ({
-   children,
-   className,
-   ...props
-}: Select.SelectContentProps) => {
+const Content: React.FC<Select.SelectContentProps> = ({ children, className, ...props }: Select.SelectContentProps) => {
    return (
       <Select.Content
          position="popper"
-         className={twMerge(
-            'bg-neutral-white rounded-sm shadow-content overflow-hidden p-1 z-[9998] absolute',
-            className
-         )}
+         className={twMerge('bg-neutral-white rounded-sm shadow-content overflow-hidden p-1 z-[9998] absolute', className)}
          {...props}
       >
          {children}
@@ -102,11 +87,7 @@ const Content: React.FC<Select.SelectContentProps> = ({
  * @param {ReactNode} props.children The children components or nodes.
  * @param {string} [props.className] Additional classes for styling the component.
  */
-const Item: React.FC<Select.SelectItemProps> = ({
-   children,
-   className,
-   ...props
-}: Select.SelectItemProps) => {
+const Item: React.FC<Select.SelectItemProps> = ({ children, className, ...props }: Select.SelectItemProps) => {
    return (
       <Select.Item
          className={twMerge(
@@ -125,18 +106,11 @@ const Item: React.FC<Select.SelectItemProps> = ({
  * @param {ReactNode} props.children The children components or nodes.
  * @param {string} [props.className] Additional classes for styling the component.
  */
-const ItemText: React.FC<Select.SelectItemTextProps> = ({
-   children,
-   className,
-   ...props
-}: Select.SelectItemTextProps) => {
+const ItemText: React.FC<Select.SelectItemTextProps> = ({ children, className, ...props }: Select.SelectItemTextProps) => {
    return (
       <Select.ItemText
          {...props}
-         className={twMerge(
-            'text-sm text-black-primary select-none font-regular hover:bg-white-hover',
-            className
-         )}
+         className={twMerge('text-sm text-black-primary select-none font-regular hover:bg-white-hover', className)}
       >
          {children}
       </Select.ItemText>
@@ -148,16 +122,9 @@ const ItemText: React.FC<Select.SelectItemTextProps> = ({
  * @param {ReactNode} props.children The children components or nodes.
  * @param {string} [props.className] Additional classes for styling the component.
  */
-const Value: React.FC<Select.SelectValueProps> = ({
-   children,
-   className,
-   ...props
-}: Select.SelectValueProps) => {
+const Value: React.FC<Select.SelectValueProps> = ({ children, className, ...props }: Select.SelectValueProps) => {
    return (
-      <Select.Value
-         className={twMerge('text-black-primary select-none font-regular text-sm', className)}
-         {...props}
-      >
+      <Select.Value className={twMerge('text-black-primary select-none font-regular text-sm', className)} {...props}>
          {children}
       </Select.Value>
    )
@@ -168,11 +135,7 @@ const Value: React.FC<Select.SelectValueProps> = ({
  * @param {ReactNode} props.children The children components or nodes.
  * @param {string} [props.className] Additional classes for styling the component.
  */
-const Viewport: React.FC<Select.SelectViewportProps> = ({
-   children,
-   className,
-   ...props
-}: Select.SelectViewportProps) => {
+const Viewport: React.FC<Select.SelectViewportProps> = ({ children, className, ...props }: Select.SelectViewportProps) => {
    return (
       <Select.Viewport className={twMerge(className)} {...props}>
          {children}
@@ -184,10 +147,7 @@ const Viewport: React.FC<Select.SelectViewportProps> = ({
  * @notice The portal component of the Select module, for rendering children outside the DOM hierarchy.
  * @param {ReactNode} props.children The children components or nodes.
  */
-const Portal: React.FC<Select.SelectPortalProps> = ({
-   children,
-   ...props
-}: Select.SelectPortalProps) => {
+const Portal: React.FC<Select.SelectPortalProps> = ({ children, ...props }: Select.SelectPortalProps) => {
    return (
       <Select.Portal className="w-full relative" {...props}>
          {children}

@@ -33,11 +33,7 @@ const Root: React.FC<Dialog.DialogProps> = ({ children, ...props }: Dialog.Dialo
  * @param props.className An additional CSS class that can be applied to the component.
  * @param props.children React children nodes passed to this component.
  */
-const Overlay: React.FC<Dialog.DialogOverlayProps> = ({
-   children,
-   className,
-   ...props
-}: Dialog.DialogOverlayProps) => {
+const Overlay: React.FC<Dialog.DialogOverlayProps> = ({ children, className, ...props }: Dialog.DialogOverlayProps) => {
    return (
       <React.Fragment>
          <Dialog.Overlay className={twMerge('overlay', className)} {...props}>
@@ -54,19 +50,11 @@ const Overlay: React.FC<Dialog.DialogOverlayProps> = ({
  * @param props.className An additional CSS class that can be applied to the component.
  * @param props.children React children nodes passed to this component.
  */
-const Content: React.FC<Dialog.DialogContentProps> = ({
-   children,
-   className,
-   ...props
-}: Dialog.DialogContentProps) => {
+const Content: React.FC<Dialog.DialogContentProps> = ({ children, className, ...props }: Dialog.DialogContentProps) => {
    return (
       <React.Fragment>
          <Dialog.Content
-            className={twMerge(
-               'content',
-               'bg-background-primary w-[50%] p-6 max-h-[95%] h-fit',
-               className
-            )}
+            className={twMerge('content', 'bg-background-primary w-[50%] p-6 max-h-[95%] h-fit', className)}
             {...props}
          >
             {children}
@@ -89,10 +77,7 @@ const Title: React.FC<TitleProps> = ({ onClear, onClose, title }: TitleProps) =>
          <h2 className="text-1xl font-semibold mb-1">{title || 'Filtros'}</h2>
          <div className="flex items-center gap-4">
             {onClear && (
-               <p
-                  className="text-lg text-status-blue font-semibold select-none cursor-pointer"
-                  onClick={onClear}
-               >
+               <p className="text-lg text-status-blue font-semibold select-none cursor-pointer" onClick={onClear}>
                   Limpar Filtros
                </p>
             )}

@@ -38,9 +38,7 @@ const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
                   {truncate(title, 40)}
                </h6>
                <div className="flex items-center gap-2">
-                  <p className="text-sm text-neutral-gray lg:text-sm 2xl:text-base">
-                     Under review since
-                  </p>
+                  <p className="text-sm text-neutral-gray lg:text-sm 2xl:text-base">Under review since</p>
                   <p className="text-base font-semibold lg:text-sm 2xl:text-base">{since}</p>
                </div>
                <div className="border-[1px] rounded-md px-2 border-neutral-stroke_light w-fit">
@@ -56,9 +54,7 @@ const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
                               Editor pending
                            </p>
                         )}
-                        <span className="text-base font-semibold text-neutral-light_gray lg:text-xs 2xl:text-base">
-                           /
-                        </span>
+                        <span className="text-base font-semibold text-neutral-light_gray lg:text-xs 2xl:text-base">/</span>
                         {status_reviewer == 'approved' && (
                            <p className="text-base font-semibold text-status-green lg:text-xs 2xl:text-base">
                               Reviewer approval

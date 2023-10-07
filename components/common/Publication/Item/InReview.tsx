@@ -34,9 +34,7 @@ const InReviewItem: React.FC<InReviewItemProps> = ({
                className="rounded-md lg:w-16 lg:h-16 2xl:w-20 2xl:h-20"
             />
             <div className="grid gap-2">
-               <h6 className="text-lg font-semibold text-secundary_blue-main lg:text-sm 2xl:text-lg">
-                  {title}
-               </h6>
+               <h6 className="text-lg font-semibold text-secundary_blue-main lg:text-sm 2xl:text-lg">{title}</h6>
                <div className="grid grid-flow-col items-center justify-start gap-2">
                   <div className="grid grid-flow-col gap-1 items-center">
                      {ready_to_publish ? (

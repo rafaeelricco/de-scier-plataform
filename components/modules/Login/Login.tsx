@@ -7,12 +7,7 @@ import { X } from 'react-bootstrap-icons'
 import LoginAnimation from './Animation/Animation'
 import { LoginModalProps } from './Typing'
 
-const LoginModal: React.FC<LoginModalProps> = ({
-   onClose,
-   onForgotPassword,
-   onLogin,
-   onRegister
-}: LoginModalProps) => {
+const LoginModal: React.FC<LoginModalProps> = ({ onClose, onForgotPassword, onLogin, onRegister }: LoginModalProps) => {
    return (
       <React.Fragment>
          <div className="grid grid-cols-2">

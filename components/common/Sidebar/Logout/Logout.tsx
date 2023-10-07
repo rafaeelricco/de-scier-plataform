@@ -24,9 +24,7 @@ const Logout: React.FC<{ onLogout: () => void }> = ({ onLogout }: { onLogout: ()
                />
             </div>
             <div className="grid grid-flow-col items-center gap-4">
-               <p className="font-semibold text-base text-primary-main select-none">
-                  Caroline Nunes
-               </p>
+               <p className="font-semibold text-base text-primary-main select-none">Caroline Nunes</p>
                <LogoutIcon
                   width={18}
                   className="fill-neutral-light_gray cursor-pointer hover:fill-primary-main transition-all duration-300 hover:scale-110 mt-[2px]"

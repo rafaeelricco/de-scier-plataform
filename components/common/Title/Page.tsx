@@ -16,14 +16,7 @@ const Root: React.FC<{
 }> = ({ children, className }: { children: React.ReactNode; className?: string }) => {
    return (
       <React.Fragment>
-         <div
-            className={twMerge(
-               'grid gap-4 grid-flow-col justify-start items-center mb-8',
-               className
-            )}
-         >
-            {children}
-         </div>
+         <div className={twMerge('grid gap-4 grid-flow-col justify-start items-center mb-8', className)}>{children}</div>
       </React.Fragment>
    )
 }
@@ -37,11 +30,7 @@ const Root: React.FC<{
  * @param {React.ReactNode} children - Child elements to be rendered within the Title component.
  *
  */
-const Title: React.FC<{ children: React.ReactNode }> = ({
-   children
-}: {
-   children: React.ReactNode
-}) => {
+const Title: React.FC<{ children: React.ReactNode }> = ({ children }: { children: React.ReactNode }) => {
    return (
       <React.Fragment>
          <h1 className="text-2xl font-semibold lg:text-1xl 2xl:text-2xl">{children}</h1>
@@ -57,11 +46,7 @@ const Title: React.FC<{ children: React.ReactNode }> = ({
  * @param {React.ReactNode} children - Child elements to be rendered within the Icon component.
  *
  */
-const Icon: React.FC<{ children: React.ReactNode }> = ({
-   children
-}: {
-   children: React.ReactNode
-}) => {
+const Icon: React.FC<{ children: React.ReactNode }> = ({ children }: { children: React.ReactNode }) => {
    return <React.Fragment>{children} </React.Fragment>
 }
 

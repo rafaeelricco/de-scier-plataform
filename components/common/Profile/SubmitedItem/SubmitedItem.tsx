@@ -7,12 +7,7 @@ type SubmitedItemProps = {
    status: 'published' | 'in_review'
 }
 
-const SubmitedItem: React.FC<SubmitedItemProps> = ({
-   id,
-   title,
-   date,
-   status
-}: SubmitedItemProps) => {
+const SubmitedItem: React.FC<SubmitedItemProps> = ({ id, title, date, status }: SubmitedItemProps) => {
    return (
       <div>
          <p className="text-sm cursor-pointer hover:text-primary-hover hover:underline transition-all duration-200">

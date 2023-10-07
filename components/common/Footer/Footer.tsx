@@ -57,16 +57,12 @@ const Footer: React.FC = () => {
                   <div className="flex items-center gap-2">
                      <div className="flex items-center gap-3">
                         <PhoneIcon className="w-4 h-4" />
-                        <p className="text-sm text-neutral-white font-semibold select-none">
-                           Phone
-                        </p>
+                        <p className="text-sm text-neutral-white font-semibold select-none">Phone</p>
                      </div>
                      <span className="text-sm font-semibold text-neutral-white">/</span>
                      <div className="flex items-center gap-3">
                         <WhatsApp className="w-4 h-4" />
-                        <p className="text-sm text-neutral-white font-semibold select-none">
-                           Whatsapp
-                        </p>
+                        <p className="text-sm text-neutral-white font-semibold select-none">Whatsapp</p>
                      </div>
                   </div>
                   <p className="text-sm text-neutral-white font-regular select-none hover:text-secundary-main cursor-pointer">

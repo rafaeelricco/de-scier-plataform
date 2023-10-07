@@ -1,8 +1,6 @@
 import PaginationComponent from '@/components/common/Pagination/Pagination'
 import InReviewItem, { InReviewItemProps } from '@/components/common/Publication/Item/InReview'
-import PublicationItem, {
-   PublicationItemProps
-} from '@/components/common/Publication/Item/Published'
+import PublicationItem, { PublicationItemProps } from '@/components/common/Publication/Item/Published'
 import React from 'react'
 
 const Publications: React.FC = () => {
@@ -18,9 +16,7 @@ const Publications: React.FC = () => {
    const [resultsReview, setResultsReview] = React.useState(under_review)
 
    const [totalPages, setTotalPages] = React.useState(Math.ceil(results.length / per_page))
-   const [totalPagesReview, setTotalPagesReview] = React.useState(
-      Math.ceil(resultsReview.length / per_page)
-   )
+   const [totalPagesReview, setTotalPagesReview] = React.useState(Math.ceil(resultsReview.length / per_page))
 
    return (
       <React.Fragment>
@@ -89,14 +85,12 @@ const Publications: React.FC = () => {
             {underReview && (
                <div className="bg-[#FFF4DE] h-full rounded-md transition-all duration-200 p-4">
                   <div className="grid gap-4 h-full">
-                     {resultsReview
-                        .slice((pageReview - 1) * per_page, pageReview * per_page)
-                        .map((item) => (
-                           <React.Fragment key={item.id}>
-                              <InReviewItem key={item.id} {...item} />
-                              <hr className="divider-h" />
-                           </React.Fragment>
-                        ))}
+                     {resultsReview.slice((pageReview - 1) * per_page, pageReview * per_page).map((item) => (
+                        <React.Fragment key={item.id}>
+                           <InReviewItem key={item.id} {...item} />
+                           <hr className="divider-h" />
+                        </React.Fragment>
+                     ))}
                      <div className="mx-auto my-0">
                         <PaginationComponent
                            perPage={per_page}

@@ -8,8 +8,7 @@ const LoginAnimation: React.FC = () => {
    useEffect(() => {
       const svgatorObject: any = document?.getElementById('animated-svg')
 
-      const svgatorDocument =
-         svgatorObject?.contentDocument || svgatorObject?.contentWindow.document
+      const svgatorDocument = svgatorObject?.contentDocument || svgatorObject?.contentWindow.document
 
       const svgatorElement = svgatorDocument.getElementById('descier-login-animation')
       svgatorElement?.svgatorPlayer?.play()
@@ -20,18 +19,13 @@ const LoginAnimation: React.FC = () => {
          <div className="w-full relative overflow-hidden login-animation-container">
             <div className="login-text">
                <div className="grid gap-2">
-                  <h2 className="font-semibold text-xl text-neutral-white">
-                     Welcome to our platform!
-                  </h2>
+                  <h2 className="font-semibold text-xl text-neutral-white">Welcome to our platform!</h2>
                   <p className="text-base text-neutral-white">
-                     Easy scientific article publication, with <br /> 100% of the copyrights to the
-                     author,
+                     Easy scientific article publication, with <br /> 100% of the copyrights to the author,
                      <br /> protected by Blockchain technology.
                   </p>
                </div>
-               <h2 className="font-semibold text-xl text-neutral-white">
-                  Join the DeSci movement!
-               </h2>
+               <h2 className="font-semibold text-xl text-neutral-white">Join the DeSci movement!</h2>
             </div>
             <object
                className="login-animation"
@@ -40,14 +34,7 @@ const LoginAnimation: React.FC = () => {
                data="/svgs/modules/login/deScier - Login animation (1).svg"
             />
             <BlobShape className="login-blob-shape" />
-            <Image
-               quality={100}
-               width={184}
-               height={184}
-               src={deScierStamp}
-               alt="deScier stamp"
-               className="login-stamp"
-            />
+            <Image quality={100} width={184} height={184} src={deScierStamp} alt="deScier stamp" className="login-stamp" />
          </div>
       </React.Fragment>
    )

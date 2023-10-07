@@ -16,28 +16,19 @@ const Submission: React.FC = () => {
                   <div className="grid gap-2 items-center justify-items-center lg:gap-2 2xl:gap-2">
                      <div className="flex items-center gap-3">
                         <div className="w-3 h-3 bg-blue-light rounded-full" />
-                        <p className="text-base text-neutral-gray font-semibold lg:text-sm 2xl:text-base">
-                           54
-                        </p>
-                        <p className="text-base text-secundary_blue-main lg:text-sm 2xl:text-base">
-                           Published
-                        </p>
+                        <p className="text-base text-neutral-gray font-semibold lg:text-sm 2xl:text-base">54</p>
+                        <p className="text-base text-secundary_blue-main lg:text-sm 2xl:text-base">Published</p>
                      </div>
                      <div className="flex items-center gap-3">
                         <div className="w-3 h-3 bg-status-pending rounded-full" />
-                        <p className="text-base text-neutral-gray font-semibold lg:text-sm 2xl:text-base">
-                           33
-                        </p>
+                        <p className="text-base text-neutral-gray font-semibold lg:text-sm 2xl:text-base">33</p>
                         <p className="text-base font-regular ext-secundary_blue-main lg:text-sm 2xl:text-base">
                            Under Review
                         </p>
                      </div>
                   </div>
                   <hr className="divider-h" />
-                  <Button.Button
-                     variant="outline"
-                     className="py-3 px-4 lg:text-sm lg:py-2 lg:px-2 2xl:text-base"
-                  >
+                  <Button.Button variant="outline" className="py-3 px-4 lg:text-sm lg:py-2 lg:px-2 2xl:text-base">
                      Submit new document
                      <PlusCircle className="w-4" />
                   </Button.Button>

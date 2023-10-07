@@ -9,13 +9,7 @@ import {
    WrapperInputProps
 } from '@components/common/Input/Typing'
 import * as S from '@components/common/Select/Select'
-import {
-   Command,
-   CommandEmpty,
-   CommandGroup,
-   CommandInput,
-   CommandItem
-} from '@components/ui/command'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@components/ui/popover'
 import { Check } from 'lucide-react'
 import React, { LegacyRef, useEffect, useRef, useState } from 'react'
@@ -71,10 +65,7 @@ const Root: React.FC<WrapperInputProps> = ({ children }: WrapperInputProps) => {
  */
 const Label: React.FC<LabelProps> = ({ children, optional, ...props }: LabelProps) => {
    return (
-      <label
-         className={twMerge('text-sm text-black-primary font-semibold pl-2', props.className)}
-         {...props}
-      >
+      <label className={twMerge('text-sm text-black-primary font-semibold pl-2', props.className)} {...props}>
          {children} {optional && <span className="text-gray-main font-regular">(Opcional)</span>}
       </label>
    )
@@ -86,11 +77,7 @@ const Label: React.FC<LabelProps> = ({ children, optional, ...props }: LabelProp
  * @param {ReactNode} props.children The error message to display
  */
 const Error: React.FC<ErrorProps> = ({ children }: ErrorProps) => {
-   return (
-      <React.Fragment>
-         {children && <p className="text-red-500 text-sm">{children}</p>}{' '}
-      </React.Fragment>
-   )
+   return <React.Fragment>{children && <p className="text-red-500 text-sm">{children}</p>} </React.Fragment>
 }
 
 /**
@@ -141,23 +128,12 @@ const Password = React.forwardRef<HTMLInputElement, InputProps>(({ ...props }, r
    return (
       <React.Fragment>
          <div className="relative">
-            <input
-               ref={ref}
-               className={password()}
-               type={isVisible ? 'text' : 'password'}
-               {...props}
-            />
+            <input ref={ref} className={password()} type={isVisible ? 'text' : 'password'} {...props} />
             <div className="absolute right-0 top-0 bottom-0 flex items-center px-3">
                {isVisible ? (
-                  <Eye
-                     className="w-full cursor-pointer fill-neutral-gray"
-                     onClick={() => setIsVisible(!isVisible)}
-                  />
+                  <Eye className="w-full cursor-pointer fill-neutral-gray" onClick={() => setIsVisible(!isVisible)} />
                ) : (
-                  <EyeSlash
-                     className="w-full cursor-pointer fill-neutral-gray"
-                     onClick={() => setIsVisible(!isVisible)}
-                  />
+                  <EyeSlash className="w-full cursor-pointer fill-neutral-gray" onClick={() => setIsVisible(!isVisible)} />
                )}
             </div>
          </div>
@@ -220,24 +196,19 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
  *
  * @return JSX.Element - A search input field.
  */
-const Search = React.forwardRef<HTMLInputElement, InputProps>(
-   ({ disabled = false, className, ...props }, ref) => {
-      return (
-         <Root>
-            <Input
-               ref={ref}
-               disabled={disabled}
-               className={twMerge(
-                  'px-4 py-3 h-fit border-none bg-neutral-white shadow-search rounded-md text-sm',
-                  className
-               )}
-               {...props}
-               icon={<SearchIcon className="text-neutral-gray w-[1.125rem] h-[1.125rem]" />}
-            />
-         </Root>
-      )
-   }
-)
+const Search = React.forwardRef<HTMLInputElement, InputProps>(({ disabled = false, className, ...props }, ref) => {
+   return (
+      <Root>
+         <Input
+            ref={ref}
+            disabled={disabled}
+            className={twMerge('px-4 py-3 h-fit border-none bg-neutral-white shadow-search rounded-md text-sm', className)}
+            {...props}
+            icon={<SearchIcon className="text-neutral-gray w-[1.125rem] h-[1.125rem]" />}
+         />
+      </Root>
+   )
+})
 
 /**
  * @notice A custom select input component. It can display a list of options and supports custom styling, labels, and placeholders.
@@ -323,11 +294,7 @@ const Select = React.forwardRef<HTMLInputElement, SelectInputProps>(
                   <S.Viewport>
                      <S.Group>
                         {options?.map((option) => (
-                           <S.Item
-                              className="text-md font-regular"
-                              key={option.id || option.value}
-                              value={option.value}
-                           >
+                           <S.Item className="text-md font-regular" key={option.id || option.value} value={option.value}>
                               <S.ItemText>{option.label}</S.ItemText>
                            </S.Item>
                         ))}
@@ -351,31 +318,20 @@ const Select = React.forwardRef<HTMLInputElement, SelectInputProps>(
  *
  * @return {JSX.Element} The rendered Combobox component.
  */
-const Combobox: React.FC<ComboboxProps> = ({
-   options,
-   className,
-   onSelect,
-   placeholder
-}: ComboboxProps) => {
+const Combobox: React.FC<ComboboxProps> = ({ options, className, onSelect, placeholder }: ComboboxProps) => {
    /** @dev States to controll when is opened and values */
    const [open, setOpen] = useState(false)
    const [value, setValue] = useState('')
 
    /** @dev Constants to define define values until render */
-   const valueOrPlaceholder = value
-      ? options.find((opt) => opt.value === value)?.label
-      : placeholder
+   const valueOrPlaceholder = value ? options.find((opt) => opt.value === value)?.label : placeholder
 
    return (
       <Popover open={open} onOpenChange={setOpen}>
          <PopoverTrigger asChild>
             <button
                type="button"
-               className={twMerge(
-                  S.select({ type: 'small' }),
-                  'items-center justify-between w-52 py-2',
-                  className
-               )}
+               className={twMerge(S.select({ type: 'small' }), 'items-center justify-between w-52 py-2', className)}
             >
                <span className="text-gray-main text-sm">{valueOrPlaceholder}</span>
                <CaretDown className="fill-black-primary" width={18} />
@@ -401,12 +357,7 @@ const Combobox: React.FC<ComboboxProps> = ({
                            }
                         }}
                      >
-                        <Check
-                           className={cn(
-                              'mr-2 h-4 w-4',
-                              value === opt.value ? 'opacity-100' : 'opacity-0'
-                           )}
-                        />
+                        <Check className={cn('mr-2 h-4 w-4', value === opt.value ? 'opacity-100' : 'opacity-0')} />
                         {opt.label}
                      </CommandItem>
                   ))}

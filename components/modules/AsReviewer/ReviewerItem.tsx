@@ -54,9 +54,7 @@ const ReviewerItem: React.FC<ReviewerItemProps> = ({
                </h6>
                {access_type != 'open' && access_type != 'paid' && (
                   <div className="flex items-center gap-2">
-                     <p className="text-sm text-neutral-gray lg:text-sm 2xl:text-base">
-                        Under review since
-                     </p>
+                     <p className="text-sm text-neutral-gray lg:text-sm 2xl:text-base">Under review since</p>
                      <p className="text-base font-semibold lg:text-sm 2xl:text-base">{since}</p>
                   </div>
                )}
@@ -121,9 +119,7 @@ const PublishedStatus: React.FC<PublishedStatusProps> = ({
    return (
       <React.Fragment>
          <div className="grid gap-1">
-            <p className="text-sm text-neutral-gray lg:text-sm 2xl:text-base">
-               Published in {published_date}
-            </p>
+            <p className="text-sm text-neutral-gray lg:text-sm 2xl:text-base">Published in {published_date}</p>
             <div className="grid gap-2">
                {access_type == 'open' ? (
                   <React.Fragment>
@@ -133,15 +129,11 @@ const PublishedStatus: React.FC<PublishedStatusProps> = ({
                         <span className="text-neutral-gray">•</span>
                         <div className="flex items-center gap-1">
                            <HandThumbsUpFill className="text-terciary-main lg:w-4 2xl:w-5" />
-                           <p className="text-base text-neutral-gray lg:text-sm 2xl:text-base">
-                              {likes}
-                           </p>
+                           <p className="text-base text-neutral-gray lg:text-sm 2xl:text-base">{likes}</p>
                         </div>
                         <div className="flex items-center gap-1">
                            <Eye className="text-terciary-main lg:w-4 2xl:w-5" />
-                           <p className="text-base text-neutral-gray lg:text-sm 2xl:text-base">
-                              {views}
-                           </p>
+                           <p className="text-base text-neutral-gray lg:text-sm 2xl:text-base">{views}</p>
                         </div>
                      </div>
                   </React.Fragment>
@@ -152,16 +144,12 @@ const PublishedStatus: React.FC<PublishedStatusProps> = ({
                         <p className="text-sm">Paid access</p>
                         <div className="flex items-center gap-1">
                            <HandThumbsUpFill className="text-terciary-main lg:w-4 2xl:w-5" />
-                           <p className="text-base text-neutral-gray lg:text-sm 2xl:text-base">
-                              {likes}
-                           </p>
+                           <p className="text-base text-neutral-gray lg:text-sm 2xl:text-base">{likes}</p>
                         </div>
                         <span className="text-neutral-gray">•</span>
                         <div className="flex items-center gap-1">
                            <Eye className="text-terciary-main lg:w-4 2xl:w-5" />
-                           <p className="text-base text-neutral-gray lg:text-sm 2xl:text-base">
-                              {views}
-                           </p>
+                           <p className="text-base text-neutral-gray lg:text-sm 2xl:text-base">{views}</p>
                         </div>
                      </div>
                   </React.Fragment>

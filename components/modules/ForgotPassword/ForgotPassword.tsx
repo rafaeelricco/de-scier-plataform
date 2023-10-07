@@ -7,10 +7,7 @@ import { ArrowLeft, X } from 'react-bootstrap-icons'
 
 type ForgotPasswordModalProps = { onClose: () => void; onBack: () => void }
 
-const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
-   onBack,
-   onClose
-}: ForgotPasswordModalProps) => {
+const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onBack, onClose }: ForgotPasswordModalProps) => {
    const [component, setComponent] = React.useState({
       insert_email: true,
       insert_code: false,
@@ -56,15 +53,9 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
 
    return (
       <form>
-         {component.insert_email && (
-            <InserEmail onClose={onClose} onContinue={handleInsertEmailContinue} onBack={onBack} />
-         )}
+         {component.insert_email && <InserEmail onClose={onClose} onContinue={handleInsertEmailContinue} onBack={onBack} />}
          {component.insert_code && (
-            <InsertCode
-               onClose={onClose}
-               onContinue={handleInsertCodeContinue}
-               onBack={handleInsertCodeBack}
-            />
+            <InsertCode onClose={onClose} onContinue={handleInsertCodeContinue} onBack={handleInsertCodeBack} />
          )}
          {component.insert_new_password && (
             <InsertNewPassword
@@ -89,11 +80,7 @@ const Header: React.FC<HeaderProps> = ({ onBack, onClose }: HeaderProps) => {
             className="absolute left-auto right-4 top-4 cursor-pointer hover:scale-110 transition-all duration-200"
          />
          <div className="flex items-center gap-4">
-            <ArrowLeft
-               size={28}
-               onClick={onBack}
-               className="cursor-pointer hover:scale-110 transition-all duration-200"
-            />
+            <ArrowLeft size={28} onClick={onBack} className="cursor-pointer hover:scale-110 transition-all duration-200" />
             <h2 className="font-semibold text-1xl">Password recovery</h2>
          </div>
       </React.Fragment>
@@ -102,11 +89,7 @@ const Header: React.FC<HeaderProps> = ({ onBack, onClose }: HeaderProps) => {
 
 type InsertEmailProps = { onClose: () => void; onBack: () => void; onContinue: () => void }
 
-const InserEmail: React.FC<InsertEmailProps> = ({
-   onBack,
-   onClose,
-   onContinue
-}: InsertEmailProps) => {
+const InserEmail: React.FC<InsertEmailProps> = ({ onBack, onClose, onContinue }: InsertEmailProps) => {
    return (
       <React.Fragment>
          <div className="w-ful grid gap-6 py-14 px-16 relative">
@@ -127,11 +110,7 @@ const InserEmail: React.FC<InsertEmailProps> = ({
 
 type InsertCodeProps = { onClose: () => void; onBack: () => void; onContinue: () => void }
 
-const InsertCode: React.FC<InsertCodeProps> = ({
-   onBack,
-   onClose,
-   onContinue
-}: InsertCodeProps) => {
+const InsertCode: React.FC<InsertCodeProps> = ({ onBack, onClose, onContinue }: InsertCodeProps) => {
    return (
       <React.Fragment>
          <div className="w-ful grid gap-6 py-14 px-16 relative">
@@ -139,9 +118,7 @@ const InsertCode: React.FC<InsertCodeProps> = ({
             <div className="grid gap-6">
                <p className="text-base">
                   We’ve sent you a confirmation code in your email. Didn’t receive the e-mail?
-                  <span className="font-semibold text-terciary-main hover:cursor-pointer">
-                     Send code again.
-                  </span>
+                  <span className="font-semibold text-terciary-main hover:cursor-pointer">Send code again.</span>
                </p>
                <div className="grid gap-6">
                   <Input.Root>
@@ -158,11 +135,7 @@ const InsertCode: React.FC<InsertCodeProps> = ({
 
 type InsertNewPasswordProps = { onClose: () => void; onBack: () => void; onContinue: () => void }
 
-const InsertNewPassword: React.FC<InsertNewPasswordProps> = ({
-   onBack,
-   onClose,
-   onContinue
-}: InsertNewPasswordProps) => {
+const InsertNewPassword: React.FC<InsertNewPasswordProps> = ({ onBack, onClose, onContinue }: InsertNewPasswordProps) => {
    return (
       <React.Fragment>
          <div className="w-ful grid gap-6 py-14 px-16 relative">

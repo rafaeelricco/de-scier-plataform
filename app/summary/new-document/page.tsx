@@ -40,10 +40,7 @@ export default function NewDocumentPage() {
             <Dialog.Content className="px-16 py-14">
                {dialog.author && (
                   <React.Fragment>
-                     <Dialog.Title
-                        title="New author"
-                        onClose={() => setDialog({ ...dialog, author: false })}
-                     />
+                     <Dialog.Title title="New author" onClose={() => setDialog({ ...dialog, author: false })} />
                      <div className="grid gap-6">
                         <div className="flex items-center gap-6">
                            <Input.Root>
@@ -68,10 +65,7 @@ export default function NewDocumentPage() {
                {dialog.share_split && (
                   <React.Fragment>
                      <div className="grid gap-6">
-                        <Dialog.Title
-                           title="Share split"
-                           onClose={() => setDialog({ ...dialog, share_split: false })}
-                        />
+                        <Dialog.Title title="Share split" onClose={() => setDialog({ ...dialog, share_split: false })} />
                         <div className="grid gap-6">
                            <div className="flex items-center gap-6">
                               <Input.Root>
@@ -106,9 +100,7 @@ export default function NewDocumentPage() {
                                     share: share.includes('%') ? share : share + '%'
                                  }
 
-                                 const authorIndex = authors.findIndex(
-                                    (author) => author.id === authorship_settings!.id
-                                 )
+                                 const authorIndex = authors.findIndex((author) => author.id === authorship_settings!.id)
 
                                  const updatedAuthors = [...authors]
                                  updatedAuthors[authorIndex] = updatedAuthor
@@ -125,10 +117,7 @@ export default function NewDocumentPage() {
                )}
                {dialog.edit_author && (
                   <React.Fragment>
-                     <Dialog.Title
-                        title="Edit author"
-                        onClose={() => setDialog({ ...dialog, edit_author: false })}
-                     />
+                     <Dialog.Title title="Edit author" onClose={() => setDialog({ ...dialog, edit_author: false })} />
                      <div className="grid gap-6">
                         <div className="flex items-center gap-6">
                            <Input.Root>
@@ -163,9 +152,7 @@ export default function NewDocumentPage() {
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
                            <span className="text-sm font-semibold">Title</span>
-                           <span className="text-sm text-neutral-light_gray font-semibold">
-                              0/300 characters
-                           </span>
+                           <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
                         </Input.Label>
                         <Input.Input placeholder="Title of the article" />
                      </Input.Root>
@@ -181,9 +168,7 @@ export default function NewDocumentPage() {
                                     className="px-2 py-0 border-neutral-light_gray hover:bg-neutral-light_gray hover:bg-opacity-10 flex items-center gap-1 rounded-sm"
                                  >
                                     <PlusCircle className="w-3 fill-neutral-light_gray" />
-                                    <span className="font-semibold text-xs text-neutral-light_gray">
-                                       Add keyword
-                                    </span>
+                                    <span className="font-semibold text-xs text-neutral-light_gray">Add keyword</span>
                                  </Button.Button>
                               </React.Fragment>
                            }
@@ -194,9 +179,7 @@ export default function NewDocumentPage() {
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
                            <span className="text-sm font-semibold">Field</span>
-                           <span className="text-sm text-neutral-light_gray font-semibold">
-                              0/300 characters
-                           </span>
+                           <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
                         </Input.Label>
                         <Input.Input placeholder="Title of the field" />
                      </Input.Root>
@@ -210,9 +193,7 @@ export default function NewDocumentPage() {
                <Input.Root>
                   <Input.Label className="flex gap-2 items-center">
                      <span className="text-sm font-semibold">Abstract</span>
-                     <span className="text-sm text-neutral-light_gray font-semibold">
-                        0/2000 words
-                     </span>
+                     <span className="text-sm text-neutral-light_gray font-semibold">0/2000 words</span>
                   </Input.Label>
                   <Input.TextArea rows={4} placeholder="Title of the field" />
                </Input.Root>
@@ -221,40 +202,30 @@ export default function NewDocumentPage() {
                      Generate abstract with AI
                      <PlusCircleDotted size={18} className="fill-primary-main" />
                   </Button.Button>
-                  <p className="text-sm">
-                     Careful! You can only generate the abstract once per file.
-                  </p>
+                  <p className="text-sm">Careful! You can only generate the abstract once per file.</p>
                </div>
                <div className="grid gap-2">
                   <p className="text-sm font-semibold">Visual Abstract</p>
                   <p className="text-sm font-regular">
-                     With the information from the abstract, a summary diagram (Visual Abstract) can
-                     be generated to describe the main points inside this document, with a
-                     illustration.
+                     With the information from the abstract, a summary diagram (Visual Abstract) can be generated to
+                     describe the main points inside this document, with a illustration.
                   </p>
                   <div className="flex items-center gap-4">
                      <Button.Button className="px-4 py-3 w-fit text-sm">
                         Generate Visual Abstract
                         <PlusCircleDotted size={18} className="fill-neutral-white" />
                      </Button.Button>
-                     <p className="text-sm">
-                        Careful! You can only generate the abstract once per file.
-                     </p>
+                     <p className="text-sm">Careful! You can only generate the abstract once per file.</p>
                   </div>
                </div>
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
-                  <Dropzone
-                     placeholder="Upload cover picture (.png, .jpg)"
-                     setSelectedFile={(file) => console.log(file)}
-                  />
+                  <Dropzone placeholder="Upload cover picture (.png, .jpg)" setSelectedFile={(file) => console.log(file)} />
                </div>
             </Box>
             <Box className="grid gap-8 h-fit py-6 px-8">
                <div className="grid ">
-                  <h3 className="text-xl text-terciary-main font-semibold lg:text-lg 2xl:text-xl">
-                     Authors
-                  </h3>
+                  <h3 className="text-xl text-terciary-main font-semibold lg:text-lg 2xl:text-xl">Authors</h3>
                </div>
                <div className="grid gap-6">
                   <Button.Button variant="outline" className="px-4 py-3 w-full text-sm">
@@ -283,9 +254,7 @@ export default function NewDocumentPage() {
                                        <p className="text-sm text-blue-gray">{item.id}º</p>
                                     </div>
                                     <div>
-                                       <p className="text-sm text-secundary_blue-main">
-                                          {item.name}
-                                       </p>
+                                       <p className="text-sm text-secundary_blue-main">{item.name}</p>
                                     </div>
                                  </div>
                                  <div>
@@ -304,14 +273,11 @@ export default function NewDocumentPage() {
             <Box className="grid gap-8 h-fit py-6 px-8">
                <div className="grid gap-4">
                   <div className="grid gap-2">
-                     <h3 className="text-xl text-primary-main font-semibold lg:text-lg 2xl:text-xl">
-                        Editors / Reviewers
-                     </h3>
+                     <h3 className="text-xl text-primary-main font-semibold lg:text-lg 2xl:text-xl">Editors / Reviewers</h3>
                      <p className="text-sm">
-                        At least 1 editor and 2 reviewers’ approval are required to publish the
-                        paper. The editors and reviewers cannot be authors_mock in the project.
-                        Invite them to the platform through a link, that will be generated after you
-                        submit it for review.
+                        At least 1 editor and 2 reviewers’ approval are required to publish the paper. The editors and
+                        reviewers cannot be authors_mock in the project. Invite them to the platform through a link, that
+                        will be generated after you submit it for review.
                      </p>
                   </div>
                   <div>
@@ -324,12 +290,9 @@ export default function NewDocumentPage() {
             </Box>
             <Box className="grid gap-8 h-fit py-6 px-8">
                <div className="grid gap-2">
-                  <h3 className="text-xl text-status-green font-semibold lg:text-lg 2xl:text-xl">
-                     Authorship
-                  </h3>
+                  <h3 className="text-xl text-status-green font-semibold lg:text-lg 2xl:text-xl">Authorship</h3>
                   <p className="text-sm">
-                     Decide if the project is{' '}
-                     <span className="text-terciary-main font-semibold">Open Access</span>,{' '}
+                     Decide if the project is <span className="text-terciary-main font-semibold">Open Access</span>,{' '}
                      <span className="text-[#EFB521] font-semibold">Paid Access</span>
                   </p>
                </div>
@@ -354,9 +317,7 @@ export default function NewDocumentPage() {
                   </Input.Root>
                   {typeOfAccess == 'open-access' && (
                      <Input.Root>
-                        <Input.Label className="text-neutral-gray text-sm font-semibold pl-2">
-                           Valor total
-                        </Input.Label>
+                        <Input.Label className="text-neutral-gray text-sm font-semibold pl-2">Valor total</Input.Label>
                         <Input.Input disabled placeholder="R$" />
                      </Input.Root>
                   )}
@@ -366,9 +327,7 @@ export default function NewDocumentPage() {
                            <Input.Label>Price</Input.Label>
                            <CurrencyInput
                               currency="USD"
-                              onChangeValue={(event, originalValue, maskedValue) =>
-                                 console.log(maskedValue)
-                              }
+                              onChangeValue={(event, originalValue, maskedValue) => console.log(maskedValue)}
                               InputElement={<Input.Input placeholder="USD" />}
                            />
                         </Input.Root>
@@ -379,9 +338,7 @@ export default function NewDocumentPage() {
                   <React.Fragment>
                      <div className="grid gap-2">
                         <p className="text-sm font-semibold">Authorship settings</p>
-                        <p className="text-sm font-regular">
-                           The total added up authorship value must be 100%
-                        </p>
+                        <p className="text-sm font-regular">The total added up authorship value must be 100%</p>
                      </div>
                      <div className="grid gap-2">
                         <div className="grid grid-cols-3">
@@ -397,19 +354,13 @@ export default function NewDocumentPage() {
                                  <React.Fragment key={index}>
                                     <div className="grid grid-cols-3 items-center py-3">
                                        <div>
-                                          <p className="text-sm text-secundary_blue-main">
-                                             {author.name}
-                                          </p>
+                                          <p className="text-sm text-secundary_blue-main">{author.name}</p>
                                        </div>
                                        <div>
                                           {author.share ? (
                                              <div className="flex gap-2 px-4 py-1 border rounded-md border-terciary-main w-fit">
-                                                <p className="text-sm text-center text-terciary-main w-8">
-                                                   {author.share}
-                                                </p>
-                                                <p className="text-sm text-terciary-main">
-                                                   Authorship
-                                                </p>
+                                                <p className="text-sm text-center text-terciary-main w-8">{author.share}</p>
+                                                <p className="text-sm text-terciary-main">Authorship</p>
                                              </div>
                                           ) : (
                                              <Button.Button
@@ -421,10 +372,7 @@ export default function NewDocumentPage() {
                                                 }}
                                              >
                                                 Add authorship settings
-                                                <PlusCircleDotted
-                                                   size={18}
-                                                   className="fill-primary-main"
-                                                />
+                                                <PlusCircleDotted size={18} className="fill-primary-main" />
                                              </Button.Button>
                                           )}
                                        </div>

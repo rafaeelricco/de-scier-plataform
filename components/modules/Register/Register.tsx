@@ -56,8 +56,8 @@ const RegisterModal: React.FC<RegisterModalProps> = ({
                      <SuccessIllustration className="w-96" />
                      <div className="grid gap-6">
                         <p className="text-base">
-                           Your account creation is almost complete -We’ve sent an account
-                           validation link to your e-mail inbox.
+                           Your account creation is almost complete -We’ve sent an account validation link to your e-mail
+                           inbox.
                         </p>
                         <Button.Button variant="outline" onClick={onReturnToLogin}>
                            Return to login

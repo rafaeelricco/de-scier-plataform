@@ -33,9 +33,7 @@ const PublicationItem: React.FC<PublicationItemProps> = ({
                className="rounded-md lg:w-16 lg:h-16 2xl:w-20 2xl:h-20"
             />
             <div className="grid gap-2">
-               <h6 className="text-lg font-semibold text-secundary_blue-main lg:text-sm 2xl:text-lg">
-                  {title}
-               </h6>
+               <h6 className="text-lg font-semibold text-secundary_blue-main lg:text-sm 2xl:text-lg">{title}</h6>
                <div className="flex gap-2 items-center">
                   <div className="flex items-center gap-1">
                      <HandThumbsUpFill className="text-terciary-main lg:w-4 2xl:w-5" />

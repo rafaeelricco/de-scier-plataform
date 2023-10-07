@@ -59,10 +59,7 @@ const Statistics: React.FC = () => {
                />
                <div ref={sliderRef} className="keen-slider h-full">
                   {carrousel.map((c) => (
-                     <div
-                        key={c.id}
-                        className={twMerge(`keen-slider__slide slider-${c.id}`, 'grid gap-4')}
-                     >
+                     <div key={c.id} className={twMerge(`keen-slider__slide slider-${c.id}`, 'grid gap-4')}>
                         {c.component}
                      </div>
                   ))}

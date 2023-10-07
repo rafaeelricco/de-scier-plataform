@@ -2,9 +2,7 @@
 
 import { Dropdown } from '@/components/common/Dropdown/Dropdown'
 import PaginationComponent from '@/components/common/Pagination/Pagination'
-import ArticleUnderReview, {
-   ArticleUnderReviewProps
-} from '@/components/common/Publication/Item/ArticlesUnderReview'
+import ArticleUnderReview, { ArticleUnderReviewProps } from '@/components/common/Publication/Item/ArticlesUnderReview'
 import { filter_order_by, filter_status } from '@/mock/dropdow_filter_options'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
@@ -33,11 +31,7 @@ export default function ArticlesUnderReviewPage() {
                   </Button.Button>
                </div>
                <div className="flex items-center gap-2">
-                  <Dropdown
-                     items={filter_order_by}
-                     label="Order by:"
-                     onSelect={(value) => console.log(value)}
-                  />
+                  <Dropdown items={filter_order_by} label="Order by:" onSelect={(value) => console.log(value)} />
                   <Dropdown
                      label="Status:"
                      className="min-w-[180px]"

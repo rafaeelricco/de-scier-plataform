@@ -11,12 +11,7 @@ import { CaretDown } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 import { DropdownProps } from './Typing'
 
-const Dropdown: React.FC<DropdownProps> = ({
-   label,
-   className,
-   items,
-   onSelect
-}: DropdownProps) => {
+const Dropdown: React.FC<DropdownProps> = ({ label, className, items, onSelect }: DropdownProps) => {
    const [selected, setSelected] = React.useState<string | null>(items[0].label)
    return (
       <React.Fragment>
