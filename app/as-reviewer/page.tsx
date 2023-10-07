@@ -1,21 +1,15 @@
 'use client'
 
+import { Dropdown } from '@/components/common/Dropdown/Dropdown'
 import PaginationComponent from '@/components/common/Pagination/Pagination'
 import ReviewerItem from '@/components/modules/AsReviewer/ReviewerItem'
 import { ReviewerItemProps } from '@/components/modules/AsReviewer/Typing'
-import {
-   DropdownMenu,
-   DropdownMenuContent,
-   DropdownMenuItem,
-   DropdownMenuLabel,
-   DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import useDebounce from '@/hooks/useDebounce'
+import { filter_order_by, filter_status } from '@/mock/dropdow_filter_options'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
 import React from 'react'
-import { CaretDown } from 'react-bootstrap-icons'
 
 export default function AsReviewerPage() {
    const per_page = 6
@@ -56,57 +50,17 @@ export default function AsReviewerPage() {
                      />
                   </div>
                   <div className="flex items-center gap-2">
-                     <DropdownMenu>
-                        <DropdownMenuTrigger>
-                           <button className="flex items-center justify-center py-2 px-4 text-sm rounded-full w-[180px] border-[1px] border-primary-main text-primary-main hover:scale-105 transition-all duration-200">
-                              <span className="text-sm font-semibold text-primary-main">
-                                 Order by: Newest
-                              </span>
-                              <CaretDown className="ml-2" />
-                           </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-[180px]">
-                           <DropdownMenuItem>
-                              <DropdownMenuLabel>Newest</DropdownMenuLabel>
-                           </DropdownMenuItem>
-                           <DropdownMenuItem>
-                              <DropdownMenuLabel>Oldest</DropdownMenuLabel>
-                           </DropdownMenuItem>
-                           <DropdownMenuItem>
-                              <DropdownMenuLabel>Most viewed</DropdownMenuLabel>
-                           </DropdownMenuItem>
-                           <DropdownMenuItem>
-                              <DropdownMenuLabel>Most liked</DropdownMenuLabel>
-                           </DropdownMenuItem>
-                        </DropdownMenuContent>
-                     </DropdownMenu>
-                     <DropdownMenu>
-                        <DropdownMenuTrigger>
-                           <button className="flex items-center py-2 px-4 text-sm rounded-full justify-center w-[124px] border-[1px] border-primary-main text-primary-main hover:scale-105 transition-all duration-200">
-                              <span className="text-sm font-semibold text-primary-main">
-                                 Status
-                              </span>
-                              <CaretDown className="ml-2" />
-                           </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-[124px]">
-                           <DropdownMenuItem>
-                              <DropdownMenuLabel>Pending</DropdownMenuLabel>
-                           </DropdownMenuItem>
-                           <DropdownMenuItem>
-                              <DropdownMenuLabel>Approved</DropdownMenuLabel>
-                           </DropdownMenuItem>
-                           <DropdownMenuItem>
-                              <DropdownMenuLabel>Final Approved</DropdownMenuLabel>
-                           </DropdownMenuItem>
-                           <DropdownMenuItem>
-                              <DropdownMenuLabel>Rejected</DropdownMenuLabel>
-                           </DropdownMenuItem>
-                           <DropdownMenuItem>
-                              <DropdownMenuLabel>Published</DropdownMenuLabel>
-                           </DropdownMenuItem>
-                        </DropdownMenuContent>
-                     </DropdownMenu>
+                     <Dropdown
+                        items={filter_order_by}
+                        label="Order by:"
+                        onSelect={(value) => console.log(value)}
+                     />
+                     <Dropdown
+                        label="Status:"
+                        className="min-w-[180px]"
+                        items={filter_status}
+                        onSelect={(value) => console.log(value)}
+                     />
                   </div>
                </div>
                <div className="grid gap-8">

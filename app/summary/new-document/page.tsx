@@ -30,7 +30,6 @@ export default function NewDocumentPage() {
    }
    const [share, setShare] = useState('')
    const [authors, setAuthors] = useState<Author[]>(authors_mock)
-   console.log(authors)
    const [authorship, setAuthorship] = useState<Authorship[]>([])
    const [authorship_settings, setAuthorshipSettings] = useState<Author>()
 

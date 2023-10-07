@@ -1,14 +1,16 @@
 'use client'
 
+import { Dropdown } from '@/components/common/Dropdown/Dropdown'
 import PaginationComponent from '@/components/common/Pagination/Pagination'
 import ArticleUnderReview, {
    ArticleUnderReviewProps
 } from '@/components/common/Publication/Item/ArticlesUnderReview'
+import { filter_order_by, filter_status } from '@/mock/dropdow_filter_options'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
 import React from 'react'
-import { CaretDown, Search } from 'react-bootstrap-icons'
+import { Search } from 'react-bootstrap-icons'
 
 export default function ArticlesUnderReviewPage() {
    const per_page = 8
@@ -31,16 +33,17 @@ export default function ArticlesUnderReviewPage() {
                   </Button.Button>
                </div>
                <div className="flex items-center gap-2">
-                  <button className="flex items-center py-2 px-4 text-sm rounded-full w-fit border-[1px] border-primary-main text-primary-main hover:scale-105 transition-all duration-200">
-                     <span className="text-sm font-semibold text-primary-main">
-                        Order by: Newest
-                     </span>
-                     <CaretDown className="ml-2" />
-                  </button>
-                  <button className="flex items-center py-2 px-4 text-sm rounded-full w-fit border-[1px] border-primary-main text-primary-main hover:scale-105 transition-all duration-200">
-                     <span className="text-sm font-semibold text-primary-main">Status</span>
-                     <CaretDown className="ml-2" />
-                  </button>
+                  <Dropdown
+                     items={filter_order_by}
+                     label="Order by:"
+                     onSelect={(value) => console.log(value)}
+                  />
+                  <Dropdown
+                     label="Status:"
+                     className="min-w-[180px]"
+                     items={filter_status}
+                     onSelect={(value) => console.log(value)}
+                  />
                </div>
             </div>
             <div className="grid gap-8">

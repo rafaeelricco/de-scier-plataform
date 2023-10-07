@@ -25,6 +25,9 @@ const nextConfig = {
 
       return config
    },
+   compiler: {
+      removeConsole: process.env.NODE_ENV === 'prod' ? true : false
+   },
    images: {
       domains: ['random.imagecdn.app']
    },
