@@ -1,3 +1,5 @@
+'use client'
+
 import {
    DropdownMenu,
    DropdownMenuContent,
@@ -17,7 +19,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, className, items, onSelect }
       <React.Fragment>
          <DropdownMenu>
             <DropdownMenuTrigger>
-               <button
+               <div
                   className={twMerge(
                      'flex items-center justify-center py-2 px-4 text-sm rounded-full min-w-[200px] border-[1px] border-primary-main text-primary-main hover:scale-105 transition-all duration-200',
                      className
@@ -27,7 +29,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, className, items, onSelect }
                      {label} {selected}
                   </span>
                   <CaretDown className="ml-2" />
-               </button>
+               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className={twMerge('min-w-[200px]', className)}>
                {items.map((item: FilterOption) => (
