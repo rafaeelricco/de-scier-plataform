@@ -4,11 +4,13 @@ import { Dropdown } from '@/components/common/Dropdown/Dropdown'
 import PaginationComponent from '@/components/common/Pagination/Pagination'
 import ArticleUnderReview, { ArticleUnderReviewProps } from '@/components/common/Publication/Item/ArticlesUnderReview'
 import { filter_order_by, filter_status } from '@/mock/dropdow_filter_options'
+import { home_routes } from '@/routes/home'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
 import React from 'react'
 import { Search } from 'react-bootstrap-icons'
+import slug from 'slug'
 
 export default function ArticlesUnderReviewPage() {
    const per_page = 8
@@ -48,7 +50,7 @@ export default function ArticlesUnderReviewPage() {
                            title={article.title}
                            since={article.since}
                            image={article.image}
-                           link={article.link}
+                           link={home_routes.articles.in_review + '/' + slug(article.title)}
                            status_editor={article.status_editor as 'pending' | 'approved'}
                            status_reviewer={article.status_reviewer as 'pending' | 'approved'}
                         />

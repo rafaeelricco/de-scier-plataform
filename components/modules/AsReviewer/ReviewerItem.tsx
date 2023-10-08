@@ -32,7 +32,7 @@ const ReviewerItem: React.FC<ReviewerItemProps> = ({
                {added_as == 'editor' && (
                   <div className="flex items-center gap-2">
                      <Pencil className="text-terciary-main lg:text-sm" />
-                     <p className="text-base font-semibold text-terciary-main">Added as Reviewer</p>
+                     <p className="text-base font-semibold text-terciary-main">Added as Editor</p>
                   </div>
                )}
             </div>

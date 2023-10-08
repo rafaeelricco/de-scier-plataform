@@ -88,7 +88,7 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
                               }}
                            >
                               Swap uploaded file
-                              <Upload size={18} />
+                              <Upload className="w-5 h-5" />
                            </Button.Button>
                         </div>
                      </React.Fragment>

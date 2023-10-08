@@ -1,12 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
    darkMode: ['class'],
-   content: [
-      './pages/**/*.{ts,tsx}',
-      './components/**/*.{ts,tsx}',
-      './app/**/*.{ts,tsx}',
-      './src/**/*.{ts,tsx}'
-   ],
+   content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
    theme: {
       container: {
          center: true,
@@ -19,8 +14,7 @@ module.exports = {
             padding: '2rem'
          },
          boxShadow: {
-            dialog:
-               'hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px',
+            dialog: 'hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px',
             search: '0px 4px 8px 0px rgba(39, 0, 90, 0.07)'
          },
          fontSize: {
@@ -76,7 +70,8 @@ module.exports = {
          colors: {
             primary: {
                main: '#70468C',
-               hover: '#4E1B70'
+               hover: '#4E1B70',
+               light: '#CA86F8'
             },
             secundary: {
                main: '#F2AEB4',
@@ -122,8 +117,7 @@ module.exports = {
                secunday: 'linear-gradient(45deg, #BF81AA 0%, #70478D 100%)',
                terciary: 'linear-gradient(45deg, #4D308C 0.01%, #70478D 100%)',
                blue: 'linear-gradient(338.76deg, #231269 1.24%, #20509A 99.44%)',
-               aquarela:
-                  'linear-gradient(108deg, #E2E6FF 0%, #DCE8FF 37.72%, #EBDEFF 68.82%, #FFE5E5 97.88%)'
+               aquarela: 'linear-gradient(108deg, #E2E6FF 0%, #DCE8FF 37.72%, #EBDEFF 68.82%, #FFE5E5 97.88%)'
             }
          },
          keyframes: {

@@ -55,10 +55,7 @@ const ProgressBar: React.FC = () => {
       }
 
       const mutationObserver = new MutationObserver(handleMutation)
-      mutationObserver.observe(document, {
-         childList: true,
-         subtree: true
-      })
+      mutationObserver.observe(document, { childList: true, subtree: true })
 
       const originalPushState = window.history.pushState
 

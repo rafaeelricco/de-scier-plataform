@@ -1,5 +1,6 @@
 import { truncate } from '@/utils/truncate'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 import './Item.css'
 
@@ -34,9 +35,11 @@ const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
             />
             <hr className="divider-v" />
             <div className="grid gap-2">
-               <h6 className="text-lg font-semibold text-secundary_blue-main lg:text-sm 2xl:text-lg">
-                  {truncate(title, 40)}
-               </h6>
+               <Link href={link}>
+                  <h6 className="text-lg font-semibold text-secundary_blue-main lg:text-sm 2xl:text-lg">
+                     {truncate(title, 40)}
+                  </h6>
+               </Link>
                <div className="flex items-center gap-2">
                   <p className="text-sm text-neutral-gray lg:text-sm 2xl:text-base">Under review since</p>
                   <p className="text-base font-semibold lg:text-sm 2xl:text-base">{since}</p>

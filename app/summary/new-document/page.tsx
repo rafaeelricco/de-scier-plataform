@@ -3,6 +3,7 @@ import Box from '@/components/common/Box/Box'
 import { Pills } from '@/components/common/Button/Pill/Pill'
 import Dropzone from '@/components/common/Dropzone/Dropzone'
 import { document_types } from '@/mock/document_types'
+import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
@@ -15,23 +16,20 @@ import { CurrencyInput } from 'react-currency-mask'
 
 export default function NewDocumentPage() {
    const [typeOfAccess, setTypeOfAccess] = useState('open-access')
-   const [items, setItems] = useState(authors_mock)
+   const [items, setItems] = React.useState(authors_mock.map((author, index) => ({ ...author, id: index + 1 })))
+   const [share, setShare] = useState('')
+   const [authors, setAuthors] = useState<Author[]>(authors_mock)
+   const [authorship, setAuthorship] = useState<Authorship[]>([])
+   const [authorship_settings, setAuthorshipSettings] = useState<Author>()
    const [dialog, setDialog] = useState({
       author: false,
       share_split: false,
       edit_author: false
    })
 
-   type Authorship = {
-      name: string
-      share: string
-      wallet: string
-      email: string
+   const onReorder = (newOrder: typeof items) => {
+      setItems((prevItems) => [...newOrder])
    }
-   const [share, setShare] = useState('')
-   const [authors, setAuthors] = useState<Author[]>(authors_mock)
-   const [authorship, setAuthorship] = useState<Authorship[]>([])
-   const [authorship_settings, setAuthorshipSettings] = useState<Author>()
 
    return (
       <React.Fragment>
@@ -92,6 +90,7 @@ export default function NewDocumentPage() {
                                  }
 
                                  const updatedAuthor: Author = {
+                                    ...authorship_settings!,
                                     id: authorship_settings!.id,
                                     name: authorship_settings!.name,
                                     title: authorship_settings!.title,
@@ -394,85 +393,3 @@ export default function NewDocumentPage() {
       </React.Fragment>
    )
 }
-
-type Author = {
-   id: number
-   name: string
-   title: string
-   email: string
-   share?: string | null
-   wallet?: string | null
-}
-
-const authors_mock: Author[] = [
-   {
-      id: 1,
-      name: 'Caroline Nunes',
-      title: 'Neurologist',
-      email: 'caroline@gmail.com',
-      share: null,
-      wallet: null
-   },
-   {
-      id: 2,
-      name: 'Roberto Silva',
-      title: 'Cardiologist',
-      email: 'roberto@gmail.com',
-      share: null,
-      wallet: null
-   },
-   {
-      id: 3,
-      name: 'Luciana Menezes',
-      title: 'Dermatologist',
-      email: 'luciana@gmail.com',
-      share: null,
-      wallet: null
-   },
-   {
-      id: 4,
-      name: 'Paulo Fernandes',
-      title: 'Orthopedist',
-      email: 'paulo@gmail.com',
-      share: null,
-      wallet: null
-   },
-   {
-      id: 5,
-      name: 'Juliana Ramos',
-      title: 'Endocrinologist',
-      email: 'juliana@gmail.com',
-      share: null,
-      wallet: null
-   }
-]
-
-const authors_headers = [
-   {
-      id: 1,
-      label: 'Name'
-   },
-   {
-      id: 1,
-      label: 'Title'
-   },
-   {
-      id: 1,
-      label: 'E-mail'
-   }
-]
-
-const authorship_headers = [
-   {
-      id: 1,
-      label: 'Name'
-   },
-   {
-      id: 1,
-      label: 'Authorship Share'
-   },
-   {
-      id: 1,
-      label: 'Wallet'
-   }
-]

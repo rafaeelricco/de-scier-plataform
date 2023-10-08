@@ -6,6 +6,10 @@ export const home_routes = {
    profile: '/profile',
    about_us: '/about',
    my_ip: '/my-ip',
+   articles: {
+      in_review: 'articles-under-review/',
+      added_as_reviewer: 'as-reviewer/'
+   },
    summary_routes: {
       new_document: '/summary/new-document'
    }
