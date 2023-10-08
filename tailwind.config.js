@@ -107,7 +107,8 @@ module.exports = {
                error: '#FF0D0D',
                disable_text: '#7E7E7E',
                disable_bg: '#C2C2C2',
-               pink_bg: '#F7ECFF'
+               pink_bg: '#F7ECFF',
+               yellow: '#FFB800'
             },
             background: {
                white: '#F2F3F9'
