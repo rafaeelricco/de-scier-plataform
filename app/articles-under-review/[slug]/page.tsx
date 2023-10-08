@@ -5,6 +5,7 @@ import { Pills } from '@/components/common/Button/Pill/Pill'
 import CommentItem from '@/components/common/Comment/Comment'
 import Dropzone from '@/components/common/Dropzone/Dropzone'
 import { File } from '@/components/common/File/File'
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -13,40 +14,50 @@ import { Author, Authorship, authors_headers, authors_mock, authorship_headers }
 import { truncate } from '@/utils/format_texts'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
-import { DragControls, Reorder } from 'framer-motion'
+import { Reorder } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React from 'react'
-import { ArrowLeft, Clipboard, Person, PlusCircle, PlusCircleDotted } from 'react-bootstrap-icons'
+import { ArrowLeft, Check, FileEarmarkText, Person, PlusCircle, PlusCircleDotted, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 
 export default function ArticleInReview({ params }: { params: { slug: string } }) {
    const router = useRouter()
+
    const [items, setItems] = React.useState(authors_mock)
    const [share, setShare] = React.useState('')
    const [authors, setAuthors] = React.useState<Author[]>(authors_mock)
    const [authorship, setAuthorship] = React.useState<Authorship[]>([])
    const [typeOfAccess, setTypeOfAccess] = React.useState('open-access')
    const [authorship_settings, setAuthorshipSettings] = React.useState<Author>()
-   const [dialog, setDialog] = React.useState({
-      author: false,
-      share_split: false,
-      edit_author: false
-   })
+   const [popover, setPopover] = React.useState({ copy_link: false })
+   const [dialog, setDialog] = React.useState({ author: false, share_split: false, edit_author: false })
 
    const onReorder = (newOrder: typeof items) => {
       setItems((prevItems) => [...newOrder])
+   }
+
+   function copyToClipboard() {
+      const textToCopy = document.getElementById('link-to-copy')!.innerText
+
+      navigator.clipboard
+         .writeText(textToCopy)
+         .then(() => {
+            setPopover({ ...popover, copy_link: true })
+            setTimeout(() => {
+               setPopover({ ...popover, copy_link: false })
+            }, 3000)
+         })
+         .catch((err) => {
+            console.error('Erro ao copiar texto: ', err)
+         })
    }
 
    return (
       <React.Fragment>
          <div className="grid gap-8">
             <div className="flex items-center gap-4">
-               <ArrowLeft
-                  size={32}
-                  className="hover:scale-110 transition-all cursor-pointer"
-                  onClick={() => router.back()}
-               />
+               <ArrowLeft size={32} className="hover:scale-110 transition-all cursor-pointer" onClick={() => router.back()} />
                <h1 className="text-1xl font-semibold">Article in review</h1>
             </div>
             <Box className="grid gap-8 h-fit py-6 px-8">
@@ -119,8 +130,8 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                   <div className="grid gap-2">
                      <p className="text-sm font-semibold">Visual Abstract</p>
                      <p className="text-sm font-regular">
-                        With the information from the abstract, a summary diagram (Visual Abstract) can be generated to
-                        describe the main points inside this document, with a illustration.
+                        With the information from the abstract, a summary diagram (Visual Abstract) can be generated to describe the main points inside
+                        this document, with a illustration.
                      </p>
                   </div>
                   <RadioGroup className="flex items-center gap-4" defaultValue={visual_abstract_options[0].value}>
@@ -133,7 +144,10 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                         </React.Fragment>
                      ))}
                   </RadioGroup>
-                  <div className="flex items-center gap-4 w-full h-36 rounded-md border border-neutral-200"></div>
+                  <div className="flex items-center gap-4 w-full h-36 relative overflow-hidden py-2">
+                     {/* eslint-disable-next-line @next/next/no-img-element */}
+                     <img src="/images/visual-abstract.png" alt="placeholder" className="absolute object-cover w-fit h-36" />
+                  </div>
                </div>
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
@@ -230,17 +244,26 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                   <div className="grid gap-2">
                      <h3 className="text-xl text-primary-main font-semibold lg:text-lg 2xl:text-xl">Editors / Reviewers</h3>
                      <p className="text-sm">
-                        At least 1 editor and 2 reviewers’ approval are required to publish the paper. The editors and
-                        reviewers cannot be authors in the project. Invite them to the platform through the link:
+                        At least 1 editor and 2 reviewers’ approval are required to publish the paper. The editors and reviewers cannot be authors in the
+                        project. Invite them to the platform through the link:
                      </p>
                   </div>
                   <div>
                      <p className="text-sm font-semibold">Invite Link</p>
                      <div className="flex items-center gap-4">
-                        <p className="text-sm font-semibold text-blue-500 underline">https://descier.com/948902riopwskf</p>
-                        <Button.Button variant="outline" className="px-4 py-1 text-sm">
-                           Copy Link
-                        </Button.Button>
+                        <p className="text-sm font-semibold text-blue-500 underline" id="link-to-copy">
+                           https://descier.com/948902riopwskf
+                        </p>
+                        <HoverCard open={popover.copy_link}>
+                           <HoverCardTrigger>
+                              <Button.Button variant="outline" className="px-4 py-1 text-sm" onClick={copyToClipboard}>
+                                 Copy Link
+                              </Button.Button>
+                           </HoverCardTrigger>
+                           <HoverCardContent className="w-fit px-4 py-2">
+                              <h4 className="text-xs font-semibold text-status-green">O link foi copiado para a área de transferência!</h4>
+                           </HoverCardContent>
+                        </HoverCard>
                      </div>
                   </div>
                </div>
@@ -377,21 +400,27 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                   </React.Fragment>
                )}
             </Box>
-            <Button.Button variant="primary">
-               Submit paper for review
-               <Clipboard className="w-5" />
-            </Button.Button>
+            <Box className="grid gap-4 h-fit py-6 px-8">
+               <div className="flex items-center justify-center gap-12">
+                  <div className="flex items-center">
+                     <h2 className="text-status-yellow font-semibold text-lg">Reviewer</h2>
+                     <Check className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
+                     <Check className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
+                  </div>
+                  <div className="flex items-center">
+                     <h2 className="text-terciary-main font-semibold text-lg">Editor</h2>
+                     <Check className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
+                     <X className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer" />
+                  </div>
+               </div>
+               <Button.Button variant="primary">
+                  Publish document
+                  <FileEarmarkText className="w-5" />
+               </Button.Button>
+            </Box>
          </div>
       </React.Fragment>
    )
-}
-
-interface Props {
-   dragControls: DragControls
-}
-
-const ReorderIcon = ({ dragControls }: Props) => {
-   return <React.Fragment></React.Fragment>
 }
 
 const visual_abstract_options = [
