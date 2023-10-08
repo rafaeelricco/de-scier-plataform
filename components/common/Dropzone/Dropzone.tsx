@@ -63,7 +63,7 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
                                  </p>
                                  <p className="text-sm font-regular text-center">{message || 'Drop your file here or'}</p>
                               </div>
-                              <Button.Button variant="outline" className="py-2 px-4 text-sm w-fit mx-auto my-0">
+                              <Button.Button variant="outline" className="py-2 px-6 text-sm w-fit mx-auto my-0">
                                  <Upload size={18} />
                                  Select a file from my computer
                               </Button.Button>
@@ -73,13 +73,13 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
                   ) : (
                      <React.Fragment>
                         <div className="grid justify-items-center gap-2">
-                           <div className="grid justify-items-center gap-2 grid-flow-col justify-center items-center">
+                           <div className="grid justify-item-center gap-2 grid-flow-col justify-center items-center">
                               <FileEarmarkText size={18} />
                               <p className="text-sm font-semibold text-center">{files[0]?.name}</p>
                            </div>
                            <Button.Button
                               variant="outline"
-                              className="px-4 p-2 text-sm w-fit"
+                              className="py-2 px-6 text-sm w-fit mx-auto my-0"
                               onClick={() => {
                                  setFiles([])
                                  setSelectedFile?.(null)
