@@ -1,6 +1,6 @@
 import Footer from '@/components/common/Footer/Footer'
 import Profile from '@/components/common/Profile/Profile'
-import Sidebar from '@/components/common/Sidebar/Sidebar'
+import Sidebar from '@/components/common/Sidebar/deScier/SidebarDeScier'
 import '@styles/layout.css'
 import React from 'react'
 

@@ -30,13 +30,13 @@ export default function AsReviewerPage() {
                   <TabsList className="bg-transparent grid h-fit justify-start">
                      <div className="grid grid-flow-col gap-6">
                         <TabsTrigger
-                           className="bg-primary-main text-neutral-white py-2 px-8 text-lg font-semibold rounded-md data-[state=inactive]:bg-transparent data-[state=inactive]:text-neutral-gray data-[state=inactive]:font-regular data-[state=active]:bg-primary-main data-[state=active]:text-white"
+                           className="bg-primary-main text-neutral-white py-2 px-8 text-lg font-semibold rounded-md border data-[state=inactive]:bg-transparent data-[state=inactive]:text-neutral-gray data-[state=inactive]:font-regular data-[state=active]:bg-primary-main data-[state=active]:text-white data-[state=inactive]:border-neutral-gray"
                            value="account"
                         >
                            Ongoing reviews
                         </TabsTrigger>
                         <TabsTrigger
-                           className="bg-primary-main text-neutral-white py-2 px-8 text-lg font-semibold rounded-md data-[state=inactive]:bg-transparent data-[state=inactive]:text-neutral-gray data-[state=inactive]:font-regular data-[state=active]:bg-primary-main data-[state=active]:text-white"
+                           className="bg-primary-main text-neutral-white py-2 px-8 text-lg font-semibold rounded-md border data-[state=inactive]:bg-transparent data-[state=inactive]:text-neutral-gray data-[state=inactive]:font-regular data-[state=active]:bg-primary-main data-[state=active]:text-white data-[state=inactive]:border-neutral-gray"
                            value="password"
                         >
                            Completed reviews
@@ -44,19 +44,11 @@ export default function AsReviewerPage() {
                      </div>
                   </TabsList>
                   <div className="flex items-center gap-2">
-                     <Input.Search
-                        placeholder="Find articles with this terms"
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                     />
+                     <Input.Search placeholder="Find articles with this terms" onChange={(e) => setSearchTerm(e.target.value)} />
                   </div>
                   <div className="flex items-center gap-2">
                      <Dropdown items={filter_order_by} label="Order by:" onSelect={(value) => console.log(value)} />
-                     <Dropdown
-                        label="Status:"
-                        className="min-w-[180px]"
-                        items={filter_status}
-                        onSelect={(value) => console.log(value)}
-                     />
+                     <Dropdown label="Status:" className="min-w-[180px]" items={filter_status} onSelect={(value) => console.log(value)} />
                   </div>
                </div>
                <div className="grid gap-8">
