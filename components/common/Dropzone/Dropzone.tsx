@@ -1,10 +1,11 @@
 import * as Button from '@components/common/Button/Button'
+import Image from 'next/image'
 import React from 'react'
 import { FileEarmarkText, Upload } from 'react-bootstrap-icons'
 import { useDropzone } from 'react-dropzone'
 import { DropzoneProps, StoredFile } from './Typing'
 
-const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, message }: DropzoneProps) => {
+const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, message, thumbnail }: DropzoneProps) => {
    const [files, setFiles] = React.useState<Array<StoredFile>>([])
 
    // function to create file preview
@@ -58,9 +59,7 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
                         <div className="justify-items-center gap-4">
                            <div className="grid gap-2">
                               <div>
-                                 <p className="text-sm font-semibold text-center">
-                                    {placeholder || 'Upload Paper File (.docx)'}
-                                 </p>
+                                 <p className="text-sm font-semibold text-center">{placeholder || 'Upload Paper File (.docx)'}</p>
                                  <p className="text-sm font-regular text-center">{message || 'Drop your file here or'}</p>
                               </div>
                               <Button.Button variant="outline" className="py-2 px-6 text-sm w-fit mx-auto my-0">
@@ -72,24 +71,29 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
                      </React.Fragment>
                   ) : (
                      <React.Fragment>
-                        <div className="grid justify-items-center gap-2">
-                           <div className="grid justify-item-center gap-2 grid-flow-col justify-center items-center">
-                              <FileEarmarkText size={18} />
-                              <p className="text-sm font-semibold text-center">{files[0]?.name}</p>
+                        <div className="flex justify-center gap-2">
+                           {thumbnail && (
+                              <Image width={128} height={128} src={files[0]?.preview} alt="Thumbnail" className=" w-h-32 h-32 object-cover rounded-md" />
+                           )}
+                           <div className="grid gap-2 items-center content-center">
+                              <div className="grid justify-item-center gap-2 grid-flow-col justify-center items-center">
+                                 <FileEarmarkText size={18} />
+                                 <p className="text-sm font-semibold text-center">{files[0]?.name}</p>
+                              </div>
+                              <Button.Button
+                                 variant="outline"
+                                 className="py-2 px-6 text-sm w-fit mx-auto my-0"
+                                 onClick={() => {
+                                    setFiles([])
+                                    setSelectedFile?.(null)
+                                    setValue?.('file.attachment', '')
+                                    setValue?.('file.name', '')
+                                 }}
+                              >
+                                 Swap uploaded file
+                                 <Upload className="w-5 h-5" />
+                              </Button.Button>
                            </div>
-                           <Button.Button
-                              variant="outline"
-                              className="py-2 px-6 text-sm w-fit mx-auto my-0"
-                              onClick={() => {
-                                 setFiles([])
-                                 setSelectedFile?.(null)
-                                 setValue?.('file.attachment', '')
-                                 setValue?.('file.name', '')
-                              }}
-                           >
-                              Swap uploaded file
-                              <Upload className="w-5 h-5" />
-                           </Button.Button>
                         </div>
                      </React.Fragment>
                   )}

@@ -1,4 +1,4 @@
-import { truncate } from '@/utils/truncate'
+import { truncate } from 'lodash'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -36,9 +36,7 @@ const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
             <hr className="divider-v" />
             <div className="grid gap-2">
                <Link href={link}>
-                  <h6 className="text-lg font-semibold text-secundary_blue-main lg:text-sm 2xl:text-lg">
-                     {truncate(title, 40)}
-                  </h6>
+                  <h6 className="text-lg font-semibold text-secundary_blue-main lg:text-sm 2xl:text-lg">{truncate(title, { length: 40 })}</h6>
                </Link>
                <div className="flex items-center gap-2">
                   <p className="text-sm text-neutral-gray lg:text-sm 2xl:text-base">Under review since</p>
@@ -48,25 +46,17 @@ const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
                   <div className="grid grid-flow-col items-center justify-start">
                      <div className="grid grid-flow-col gap-1 items-center">
                         {status_editor == 'approved' && (
-                           <p className="text-base font-semibold text-status-green lg:text-xs 2xl:text-base">
-                              Editor Approval
-                           </p>
+                           <p className="text-base font-semibold text-status-green lg:text-xs 2xl:text-base">Editor Approval</p>
                         )}
                         {status_editor == 'pending' && (
-                           <p className="text-base font-semibold text-status-pending lg:text-xs 2xl:text-base">
-                              Editor pending
-                           </p>
+                           <p className="text-base font-semibold text-status-pending lg:text-xs 2xl:text-base">Editor pending</p>
                         )}
                         <span className="text-base font-semibold text-neutral-light_gray lg:text-xs 2xl:text-base">/</span>
                         {status_reviewer == 'approved' && (
-                           <p className="text-base font-semibold text-status-green lg:text-xs 2xl:text-base">
-                              Reviewer approval
-                           </p>
+                           <p className="text-base font-semibold text-status-green lg:text-xs 2xl:text-base">Reviewer approval</p>
                         )}
                         {status_reviewer == 'pending' && (
-                           <p className="text-base font-semibold text-status-pending lg:text-xs 2xl:text-base">
-                              Reviewer pending
-                           </p>
+                           <p className="text-base font-semibold text-status-pending lg:text-xs 2xl:text-base">Reviewer pending</p>
                         )}
                      </div>
                   </div>

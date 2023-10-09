@@ -8,6 +8,7 @@ interface DropzoneProps {
    viewSelected?: boolean
    placeholder?: string
    message?: string
+   thumbnail?: boolean
 }
 
 interface FileWithPreview {
