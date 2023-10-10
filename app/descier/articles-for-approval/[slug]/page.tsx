@@ -1,16 +1,12 @@
 'use client'
 
 import Box from '@/components/common/Box/Box'
-import { Pills } from '@/components/common/Button/Pill/Pill'
 import CommentItem from '@/components/common/Comment/Comment'
 import Dropzone from '@/components/common/Dropzone/Dropzone'
 import { File } from '@/components/common/File/File'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
-import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { comments, files, header_editor_reviewer, visual_abstract_options } from '@/mock/article_under_review'
-import { document_types } from '@/mock/document_types'
+import { comments, files, header_editor_reviewer } from '@/mock/article_under_review'
 import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { truncate } from '@/utils/format_texts'
 import * as Button from '@components/common/Button/Button'
@@ -20,11 +16,11 @@ import { Reorder } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React from 'react'
-import { ArrowLeft, Check, FileEarmarkText, Person, PlusCircle, PlusCircleDotted, X } from 'react-bootstrap-icons'
+import { ArrowLeft, Check, Person, PlusCircle, PlusCircleDotted, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { twMerge } from 'tailwind-merge'
 
-export default function ArticleInReview({ params }: { params: { slug: string } }) {
+export default function ArticleForApproval({ params }: { params: { slug: string } }) {
    const router = useRouter()
 
    const [items, setItems] = React.useState(authors_mock)
@@ -97,7 +93,12 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                         <span className="text-sm font-semibold">Title</span>
                         <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
                      </Input.Label>
-                     <Input.Input placeholder="Title of the article" />
+                     <Input.Input
+                        defaultValue={
+                           'Assessing the Ecological Impact of Microplastic Pollution: A Comprehensive Study on Contamination, Distribution, and Remediation Strategies'
+                        }
+                        placeholder="Title of the article"
+                     />
                   </Input.Root>
                   <Input.Root>
                      <Input.Label>Add keywords (Max 5)</Input.Label>
@@ -124,12 +125,12 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                         <span className="text-sm font-semibold">Field</span>
                         <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
                      </Input.Label>
-                     <Input.Input placeholder="Title of the field" />
+                     <Input.Input defaultValue={'Ecology, Biology'} placeholder="Title of the field" />
                   </Input.Root>
                </div>
                <div className="grid gap-2">
                   <h3 className="text-sm font-semibold">Document type</h3>
-                  <Pills items={document_types} />
+                  <p className="text-sm font-regular">Manuscript</p>
                </div>
                <Dropzone setSelectedFile={(file) => console.log(file)} />
                <Input.Root>
@@ -160,16 +161,6 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                         this document, with a illustration.
                      </p>
                   </div>
-                  <RadioGroup className="flex items-center gap-4" defaultValue={visual_abstract_options[0].value}>
-                     {visual_abstract_options.map((option) => (
-                        <React.Fragment key={option.id}>
-                           <div className="flex items-center gap-2">
-                              <RadioGroupItem value={option.value} id={option.value} />
-                              <Label htmlFor="r1">{option.label}</Label>
-                           </div>
-                        </React.Fragment>
-                     ))}
-                  </RadioGroup>
                   <div className="flex items-center gap-4 w-full h-36 relative overflow-hidden py-2">
                      {/* eslint-disable-next-line @next/next/no-img-element */}
                      <img src="/images/visual-abstract.png" alt="placeholder" className="absolute object-cover w-fit h-36" />
@@ -177,15 +168,18 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                </div>
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
-                  <Dropzone thumbnail placeholder="Upload cover picture (.png, .jpg)" setSelectedFile={(file) => console.log(file)} />
+                  <div className="w-44 h-4w-44 rounded-md overflow-hidden">
+                     {/* eslint-disable-next-line @next/next/no-img-element */}
+                     <img src="/images/4fa38f086cfa1a2289fabfdd7337c09d.jpeg" alt="cover-preview" />
+                  </div>
+                  <p className="text-sm font-semibold">Last updated on 29/09/2023 - 14:34</p>
                </div>
             </Box>
             <Box className="grid gap-8 h-fit py-6 px-8">
                <div className="grid gap-6">
                   <h3 className="text-xl text-primary-main font-semibold lg:text-lg 2xl:text-xl">Document file</h3>
-                  <div className="grid grid-cols-2 gap-6">
-                     <Dropzone setSelectedFile={(file) => console.log(file)} />
-                     <ScrollArea className="h-[200px] pr-2">
+                  <div>
+                     <ScrollArea className="h-[200px] w-full pr-2">
                         <div className="grid gap-4">
                            {files.map((file) => (
                               <File
@@ -452,6 +446,7 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                )}
             </Box>
             <Box className="grid gap-4 h-fit py-6 px-8">
+               <h3 className="text-lg font-semibold text-status-pending flex justify-center">Your approval is still pending</h3>
                <div className="flex items-center justify-center gap-12">
                   <div className="flex items-center">
                      <h2 className="text-status-yellow font-semibold text-lg">Reviewer</h2>
@@ -465,8 +460,11 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                   </div>
                </div>
                <Button.Button variant="primary" className="flex items-center">
-                  <FileEarmarkText className="w-5 h-5" />
-                  Publish document
+                  <Check className="w-5 h-5" />
+                  Approve document
+               </Button.Button>
+               <Button.Button variant="outline" className="flex items-center">
+                  Reject document
                </Button.Button>
             </Box>
          </div>

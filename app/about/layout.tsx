@@ -1,4 +1,4 @@
-import Sidebar from '@/components/common/Sidebar/deScier/SidebarDeScier'
+import Sidebar from '@/components/common/Sidebar/Sidebar'
 import '@styles/layout.css'
 import React from 'react'
 

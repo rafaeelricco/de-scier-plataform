@@ -45,7 +45,7 @@ export default function ArticlesForApprovalPage() {
                            title={article.title}
                            since={article.since}
                            image={article.image}
-                           link={home_routes.articles.in_review + '/' + slug(article.title)}
+                           link={home_routes.descier.articles_for_approval + '/' + slug(article.title)}
                            status_editor={article.status_editor as 'pending' | 'approved'}
                            status_reviewer={article.status_reviewer as 'pending' | 'approved'}
                         />
