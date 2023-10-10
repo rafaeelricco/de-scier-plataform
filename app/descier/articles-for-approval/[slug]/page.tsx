@@ -4,6 +4,7 @@ import Box from '@/components/common/Box/Box'
 import CommentItem from '@/components/common/Comment/Comment'
 import Dropzone from '@/components/common/Dropzone/Dropzone'
 import { File } from '@/components/common/File/File'
+import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { comments, files, header_editor_reviewer } from '@/mock/article_under_review'
@@ -57,24 +58,11 @@ export default function ArticleForApproval({ params }: { params: { slug: string 
          <Dialog.Root open={dialog.reasoning}>
             <Dialog.Overlay />
             <Dialog.Content className="py-14 px-16 max-w-[600px]">
-               <div className="grid gap-6">
-                  <div className="grid gap-2">
-                     <h3 className="text-xl font-semibold">Reasoning</h3>
-                     <p className="text-sm">Explain a bit of the reasoning for the reject, to justify your version.</p>
-                  </div>
-                  <Input.Root>
-                     <Input.Label>Reasoning</Input.Label>
-                     <Input.TextArea placeholder="Explain your reasoning" />
-                  </Input.Root>
-                  <div className="grid gap-4">
-                     <Button.Button className="py-3 px-8" onClick={() => {}}>
-                        Confirm rejection
-                     </Button.Button>
-                     <Button.Button variant="outline" className="py-3 px-8" onClick={() => setDialog({ ...dialog, reasoning: false })}>
-                        Cancel
-                     </Button.Button>
-                  </div>
-               </div>
+               <Reasoning
+                  reason=""
+                  onClose={() => setDialog({ ...dialog, reasoning: false })}
+                  onConfirm={() => setDialog({ ...dialog, reasoning: false })}
+               />
             </Dialog.Content>
          </Dialog.Root>
          <div className="grid gap-8">

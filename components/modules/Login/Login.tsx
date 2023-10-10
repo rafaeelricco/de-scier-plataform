@@ -7,18 +7,21 @@ import { X } from 'react-bootstrap-icons'
 import LoginAnimation from './Animation/Animation'
 import { LoginModalProps } from './Typing'
 
-const LoginModal: React.FC<LoginModalProps> = ({ onClose, onForgotPassword, onLogin, onRegister }: LoginModalProps) => {
+const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onForgotPassword, onLogin, onRegister }: LoginModalProps) => {
    return (
       <React.Fragment>
          <div className="grid grid-cols-2">
             <LoginAnimation />
             <div className="w-ful grid gap-6 p-16 relative">
-               <X
-                  size={32}
-                  className="absolute right-4 top-4 cursor-pointer hover:scale-110 transition-all duration-200"
-                  onClick={onClose}
-               />
+               <X size={32} className="absolute right-4 top-4 cursor-pointer hover:scale-110 transition-all duration-200" onClick={onClose} />
                <h2 className="font-semibold text-1xl">Sign in</h2>
+               {withLink && (
+                  <React.Fragment>
+                     <p className="text-sm font-regular">
+                        Marcelo Santana invited you to be a reviewer/editor for “Article name”, sign in or register to continue.
+                     </p>
+                  </React.Fragment>
+               )}
                <div className="grid gap-6">
                   <Button.Button variant="outline" className="rounded-full px-4 py-2">
                      <GoogleIcon className="w-6" />
