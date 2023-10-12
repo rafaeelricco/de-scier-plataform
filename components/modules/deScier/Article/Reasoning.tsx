@@ -1,10 +1,15 @@
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import React from 'react'
+import { X } from 'react-bootstrap-icons'
 
 const Reasoning: React.FC<ArticleUnderReviewProps> = ({ onClose, onConfirm, reason }: ArticleUnderReviewProps) => {
    return (
       <React.Fragment>
+         <X
+            className="w-8 h-8 absolute top-4 right-4 cursor-pointer hover:text-status-error transition-all duration-500 ease-out hover:scale-110 hover:rotate-180 transform"
+            onClick={onClose}
+         />
          <div className="grid gap-6">
             <div className="grid gap-2">
                <h3 className="text-xl font-semibold">Reasoning</h3>

@@ -9,7 +9,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
       <React.Fragment>
          <section className="home scrollbar-hidden">
             <Sidebar />
-            <div className="col-2 row-1 lg:my-40 lg:mx-60">{children}</div>
+            <div className="col-2 row-1 lg:my-20 lg:mx-24 2xl:my-40 2xl:mx-60">{children}</div>
             <Profile />
          </section>
          <Footer />

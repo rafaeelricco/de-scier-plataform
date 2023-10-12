@@ -1,14 +1,127 @@
 'use client'
 
 import Box from '@/components/common/Box/Box'
+import ForgotPasswordModal from '@/components/modules/ForgotPassword/ForgotPassword'
+import UpdatePassword from '@/components/modules/Profile/Modals/ChangePassword'
+import UpdateProfile from '@/components/modules/Profile/Modals/EditProfile'
+import UpdateEmail from '@/components/modules/Profile/Modals/UpdateEmail'
+import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Title from '@components/common/Title/Page'
+import { motion } from 'framer-motion'
 import Image from 'next/image'
 import React from 'react'
 import { BoxArrowRight, Envelope, Lock, Pencil } from 'react-bootstrap-icons'
+import { twMerge } from 'tailwind-merge'
 
 export default function ProfilePage() {
+   const [profile, setProfile] = React.useState({
+      edit_profile: false,
+      edit_profile_sucess: false
+   })
+   const [email, setEmail] = React.useState({
+      insert_password_to_edit_email: false,
+      new_email: false,
+      new_email_sucess: false
+   })
+   const [password, setPassword] = React.useState({
+      insert_password_to_edit_password: false,
+      new_password: false,
+      new_password_sucess: false
+   })
+
+   const [passwordRecovery, setPasswordRecovery] = React.useState({
+      insert_email_to_recover_password: false,
+      insert_code_to_recover_password: false,
+      insert_new_password: false,
+      recover_password_sucess: false
+   })
    return (
       <React.Fragment>
+         <Dialog.Root open={profile.edit_profile || profile.edit_profile_sucess}>
+            <Dialog.Overlay />
+            <Dialog.Content
+               className={twMerge('py-14 px-16', `${profile.edit_profile && 'max-w-[808px]'}`, `${profile.edit_profile_sucess && 'max-w-[480px]'}`)}
+            >
+               <UpdateProfile
+                  name="Caroline Nunes"
+                  title="Biologist"
+                  success={profile.edit_profile_sucess}
+                  edit_profile={profile.edit_profile}
+                  onClose={() => setProfile({ ...profile, edit_profile: false, edit_profile_sucess: false })}
+                  onConfirm={() => setProfile({ ...profile, edit_profile: false, edit_profile_sucess: true })}
+               />
+            </Dialog.Content>
+         </Dialog.Root>
+         <Dialog.Root open={email.insert_password_to_edit_email || email.new_email || email.new_email_sucess}>
+            <Dialog.Overlay />
+            <Dialog.Content className={twMerge('py-14 px-16 max-w-[480px]')}>
+               <UpdateEmail
+                  insert_password={email.insert_password_to_edit_email}
+                  new_email={email.new_email}
+                  success={email.new_email_sucess}
+                  onForgotPassword={() => {
+                     setEmail({ ...email, insert_password_to_edit_email: false, new_email: false, new_email_sucess: false })
+                     setPasswordRecovery({ ...passwordRecovery, insert_email_to_recover_password: true })
+                  }}
+                  onClose={() => {
+                     setEmail({ ...email, insert_password_to_edit_email: false, new_email: false, new_email_sucess: false })
+                  }}
+                  onSetPassword={() => {
+                     setEmail({ ...email, insert_password_to_edit_email: false, new_email: true })
+                  }}
+                  onSetNewEmail={() => {
+                     setEmail({ ...email, new_email: false, new_email_sucess: true })
+                  }}
+               />
+            </Dialog.Content>
+         </Dialog.Root>
+         <Dialog.Root open={password.insert_password_to_edit_password || password.new_password || password.new_password_sucess}>
+            <Dialog.Overlay />
+            <Dialog.Content className={twMerge('py-14 px-16 max-w-[480px]')}>
+               <UpdatePassword
+                  new_password={password.new_password}
+                  insert_current_password={password.insert_password_to_edit_password}
+                  success={password.new_password_sucess}
+                  onClose={() => {
+                     setPassword({ ...password, insert_password_to_edit_password: false, new_password: false, new_password_sucess: false })
+                  }}
+                  onSetNewPassword={() => {
+                     setPassword({ ...password, new_password: false, new_password_sucess: true })
+                  }}
+                  onSetPassword={() => {
+                     setPassword({ ...password, insert_password_to_edit_password: false, new_password: true })
+                  }}
+                  onForgotPassword={() => {
+                     setPassword({ ...password, insert_password_to_edit_password: false, new_password: false, new_password_sucess: false })
+                     setPasswordRecovery({ ...passwordRecovery, insert_email_to_recover_password: true })
+                  }}
+               />
+            </Dialog.Content>
+         </Dialog.Root>
+         <Dialog.Root
+            open={
+               passwordRecovery.insert_code_to_recover_password ||
+               passwordRecovery.insert_email_to_recover_password ||
+               passwordRecovery.insert_new_password ||
+               passwordRecovery.recover_password_sucess
+            }
+         >
+            <Dialog.Overlay />
+            <Dialog.Content className={twMerge('py-0 px-0 max-w-[480px]')}>
+               <ForgotPasswordModal
+                  onBack={() => {}}
+                  onClose={() => {
+                     setPasswordRecovery({
+                        ...passwordRecovery,
+                        insert_code_to_recover_password: false,
+                        insert_email_to_recover_password: false,
+                        insert_new_password: false,
+                        recover_password_sucess: false
+                     })
+                  }}
+               />
+            </Dialog.Content>
+         </Dialog.Root>
          <Title.Root>
             <Title.Title>My profile</Title.Title>
          </Title.Root>
@@ -16,21 +129,21 @@ export default function ProfilePage() {
             <div className="grid gap-8">
                <div className="grid gap-6">
                   <Image
-                     src="/svgs/common/sidebar/placeholder-image.jpeg"
-                     quality={50}
                      width={144}
+                     quality={50}
                      height={144}
                      alt="profile-image"
+                     src="/svgs/common/sidebar/placeholder-image.jpeg"
                      className="w-36 h-36 bg-status-pending rounded-full mx-auto my-0 lg:w-24 lg:h-24 2xl:w-36 2xl:h-36"
                   />
                   <div className="grid gap-2">
                      <h1 className="text-xl text-secundary_blue-main font-semibold flex justify-center lg:text-lg 2xl:text-xl">Caroline Nunes</h1>
                      <div className="grid grid-flow-col items-center justify-center gap-4">
-                        <p className="text-sm text-primary-main font-regular">Biologist</p>
+                        <p className="text-sm text-primary-main font-regular select-none">Biologist</p>
                         <hr className="divider-v" />
                         <div className="flex items-center gap-2">
                            <Envelope className="w-4 h-5 fill-neutral-gray" />
-                           <p className="text-sm text-neutral-gray">caroline@emanagroup.com</p>
+                           <p className="text-sm text-neutral-gray select-none">caroline@emanagroup.com</p>
                         </div>
                      </div>
                   </div>
@@ -40,25 +153,37 @@ export default function ProfilePage() {
                   <div className="grid gap-4">
                      <h3 className="text-lg font-semibold">Settings</h3>
                      <div className="grid grid-cols-2 gap-6">
-                        <div className="border py-14 px-2 flex items-center justify-center gap-4 rounded-lg">
+                        <motion.div
+                           whileTap={{ scale: 0.95 }}
+                           className="border py-14 px-2 flex items-center justify-center gap-4 rounded-lg cursor-pointer hover:border-primary-light transition-colors duration-300 ease-in-out"
+                           onClick={() => setProfile({ ...profile, edit_profile: true })}
+                        >
                            <Pencil className="w-5 h-5 fill-neutral-gray" />
                            <p className="text-base text-neutral-gray">Edit profile</p>
-                        </div>
-
-                        <div className="border py-14 px-2 flex items-center justify-center gap-4 rounded-lg">
+                        </motion.div>
+                        <motion.div
+                           whileTap={{ scale: 0.95 }}
+                           className="border py-14 px-2 flex items-center justify-center gap-4 rounded-lg cursor-pointer hover:border-primary-light transition-colors duration-300 ease-in-out"
+                           onClick={() => setEmail({ ...email, insert_password_to_edit_email: true })}
+                        >
                            <Envelope className="w-5 h-5 fill-neutral-gray" />
                            <p className="text-base text-neutral-gray">Change e-mail</p>
-                        </div>
-
-                        <div className="border py-14 px-2 flex items-center justify-center gap-4 rounded-lg">
+                        </motion.div>
+                        <motion.div
+                           whileTap={{ scale: 0.95 }}
+                           className="border py-14 px-2 flex items-center justify-center gap-4 rounded-lg cursor-pointer hover:border-primary-light transition-colors duration-300 ease-in-out"
+                           onClick={() => setPassword({ ...password, insert_password_to_edit_password: true })}
+                        >
                            <Lock className="w-5 h-5 fill-neutral-gray" />
                            <p className="text-base text-neutral-gray">Change password</p>
-                        </div>
-
-                        <div className="border py-14 px-2 flex items-center justify-center gap-4 rounded-lg">
+                        </motion.div>
+                        <motion.div
+                           whileTap={{ scale: 0.95 }}
+                           className="border py-14 px-2 flex items-center justify-center gap-4 rounded-lg cursor-pointer hover:border-primary-light transition-colors duration-300 ease-in-out"
+                        >
                            <BoxArrowRight className="w-5 h-5 fill-neutral-gray" />
                            <p className="text-base text-neutral-gray">Log out</p>
-                        </div>
+                        </motion.div>
                      </div>
                   </div>
                </div>

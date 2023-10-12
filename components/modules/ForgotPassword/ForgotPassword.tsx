@@ -1,9 +1,9 @@
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import '@styles/login.css'
-import ForgotPasswordIllustration from 'public/svgs/modules/forgot-password/forgot-password-illustration.svg'
 import React from 'react'
 import { ArrowLeft, X } from 'react-bootstrap-icons'
+import GenericSuccess from '../Profile/Modals/Success'
 
 type ForgotPasswordModalProps = { onClose: () => void; onBack: () => void }
 
@@ -54,17 +54,15 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onBack, onClo
    return (
       <form>
          {component.insert_email && <InserEmail onClose={onClose} onContinue={handleInsertEmailContinue} onBack={onBack} />}
-         {component.insert_code && (
-            <InsertCode onClose={onClose} onContinue={handleInsertCodeContinue} onBack={handleInsertCodeBack} />
-         )}
+         {component.insert_code && <InsertCode onClose={onClose} onContinue={handleInsertCodeContinue} onBack={handleInsertCodeBack} />}
          {component.insert_new_password && (
-            <InsertNewPassword
-               onClose={onClose}
-               onContinue={handleInsertNewPasswordContinue}
-               onBack={handleInsertCodeBack}
-            />
+            <InsertNewPassword onClose={onClose} onContinue={handleInsertNewPasswordContinue} onBack={handleInsertCodeBack} />
          )}
-         {component.success && <Success onClose={onBack} />}
+         {component.success && (
+            <div className="w-ful grid gap-6 py-14 px-16 relative">
+               <GenericSuccess text="Password updated" message="Your password was updated." button_text="Return" onClose={onClose} />
+            </div>
+         )}
       </form>
    )
 }
@@ -75,9 +73,8 @@ const Header: React.FC<HeaderProps> = ({ onBack, onClose }: HeaderProps) => {
    return (
       <React.Fragment>
          <X
-            size={32}
+            className="w-8 h-8 absolute top-4 right-4 cursor-pointer hover:text-status-error transition-all duration-500 ease-out hover:scale-110 hover:rotate-180 transform"
             onClick={onClose}
-            className="absolute left-auto right-4 top-4 cursor-pointer hover:scale-110 transition-all duration-200"
          />
          <div className="flex items-center gap-4">
             <ArrowLeft size={28} onClick={onBack} className="cursor-pointer hover:scale-110 transition-all duration-200" />
@@ -153,28 +150,6 @@ const InsertNewPassword: React.FC<InsertNewPasswordProps> = ({ onBack, onClose, 
                </div>
                <Button.Button onClick={onContinue}>Continue</Button.Button>
             </div>
-         </div>
-      </React.Fragment>
-   )
-}
-
-type SuccessProps = { onClose: () => void }
-
-const Success: React.FC<SuccessProps> = ({ onClose }: SuccessProps) => {
-   return (
-      <React.Fragment>
-         <div className="w-ful grid gap-6 py-14 px-16 relative">
-            <X
-               size={32}
-               onClick={onClose}
-               className="absolute left-auto right-4 top-4 cursor-pointer hover:scale-110 transition-all duration-200"
-            />
-            <div className="flex items-center gap-4">
-               <h2 className="font-semibold text-1xl">Password updated</h2>
-            </div>
-            <ForgotPasswordIllustration className="w-40" />
-            <p className="text-sm text-center">Your password was updated.</p>
-            <Button.Button type="submit">Return to login</Button.Button>
          </div>
       </React.Fragment>
    )
