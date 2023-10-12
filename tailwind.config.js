@@ -67,6 +67,9 @@ module.exports = {
             64: '16rem',
             80: '20rem'
          },
+         backgroundImage: {
+            aquarela: 'linear-gradient(108deg, #E2E6FF 0%, #DCE8FF 37.72%, #EBDEFF 68.82%, #FFE5E5 97.88%)'
+         },
          colors: {
             primary: {
                main: '#70468C',
