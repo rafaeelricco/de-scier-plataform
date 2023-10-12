@@ -1,13 +1,15 @@
-import Sidebar from '@/components/common/Sidebar/Sidebar'
+import Header from '@/components/common/Header/Header'
 import '@styles/layout.css'
 import React from 'react'
 
 export default function ProfileLayout({ children }: { children: React.ReactNode }) {
    return (
       <React.Fragment>
-         <section className="home">
-            <Sidebar />
-            <div className="col-2 row-1 m-16 pb-16">{children}</div>
+         <section className="relative px-52 bg-aquarela z-0 h-[200vh]">
+            <div className="pt-14 z-10">
+               <Header />
+            </div>
+            <div className="pt-24 z-10">{children}</div>
          </section>
       </React.Fragment>
    )

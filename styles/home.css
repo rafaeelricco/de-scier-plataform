@@ -1,0 +1,4 @@
+.hero {
+   position: relative;
+   height: calc(100vh - 14rem);
+}

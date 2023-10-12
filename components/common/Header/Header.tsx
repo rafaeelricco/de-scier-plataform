@@ -14,22 +14,24 @@ const Header: React.FC = () => {
 
    return (
       <React.Fragment>
-         <div className="py-3 px-8 bg-white flex items-center gap-8 rounded-full shadow-search w-full">
-            <DeScierLogo className="w-10 h-fit" />
-            <div className="grid grid-cols-5 justify-items-center items-center">
-               {links.map((link) => (
-                  <div className="flex justify-center min-w-[149px] py-2 px-4" key={link.id}>
-                     <Link
-                        href={link.link}
-                        className={twMerge(
-                           'text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200',
-                           `${currentPath.includes(link.link) && 'font-semibold text-secundary_blue-main'}`
-                        )}
-                     >
-                        {link.label}
-                     </Link>
-                  </div>
-               ))}
+         <div className="py-3 px-8 bg-white flex items-center gap-8 rounded-full shadow-search w-full justify-between">
+            <div className="flex items-center gap-8">
+               <DeScierLogo className="w-10 h-fit" />
+               <div className="grid grid-cols-5 justify-items-center items-center">
+                  {links.map((link) => (
+                     <div className="flex justify-center min-w-[149px] py-2 px-4" key={link.id}>
+                        <Link
+                           href={link.link}
+                           className={twMerge(
+                              'text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200',
+                              `${currentPath.includes(link.link) && 'font-semibold text-secundary_blue-main'}`
+                           )}
+                        >
+                           {link.label}
+                        </Link>
+                     </div>
+                  ))}
+               </div>
             </div>
             <div className="flex items-center gap-4">
                <Button.Button variant="outline" className="rounded-full py-2 px-8 text-sm">

@@ -68,7 +68,9 @@ module.exports = {
             80: '20rem'
          },
          backgroundImage: {
-            aquarela: 'linear-gradient(108deg, #E2E6FF 0%, #DCE8FF 37.72%, #EBDEFF 68.82%, #FFE5E5 97.88%)'
+            aquarela: 'linear-gradient(108deg, #E2E6FF 0%, #DCE8FF 37.72%, #EBDEFF 68.82%, #FFE5E5 97.88%)',
+            purple: 'linear-gradient(45deg, #513296 0.01%, #8636BE 100%)',
+            'white-home': 'linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.65) 100%)'
          },
          colors: {
             primary: {
