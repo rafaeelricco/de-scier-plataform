@@ -1,8 +1,10 @@
 import { formatDate } from '@/utils/date_format'
 import { truncate } from 'lodash'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 import { Eye, HandThumbsUpFill } from 'react-bootstrap-icons'
+import slug from 'slug'
 import './ArticleItem.css'
 import { ArticleItemProps } from './Typing'
 
@@ -22,7 +24,11 @@ const ArticleItem: React.FC<ArticleItemProps> = ({ image, title, access_type, li
             <div className="grid gap-2">
                <div className="grid gap-2">
                   <div className="grid gap-2">
-                     <h6 className="text-lg font-semibold text-secundary_blue-main lg:text-sm 2xl:text-lg">{truncate(title, { length: 40 })}</h6>
+                     <Link href="/home/search/[slug]" as={`/home/search/${slug(title)}`} passHref>
+                        <h6 className="text-lg font-semibold text-secundary_blue-main lg:text-sm 2xl:text-lg select-none cursor-pointer transition-all duration-200 hover:text-secundary_purple-hover hover:underline">
+                           {truncate(title, { length: 40 })}
+                        </h6>
+                     </Link>
                   </div>
                   <div className="flex flex-wrap gap-2">
                      {tags.map((tag) => (
@@ -33,7 +39,7 @@ const ArticleItem: React.FC<ArticleItemProps> = ({ image, title, access_type, li
                   </div>
                </div>
                <div className="grid gap-1">
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1 flex-wrap">
                      {authors.map((author, index) => (
                         <React.Fragment key={author.id}>
                            <p className="text-sm text-[#5E6992]">
