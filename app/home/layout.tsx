@@ -6,7 +6,7 @@ import React from 'react'
 export default function ProfileLayout({ children }: { children: React.ReactNode }) {
    return (
       <React.Fragment>
-         <section className="relative px-52 bg-aquarela z-0">
+         <section className="relative px-52 lg:px-44 bg-aquarela z-0">
             <div className="pt-14 z-10">
                <Header />
             </div>

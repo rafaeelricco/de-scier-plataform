@@ -1,9 +1,11 @@
 'use client'
 
+import useWindowDimension from '@/hooks/useWindowDimension'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import '@styles/home.css'
 import Image from 'next/image'
+import IllustrationBannerFooter from 'public/svgs/modules/home/banner-footer/illustrations-banner.svg'
 import IllustrationHero from 'public/svgs/modules/home/illustration-home.svg'
 import CirclesHero from 'public/svgs/modules/home/shapes/circles.svg'
 import ShapeHero from 'public/svgs/modules/home/shapes/shape1.svg'
@@ -13,6 +15,7 @@ import React from 'react'
 import { CaretRightFill, Eye, HandThumbsUpFill, Person, Search } from 'react-bootstrap-icons'
 
 export default function HomePage() {
+   const { sm, md, lg, xl, xxl } = useWindowDimension()
    return (
       <React.Fragment>
          <IllustrationHero className="absolute right-0 w-full h-full max-w-[708px] max-h-[554px]" />
@@ -146,7 +149,6 @@ export default function HomePage() {
                               </div>
                            </div>
                         </div>
-
                         <Image
                            fill
                            className="absolute inset-0 object-cover w-full rounded-md"
@@ -176,20 +178,36 @@ export default function HomePage() {
                      <h3 className="text-1xl font-semibold">Lastest articles</h3>
                      <div className="grid gap-8">
                         <div className="flex flex-wrap justify-between gap-x-6 gap-y-8">
-                           {articles.slice(0, 10).map((article) => (
+                           {articles.slice(0, sm ? 4 : md ? 6 : lg ? 8 : xl ? 10 : xxl ? 12 : 4).map((article) => (
                               <div className="grid grid-flow-col gap-6" key={article.id}>
                                  <ArticleCard {...article} />
                               </div>
                            ))}
                         </div>
                         <div className="flex items-center justify-end gap-4">
-                           <h3 className="text-lg font-semibold text-primary-main">View all articles</h3>
+                           <h3 className="text-lg font-semibold text-primary-main select-none cursor-pointer">View all articles</h3>
                            <CaretRightFill className="w-5 h-5 text-primary-main" />
                         </div>
                      </div>
                   </div>
                   <div className="mt-36 px-56 mb-24">
-                     <div className="bg-secundary_blue-main py-6 px-12 rounded-md"></div>
+                     <div className="bg-secundary_blue-main py-6 px-12 rounded-md">
+                        <div className="flex items-center gap-20">
+                           <IllustrationBannerFooter className="w-64 shrink-0" />
+                           <div className="flex flex-col gap-4">
+                              <div className="grid gap-2">
+                                 <p className="text-lg font-semibold text-white">Want to publish a scientific paper?</p>
+                                 <p className="text-base font-regular text-white">
+                                    Publishing in DeScier is fast and easy, with peer selected review, and 100% author owned copyright. Join the movement
+                                    now!
+                                 </p>
+                              </div>
+                              <div className="flex justify-end">
+                                 <Button.Button className="py-3 px-10 w-fit ">Start publishing now!</Button.Button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
                   </div>
                </div>
                <div className="articles-background" />
