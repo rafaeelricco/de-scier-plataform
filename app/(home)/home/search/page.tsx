@@ -1,6 +1,7 @@
 'use client'
 import { Dropdown } from '@/components/common/Dropdown/Dropdown'
 import PaginationComponent from '@/components/common/Pagination/Pagination'
+import { BannerStartPublishing } from '@/components/modules/Home/Index/BannerStartPublishing/BannerStartPublishing'
 import ArticleItem from '@/components/modules/Home/Search/ArticleItem/ArticleItem'
 import useDebounce from '@/hooks/useDebounce'
 import { articles } from '@/mock/articles_published'
@@ -9,12 +10,11 @@ import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
 import '@styles/home.css'
-import IllustrationBannerFooter from 'public/svgs/modules/home/banner-footer/illustrations-banner.svg'
 import React from 'react'
 import { Person, Search } from 'react-bootstrap-icons'
 
 export default function SearchArticlesPage() {
-   const per_page = 6
+   const per_page = 10
    const [page, setPage] = React.useState(1)
    const [results, setResults] = React.useState(articles)
    const [totalPages, setTotalPages] = React.useState(Math.ceil(results.length / per_page))
@@ -25,7 +25,7 @@ export default function SearchArticlesPage() {
       <React.Fragment>
          <div className="flex flex-col gap-6">
             <Title.Root className="pt-12 pb-0 mb-0">
-               <Title.Title className="2xl:text-3xl lg:text-2xl">Search</Title.Title>
+               <Title.Title className="text-3xl">Search</Title.Title>
             </Title.Root>
             <div className="flex items-center w-full gap-6">
                <div className="w-full flex-grow">
@@ -61,7 +61,7 @@ export default function SearchArticlesPage() {
                <Dropdown no_selected label="Language" className="min-w-fit px-8" items={filter_status} onSelect={(value) => console.log(value)} />
                <Dropdown no_selected label="Access" className="min-w-fit px-8" items={filter_status} onSelect={(value) => console.log(value)} />
             </div>
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-6 mt-6">
                <div className="grid grid-cols-2 gap-4">
                   {results
                      .filter((article) => article.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
@@ -85,21 +85,8 @@ export default function SearchArticlesPage() {
                   />
                </div>
             </div>
-            <div className="bg-secundary_blue-main py-6 px-12 rounded-md mt-16 mb-52">
-               <div className="flex items-center gap-20">
-                  <IllustrationBannerFooter className="w-64 shrink-0" />
-                  <div className="flex flex-col gap-4">
-                     <div className="grid gap-2">
-                        <p className="text-lg font-semibold text-white">Want to publish a scientific paper?</p>
-                        <p className="text-base font-regular text-white">
-                           Publishing in DeScier is fast and easy, with peer selected review, and 100% author owned copyright. Join the movement now!
-                        </p>
-                     </div>
-                     <div className="flex justify-end">
-                        <Button.Button className="py-3 px-10 w-fit ">Start publishing now!</Button.Button>
-                     </div>
-                  </div>
-               </div>
+            <div className="mt-24 mb-32">
+               <BannerStartPublishing />
             </div>
          </div>
       </React.Fragment>

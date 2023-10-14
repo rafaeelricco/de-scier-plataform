@@ -74,7 +74,6 @@ export default function HomePage() {
             <div className="relative h-fit">
                <div className="border-neutral-stroke_light rounded-3xl shadow-search backdrop-blur-md bg-white-home px-8 py-6 grid gap-4 relative z-10">
                   <h3 className="text-3xl font-semibold bg-purple bg-clip-text text-transparent">Top papers of the week</h3>
-                  {/* Diminuir o dois e o três */}
                   <div className="w-full min-h-[600px] grid grid-cols-2 grid-rows-2 gap-6 z-0">
                      <div className="p-8 rounded-md h-full row-span-2 relative">
                         <div className="relative flex justify-between z-10">
@@ -206,7 +205,7 @@ export default function HomePage() {
                         </div>
                      </div>
                   </div>
-                  <div className="mt-36 px-56 mb-24">
+                  <div className="mt-24 px-56 mb-24">
                      <BannerStartPublishing />
                   </div>
                </div>

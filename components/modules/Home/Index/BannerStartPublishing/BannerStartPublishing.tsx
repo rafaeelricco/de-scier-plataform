@@ -6,7 +6,7 @@ import React from 'react'
 export const BannerStartPublishing: React.FC = () => {
    return (
       <React.Fragment>
-         <div className="bg-secundary_blue-main py-6 px-12 rounded-md">
+         <div className="bg-secundary_blue-main py-6 px-12 flex justify-center rounded-md">
             <div className="flex items-center gap-20">
                <IllustrationBannerFooter className="w-60 shrink-0" />
                <div className="flex flex-col gap-4">
