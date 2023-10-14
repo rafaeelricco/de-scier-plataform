@@ -170,23 +170,29 @@ export default function HomePage() {
                </div>
                <ShapeTertiary className="absolute right-[-13rem] z-0 bottom-[-18rem] max-w-[400px] max-h-[700px]" />
             </div>
-            <div className="relative remove-paddings">
-               <div className="px-56 grid gap-8">
-                  <h3 className="text-1xl font-semibold">Lastest articles</h3>
-                  <div className="grid gap-8">
-                     <div className="flex flex-wrap justify-between gap-x-6 gap-y-8">
-                        {articles.slice(0, 10).map((article, index) => (
-                           <div className="grid grid-flow-col gap-6" key={article.id}>
-                              <ArticleCard {...article} />
-                           </div>
-                        ))}
-                     </div>
-                     <div className="flex items-center justify-end gap-4">
-                        <h3 className="text-lg font-semibold text-primary-main">View all articles</h3>
-                        <CaretRightFill className="w-5 h-5 text-primary-main" />
+            <div className="relative pt-16 remove-paddings">
+               <div className="relative z-20">
+                  <div className="px-56 grid gap-8">
+                     <h3 className="text-1xl font-semibold">Lastest articles</h3>
+                     <div className="grid gap-8">
+                        <div className="flex flex-wrap justify-between gap-x-6 gap-y-8">
+                           {articles.slice(0, 10).map((article) => (
+                              <div className="grid grid-flow-col gap-6" key={article.id}>
+                                 <ArticleCard {...article} />
+                              </div>
+                           ))}
+                        </div>
+                        <div className="flex items-center justify-end gap-4">
+                           <h3 className="text-lg font-semibold text-primary-main">View all articles</h3>
+                           <CaretRightFill className="w-5 h-5 text-primary-main" />
+                        </div>
                      </div>
                   </div>
+                  <div className="mt-36 px-56 mb-24">
+                     <div className="bg-secundary_blue-main py-6 px-12 rounded-md"></div>
+                  </div>
                </div>
+               <div className="articles-background" />
             </div>
          </div>
       </React.Fragment>
