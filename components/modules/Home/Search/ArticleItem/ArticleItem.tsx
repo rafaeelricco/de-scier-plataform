@@ -32,11 +32,14 @@ const ArticleItem: React.FC<ArticleItemProps> = ({ image, title, access_type, li
                      ))}
                   </div>
                </div>
-               <div>
-                  <div className="flex items-center">
-                     {authors.map((author) => (
+               <div className="grid gap-1">
+                  <div className="flex items-center gap-1">
+                     {authors.map((author, index) => (
                         <React.Fragment key={author.id}>
-                           <p className="text-sm text-[#5E6992]">{author.name}</p>
+                           <p className="text-sm text-[#5E6992]">
+                              {author.name}
+                              {index < authors.length - 1 && <span className="text-[#5E6992]">,</span>}
+                           </p>
                         </React.Fragment>
                      ))}
                   </div>

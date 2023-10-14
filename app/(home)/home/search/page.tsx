@@ -24,7 +24,7 @@ export default function SearchArticlesPage() {
    return (
       <React.Fragment>
          <div className="flex flex-col gap-6">
-            <Title.Root className="pt-14 pb-0 mb-0">
+            <Title.Root className="pt-12 pb-0 mb-0">
                <Title.Title className="2xl:text-3xl lg:text-2xl">Search</Title.Title>
             </Title.Root>
             <div className="flex items-center w-full gap-6">
