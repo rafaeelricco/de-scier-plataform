@@ -2,8 +2,8 @@
 
 import { Dropdown } from '@/components/common/Dropdown/Dropdown'
 import PaginationComponent from '@/components/common/Pagination/Pagination'
-import ReviewerItem from '@/components/modules/AsReviewer/ReviewerItem'
-import { ReviewerItemProps } from '@/components/modules/AsReviewer/Typing'
+import ReviewerItem from '@/components/modules/AsReviewer/ReviewerItem/ReviewerItem'
+import { ReviewerItemProps } from '@/components/modules/AsReviewer/ReviewerItem/Typing'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import useDebounce from '@/hooks/useDebounce'
 import { filter_order_by, filter_status } from '@/mock/dropdow_filter_options'
