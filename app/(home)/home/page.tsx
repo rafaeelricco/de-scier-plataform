@@ -16,11 +16,12 @@ import { CaretRightFill, Eye, HandThumbsUpFill, Person, Search } from 'react-boo
 
 export default function HomePage() {
    const { sm, md, lg, xl, xxl } = useWindowDimension()
+
    return (
       <React.Fragment>
          <IllustrationHero className="absolute right-0 w-full h-full max-w-[708px] max-h-[554px]" />
          <ShapeHero className="absolute right-0 top-0 z-[-1] w-full h-full max-w-[742px] max-h-[872px]" />
-         <div className="hero">
+         <div className="hero pt-24">
             <div className="grid gap-6 content-start">
                <div className="grid gap-2">
                   <h1 className="font-bold text-5xl max-w-[20ch] bg-purple bg-clip-text text-transparent">A new future for scientific publications</h1>
@@ -102,7 +103,6 @@ export default function HomePage() {
                            </div>
                         </div>
                      </div>
-
                      <div className="p-8 rounded-md h-full relative">
                         <div className="relative flex justify-between z-10">
                            <div className="bg-white px-3 py-1 text-primary-main rounded-md w-fit h-fit text-sm font-semibold">24/06/2023</div>
@@ -217,6 +217,16 @@ export default function HomePage() {
    )
 }
 
+interface ArticleCardProps {
+   id: number
+   title: string
+   authors: { id: number; name: string }[]
+   image: string
+   likes: number
+   views: number
+   tags: { id: number; name: string }[]
+}
+
 const ArticleCard: React.FC<ArticleCardProps> = ({ authors, id, likes, tags, title, views, image }: ArticleCardProps) => {
    return (
       <React.Fragment>
@@ -254,17 +264,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ authors, id, likes, tags, tit
    )
 }
 
-interface ArticleCardProps {
-   id: number
-   title: string
-   authors: { id: number; name: string }[]
-   image: string
-   likes: number
-   views: number
-   tags: { id: number; name: string }[]
-}
-
-const articles: ArticleCardProps[] = [
+export const articles: ArticleCardProps[] = [
    {
       id: 1,
       title: 'Understanding Blockchain Technology',

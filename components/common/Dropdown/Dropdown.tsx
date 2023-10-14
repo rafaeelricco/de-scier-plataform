@@ -1,20 +1,14 @@
 'use client'
 
-import {
-   DropdownMenu,
-   DropdownMenuContent,
-   DropdownMenuItem,
-   DropdownMenuLabel,
-   DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { FilterOption } from '@/mock/dropdow_filter_options'
 import React from 'react'
 import { CaretDown } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 import { DropdownProps } from './Typing'
 
-const Dropdown: React.FC<DropdownProps> = ({ label, className, items, onSelect }: DropdownProps) => {
-   const [selected, setSelected] = React.useState<string | null>(items[0].label)
+const Dropdown: React.FC<DropdownProps> = ({ label, className, items, no_selected = false, onSelect }: DropdownProps) => {
+   const [selected, setSelected] = React.useState<string | null>(no_selected === true ? null : items[0].label)
    return (
       <React.Fragment>
          <DropdownMenu>

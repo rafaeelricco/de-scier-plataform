@@ -24,13 +24,7 @@ const Sidebar: React.FC = () => {
                </Button.Link>
                <div>
                   {items.map((item) => (
-                     <Item
-                        key={item.id}
-                        text={item.text}
-                        icon={item.icon}
-                        href={item.path}
-                        active={currentPath.includes(item.path)}
-                     />
+                     <Item key={item.id} text={item.text} icon={item.icon} href={item.path} active={currentPath.includes(item.path)} />
                   ))}
                </div>
             </div>
@@ -80,7 +74,7 @@ const items = [
       id: 4,
       text: 'Home',
       icon: <HomeIcon className="w-6 fill-neutral-light_gray lg:w-5 2xl:w-6" />,
-      path: home_routes.home
+      path: home_routes.home.index
    },
    {
       id: 5,

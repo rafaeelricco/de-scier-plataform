@@ -1,5 +1,6 @@
 'use client'
 
+import { home_routes } from '@/routes/home'
 import * as Button from '@components/common/Button/Button'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -24,7 +25,7 @@ const Header: React.FC = () => {
                            href={link.link}
                            className={twMerge(
                               'text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200',
-                              `${currentPath.includes(link.link) && 'font-semibold text-secundary_blue-main'}`
+                              `${currentPath.endsWith(link.link) && 'font-semibold text-secundary_blue-main'}`
                            )}
                         >
                            {link.label}
@@ -50,12 +51,12 @@ const links = [
    {
       id: fromString('1'),
       label: 'Home',
-      link: '/home'
+      link: home_routes.home.index
    },
    {
       id: fromString('2'),
       label: 'Search',
-      link: '/search'
+      link: home_routes.home.search
    },
    {
       id: fromString('3'),

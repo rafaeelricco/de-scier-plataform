@@ -1,6 +1,10 @@
 export const home_routes = {
    summary: '/summary',
-   home: '/home',
+   home: {
+      index: '/home',
+      search: '/home/search',
+      articles_details: '/home/articles-details' // :id
+   },
    articles_under_review: '/articles-under-review',
    as_reviewer: '/as-reviewer',
    profile: '/profile',
