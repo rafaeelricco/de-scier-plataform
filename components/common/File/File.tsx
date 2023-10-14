@@ -1,4 +1,4 @@
-import formatDate from '@/utils/format_data'
+import { formatDate } from '@/utils/date_format'
 import Link from 'next/link'
 import React from 'react'
 import { Download, FileEarmarkText } from 'react-bootstrap-icons'

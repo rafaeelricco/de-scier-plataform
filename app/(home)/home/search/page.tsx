@@ -1,9 +1,9 @@
 'use client'
-import { articles_under_review } from '@/app/as-reviewer/page'
 import { Dropdown } from '@/components/common/Dropdown/Dropdown'
 import PaginationComponent from '@/components/common/Pagination/Pagination'
-import ArticleItem from '@/components/modules/Home/Search/ArticleItem'
+import ArticleItem from '@/components/modules/Home/Search/ArticleItem/ArticleItem'
 import useDebounce from '@/hooks/useDebounce'
+import { articles } from '@/mock/articles_published'
 import { filter_order_by, filter_status } from '@/mock/dropdow_filter_options'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
@@ -16,7 +16,7 @@ import { Person, Search } from 'react-bootstrap-icons'
 export default function SearchArticlesPage() {
    const per_page = 6
    const [page, setPage] = React.useState(1)
-   const [results, setResults] = React.useState(articles_under_review)
+   const [results, setResults] = React.useState(articles)
    const [totalPages, setTotalPages] = React.useState(Math.ceil(results.length / per_page))
    const [searchTerm, setSearchTerm] = React.useState('')
    const debouncedSearchTerm = useDebounce(searchTerm, 500)
@@ -65,7 +65,6 @@ export default function SearchArticlesPage() {
                <div className="grid grid-cols-2 gap-4">
                   {results
                      .filter((article) => article.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
-                     .filter((article) => article.access_type !== null)
                      .slice((page - 1) * per_page, page * per_page)
                      .map((article) => (
                         <React.Fragment key={article.id}>
