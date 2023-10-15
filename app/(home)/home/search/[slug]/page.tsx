@@ -1,7 +1,9 @@
 'use client'
 
 import { ArticleAcess } from '@/components/modules/Home/Search/ArticleAccess/ArticleAcess'
+import { Checkout } from '@/components/modules/Home/Search/Purchase/Checkout'
 import { authors_mock } from '@/mock/submit_new_document'
+import * as Dialog from '@components/common/Dialog/Digalog'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import FacebookIcon from 'public/svgs/modules/home/article-details/facebook.svg'
@@ -11,12 +13,43 @@ import TwitterIcon from 'public/svgs/modules/home/article-details/twitter.svg'
 import WhatsAppIcon from 'public/svgs/modules/home/article-details/whatsapp.svg'
 import React from 'react'
 import { ArrowLeft, Eye, HandThumbsUp, HandThumbsUpFill } from 'react-bootstrap-icons'
+import sha256 from 'sha256'
 import { twMerge } from 'tailwind-merge'
 
 export default function Page({ params }: { params: { slug: string } }) {
    const router = useRouter()
+   const [purchase, setPurchase] = React.useState({ checkout: false, processing: false, success: false, error: false })
+
    return (
       <React.Fragment>
+         <Dialog.Root open={purchase.checkout || purchase.processing || purchase.success || purchase.error}>
+            <Dialog.Overlay />
+            <Dialog.Content className="max-w-[1024px] w-full h-fit">
+               {purchase.checkout && (
+                  <Checkout
+                     article={{
+                        image: 'https://source.unsplash.com/random/900×700/?technology',
+                        date: '11/11/2000',
+                        id: sha256('11/11/2000'),
+                        price: 48,
+                        title: 'Hardware security and blockchain systems on the new digital era'
+                     }}
+                     onPurchase={() => {
+                        setPurchase({ ...purchase, checkout: false, processing: true })
+                        setTimeout(() => {
+                           setPurchase({ ...purchase, processing: false, success: true })
+                        }, 3000)
+                     }}
+                     onSetPaymentOption={(value) => {
+                        console.log(value)
+                     }}
+                  />
+               )}
+               {/* {purchase.processing && <PurchaseProcessing />}
+                {purchase.success && <PurchaseSuccess />}
+                {purchase.error && <PurchaseError />} */}
+            </Dialog.Content>
+         </Dialog.Root>
          <div className="grid gap-8">
             <div className="flex items-center gap-4 pt-12">
                <ArrowLeft size={32} className="hover:scale-110 transition-all cursor-pointer" onClick={() => router.back()} />
@@ -180,7 +213,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                      <p className="text-lg">Like the article</p>
                   </div>
                </div>
-               <ArticleAcess access_type="paid" date="11/11/2000" value={48} />
+               <ArticleAcess access_type="paid" date="11/11/2000" value={48} onBuyDocument={() => setPurchase({ ...purchase, checkout: true })} />
             </div>
          </div>
       </React.Fragment>
