@@ -12,7 +12,18 @@ import { twMerge } from 'tailwind-merge'
 const Header: React.FC = () => {
    // See more about in https://nextjs.org/docs/app/api-reference/functions/use-pathname
    const currentPath = usePathname()
+   const url_splited = currentPath.split('/')
+   const array_path = url_splited.filter((item) => item !== 'home' && item !== '')
 
+   function verifyPath(path: string): boolean {
+      if (path === 'home') {
+         return array_path.length === 0
+      } else if (path === 'search') {
+         return array_path.includes('search')
+      } else {
+         return false
+      }
+   }
    return (
       <React.Fragment>
          <div className="py-3 px-8 bg-white flex items-center gap-8 rounded-full shadow-search w-fit justify-center">
@@ -25,7 +36,7 @@ const Header: React.FC = () => {
                            href={link.link}
                            className={twMerge(
                               'text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200',
-                              `${currentPath.endsWith(link.link) && 'font-semibold text-secundary_blue-main'}`
+                              `${verifyPath(link.label.toLowerCase()) && 'font-semibold text-secundary_blue-main'}`
                            )}
                         >
                            {link.label}
