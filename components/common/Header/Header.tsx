@@ -6,8 +6,8 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import DeScierLogo from 'public/svgs/common/logo/deScier - Logo.svg'
 import React from 'react'
+import sha256 from 'sha256'
 import { twMerge } from 'tailwind-merge'
-import { fromString } from 'uuidv4'
 
 const Header: React.FC = () => {
    // See more about in https://nextjs.org/docs/app/api-reference/functions/use-pathname
@@ -49,27 +49,27 @@ const Header: React.FC = () => {
 
 const links = [
    {
-      id: fromString('1'),
+      id: sha256('1'),
       label: 'Home',
       link: home_routes.home.index
    },
    {
-      id: fromString('2'),
+      id: sha256('2'),
       label: 'Search',
       link: home_routes.home.search
    },
    {
-      id: fromString('3'),
+      id: sha256('3'),
       label: 'About us',
       link: '/about-us'
    },
    {
-      id: fromString('4'),
+      id: sha256('4'),
       label: 'Dashboard',
       link: '/dashboard'
    },
    {
-      id: fromString('5'),
+      id: sha256('5'),
       label: 'My IP',
       link: '/my-ip'
    }

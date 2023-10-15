@@ -1,3 +1,4 @@
+import { formatAuthors } from '@/utils/format_authors'
 import { ArticleCardProps } from '@components/modules/Home/Index/ArticleCard/Typing'
 import '@styles/home.css'
 import Image from 'next/image'
@@ -13,14 +14,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ authors, id, likes, ta
             </div>
             <div className="grid gap-2">
                <div className="flex items-center gap-1 flex-wrap">
-                  {authors.map((author, index) => (
-                     <React.Fragment key={author.id}>
-                        <p className="text-sm text-[#5E6992]">
-                           {author.name}
-                           {index < authors.length - 1 && <span className="text-[#5E6992]">,</span>}
-                        </p>
-                     </React.Fragment>
-                  ))}
+                  <p className="text-sm text-[#5E6992]">{formatAuthors(authors)}</p>
                </div>
                <p className="text-base text-secundary_blue-main font-semibold">{title}</p>
                <div className="flex items-center gap-4">
