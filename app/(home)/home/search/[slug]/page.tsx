@@ -1,7 +1,7 @@
 'use client'
 
+import { ArticleAcess } from '@/components/modules/Home/Search/ArticleAccess/ArticleAcess'
 import { authors_mock } from '@/mock/submit_new_document'
-import * as Button from '@components/common/Button/Button'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import FacebookIcon from 'public/svgs/modules/home/article-details/facebook.svg'
@@ -10,7 +10,7 @@ import TelegramIcon from 'public/svgs/modules/home/article-details/telegram.svg'
 import TwitterIcon from 'public/svgs/modules/home/article-details/twitter.svg'
 import WhatsAppIcon from 'public/svgs/modules/home/article-details/whatsapp.svg'
 import React from 'react'
-import { ArrowLeft, Download, Eye, HandThumbsUp, HandThumbsUpFill } from 'react-bootstrap-icons'
+import { ArrowLeft, Eye, HandThumbsUp, HandThumbsUpFill } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 
 export default function Page({ params }: { params: { slug: string } }) {
@@ -86,7 +86,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                   </div>
                   <hr className="divider-h" />
                   <div>
-                     g <h6 className="text-base font-semibold">Authors</h6>
+                     <h6 className="text-base font-semibold">Authors</h6>
                      <div className="flex flex-col bg-[#F6F6FF] rounded-lg px-4">
                         {authors.map((author, index) => (
                            <React.Fragment key={author.id}>
@@ -180,17 +180,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                      <p className="text-lg">Like the article</p>
                   </div>
                </div>
-               <div className="flex flex-col gap-6 bg-white rounded-xl h-fit w-[490px] p-6">
-                  <div className="border border-neutral-stroke_light rounded-md px-2 py-1 w-full flex items-center flex-shrink gap-2 justify-center">
-                     <div className="w-3 h-3 bg-status-green rounded-full" />
-                     <p className="text-sm select-none">Open access</p>
-                  </div>
-                  <Button.Button className="flex gap-4 px-4 py-2">
-                     View document
-                     <Download className="w-5 h-5" />
-                  </Button.Button>
-                  <p className="text-base font-regular">Document published in 12/09/2023, 14:32</p>
-               </div>
+               <ArticleAcess access_type="paid" date="11/11/2000" value={48} />
             </div>
          </div>
       </React.Fragment>
