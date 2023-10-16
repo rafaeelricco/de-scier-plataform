@@ -4,6 +4,7 @@ import { ArticleAcess } from '@/components/modules/Home/Search/ArticleAccess/Art
 import { Checkout } from '@/components/modules/Home/Search/Purchase/Checkout'
 import { PurchaseError } from '@/components/modules/Home/Search/Purchase/Error'
 import { PurchaseProcessing } from '@/components/modules/Home/Search/Purchase/Processing'
+import { PurchasedArticles } from '@/components/modules/Home/Search/Purchase/PurchasedArticles'
 import { PurchaseSuccess } from '@/components/modules/Home/Search/Purchase/Success'
 import { authors_mock } from '@/mock/submit_new_document'
 import * as Dialog from '@components/common/Dialog/Digalog'
@@ -21,18 +22,19 @@ import { twMerge } from 'tailwind-merge'
 
 export default function Page({ params }: { params: { slug: string } }) {
    const router = useRouter()
-   const [purchase, setPurchase] = React.useState({ checkout: false, processing: false, success: false, error: false })
+   const [purchase, setPurchase] = React.useState({ checkout: false, processing: false, success: false, error: false, my_articles: false })
 
    return (
       <React.Fragment>
-         <Dialog.Root open={purchase.checkout || purchase.processing || purchase.success || purchase.error}>
+         <Dialog.Root open={purchase.checkout || purchase.processing || purchase.success || purchase.error || purchase.my_articles}>
             <Dialog.Overlay />
             <Dialog.Content
                className={twMerge(
                   'max-w-[1024px] w-full h-fit',
                   `${purchase.processing && 'max-w-[600px] px-16 py-14'}`,
                   `${purchase.success && 'max-w-[600px] px-16 py-14'}`,
-                  `${purchase.error && 'max-w-[600px] px-16 py-14'}`
+                  `${purchase.error && 'max-w-[600px] px-16 py-14'}`,
+                  `${purchase.my_articles && 'max-w-[80%]'}`
                )}
             >
                {purchase.checkout && (
@@ -56,7 +58,6 @@ export default function Page({ params }: { params: { slug: string } }) {
                      }}
                   />
                )}
-               {purchase.processing && <PurchaseProcessing />}
                {purchase.success && (
                   <PurchaseSuccess
                      onClose={() => {
@@ -71,6 +72,14 @@ export default function Page({ params }: { params: { slug: string } }) {
                   <PurchaseError
                      onClose={() => {
                         setPurchase({ ...purchase, error: false })
+                     }}
+                  />
+               )}
+               {purchase.processing && <PurchaseProcessing />}
+               {purchase.my_articles && (
+                  <PurchasedArticles
+                     onClose={() => {
+                        setPurchase({ ...purchase, my_articles: false })
                      }}
                   />
                )}
