@@ -248,7 +248,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                      <p className="text-lg">Like the article</p>
                   </div>
                </div>
-               <ArticleAcess access_type="paid" date="11/11/2000" value={48} onBuyDocument={() => setPurchase({ ...purchase, checkout: true })} />
+               <ArticleAcess access_type="author" date="11/11/2000" value={48} onBuyDocument={() => setPurchase({ ...purchase, checkout: true })} />
             </div>
          </div>
       </React.Fragment>
