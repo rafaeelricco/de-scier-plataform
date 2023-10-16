@@ -7,6 +7,7 @@ import * as Button from '@components/common/Button/Button'
 import CreditCardIcon from 'public/svgs/modules/home/checkout/credit-card.svg'
 import MetamaskIcon from 'public/svgs/modules/home/checkout/metamask.svg'
 import React from 'react'
+import { X } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 
 interface CheckoutProps {
@@ -19,11 +20,16 @@ interface CheckoutProps {
    }
    onSetPaymentOption?: (option: string) => void
    onPurchase: () => void
+   onClose: () => void
 }
 
-export const Checkout: React.FC<CheckoutProps> = ({ article, onPurchase, onSetPaymentOption }: CheckoutProps) => {
+export const Checkout: React.FC<CheckoutProps> = ({ article, onPurchase, onSetPaymentOption, onClose }: CheckoutProps) => {
    return (
       <React.Fragment>
+         <X
+            className="w-8 h-8 absolute top-4 right-4 cursor-pointer hover:text-status-error transition-all duration-500 ease-out hover:scale-110 hover:rotate-180 transform"
+            onClick={onClose}
+         />
          <div className="flex">
             <div className="flex flex-col gap-6 py-14 px-8 w-1/2">
                <h3 className="text-xl font-semibold">Purchase document</h3>
@@ -33,7 +39,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ article, onPurchase, onSetPa
             <hr className="divider-v h-full" />
             <div className="flex flex-col gap-6 py-14 px-8 w-1/2">
                <h3 className="text-lg font-semibold">Checkout options</h3>
-               <Resume article={article} onPurchase={onPurchase} onSetPaymentOption={onSetPaymentOption} />
+               <Resume article={article} onPurchase={onPurchase} onSetPaymentOption={onSetPaymentOption} onClose={onClose} />
             </div>
          </div>
       </React.Fragment>

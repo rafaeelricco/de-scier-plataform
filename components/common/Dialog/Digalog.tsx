@@ -54,7 +54,7 @@ const Content: React.FC<Dialog.DialogContentProps> = ({ children, className, ...
    return (
       <React.Fragment>
          <Dialog.Content
-            className={twMerge('content', 'bg-background-primary w-[50%] p-6 max-h-[95%] h-fit', className)}
+            className={twMerge('content', 'bg-background-primary w-[50%] p-6 max-h-[95%] h-fit transition-all duration-500', className)}
             {...props}
          >
             {children}
@@ -81,10 +81,7 @@ const Title: React.FC<TitleProps> = ({ onClear, onClose, title }: TitleProps) =>
                   Limpar Filtros
                </p>
             )}
-            <X
-               className="w-8 h-8 cursor-pointer transform duration-300 transition-transform hover:rotate-360 hover:scale-125"
-               onClick={onClose}
-            />
+            <X className="w-8 h-8 cursor-pointer transform duration-300 transition-transform hover:rotate-360 hover:scale-125" onClick={onClose} />
          </div>
       </div>
    )

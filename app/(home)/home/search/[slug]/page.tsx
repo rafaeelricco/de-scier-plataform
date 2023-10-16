@@ -2,6 +2,9 @@
 
 import { ArticleAcess } from '@/components/modules/Home/Search/ArticleAccess/ArticleAcess'
 import { Checkout } from '@/components/modules/Home/Search/Purchase/Checkout'
+import { PurchaseError } from '@/components/modules/Home/Search/Purchase/Error'
+import { PurchaseProcessing } from '@/components/modules/Home/Search/Purchase/Processing'
+import { PurchaseSuccess } from '@/components/modules/Home/Search/Purchase/Success'
 import { authors_mock } from '@/mock/submit_new_document'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import Image from 'next/image'
@@ -24,7 +27,14 @@ export default function Page({ params }: { params: { slug: string } }) {
       <React.Fragment>
          <Dialog.Root open={purchase.checkout || purchase.processing || purchase.success || purchase.error}>
             <Dialog.Overlay />
-            <Dialog.Content className="max-w-[1024px] w-full h-fit">
+            <Dialog.Content
+               className={twMerge(
+                  'max-w-[1024px] w-full h-fit',
+                  `${purchase.processing && 'max-w-[600px] px-16 py-14'}`,
+                  `${purchase.success && 'max-w-[600px] px-16 py-14'}`,
+                  `${purchase.error && 'max-w-[600px] px-16 py-14'}`
+               )}
+            >
                {purchase.checkout && (
                   <Checkout
                      article={{
@@ -35,19 +45,35 @@ export default function Page({ params }: { params: { slug: string } }) {
                         title: 'Hardware security and blockchain systems on the new digital era'
                      }}
                      onPurchase={() => {
-                        setPurchase({ ...purchase, checkout: false, processing: true })
-                        setTimeout(() => {
-                           setPurchase({ ...purchase, processing: false, success: true })
-                        }, 3000)
+                        setPurchase({ ...purchase, checkout: false, processing: true }),
+                           setTimeout(() => {
+                              setPurchase({ ...purchase, processing: false, checkout: false, success: true })
+                           }, 4000)
                      }}
+                     onClose={() => setPurchase({ ...purchase, checkout: false })}
                      onSetPaymentOption={(value) => {
                         console.log(value)
                      }}
                   />
                )}
-               {/* {purchase.processing && <PurchaseProcessing />}
-                {purchase.success && <PurchaseSuccess />}
-                {purchase.error && <PurchaseError />} */}
+               {purchase.processing && <PurchaseProcessing />}
+               {purchase.success && (
+                  <PurchaseSuccess
+                     onClose={() => {
+                        setPurchase({ ...purchase, success: false })
+                     }}
+                     onReturn={() => {
+                        setPurchase({ ...purchase, success: false, error: true })
+                     }}
+                  />
+               )}
+               {purchase.error && (
+                  <PurchaseError
+                     onClose={() => {
+                        setPurchase({ ...purchase, error: false })
+                     }}
+                  />
+               )}
             </Dialog.Content>
          </Dialog.Root>
          <div className="grid gap-8">
