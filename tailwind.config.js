@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+const withMT = require('@material-tailwind/react/utils/withMT')
+
+module.exports = withMT({
    darkMode: ['class'],
    content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
    theme: {
@@ -7,6 +9,22 @@ module.exports = {
          center: true,
          padding: '2rem',
          screens: { '2xl': '1400px' }
+      },
+      screens: {
+         sm: { max: '640px' },
+         // => @media (max-width: 640px) { ... }
+
+         md: { max: '768px' },
+         // => @media (max-width: 768px) { ... }
+
+         lg: { max: '1024px' },
+         // => @media (max-width: 1024px) { ... }
+
+         xl: { max: '1280px' },
+         // => @media (max-width: 1280px) { ... }
+
+         '2xl': { max: '1536px' }
+         // => @media (max-width: 1536px) { ... }
       },
       extend: {
          container: {
@@ -150,4 +168,4 @@ module.exports = {
       }
    },
    plugins: [require('tailwindcss-animate')]
-}
+})
