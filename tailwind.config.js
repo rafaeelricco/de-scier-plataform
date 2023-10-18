@@ -11,20 +11,20 @@ module.exports = withMT({
          screens: { '2xl': '1400px' }
       },
       screens: {
-         sm: { max: '640px' },
-         // => @media (max-width: 640px) { ... }
+         sm: '640px',
+         // => @media (min-width: 640px) { ... }
 
-         md: { max: '768px' },
-         // => @media (max-width: 768px) { ... }
+         md: '768px',
+         // => @media (min-width: 768px) { ... }
 
-         lg: { max: '1024px' },
-         // => @media (max-width: 1024px) { ... }
+         lg: '1024px',
+         // => @media (min-width: 1024px) { ... }
 
-         xl: { max: '1280px' },
-         // => @media (max-width: 1280px) { ... }
+         xl: '1280px',
+         // => @media (min-width: 1280px) { ... }
 
-         '2xl': { max: '1536px' }
-         // => @media (max-width: 1536px) { ... }
+         '2xl': '1536px'
+         // => @media (min-width: 1536px) { ... }
       },
       extend: {
          container: {
@@ -33,7 +33,8 @@ module.exports = withMT({
          },
          boxShadow: {
             dialog: 'hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px',
-            search: '0px 4px 8px 0px rgba(39, 0, 90, 0.07)'
+            search: '0px 4px 8px 0px rgba(39, 0, 90, 0.07)',
+            ligh: '0px 4px 8px 0px rgba(39, 0, 90, 0.07)'
          },
          gridTemplateColumns: {
             'auto-min': 'auto min-content'
