@@ -20,7 +20,6 @@ const Publications: React.FC = () => {
 
    return (
       <React.Fragment>
-         <div className="divider-v" />
          <div className="flex flex-col gap-4 h-full">
             <div className="grid grid-cols-2 items-start w-full h-fit">
                <button

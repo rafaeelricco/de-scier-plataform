@@ -17,11 +17,17 @@ export default function HomePage() {
             <Title.Title>My performance</Title.Title>
          </Title.Root>
          <div className="grid gap-8">
-            <Box className="submission-layout h-fit py-6 px-8">
-               <Submission />
-               <Publications />
+            <Box className="flex flex-col md:flex-row gap-5 items-center py-6 px-8">
+               <div className="w-full md:w-fit flex-shrink-0">
+                  <Submission />
+               </div>
+               <div className="divider-v" />
+               <div className="flex-grow">
+                  <Publications />
+               </div>
             </Box>
-            <div className="grid grid-cols-2 gap-8">
+
+            <div className="grid md:grid-cols-2 gap-8">
                <Box className="h-full py-6 px-8">
                   <h3 className="text-xl font-[500] lg:text-lg 2xl:text-xl">Statistics</h3>
                   <Statistics />

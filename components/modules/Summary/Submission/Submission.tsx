@@ -6,9 +6,9 @@ import { PlusCircle } from 'react-bootstrap-icons'
 const Submission: React.FC = () => {
    return (
       <React.Fragment>
-         <div className="grid gap-12 content-start">
+         <div className="grid gap-6 content-start w-full min-w-full lg:min-w-[242px] lg:gap-12">
             <h3 className="text-xl font-[500] lg:text-lg 2xl:text-xl">Submissions</h3>
-            <div className="grid justify-items-center gap-4">
+            <div className="flex flex-col justify-items-center gap-4 w-full">
                <div className="mx-auto my-0">
                   <PieChartComponent />
                </div>
@@ -22,9 +22,7 @@ const Submission: React.FC = () => {
                      <div className="flex items-center gap-3">
                         <div className="w-3 h-3 bg-status-pending rounded-full" />
                         <p className="text-base text-neutral-gray font-semibold lg:text-sm 2xl:text-base">33</p>
-                        <p className="text-base font-regular ext-secundary_blue-main lg:text-sm 2xl:text-base">
-                           Under Review
-                        </p>
+                        <p className="text-base font-regular ext-secundary_blue-main lg:text-sm 2xl:text-base">Under Review</p>
                      </div>
                   </div>
                   <hr className="divider-h" />
