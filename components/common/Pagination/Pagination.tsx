@@ -32,8 +32,7 @@ export default function PaginationComponent({
       <>
          <div className="flex items-center gap-2">
             <CaretLeftSquare
-               size={24}
-               className="transition-all duration-200 hover:scale-110 rounded-xs fill-[#5E6992] cursor-pointer"
+               className="w-6 h-5 transition-all duration-200 hover:scale-110 rounded-xs fill-[#5E6992] cursor-pointer"
                onClick={() => handleFirstPage?.()}
             />
             <CaretLeft
@@ -46,15 +45,14 @@ export default function PaginationComponent({
                }}
                onClick={() => handlePreviousPage?.()}
             />
-            <p className="lg:text-sm 2xl:text-base">Página</p>
-            <p className="w-8 h-8 border border-blue-gray rounded-xs grid justify-items-center items-center fill-blue-gray lg:w-6 lg:h-6 lg:text-sm 2xl:text-base 2xl:h-8 2xl:w-8">
+            <p className="text-sm md:text-base">Página</p>
+            <p className="w-5 h-fit md:w-8 md:h-8 border border-blue-gray rounded-xs grid justify-items-center items-center fill-blue-gray text-sm md:text-base">
                {currentPage}
             </p>
-            <p className="lg:text-sm 2xl:text-base">de</p>
-            <p className="lg:text-sm 2xl:text-base">{totalPages()}</p>
+            <p className="text-sm md:text-base">de</p>
+            <p className="text-sm md:text-base">{totalPages()}</p>
             <CaretRight
-               size={24}
-               className="transition-all duration-200 hover:scale-110 rounded-xs fill-[#5E6992] cursor-pointer"
+               className="w-5 h-5 transition-all duration-200 hover:scale-110 rounded-xs fill-[#5E6992] cursor-pointer"
                style={{
                   cursor: 'pointer',
                   pointerEvents: currentPage === totalPages() ? 'none' : 'auto',
@@ -63,8 +61,7 @@ export default function PaginationComponent({
                onClick={() => handleNextPage?.()}
             />
             <CaretRightSquare
-               size={24}
-               className="transition-all duration-200 hover:scale-110 rounded-xs fill-[#5E6992] cursor-pointer"
+               className="w-6 h-5 transition-all duration-200 hover:scale-110 rounded-xs fill-[#5E6992] cursor-pointer"
                onClick={() => handleLastPage?.()}
             />
          </div>

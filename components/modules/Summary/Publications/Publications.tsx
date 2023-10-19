@@ -21,7 +21,7 @@ const Publications: React.FC = () => {
    return (
       <React.Fragment>
          <div className="flex flex-col gap-4 h-full">
-            <div className="grid grid-cols-2 items-start w-full h-fit">
+            <div className="grid md:grid-cols-2 items-start w-full h-fit">
                <button
                   data-active={publications}
                   className="py-2 px-4 font-semibold text-base text-[#009EAB] rounded-[32px] w-full data-[active='true']:bg-[#F1FFFF] transition-all duration-200 data-[active='false']:text-neutral-light_gray data-[active='false']:font-regular lg:text-sm 2xl:text-base select-none"
@@ -50,7 +50,7 @@ const Publications: React.FC = () => {
                </button>
             </div>
             {publications && (
-               <div className="bg-[#F1FFFF] h-full rounded-md transition-all duration-200 p-4">
+               <div className="bg-[#F1FFFF] h-full rounded-md transition-all duration-200 p-3 md:p-4">
                   <div className="grid gap-4 h-full">
                      {results.slice((page - 1) * per_page, page * per_page).map((item) => (
                         <React.Fragment key={item.id}>
@@ -82,7 +82,7 @@ const Publications: React.FC = () => {
                </div>
             )}
             {underReview && (
-               <div className="bg-[#FFF4DE] h-full rounded-md transition-all duration-200 p-4">
+               <div className="bg-[#FFF4DE] h-full rounded-md transition-all duration-200  p-3 md:p-4">
                   <div className="grid gap-4 h-full">
                      {resultsReview.slice((pageReview - 1) * per_page, pageReview * per_page).map((item) => (
                         <React.Fragment key={item.id}>

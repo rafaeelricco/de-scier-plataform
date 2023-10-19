@@ -10,39 +10,33 @@ import React from 'react'
 const Footer: React.FC = () => {
    return (
       <React.Fragment>
-         <div className="bg-[#110838] grid grid-flow-col justify-items-center gap-40 w-full h-fit py-14 px-56 lg:px-56 lg:gap-20 2xl:gap-40 2xl:px-56">
+         <div className="bg-[#110838] grid md:grid-flow-col justify-items-center gap-8 md:gap-40 w-full h-fit py-14 md:py-14 px-6 md:px-56">
             <div className="grid gap-4 items-center justify-items-center content-center">
-               <LogoDeScier className="w-full max-w-[160px] lg:w-32 2xl:w-40" />
-               <p className="text-sm text-neutral-light_gray max-w-[20ch] text-center">
-                  Copyright © deScier 2023. All rights reserved.
-               </p>
+               <LogoDeScier className="w-full max-w-[137px] md:max-w-[160px] lg:w-32 2xl:w-40" />
+               <p className="text-sm text-neutral-light_gray max-w-[20ch] text-center">Copyright © deScier 2023. All rights reserved.</p>
             </div>
-            <div className="grid gap-4 content-start">
+            <div className="grid gap-4 w-full content-start">
                <p className="text-lg font-semibold text-neutral-white">Social media</p>
                {social_media.map((item) => (
                   <React.Fragment key={item.id}>
                      <div className="flex items-center gap-6">
                         <span className="text-neutral-white">{item.icon}</span>
-                        <p className="text-sm text-neutral-white font-semibold select-none hover:text-secundary-main cursor-pointer">
-                           {item.name}
-                        </p>
+                        <p className="text-sm text-neutral-white font-semibold select-none hover:text-secundary-main cursor-pointer">{item.name}</p>
                      </div>
                   </React.Fragment>
                ))}
             </div>
-            <div className="grid gap-4 content-start">
+            <div className="grid gap-4 w-full ontent-start">
                <p className="text-lg font-semibold text-neutral-white">Links</p>
                {links.map((item) => (
                   <React.Fragment key={item.id}>
                      <div className="flex items-center gap-6">
-                        <p className="text-sm text-neutral-white font-semibold select-none hover:text-secundary-main cursor-pointer">
-                           {item.name}
-                        </p>
+                        <p className="text-sm text-neutral-white font-semibold select-none hover:text-secundary-main cursor-pointer">{item.name}</p>
                      </div>
                   </React.Fragment>
                ))}
             </div>
-            <div className="grid gap-4 content-start">
+            <div className="grid gap-4 w-full content-start">
                <p className="text-lg font-semibold text-neutral-white">Contact</p>
                <div className="grid gap-1">
                   <div className="flex items-center gap-3">
@@ -65,18 +59,14 @@ const Footer: React.FC = () => {
                         <p className="text-sm text-neutral-white font-semibold select-none">Whatsapp</p>
                      </div>
                   </div>
-                  <p className="text-sm text-neutral-white font-regular select-none hover:text-secundary-main cursor-pointer">
-                     +55 11 3129-5000
-                  </p>
+                  <p className="text-sm text-neutral-white font-regular select-none hover:text-secundary-main cursor-pointer">+55 11 3129-5000</p>
                </div>
                <div className="grid gap-1">
                   <div className="flex items-center gap-3">
                      <EmailIcon className="w-4 h-4" />
                      <p className="text-sm text-neutral-white font-semibold select-none">E-mail</p>
                   </div>
-                  <p className="text-sm text-neutral-white font-regular select-none hover:text-secundary-main cursor-pointer">
-                     contact@descier.science
-                  </p>
+                  <p className="text-sm text-neutral-white font-regular select-none hover:text-secundary-main cursor-pointer">contact@descier.science</p>
                </div>
             </div>
          </div>

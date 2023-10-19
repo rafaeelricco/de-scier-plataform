@@ -18,19 +18,19 @@ const PublicationItem: React.FC<PublicationItemProps> = ({ date, link, likes, vi
          <div className="grid md:grid-flow-col md:justify-start items-center gap-4">
             <Image src={image} width={420} height={80} alt={title} style={{ objectFit: 'cover' }} className="rounded-md h-20 w-full object-cover" />
             <div className="grid gap-2">
-               <h6 className="text-lg font-semibold text-secundary_blue-main lg:text-sm 2xl:text-lg">{title}</h6>
+               <h6 className="text-sm md:text-base lg:text-lg font-semibold text-secundary_blue-main">{title}</h6>
                <div className="flex gap-2 items-center">
                   <div className="flex items-center gap-1">
                      <HandThumbsUpFill className="text-terciary-main lg:w-4 2xl:w-5" />
-                     <p className="text-base text-neutral-gray lg:text-sm 2xl:text-base">{likes}</p>
+                     <p className="text-sm md:text-base text-neutral-gray">{likes}</p>
                   </div>
                   <span className="text-neutral-gray">•</span>
                   <div className="flex items-center gap-1">
                      <Eye className="text-terciary-main lg:w-4 2xl:w-5" />
-                     <p className="text-base text-neutral-gray lg:text-sm 2xl:text-base">{views}</p>
+                     <p className="text-sm md:text-base text-neutral-gray">{views}</p>
                   </div>
                   <span className="text-neutral-light_gray">•</span>
-                  <p className="text-base text-neutral-gray lg:text-sm 2xl:text-base">{date}</p>
+                  <p className="text-sm md:text-base text-neutral-gray">{date}</p>
                </div>
             </div>
          </div>

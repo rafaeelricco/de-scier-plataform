@@ -39,7 +39,7 @@ const Title: React.FC<{ children: React.ReactNode; className?: string }> = ({
 }) => {
    return (
       <React.Fragment>
-         <h1 className={twMerge('text-2xl font-semibold lg:text-1xl 2xl:text-2xl', className)}>{children}</h1>
+         <h1 className={twMerge('text-1xl md:text-2xl lg:text-3xl font-semibold', className)}>{children}</h1>
       </React.Fragment>
    )
 }
