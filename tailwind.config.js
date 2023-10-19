@@ -37,7 +37,8 @@ module.exports = withMT({
             ligh: '0px 4px 8px 0px rgba(39, 0, 90, 0.07)'
          },
          gridTemplateColumns: {
-            'auto-min': 'auto min-content'
+            'auto-min': 'auto min-content',
+            'max-auto': 'max-content auto'
          },
          fontSize: {
             xxs: '0.625rem',

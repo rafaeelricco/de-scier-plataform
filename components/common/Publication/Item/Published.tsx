@@ -12,26 +12,11 @@ export interface PublicationItemProps {
    image: string
 }
 
-const PublicationItem: React.FC<PublicationItemProps> = ({
-   date,
-   link,
-   likes,
-   views,
-   id,
-   title,
-   image
-}: PublicationItemProps) => {
+const PublicationItem: React.FC<PublicationItemProps> = ({ date, link, likes, views, id, title, image }: PublicationItemProps) => {
    return (
       <React.Fragment>
-         <div className="grid grid-flow-col justify-start items-center gap-4">
-            <Image
-               src={image}
-               width={80}
-               height={80}
-               alt={title}
-               style={{ objectFit: 'cover' }}
-               className="rounded-md lg:w-16 lg:h-16 2xl:w-20 2xl:h-20"
-            />
+         <div className="grid md:grid-flow-col md:justify-start items-center gap-4">
+            <Image src={image} width={420} height={80} alt={title} style={{ objectFit: 'cover' }} className="rounded-md h-20 w-full object-cover" />
             <div className="grid gap-2">
                <h6 className="text-lg font-semibold text-secundary_blue-main lg:text-sm 2xl:text-lg">{title}</h6>
                <div className="flex gap-2 items-center">

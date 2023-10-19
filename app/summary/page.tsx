@@ -13,7 +13,7 @@ import React from 'react'
 export default function HomePage() {
    return (
       <React.Fragment>
-         <Title.Root>
+         <Title.Root className="mb-4 md:mb-8">
             <Title.Title>My performance</Title.Title>
          </Title.Root>
          <div className="grid gap-8">
@@ -22,11 +22,10 @@ export default function HomePage() {
                   <Submission />
                </div>
                <div className="divider-v" />
-               <div className="flex-grow">
+               <div className="w-full md:flex-grow">
                   <Publications />
                </div>
             </Box>
-
             <div className="grid md:grid-cols-2 gap-8">
                <Box className="h-full py-6 px-8">
                   <h3 className="text-xl font-[500] lg:text-lg 2xl:text-xl">Statistics</h3>
