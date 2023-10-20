@@ -108,12 +108,12 @@ const links = [
    {
       id: sha256('3'),
       label: 'About us',
-      link: '/about-us'
+      link: 'https://descier.science/'
    },
    {
       id: sha256('4'),
       label: 'Dashboard',
-      link: '/dashboard'
+      link: home_routes.summary
    },
    {
       id: sha256('5'),
