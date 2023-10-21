@@ -9,13 +9,7 @@ import { ArrowLeft, BoxArrowRight, X } from 'react-bootstrap-icons'
 import LoginAnimation from '../Login/Animation/Animation'
 import { RegisterModalProps } from './Typing'
 
-const RegisterModal: React.FC<RegisterModalProps> = ({
-   onClose,
-   onRegister,
-   onBack,
-   onLogin,
-   onReturnToLogin
-}: RegisterModalProps) => {
+const RegisterModal: React.FC<RegisterModalProps> = ({ onClose, onRegister, onBack, onLogin, onReturnToLogin }: RegisterModalProps) => {
    const { loading, start, stop } = useLoading()
 
    const success_component = 'success'
@@ -34,14 +28,19 @@ const RegisterModal: React.FC<RegisterModalProps> = ({
 
    return (
       <form onSubmit={onSubmit}>
-         <div className="grid grid-cols-2">
+         <div className="grid md:grid-cols-2 relative">
             <LoginAnimation />
-            <div className="w-ful grid gap-6 py-14 px-16 relative">
+            <X
+               size={32}
+               className="md:hidden absolute z-20 bg-white rounded-md right-4 top-4 cursor-pointer hover:scale-110 transition-all duration-200"
+               onClick={onClose}
+            />
+            <div className="w-ful grid gap-6 md:p-16 relative p-6 pb-12">
                {component !== success_component && (
                   <React.Fragment>
                      <X
                         size={32}
-                        className="absolute right-4 top-4 cursor-pointer hover:scale-110 transition-all duration-200"
+                        className="hidden md:absolute right-4 top-4 cursor-pointer hover:scale-110 transition-all duration-200"
                         onClick={onClose}
                      />
                      <div className="flex items-center gap-4">
@@ -55,10 +54,7 @@ const RegisterModal: React.FC<RegisterModalProps> = ({
                      <h2 className="font-semibold text-1xl">Almost there!</h2>
                      <SuccessIllustration className="w-96" />
                      <div className="grid gap-6">
-                        <p className="text-base">
-                           Your account creation is almost complete -We’ve sent an account validation link to your e-mail
-                           inbox.
-                        </p>
+                        <p className="text-base">Your account creation is almost complete -We’ve sent an account validation link to your e-mail inbox.</p>
                         <Button.Button variant="outline" onClick={onReturnToLogin}>
                            Return to login
                         </Button.Button>

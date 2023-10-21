@@ -59,7 +59,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onBack, onClo
             <InsertNewPassword onClose={onClose} onContinue={handleInsertNewPasswordContinue} onBack={handleInsertCodeBack} />
          )}
          {component.success && (
-            <div className="w-ful grid gap-6 py-14 px-16 relative">
+            <div className="w-ful grid gap-6 md:p-16 relative p-6 pb-12">
                <GenericSuccess text="Password updated" message="Your password was updated." button_text="Return" onClose={onClose} />
             </div>
          )}
@@ -89,7 +89,7 @@ type InsertEmailProps = { onClose: () => void; onBack: () => void; onContinue: (
 const InserEmail: React.FC<InsertEmailProps> = ({ onBack, onClose, onContinue }: InsertEmailProps) => {
    return (
       <React.Fragment>
-         <div className="w-ful grid gap-6 py-14 px-16 relative">
+         <div className="w-ful grid gap-6 md:p-16 relative p-6 pb-12">
             <Header onBack={onBack} onClose={onClose} />
             <div className="grid gap-6">
                <div className="grid gap-6">
@@ -110,7 +110,7 @@ type InsertCodeProps = { onClose: () => void; onBack: () => void; onContinue: ()
 const InsertCode: React.FC<InsertCodeProps> = ({ onBack, onClose, onContinue }: InsertCodeProps) => {
    return (
       <React.Fragment>
-         <div className="w-ful grid gap-6 py-14 px-16 relative">
+         <div className="w-ful grid gap-6 md:p-16 relative p-6 pb-12">
             <Header onBack={onBack} onClose={onClose} />
             <div className="grid gap-6">
                <p className="text-base">
@@ -135,7 +135,7 @@ type InsertNewPasswordProps = { onClose: () => void; onBack: () => void; onConti
 const InsertNewPassword: React.FC<InsertNewPasswordProps> = ({ onBack, onClose, onContinue }: InsertNewPasswordProps) => {
    return (
       <React.Fragment>
-         <div className="w-ful grid gap-6 py-14 px-16 relative">
+         <div className="w-ful grid gap-6 md:p-16 relative p-6 pb-12">
             <Header onBack={onBack} onClose={onClose} />
             <div className="grid gap-6">
                <div className="grid gap-6">
