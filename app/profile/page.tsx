@@ -40,7 +40,11 @@ export default function ProfilePage() {
          <Dialog.Root open={profile.edit_profile || profile.edit_profile_sucess}>
             <Dialog.Overlay />
             <Dialog.Content
-               className={twMerge('py-14 px-16', `${profile.edit_profile && 'max-w-[808px]'}`, `${profile.edit_profile_sucess && 'max-w-[480px]'}`)}
+               className={twMerge(
+                  'pt-6 px-6 pb-14 md:py-14 md:px-16',
+                  `${profile.edit_profile && 'max-w-[808px]'}`,
+                  `${profile.edit_profile_sucess && 'max-w-[480px]'}`
+               )}
             >
                <UpdateProfile
                   name="Caroline Nunes"
@@ -54,7 +58,7 @@ export default function ProfilePage() {
          </Dialog.Root>
          <Dialog.Root open={email.insert_password_to_edit_email || email.new_email || email.new_email_sucess}>
             <Dialog.Overlay />
-            <Dialog.Content className={twMerge('py-14 px-16 max-w-[480px]')}>
+            <Dialog.Content className={twMerge('pt-6 px-6 pb-14 md:py-14 md:px-16 max-w-[480px]')}>
                <UpdateEmail
                   insert_password={email.insert_password_to_edit_email}
                   new_email={email.new_email}
@@ -77,7 +81,7 @@ export default function ProfilePage() {
          </Dialog.Root>
          <Dialog.Root open={password.insert_password_to_edit_password || password.new_password || password.new_password_sucess}>
             <Dialog.Overlay />
-            <Dialog.Content className={twMerge('py-14 px-16 max-w-[480px]')}>
+            <Dialog.Content className={twMerge('pt-6 px-6 pb-14 md:py-14 md:px-16 max-w-[480px]')}>
                <UpdatePassword
                   new_password={password.new_password}
                   insert_current_password={password.insert_password_to_edit_password}
@@ -138,9 +142,9 @@ export default function ProfilePage() {
                   />
                   <div className="grid gap-2">
                      <h1 className="text-xl text-secundary_blue-main font-semibold flex justify-center lg:text-lg 2xl:text-xl">Caroline Nunes</h1>
-                     <div className="grid grid-flow-col items-center justify-center gap-4">
-                        <p className="text-sm text-primary-main font-regular select-none">Biologist</p>
-                        <hr className="divider-v" />
+                     <div className="grid md:grid-flow-col items-center justify-center gap-2 md:gap-4">
+                        <p className="text-sm text-primary-main font-regular select-none text-center">Biologist</p>
+                        <hr className="divider-h md:divider-v" />
                         <div className="flex items-center gap-2">
                            <Envelope className="w-4 h-5 fill-neutral-gray" />
                            <p className="text-sm text-neutral-gray select-none">caroline@emanagroup.com</p>
@@ -152,10 +156,10 @@ export default function ProfilePage() {
                <div className="grid gap-4">
                   <div className="grid gap-4">
                      <h3 className="text-lg font-semibold">Settings</h3>
-                     <div className="grid grid-cols-2 gap-6">
+                     <div className="grid md:grid-cols-2 gap-4 md:gap-6">
                         <motion.div
                            whileTap={{ scale: 0.95 }}
-                           className="border py-14 px-2 flex items-center justify-center gap-4 rounded-lg cursor-pointer hover:border-primary-light transition-colors duration-300 ease-in-out"
+                           className="border py-6 md:py-14 px-2 flex items-center justify-center gap-4 rounded-lg cursor-pointer hover:border-primary-light transition-colors duration-300 ease-in-out"
                            onClick={() => setProfile({ ...profile, edit_profile: true })}
                         >
                            <Pencil className="w-5 h-5 fill-neutral-gray" />
@@ -163,7 +167,7 @@ export default function ProfilePage() {
                         </motion.div>
                         <motion.div
                            whileTap={{ scale: 0.95 }}
-                           className="border py-14 px-2 flex items-center justify-center gap-4 rounded-lg cursor-pointer hover:border-primary-light transition-colors duration-300 ease-in-out"
+                           className="border py-6 md:py-14 px-2 flex items-center justify-center gap-4 rounded-lg cursor-pointer hover:border-primary-light transition-colors duration-300 ease-in-out"
                            onClick={() => setEmail({ ...email, insert_password_to_edit_email: true })}
                         >
                            <Envelope className="w-5 h-5 fill-neutral-gray" />
@@ -171,7 +175,7 @@ export default function ProfilePage() {
                         </motion.div>
                         <motion.div
                            whileTap={{ scale: 0.95 }}
-                           className="border py-14 px-2 flex items-center justify-center gap-4 rounded-lg cursor-pointer hover:border-primary-light transition-colors duration-300 ease-in-out"
+                           className="border py-6 md:py-14 px-2 flex items-center justify-center gap-4 rounded-lg cursor-pointer hover:border-primary-light transition-colors duration-300 ease-in-out"
                            onClick={() => setPassword({ ...password, insert_password_to_edit_password: true })}
                         >
                            <Lock className="w-5 h-5 fill-neutral-gray" />
@@ -179,7 +183,7 @@ export default function ProfilePage() {
                         </motion.div>
                         <motion.div
                            whileTap={{ scale: 0.95 }}
-                           className="border py-14 px-2 flex items-center justify-center gap-4 rounded-lg cursor-pointer hover:border-primary-light transition-colors duration-300 ease-in-out"
+                           className="border py-6 md:py-14 px-2 flex items-center justify-center gap-4 rounded-lg cursor-pointer hover:border-primary-light transition-colors duration-300 ease-in-out"
                         >
                            <BoxArrowRight className="w-5 h-5 fill-neutral-gray" />
                            <p className="text-base text-neutral-gray">Log out</p>

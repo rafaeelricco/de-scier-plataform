@@ -21,7 +21,7 @@ const UpdateProfile: React.FC<UpdateProfileProps> = ({ onClose, onConfirm, name,
                <div className="grid gap-2">
                   <h3 className="text-xl font-semibold">Edit profile</h3>
                </div>
-               <div className="flex items-center gap-6">
+               <div className="flex flex-col md:flex-row items-center gap-6">
                   <Image
                      quality={50}
                      width={160}
@@ -34,7 +34,7 @@ const UpdateProfile: React.FC<UpdateProfileProps> = ({ onClose, onConfirm, name,
                      <Dropzone placeholder="Upload profile picture" setSelectedFile={(file) => console.log(file)} />
                   </div>
                </div>
-               <div className="flex items-center gap-4">
+               <div className="flex flex-col md:flex-row items-center gap-4">
                   <Input.Root>
                      <Input.Label>Name</Input.Label>
                      <Input.Input defaultValue={name} placeholder="Your name" />
