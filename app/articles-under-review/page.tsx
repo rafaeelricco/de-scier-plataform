@@ -34,16 +34,11 @@ export default function ArticlesUnderReviewPage() {
                </div>
                <div className="flex items-center gap-2">
                   <Dropdown items={filter_order_by} label="Order by:" onSelect={(value) => console.log(value)} />
-                  <Dropdown
-                     label="Status:"
-                     className="min-w-[180px]"
-                     items={filter_status}
-                     onSelect={(value) => console.log(value)}
-                  />
+                  <Dropdown label="Status:" className="min-w-[180px]" items={filter_status} onSelect={(value) => console.log(value)} />
                </div>
             </div>
             <div className="grid gap-8">
-               <div className="grid grid-cols-2 gap-4">
+               <div className="grid md:grid-cols-2 gap-4">
                   {results.slice((page - 1) * per_page, page * per_page).map((article) => (
                      <React.Fragment key={article.id}>
                         <ArticleUnderReview
