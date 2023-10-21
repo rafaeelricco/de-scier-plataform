@@ -97,32 +97,32 @@ const PublishedStatus: React.FC<PublishedStatusProps> = ({ published_date, acces
                {access_type == 'open' ? (
                   <React.Fragment>
                      <div className="flex gap-2 items-center">
-                        <div className="w-3 h-3 bg-status-green rounded-full" />
+                        <div className="w-2 h-2 md:w-3 md:h-3 bg-status-green rounded-full" />
                         <p className="text-sm">Open access</p>
                         <span className="text-neutral-gray">•</span>
                         <div className="flex items-center gap-1">
-                           <HandThumbsUpFill className="text-terciary-main lg:w-4 2xl:w-5" />
-                           <p className="text-base text-neutral-gray lg:text-sm 2xl:text-base">{likes}</p>
+                           <HandThumbsUpFill className="text-terciary-main w-4 h-4 md:w-5 md:h-5" />
+                           <p className="text-sm md:text-base text-neutral-gray">{likes}</p>
                         </div>
                         <div className="flex items-center gap-1">
-                           <Eye className="text-terciary-main lg:w-4 2xl:w-5" />
-                           <p className="text-base text-neutral-gray lg:text-sm 2xl:text-base">{views}</p>
+                           <Eye className="text-terciary-main w-4 h-4 md:w-5 md:h-5" />
+                           <p className="text-sm md:text-base text-neutral-gray">{views}</p>
                         </div>
                      </div>
                   </React.Fragment>
                ) : (
                   <React.Fragment>
                      <div className="flex gap-2 items-center">
-                        <div className="w-3 h-3 bg-secundary_purple-main rounded-full" />
+                        <div className="w-2 h-2 md:w-3 md:h-3 bg-secundary_purple-main rounded-full" />
                         <p className="text-sm">Paid access</p>
                         <div className="flex items-center gap-1">
-                           <HandThumbsUpFill className="text-terciary-main lg:w-4 2xl:w-5" />
-                           <p className="text-base text-neutral-gray lg:text-sm 2xl:text-base">{likes}</p>
+                           <HandThumbsUpFill className="text-terciary-main w-4 h-4 md:w-5 md:h-5" />
+                           <p className="text-sm md:text-base text-neutral-gray">{likes}</p>
                         </div>
                         <span className="text-neutral-gray">•</span>
                         <div className="flex items-center gap-1">
-                           <Eye className="text-terciary-main lg:w-4 2xl:w-5" />
-                           <p className="text-base text-neutral-gray lg:text-sm 2xl:text-base">{views}</p>
+                           <Eye className="text-terciary-main w-4 h-4 md:w-5 md:h-5" />
+                           <p className="text-sm md:text-base text-neutral-gray">{views}</p>
                         </div>
                      </div>
                   </React.Fragment>

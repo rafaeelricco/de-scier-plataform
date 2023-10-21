@@ -2,7 +2,7 @@
 
 import { ArticleCard } from '@/components/modules/Home/Index/ArticleCard/ArticleCard'
 import { BannerStartPublishing } from '@/components/modules/Home/Index/BannerStartPublishing/BannerStartPublishing'
-import useWindowDimension from '@/hooks/useWindowDimension'
+import useDimension from '@/hooks/useWindowDimension'
 import { articles } from '@/mock/articles_published'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
@@ -17,23 +17,23 @@ import React from 'react'
 import { CaretRightFill, Eye, HandThumbsUpFill, Person, Search } from 'react-bootstrap-icons'
 
 export default function HomePage() {
-   const { md, lg } = useWindowDimension()
-   console.log('md:', md)
-   console.log('lg:', lg)
+   const { lg } = useDimension()
 
    return (
       <React.Fragment>
-         <IllustrationHero className="absolute right-0 top-60 w-full h-full max-w-[708px] max-h-[554px]" />
-         <ShapeHero className="absolute right-0 top-0 z-[-1] w-full h-full max-w-[742px] max-h-[872px]" />
-         <div className="hero pt-24">
+         <IllustrationHero className="hidden absolute right-0 top-60 w-full h-full max-w-[708px] max-h-[554px]" />
+         <ShapeHero className="hidden absolute right-0 top-0 z-[-1] w-full h-full max-w-[742px] max-h-[872px]" />
+         <div className="hero lg:pt-24">
             <div className="grid gap-6 content-start">
-               <div className="grid gap-2 mt-28">
-                  <h1 className="font-bold text-5xl max-w-[20ch] bg-purple bg-clip-text text-transparent">A new future for scientific publications</h1>
+               <div className="grid gap-2 mt-8 lg:mt-28">
+                  <h1 className="text-3xl font-bold lg:text-5xl max-w-[20ch] bg-purple bg-clip-text text-transparent">
+                     A new future for scientific publications
+                  </h1>
                   <p className="text-lg max-w-[50ch]">
                      In deScier, scientific papers are published in a community created by scientists, for scientists.{' '}
                   </p>
                </div>
-               <div className="py-3 px-4 bg-white flex items-center gap-4 rounded-full shadow-search w-fit h-fit">
+               <div className="py-3 px-4 bg-white flex flex-col lg:flex-row lg:items-center gap-4 rounded-xl lg:rounded-full shadow-search lg:w-fit h-fit">
                   <Input.Input
                      className="rounded-full py-3 px-4 border-neutral-stroke_light bg-transparent shadow-none border focus:outline-none focus:border-neutral-stroke_light text-sm"
                      placeholder="Find articles with terms"
@@ -52,7 +52,7 @@ export default function HomePage() {
                         </React.Fragment>
                      }
                   />
-                  <Button.Button variant="outline" className="rounded-full py-3 px-6 text-sm">
+                  <Button.Button variant="outline" className="rounded-full py-3 px-6 text-sm w-full">
                      Search
                      <Search className="w-5 h-5" />
                   </Button.Button>
@@ -74,7 +74,7 @@ export default function HomePage() {
             <div className="relative h-fit">
                <div className="border-neutral-stroke_light rounded-3xl shadow-search backdrop-blur-md bg-white-home px-8 py-6 grid gap-4 relative z-10">
                   <h3 className="text-3xl font-semibold bg-purple bg-clip-text text-transparent">Top papers of the week</h3>
-                  <div className="w-full min-h-[600px] grid grid-cols-2 grid-rows-2 gap-6 z-0">
+                  <div className="w-full min-h-[600px] grid lg:grid-cols-2 lg:grid-rows-2 gap-6 z-0">
                      <div className="p-8 rounded-md h-full row-span-2 relative">
                         <div className="relative flex justify-between z-10">
                            <div className="bg-white px-3 py-1 text-primary-main rounded-md w-fit h-fit text-sm font-semibold">24/06/2023</div>
@@ -179,11 +179,11 @@ export default function HomePage() {
                <div className="relative z-20">
                   <div className="px-72 grid gap-8">
                      <div className="grid gap-10">
-                        <div className="latest-articles gap-x-6 gap-y-8">
+                        <div className="lg:grid lg:grid-cols-4-min-content gap-x-6 lg:gap-y-8">
                            <h3 className="text-3xl font-semibold col-span-4">Latest articles</h3>
-                           {articles.slice(0, 8).map((article, index) => (
+                           {articles.slice(0, lg ? 8 : 3).map((article, index) => (
                               <React.Fragment key={article.id}>
-                                 <div className="grid grid-flow-col gap-6">
+                                 <div className="grid lg:grid-flow-col gap-6">
                                     <ArticleCard
                                        id={article.id}
                                        authors={article.authors}

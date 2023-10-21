@@ -5,11 +5,9 @@ import PaginationComponent from '@/components/common/Pagination/Pagination'
 import ArticleUnderReview, { ArticleUnderReviewProps } from '@/components/common/Publication/Item/ArticlesUnderReview'
 import { filter_order_by, filter_status } from '@/mock/dropdow_filter_options'
 import { home_routes } from '@/routes/home'
-import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
 import React from 'react'
-import { Search } from 'react-bootstrap-icons'
 import slug from 'slug'
 
 export default function ArticlesUnderReviewPage() {
@@ -27,12 +25,8 @@ export default function ArticlesUnderReviewPage() {
             <div className="grid gap-6">
                <div className="flex items-center gap-2">
                   <Input.Search placeholder="Find articles with this terms" />
-                  <Button.Button className="px-4 py-3 h-fit text-sm">
-                     Search
-                     <Search />
-                  </Button.Button>
                </div>
-               <div className="flex items-center gap-2">
+               <div className="flex flex-col md:flex-row md:items-center gap-2">
                   <Dropdown items={filter_order_by} label="Order by:" onSelect={(value) => console.log(value)} />
                   <Dropdown label="Status:" className="min-w-[180px]" items={filter_status} onSelect={(value) => console.log(value)} />
                </div>

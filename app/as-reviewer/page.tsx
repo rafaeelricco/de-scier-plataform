@@ -66,7 +66,7 @@ export default function AsReviewerPage() {
                      </div>
                   </TabsContent>
                   <TabsContent value="password">
-                     <div className="grid grid-cols-2 gap-4">
+                     <div className="grid md:grid-cols-2 gap-4">
                         {results
                            .filter((article) => article.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
                            .filter((article) => article.access_type !== null)

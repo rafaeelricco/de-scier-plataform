@@ -24,40 +24,31 @@ const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
 }: ArticleUnderReviewProps) => {
    return (
       <React.Fragment>
-         <div className="grid-article-under-review  justify-start items-center gap-4 bg-[#fff] py-3 px-4 rounded-lg">
-            <Image
-               src={image}
-               width={80}
-               height={80}
-               alt={title}
-               style={{ objectFit: 'cover' }}
-               className="rounded-md lg:w-18 lg:h-18 2xl:w-20 2xl:h-20"
-            />
-            <hr className="divider-v" />
-            <div className="grid gap-2">
-               <Link href={link}>
-                  <h6 className="text-lg font-semibold text-secundary_blue-main lg:text-sm 2xl:text-lg">{truncate(title, { length: 40 })}</h6>
-               </Link>
-               <div className="flex items-center gap-2">
-                  <p className="text-sm text-neutral-gray lg:text-sm 2xl:text-base">Under review since</p>
-                  <p className="text-base font-semibold lg:text-sm 2xl:text-base">{since}</p>
+         <div className="grid md:grid-cols-max-min-auto md:justify-start items-center gap-4 bg-[#fff] py-3 px-4 rounded-lg">
+            <Image src={image} width={400} height={400} alt={title} style={{ objectFit: 'cover' }} className="rounded-md h-20 w-full object-cover" />
+            <hr className="hidden md:block divider-v" />
+            <hr className="block md:hidden divider-h" />
+            <div className="grid gap-2 mt-[-8px]">
+               <div>
+                  <Link href={link}>
+                     <h6 className="text-base sm:text-lg font-semibold text-secundary_blue-main">{truncate(title, { length: 40 })}</h6>
+                  </Link>
+                  <div className="flex items-center gap-2">
+                     <p className="text-sm text-neutral-gray lg:text-sm 2xl:text-base">Under review since</p>
+                     <p className="text-base font-semibold lg:text-sm 2xl:text-base">{since}</p>
+                  </div>
                </div>
-               <div className="border-[1px] rounded-md px-2 border-neutral-stroke_light w-fit">
-                  <div className="grid grid-flow-col items-center justify-start">
-                     <div className="grid grid-flow-col gap-1 items-center">
-                        {status_editor == 'approved' && (
-                           <p className="text-base font-semibold text-status-green lg:text-xs 2xl:text-base">Editor Approval</p>
-                        )}
-                        {status_editor == 'pending' && (
-                           <p className="text-base font-semibold text-status-pending lg:text-xs 2xl:text-base">Editor pending</p>
-                        )}
-                        <span className="text-base font-semibold text-neutral-light_gray lg:text-xs 2xl:text-base">/</span>
-                        {status_reviewer == 'approved' && (
-                           <p className="text-base font-semibold text-status-green lg:text-xs 2xl:text-base">Reviewer approval</p>
-                        )}
-                        {status_reviewer == 'pending' && (
-                           <p className="text-base font-semibold text-status-pending lg:text-xs 2xl:text-base">Reviewer pending</p>
-                        )}
+               <div className="border-[1px] rounded-md px-2 border-neutral-stroke_light md:w-fit">
+                  <div className="grid grid-flow-col items-center justify-center md:justify-start">
+                     <div
+                        className="grid grid-flow-col gap-2
+                      md:gap-1 items-center "
+                     >
+                        {status_editor == 'approved' && <p className="text-sm md:text-base font-semibold text-status-green">Editor Approval</p>}
+                        {status_editor == 'pending' && <p className="text-sm md:text-base font-semibold text-status-pending">Editor pending</p>}
+                        <span className="text-sm md:text-base font-semibold text-neutral-light_gray">/</span>
+                        {status_reviewer == 'approved' && <p className="text-sm md:text-base font-semibold text-status-green">Reviewer approval</p>}
+                        {status_reviewer == 'pending' && <p className="text-sm md:text-base font-semibold text-status-pending">Reviewer pending</p>}
                      </div>
                   </div>
                </div>
