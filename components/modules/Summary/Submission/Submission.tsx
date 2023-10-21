@@ -1,4 +1,5 @@
 import PieChartComponent from '@/components/common/PieChart/PieChart'
+import { home_routes } from '@/routes/home'
 import * as Button from '@components/common/Button/Button'
 import React from 'react'
 import { PlusCircle } from 'react-bootstrap-icons'
@@ -26,10 +27,12 @@ const Submission: React.FC = () => {
                      </div>
                   </div>
                   <hr className="divider-h" />
-                  <Button.Button variant="outline" className="py-2 px-4 md:py-3">
-                     Submit new document
-                     <PlusCircle className="w-4" />
-                  </Button.Button>
+                  <Button.Link href={home_routes.summary_routes.new_document}>
+                     <Button.Button variant="outline" className="py-2 px-4 md:py-3">
+                        Submit new document
+                        <PlusCircle className="w-4" />
+                     </Button.Button>
+                  </Button.Link>
                </div>
             </div>
          </div>

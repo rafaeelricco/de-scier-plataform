@@ -140,14 +140,14 @@ export default function NewDocumentPage() {
                )}
             </Dialog.Content>
          </Dialog.Root>
-         <Title.Root>
+         <Title.Root className="mb-6 md:mb-8">
             <Title.Title>Submit new document</Title.Title>
          </Title.Root>
          <div className="grid gap-6 pb-14">
-            <Box className="grid gap-8 h-fit py-6 px-8">
-               <h3 className="text-xl font-semibold lg:text-lg 2xl:text-xl">Upload new document</h3>
+            <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
+               <h3 className="text-lg md:text-xl font-semibold">Upload new document</h3>
                <div className="grid gap-x-6 gap-y-4">
-                  <div className="grid grid-cols-2 gap-6">
+                  <div className="grid md:grid-cols-2 gap-6">
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
                            <span className="text-sm font-semibold">Title</span>
@@ -174,7 +174,7 @@ export default function NewDocumentPage() {
                         />
                      </Input.Root>
                   </div>
-                  <div className="grid grid-cols-2 gap-6">
+                  <div className="grid md:grid-cols-2 gap-6">
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
                            <span className="text-sm font-semibold">Field</span>
@@ -185,8 +185,13 @@ export default function NewDocumentPage() {
                   </div>
                </div>
                <div className="grid gap-2">
-                  <h3 className="text-sm font-semibold">Document type</h3>
-                  <Pills items={document_types} />
+                  <div className="hidden md:block">
+                     <h3 className="text-sm font-semibold">Document type</h3>
+                     <Pills items={document_types} />
+                  </div>
+                  <Input.Root>
+                     <Input.Select label={'Document type'} options={document_types} placeholder="Title of the field" />
+                  </Input.Root>
                </div>
                <Dropzone setSelectedFile={(file) => console.log(file)} />
                <Input.Root>
@@ -196,25 +201,25 @@ export default function NewDocumentPage() {
                   </Input.Label>
                   <Input.TextArea rows={4} placeholder="Title of the field" />
                </Input.Root>
-               <div className="flex items-center gap-4">
-                  <Button.Button variant="outline" className="px-4 py-3 w-fit text-sm">
+               <div className="flex flex-col md:flex-row md:items-center gap-4">
+                  <Button.Button variant="outline" className="px-4 py-3 md:w-fit text-sm">
                      Generate abstract with AI
                      <PlusCircleDotted size={18} className="fill-primary-main" />
                   </Button.Button>
-                  <p className="text-sm">Careful! You can only generate the abstract once per file.</p>
+                  <p className="text-sm text-neutral-gray">Careful! You can only generate the abstract once per file.</p>
                </div>
                <div className="grid gap-2">
                   <p className="text-sm font-semibold">Visual Abstract</p>
                   <p className="text-sm font-regular">
-                     With the information from the abstract, a summary diagram (Visual Abstract) can be generated to
-                     describe the main points inside this document, with a illustration.
+                     With the information from the abstract, a summary diagram (Visual Abstract) can be generated to describe the main points inside this
+                     document, with a illustration.
                   </p>
-                  <div className="flex items-center gap-4">
-                     <Button.Button className="px-4 py-3 w-fit text-sm">
+                  <div className="flex flex-col md:flex-row md:items-center gap-4">
+                     <Button.Button className="px-4 py-3 md:w-fit text-sm">
                         Generate Visual Abstract
                         <PlusCircleDotted size={18} className="fill-neutral-white" />
                      </Button.Button>
-                     <p className="text-sm">Careful! You can only generate the abstract once per file.</p>
+                     <p className="text-sm text-neutral-gray">Careful! You can only generate the visual abstract once per file.</p>
                   </div>
                </div>
                <div className="grid gap-4">
@@ -222,9 +227,9 @@ export default function NewDocumentPage() {
                   <Dropzone placeholder="Upload cover picture (.png, .jpg)" setSelectedFile={(file) => console.log(file)} />
                </div>
             </Box>
-            <Box className="grid gap-8 h-fit py-6 px-8">
+            <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
                <div className="grid ">
-                  <h3 className="text-xl text-terciary-main font-semibold lg:text-lg 2xl:text-xl">Authors</h3>
+                  <h3 className="text-lg md:text-xl text-terciary-main font-semibold">Authors</h3>
                </div>
                <div className="grid gap-6">
                   <Button.Button variant="outline" className="px-4 py-3 w-full text-sm">
@@ -234,68 +239,73 @@ export default function NewDocumentPage() {
                      "
                      />
                   </Button.Button>
-                  <p className="text-sm">Drag the authors_mock to reorder the list.</p>
+                  <p className="text-sm">Drag the authors to reorder the list.</p>
                   <div className="grid gap-2">
-                     <div className="grid grid-cols-3">
+                     <div className="hidden md:grid grid-cols-3">
                         {authors_headers.map((header, index) => (
                            <React.Fragment key={index}>
                               <p className="text-sm font-semibold">{header.label}</p>
                            </React.Fragment>
                         ))}
                      </div>
-                     <Reorder.Group axis="y" values={items} onReorder={setItems}>
-                        {items.map((item, index) => (
-                           <Reorder.Item key={item.id} value={item} className="grid gap-4">
-                              <div className="grid grid-cols-3 gap-4 items-center px-0 py-3 rounded-md cursor-grab hover:bg-[#F1FFFF]">
-                                 <div className="flex items-center gap-4">
-                                    <div className="flex items-center gap-0">
-                                       <CircleIcon className="w-8 cursor-grab" />
-                                       <p className="text-sm text-blue-gray">{item.id}º</p>
+                     <Reorder.Group axis="y" values={items} onReorder={onReorder}>
+                        <div className="grid gap-2">
+                           {items.map((item) => (
+                              <Reorder.Item key={item.id} value={item}>
+                                 <div className="grid md:grid-cols-3 gap-4 items-center px-0 py-3 rounded-md cursor-grab">
+                                    <div className="flex items-start gap-4">
+                                       <div className="flex gap-0 items-center">
+                                          <CircleIcon className="w-8 cursor-grab" />
+                                          <p className="text-sm text-blue-gray">{item.id}º</p>
+                                       </div>
+                                       <div>
+                                          <p className="text-sm text-secundary_blue-main font-semibold md:font-regular">{item.name}</p>
+                                          <div className="block md:hidden">
+                                             <p className="text-sm text-secundary_blue-main">{item.title}</p>
+                                          </div>
+                                          <div className="block md:hidden">
+                                             <p className="text-sm text-secundary_blue-main">{item.email}</p>
+                                          </div>
+                                       </div>
                                     </div>
-                                    <div>
-                                       <p className="text-sm text-secundary_blue-main">{item.name}</p>
+                                    <div className="hidden md:block">
+                                       <p className="text-sm text-secundary_blue-main">{item.title}</p>
+                                    </div>
+                                    <div className="hidden md:block">
+                                       <p className="text-sm text-secundary_blue-main">{item.email}</p>
                                     </div>
                                  </div>
-                                 <div>
-                                    <p className="text-sm text-secundary_blue-main">{item.title}</p>
-                                 </div>
-                                 <div>
-                                    <p className="text-sm text-secundary_blue-main">{item.email}</p>
-                                 </div>
-                              </div>
-                           </Reorder.Item>
-                        ))}
+                              </Reorder.Item>
+                           ))}
+                        </div>
                      </Reorder.Group>
                   </div>
                </div>
             </Box>
-            <Box className="grid gap-8 h-fit py-6 px-8">
+            <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
                <div className="grid gap-4">
                   <div className="grid gap-2">
-                     <h3 className="text-xl text-primary-main font-semibold lg:text-lg 2xl:text-xl">Editors / Reviewers</h3>
+                     <h3 className="text-lg md:text-xl text-primary-main font-semibold">Editors / Reviewers</h3>
                      <p className="text-sm">
-                        At least 1 editor and 2 reviewers’ approval are required to publish the paper. The editors and
-                        reviewers cannot be authors_mock in the project. Invite them to the platform through a link, that
-                        will be generated after you submit it for review.
+                        At least 1 editor and 2 reviewers’ approval are required to publish the paper. The editors and reviewers cannot be authors_mock in
+                        the project. Invite them to the platform through a link, that will be generated after you submit it for review.
                      </p>
                   </div>
                   <div>
                      <p className="text-sm font-semibold">Invite Link</p>
-                     <p className="text-sm font-semibold text-neutral-gray">
-                        The link will be created after submitting for review.
-                     </p>
+                     <p className="text-sm font-semibold text-neutral-gray">The link will be created after submitting for review.</p>
                   </div>
                </div>
             </Box>
-            <Box className="grid gap-8 h-fit py-6 px-8">
+            <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
                <div className="grid gap-2">
-                  <h3 className="text-xl text-status-green font-semibold lg:text-lg 2xl:text-xl">Authorship</h3>
+                  <h3 className="text-lg md:text-xl text-status-green font-semibold">Authorship</h3>
                   <p className="text-sm">
                      Decide if the project is <span className="text-terciary-main font-semibold">Open Access</span>,{' '}
                      <span className="text-[#EFB521] font-semibold">Paid Access</span>
                   </p>
                </div>
-               <div className="grid grid-cols-2 items-start gap-6">
+               <div className="grid md:grid-cols-2 items-start gap-6">
                   <Input.Root>
                      <Input.Select
                         label={'Type of access'}

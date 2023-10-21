@@ -7,10 +7,8 @@ import Dropzone from '@/components/common/Dropzone/Dropzone'
 import { File } from '@/components/common/File/File'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
-import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { comments, files, header_editor_reviewer, visual_abstract_options } from '@/mock/article_under_review'
+import { comments, files, header_editor_reviewer } from '@/mock/article_under_review'
 import { document_types } from '@/mock/document_types'
 import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { truncate } from '@/utils/format_texts'
@@ -74,50 +72,57 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                <ArrowLeft size={32} className="hover:scale-110 transition-all cursor-pointer" onClick={() => router.back()} />
                <h1 className="text-1xl font-semibold">Article in review</h1>
             </div>
-            <Box className="grid gap-8 h-fit py-6 px-8">
-               <div className="flex items-center gap-2 border border-neutral-stroke_light w-fit py-1 px-4 rounded-md">
+            <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
+               <div className="flex items-center gap-2 border border-neutral-stroke_light w-fit py-1 px-3 rounded-md">
                   <Person className="text-primary-light" />
-                  <p className="text-sm text-primary-light font-semibold select-none">You are the Author of the document</p>
+                  <p className="text-xs md:text-sm text-primary-light font-semibold select-none">You are the Author of the document</p>
                </div>
-               <div className="grid grid-cols-2 gap-6">
-                  <Input.Root>
-                     <Input.Label className="flex gap-2 items-center">
-                        <span className="text-sm font-semibold">Title</span>
-                        <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
-                     </Input.Label>
-                     <Input.Input placeholder="Title of the article" />
-                  </Input.Root>
-                  <Input.Root>
-                     <Input.Label>Add keywords (Max 5)</Input.Label>
-                     <Input.Input
-                        placeholder="Title of the article"
-                        end
-                        icon={
-                           <React.Fragment>
-                              <Button.Button
-                                 variant="outline"
-                                 className="px-2 py-0 border-neutral-light_gray hover:bg-neutral-light_gray hover:bg-opacity-10 flex items-center gap-1 rounded-sm"
-                              >
-                                 <PlusCircle className="w-3 fill-neutral-light_gray" />
-                                 <span className="font-semibold text-xs text-neutral-light_gray">Add keyword</span>
-                              </Button.Button>
-                           </React.Fragment>
-                        }
-                     />
-                  </Input.Root>
-               </div>
-               <div className="grid grid-cols-2 gap-6">
-                  <Input.Root>
-                     <Input.Label className="flex gap-2 items-center">
-                        <span className="text-sm font-semibold">Field</span>
-                        <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
-                     </Input.Label>
-                     <Input.Input placeholder="Title of the field" />
-                  </Input.Root>
+               <div className="grid gap-x-6 gap-y-4">
+                  <div className="grid md:grid-cols-2 gap-6">
+                     <Input.Root>
+                        <Input.Label className="flex gap-2 items-center">
+                           <span className="text-sm font-semibold">Title</span>
+                           <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
+                        </Input.Label>
+                        <Input.Input placeholder="Title of the article" />
+                     </Input.Root>
+                     <Input.Root>
+                        <Input.Label>Add keywords (Max 5)</Input.Label>
+                        <Input.Input
+                           placeholder="Title of the article"
+                           end
+                           icon={
+                              <React.Fragment>
+                                 <Button.Button
+                                    variant="outline"
+                                    className="px-2 py-0 border-neutral-light_gray hover:bg-neutral-light_gray hover:bg-opacity-10 flex items-center gap-1 rounded-sm"
+                                 >
+                                    <PlusCircle className="w-3 fill-neutral-light_gray" />
+                                    <span className="font-semibold text-xs text-neutral-light_gray">Add keyword</span>
+                                 </Button.Button>
+                              </React.Fragment>
+                           }
+                        />
+                     </Input.Root>
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-6">
+                     <Input.Root>
+                        <Input.Label className="flex gap-2 items-center">
+                           <span className="text-sm font-semibold">Field</span>
+                           <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
+                        </Input.Label>
+                        <Input.Input placeholder="Title of the field" />
+                     </Input.Root>
+                  </div>
                </div>
                <div className="grid gap-2">
-                  <h3 className="text-sm font-semibold">Document type</h3>
-                  <Pills items={document_types} />
+                  <div className="hidden md:block">
+                     <h3 className="text-sm font-semibold">Document type</h3>
+                     <Pills items={document_types} />
+                  </div>
+                  <Input.Root>
+                     <Input.Select label={'Document type'} options={document_types} placeholder="Title of the field" />
+                  </Input.Root>
                </div>
                <Dropzone setSelectedFile={(file) => console.log(file)} />
                <Input.Root>
@@ -133,34 +138,25 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                      placeholder="Title of the field"
                   />
                </Input.Root>
-               <div className="flex items-center gap-4">
-                  <Button.Button variant="outline" className="px-4 py-3 w-fit text-sm">
+               <div className="flex flex-col md:flex-row md:items-center gap-4">
+                  <Button.Button variant="outline" className="px-4 py-3 md:w-fit text-sm">
                      Generate abstract with AI
                      <PlusCircleDotted size={18} className="fill-primary-main" />
                   </Button.Button>
-                  <p className="text-sm">Careful! You can only generate the abstract once per file.</p>
+                  <p className="text-sm text-neutral-gray">Careful! You can only generate the abstract once per file.</p>
                </div>
-               <div className="grid gap-4">
-                  <div className="grid gap-2">
-                     <p className="text-sm font-semibold">Visual Abstract</p>
-                     <p className="text-sm font-regular">
-                        With the information from the abstract, a summary diagram (Visual Abstract) can be generated to describe the main points inside
-                        this document, with a illustration.
-                     </p>
-                  </div>
-                  <RadioGroup className="flex items-center gap-4" defaultValue={visual_abstract_options[0].value}>
-                     {visual_abstract_options.map((option) => (
-                        <React.Fragment key={option.id}>
-                           <div className="flex items-center gap-2">
-                              <RadioGroupItem value={option.value} id={option.value} />
-                              <Label htmlFor="r1">{option.label}</Label>
-                           </div>
-                        </React.Fragment>
-                     ))}
-                  </RadioGroup>
-                  <div className="flex items-center gap-4 w-full h-36 relative overflow-hidden py-2">
-                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                     <img src="/images/visual-abstract.png" alt="placeholder" className="absolute object-cover w-fit h-36" />
+               <div className="grid gap-2">
+                  <p className="text-sm font-semibold">Visual Abstract</p>
+                  <p className="text-sm font-regular">
+                     With the information from the abstract, a summary diagram (Visual Abstract) can be generated to describe the main points inside this
+                     document, with a illustration.
+                  </p>
+                  <div className="flex flex-col md:flex-row md:items-center gap-4">
+                     <Button.Button className="px-4 py-3 md:w-fit text-sm">
+                        Generate Visual Abstract
+                        <PlusCircleDotted size={18} className="fill-neutral-white" />
+                     </Button.Button>
+                     <p className="text-sm text-neutral-gray">Careful! You can only generate the visual abstract once per file.</p>
                   </div>
                </div>
                <div className="grid gap-4">
@@ -168,10 +164,10 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                   <Dropzone thumbnail placeholder="Upload cover picture (.png, .jpg)" setSelectedFile={(file) => console.log(file)} />
                </div>
             </Box>
-            <Box className="grid gap-8 h-fit py-6 px-8">
+            <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
                <div className="grid gap-6">
-                  <h3 className="text-xl text-primary-main font-semibold lg:text-lg 2xl:text-xl">Document file</h3>
-                  <div className="grid grid-cols-2 gap-6">
+                  <h3 className="text-lg md:text-xl text-primary-main font-semibold">Document file</h3>
+                  <div className="grid md:grid-cols-2 gap-6">
                      <Dropzone setSelectedFile={(file) => console.log(file)} />
                      <ScrollArea className="h-[200px] pr-2">
                         <div className="grid gap-4">
@@ -189,9 +185,9 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                   </div>
                </div>
             </Box>
-            <Box className="grid gap-8 h-fit py-6 px-8">
+            <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
                <div className="grid gap-2">
-                  <h3 className="text-xl text-primary-main font-semibold lg:text-lg 2xl:text-xl">Comments</h3>
+                  <h3 className="text-lg md:text-xl text-primary-main font-semibold">Comments</h3>
                   <p className="text-sm">The reviewing team can publish comments, suggesting updates on your document.</p>
                </div>
                <div className="border rounded-md p-4">
@@ -213,9 +209,9 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                   </ScrollArea>
                </div>
             </Box>
-            <Box className="grid gap-8 h-fit py-6 px-8">
+            <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
                <div className="grid ">
-                  <h3 className="text-xl text-terciary-main font-semibold lg:text-lg 2xl:text-xl">Authors</h3>
+                  <h3 className="text-lg md:text-xl text-terciary-main font-semibold">Authors</h3>
                </div>
                <div className="grid gap-6">
                   <Button.Button variant="outline" className="px-4 py-3 w-full text-sm">
@@ -225,9 +221,9 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                      "
                      />
                   </Button.Button>
-                  <p className="text-sm">Drag the authors_mock to reorder the list.</p>
+                  <p className="text-sm">Drag the authors to reorder the list.</p>
                   <div className="grid gap-2">
-                     <div className="grid grid-cols-3">
+                     <div className="hidden md:grid grid-cols-3">
                         {authors_headers.map((header, index) => (
                            <React.Fragment key={index}>
                               <p className="text-sm font-semibold">{header.label}</p>
@@ -238,20 +234,26 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                         <div className="grid gap-2">
                            {items.map((item) => (
                               <Reorder.Item key={item.id} value={item}>
-                                 <div className="grid grid-cols-3 gap-4 items-center px-0 py-3 rounded-md cursor-grab hover:bg-[#F1FFFF]">
-                                    <div className="flex items-center gap-4">
-                                       <div className="flex items-center gap-0">
+                                 <div className="grid md:grid-cols-3 gap-4 items-center px-0 py-3 rounded-md cursor-grab">
+                                    <div className="flex items-start gap-4">
+                                       <div className="flex gap-0 items-center">
                                           <CircleIcon className="w-8 cursor-grab" />
                                           <p className="text-sm text-blue-gray">{item.id}º</p>
                                        </div>
                                        <div>
-                                          <p className="text-sm text-secundary_blue-main">{item.name}</p>
+                                          <p className="text-sm text-secundary_blue-main font-semibold md:font-regular">{item.name}</p>
+                                          <div className="block md:hidden">
+                                             <p className="text-sm text-secundary_blue-main">{item.title}</p>
+                                          </div>
+                                          <div className="block md:hidden">
+                                             <p className="text-sm text-secundary_blue-main">{item.email}</p>
+                                          </div>
                                        </div>
                                     </div>
-                                    <div>
+                                    <div className="hidden md:block">
                                        <p className="text-sm text-secundary_blue-main">{item.title}</p>
                                     </div>
-                                    <div>
+                                    <div className="hidden md:block">
                                        <p className="text-sm text-secundary_blue-main">{item.email}</p>
                                     </div>
                                  </div>
@@ -262,10 +264,10 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                   </div>
                </div>
             </Box>
-            <Box className="grid gap-8 h-fit py-6 px-8">
+            <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
                <div className="grid gap-4">
                   <div className="grid gap-2">
-                     <h3 className="text-xl text-primary-main font-semibold lg:text-lg 2xl:text-xl">Editors / Reviewers</h3>
+                     <h3 className="text-lg md:text-xl text-primary-main font-semibold">Editors / Reviewers</h3>
                      <p className="text-sm">
                         At least 1 editor and 2 reviewers’ approval are required to publish the paper. The editors and reviewers cannot be authors in the
                         project. Invite them to the platform through the link:
@@ -273,7 +275,7 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                   </div>
                   <div>
                      <p className="text-sm font-semibold">Invite Link</p>
-                     <div className="flex items-center gap-4">
+                     <div className="flex flex-col md:flex-row md:items-center gap-4">
                         <p className="text-sm font-semibold text-blue-500 underline" id="link-to-copy">
                            https://descier.com/948902riopwskf
                         </p>
@@ -291,7 +293,7 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                   </div>
                </div>
                <div>
-                  <div className="grid grid-cols-5">
+                  <div className="hidden md:grid grid-cols-5">
                      {header_editor_reviewer.map((header, index) => (
                         <React.Fragment key={index}>
                            <p className="text-sm font-semibold">{header.label}</p>
@@ -301,10 +303,10 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                   <div>
                      {authors_mock.map((item, index) => (
                         <div key={item.id}>
-                           <div className="grid grid-cols-5  items-center px-0 py-3 rounded-md">
+                           <div className="grid md:grid-cols-5  items-center px-0 py-3 rounded-md">
                               <div className="flex items-center gap-4">
                                  <div>
-                                    <p className="text-sm text-secundary_blue-main">{item.name}</p>
+                                    <p className="text-sm text-secundary_blue-main font-semibold">{item.name}</p>
                                  </div>
                               </div>
                               <div>
@@ -327,7 +329,7 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                               <div>
                                  <p
                                     className={twMerge(
-                                       'text-sm text-secundary_blue-main first-letter:uppercase font-semibold',
+                                       'text-sm text-secundary_blue-main first-letter:uppercase font-semibold border py-[2px] px-1 text-center rounded-md md:border-none md:py-0 md:px-0 md:rounded-none md:text-start',
                                        `${item.status == 'pending' && 'text-status-pending'}`,
                                        `${item.status == 'approved' && 'text-status-green'}`
                                     )}
@@ -341,15 +343,15 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                   </div>
                </div>
             </Box>
-            <Box className="grid gap-8 h-fit py-6 px-8">
+            <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
                <div className="grid gap-2">
-                  <h3 className="text-xl text-status-green font-semibold lg:text-lg 2xl:text-xl">Authorship</h3>
+                  <h3 className="text-lg md:text-xl text-status-green font-semibold">Authorship</h3>
                   <p className="text-sm">
                      Decide if the project is <span className="text-terciary-main font-semibold">Open Access</span>,{' '}
                      <span className="text-[#EFB521] font-semibold">Paid Access</span>
                   </p>
                </div>
-               <div className="grid grid-cols-2 items-start gap-6">
+               <div className="grid md:grid-cols-2 items-start gap-6">
                   <Input.Root>
                      <Input.Select
                         label={'Type of access'}
@@ -405,9 +407,9 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                            <div>
                               {authors.map((author, index) => (
                                  <React.Fragment key={index}>
-                                    <div className="grid grid-cols-3 items-center py-3">
+                                    <div className="grid gap-2 md:grid-cols-3 items-center py-3">
                                        <div>
-                                          <p className="text-sm text-secundary_blue-main">{author.name}</p>
+                                          <p className="text-sm font-semibold text-secundary_blue-main">{author.name}</p>
                                        </div>
                                        <div>
                                           {author.share ? (
@@ -439,15 +441,15 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                   </React.Fragment>
                )}
             </Box>
-            <Box className="grid gap-4 h-fit py-6 px-8">
-               <div className="flex items-center justify-center gap-12">
+            <Box className="grid gap-4 h-fit px-4 py-6 md:px-8">
+               <div className="flex items-center justify-between md:gap-12 md:justify-center">
                   <div className="flex items-center">
-                     <h2 className="text-status-yellow font-semibold text-lg">Reviewer</h2>
+                     <h2 className="text-status-yellow font-semibold text-base md:text-lg">Reviewer</h2>
                      <Check className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
                      <Check className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
                   </div>
                   <div className="flex items-center">
-                     <h2 className="text-terciary-main font-semibold text-lg">Editor</h2>
+                     <h2 className="text-terciary-main font-semibold text-base md:text-lg">Editor</h2>
                      <Check className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
                      <X className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer" />
                   </div>
