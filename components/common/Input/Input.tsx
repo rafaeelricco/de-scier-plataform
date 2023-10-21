@@ -1,13 +1,5 @@
 import { cn } from '@/lib/utils'
-import {
-   ComboboxProps,
-   ErrorProps,
-   InputProps,
-   LabelProps,
-   SelectInputProps,
-   TextAreaProps,
-   WrapperInputProps
-} from '@components/common/Input/Typing'
+import { ComboboxProps, ErrorProps, InputProps, LabelProps, SelectInputProps, TextAreaProps, WrapperInputProps } from '@components/common/Input/Typing'
 import * as S from '@components/common/Select/Select'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@components/ui/popover'
@@ -18,7 +10,7 @@ import { twMerge } from 'tailwind-merge'
 import { tv } from 'tailwind-variants'
 
 const input = tv({
-   base: 'flex items-center border-b-[1px] border-neutral-light_gray p-2 pt-0 placeholder:text-gray-light placeholder:text-base focus:outline-none focus:text-neutral-black w-full placeholder-shown:text-neutral-black bg-transparent focus:border-b-primary-main',
+   base: 'flex items-center rounded-none border-b-[1px] border-neutral-light_gray p-2 pt-0 placeholder:text-gray-light placeholder:text-base focus:outline-none focus:text-neutral-black w-full placeholder-shown:text-neutral-black bg-transparent focus:border-b-primary-main',
    variants: {
       hasIcon: {
          start: 'data-[start=true]:px-11',
@@ -44,7 +36,7 @@ const textArea = tv({
 })
 
 const password = tv({
-   base: 'flex border-b-[1px] border-neutral-light_gray p-2 pt-0 placeholder:text-gray-light placeholder:text-base  focus:outline-none focus:text-neutral-black w-full placeholder-shown:text-neutral-black bg-transparent focus:border-neutral-black'
+   base: 'flex items-center rounded-none border-b-[1px] border-neutral-light_gray p-2 pt-0 placeholder:text-gray-light placeholder:text-base focus:outline-none focus:text-neutral-black w-full placeholder-shown:text-neutral-black bg-transparent focus:border-b-primary-main'
 })
 
 /**
@@ -85,33 +77,24 @@ const Error: React.FC<ErrorProps> = ({ children }: ErrorProps) => {
  * @dev This is a functional component that extends the basic HTML textarea element properties.
  * @param {Object} props The properties provided to the component. These properties are extensions of the basic HTML textarea attributes.
  */
-const TextArea = React.forwardRef<HTMLInputElement, TextAreaProps>(
-   ({ icon, start = icon ? true : false, end, className, ...props }, ref) => {
-      /** @dev define if has icon */
-      const hasIcon = icon !== undefined
-      const iconPosition = start ? 'start' : end ? 'end' : 'none'
+const TextArea = React.forwardRef<HTMLInputElement, TextAreaProps>(({ icon, start = icon ? true : false, end, className, ...props }, ref) => {
+   /** @dev define if has icon */
+   const hasIcon = icon !== undefined
+   const iconPosition = start ? 'start' : end ? 'end' : 'none'
 
-      return (
-         <React.Fragment>
-            <div className="relative h-fit">
-               {hasIcon && (
-                  <div
-                     data-end={end}
-                     className="absolute left-0 top-3 bottom-0 flex items-start px-3 data-[end=true]:left-auto data-[end=true]:right-0"
-                  >
-                     {icon}
-                  </div>
-               )}
-               <textarea
-                  ref={ref as LegacyRef<HTMLTextAreaElement>}
-                  className={twMerge(textArea({ hasIcon: iconPosition }), className)}
-                  {...props}
-               />
-            </div>
-         </React.Fragment>
-      )
-   }
-)
+   return (
+      <React.Fragment>
+         <div className="relative h-fit">
+            {hasIcon && (
+               <div data-end={end} className="absolute left-0 top-3 bottom-0 flex items-start px-3 data-[end=true]:left-auto data-[end=true]:right-0">
+                  {icon}
+               </div>
+            )}
+            <textarea ref={ref as LegacyRef<HTMLTextAreaElement>} className={twMerge(textArea({ hasIcon: iconPosition }), className)} {...props} />
+         </div>
+      </React.Fragment>
+   )
+})
 
 /**
  * @notice The Password component is a password input field with an option to toggle the visibility of the entered text.
@@ -131,9 +114,9 @@ const Password = React.forwardRef<HTMLInputElement, InputProps>(({ ...props }, r
             <input ref={ref} className={password()} type={isVisible ? 'text' : 'password'} {...props} />
             <div className="absolute right-0 top-0 bottom-0 flex items-center px-3">
                {isVisible ? (
-                  <Eye className="w-full cursor-pointer fill-neutral-gray" onClick={() => setIsVisible(!isVisible)} />
+                  <Eye className="cursor-pointer fill-neutral-gray" onClick={() => setIsVisible(!isVisible)} />
                ) : (
-                  <EyeSlash className="w-full cursor-pointer fill-neutral-gray" onClick={() => setIsVisible(!isVisible)} />
+                  <EyeSlash className="cursor-pointer fill-neutral-gray" onClick={() => setIsVisible(!isVisible)} />
                )}
             </div>
          </div>
@@ -149,42 +132,37 @@ const Password = React.forwardRef<HTMLInputElement, InputProps>(({ ...props }, r
  * @param {boolean} [props.start] If true, the icon is positioned at the start of the input field
  * @param {boolean} [props.end] If true, the icon is positioned at the end of the input field
  */
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
-   ({ icon, start = icon ? true : false, end, disabled = false, className, ...props }, ref) => {
-      /** @dev define if has icon */
-      const hasIcon = icon !== undefined
-      const iconPosition = start ? 'start' : end ? 'end' : 'none'
-      const disabledStatus = disabled ? true : false
+const Input = React.forwardRef<HTMLInputElement, InputProps>(({ icon, start = icon ? true : false, end, disabled = false, className, ...props }, ref) => {
+   /** @dev define if has icon */
+   const hasIcon = icon !== undefined
+   const iconPosition = start ? 'start' : end ? 'end' : 'none'
+   const disabledStatus = disabled ? true : false
 
-      return (
-         <React.Fragment>
-            <div className="relative h-fit">
-               {hasIcon && (
-                  <div
-                     data-end={end}
-                     className="absolute left-0 top-0 bottom-0 flex items-center px-3 data-[end=true]:left-auto data-[end=true]:right-0"
-                  >
-                     {icon}
-                  </div>
+   return (
+      <React.Fragment>
+         <div className="relative h-fit">
+            {hasIcon && (
+               <div data-end={end} className="absolute left-0 top-0 bottom-0 flex items-center px-3 data-[end=true]:left-auto data-[end=true]:right-0">
+                  {icon}
+               </div>
+            )}
+            <input
+               ref={ref}
+               disabled={disabled}
+               data-start={hasIcon && !end}
+               className={twMerge(
+                  input({
+                     hasIcon: iconPosition,
+                     disabled: disabledStatus
+                  }),
+                  className
                )}
-               <input
-                  ref={ref}
-                  disabled={disabled}
-                  data-start={hasIcon && !end}
-                  className={twMerge(
-                     input({
-                        hasIcon: iconPosition,
-                        disabled: disabledStatus
-                     }),
-                     className
-                  )}
-                  {...props}
-               />
-            </div>
-         </React.Fragment>
-      )
-   }
-)
+               {...props}
+            />
+         </div>
+      </React.Fragment>
+   )
+})
 
 /**
  * @notice This component renders an input field specialized for search functionalities. It includes an embedded search icon on the left side of the input.
@@ -202,7 +180,7 @@ const Search = React.forwardRef<HTMLInputElement, InputProps>(({ disabled = fals
          <Input
             ref={ref}
             disabled={disabled}
-            className={twMerge('px-4 py-3 h-fit border-none bg-neutral-white shadow-search rounded-md text-sm', className)}
+            className={twMerge('px-4 py-3 h-fit border-none bg-neutral-white shadow-search text-sm', className)}
             {...props}
             icon={<SearchIcon className="text-neutral-gray w-[1.125rem] h-[1.125rem]" />}
          />
@@ -253,12 +231,7 @@ const Select = React.forwardRef<HTMLInputElement, SelectInputProps>(
       }, [triggerWidth])
 
       return (
-         <S.Root
-            value={value}
-            defaultValue={defaultValue}
-            required={required}
-            onValueChange={(value: string) => onValueChange?.(value)}
-         >
+         <S.Root value={value} defaultValue={defaultValue} required={required} onValueChange={(value: string) => onValueChange?.(value)}>
             <div className="grid gap-2">
                {label && <label className="text-sm font-semibold">{label}</label>}
                <div className="relative h-fit">
@@ -285,12 +258,7 @@ const Select = React.forwardRef<HTMLInputElement, SelectInputProps>(
                </div>
             </div>
             <S.Portal>
-               <S.Content
-                  sideOffset={5}
-                  position="item-aligned"
-                  className={twMerge(className)}
-                  style={{ width: triggerWidth }}
-               >
+               <S.Content sideOffset={5} position="item-aligned" className={twMerge(className)} style={{ width: triggerWidth }}>
                   <S.Viewport>
                      <S.Group>
                         {options?.map((option) => (
@@ -329,10 +297,7 @@ const Combobox: React.FC<ComboboxProps> = ({ options, className, onSelect, place
    return (
       <Popover open={open} onOpenChange={setOpen}>
          <PopoverTrigger asChild>
-            <button
-               type="button"
-               className={twMerge(S.select({ type: 'small' }), 'items-center justify-between w-52 py-2', className)}
-            >
+            <button type="button" className={twMerge(S.select({ type: 'small' }), 'items-center justify-between w-52 py-2', className)}>
                <span className="text-gray-main text-sm">{valueOrPlaceholder}</span>
                <CaretDown className="fill-black-primary" width={18} />
             </button>

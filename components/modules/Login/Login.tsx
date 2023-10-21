@@ -10,10 +10,15 @@ import { LoginModalProps } from './Typing'
 const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onForgotPassword, onLogin, onRegister }: LoginModalProps) => {
    return (
       <React.Fragment>
-         <div className="grid grid-cols-2">
+         <div className="grid md:grid-cols-2 relative">
+            <X
+               size={32}
+               className="md:hidden absolute z-20 bg-white rounded-md right-4 top-4 cursor-pointer hover:scale-110 transition-all duration-200"
+               onClick={onClose}
+            />
             <LoginAnimation />
-            <div className="w-ful grid gap-6 p-16 relative">
-               <X size={32} className="absolute right-4 top-4 cursor-pointer hover:scale-110 transition-all duration-200" onClick={onClose} />
+            <div className="w-ful grid gap-6 md:p-16 relative p-6 pb-12">
+               <X size={32} className="hidden md:absolute right-4 top-4 cursor-pointer hover:scale-110 transition-all duration-200" onClick={onClose} />
                <h2 className="font-semibold text-1xl">Sign in</h2>
                {withLink && (
                   <React.Fragment>

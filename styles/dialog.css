@@ -53,14 +53,13 @@
    background: #fff;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
    .content {
       top: auto;
       left: auto;
       right: 0;
       bottom: 0;
       transform: translate(0, 0);
-      padding: 1.5rem 1.5rem 6.375rem 1.5rem;
       animation: contentShowMobile 0.2s ease-out;
       border-radius: 16px 16px 0 0;
       width: 100%;

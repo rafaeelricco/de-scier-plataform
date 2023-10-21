@@ -37,3 +37,25 @@
    transform: translate(-0, -52%);
    z-index: 1000;
 }
+
+@media (max-width: 768px) {
+   .login-animation {
+      width: 400px;
+      height: 400px;
+      transform: translate(50%, -25%) rotate(4deg);
+   }
+   .login-blob-shape {
+      max-width: 200px;
+   }
+   .login-stamp {
+      width: 96px;
+      bottom: 1.25rem;
+      left: calc(4rem - 2.5rem);
+   }
+   .login-text {
+      top: 40%;
+      left: 2rem;
+      transform: translate(-0, -52%);
+      gap: 1rem;
+   }
+}
