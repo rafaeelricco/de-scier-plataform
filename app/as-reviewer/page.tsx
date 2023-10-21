@@ -27,16 +27,16 @@ export default function AsReviewerPage() {
          <Tabs defaultValue="account">
             <div className="grid gap-6">
                <div className="grid gap-6">
-                  <TabsList className="bg-transparent grid h-fit justify-start">
-                     <div className="grid grid-flow-col gap-6">
+                  <TabsList className="bg-transparent grid h-fit w-full items-start justify-normal">
+                     <div className="grid sm:grid-flow-col gap-4 sm:gap-5 md:gap-6">
                         <TabsTrigger
-                           className="bg-primary-main text-neutral-white py-2 px-8 text-lg font-semibold rounded-md border data-[state=inactive]:bg-transparent data-[state=inactive]:text-neutral-gray data-[state=inactive]:font-regular data-[state=active]:bg-primary-main data-[state=active]:text-white data-[state=inactive]:border-neutral-gray"
+                           className="bg-primary-main text-neutral-white py-2 px-8 text-sm md:text-lg font-semibold rounded-md border data-[state=inactive]:bg-transparent data-[state=inactive]:text-neutral-gray data-[state=inactive]:font-regular data-[state=active]:bg-primary-main data-[state=active]:text-white data-[state=inactive]:border-neutral-gray"
                            value="account"
                         >
                            Ongoing reviews
                         </TabsTrigger>
                         <TabsTrigger
-                           className="bg-primary-main text-neutral-white py-2 px-8 text-lg font-semibold rounded-md border data-[state=inactive]:bg-transparent data-[state=inactive]:text-neutral-gray data-[state=inactive]:font-regular data-[state=active]:bg-primary-main data-[state=active]:text-white data-[state=inactive]:border-neutral-gray"
+                           className="bg-primary-main text-neutral-white py-2 px-8 text-sm md:text-lg font-semibold rounded-md border data-[state=inactive]:bg-transparent data-[state=inactive]:text-neutral-gray data-[state=inactive]:font-regular data-[state=active]:bg-primary-main data-[state=active]:text-white data-[state=inactive]:border-neutral-gray"
                            value="password"
                         >
                            Completed reviews
@@ -46,14 +46,14 @@ export default function AsReviewerPage() {
                   <div className="flex items-center gap-2">
                      <Input.Search placeholder="Find articles with this terms" onChange={(e) => setSearchTerm(e.target.value)} />
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-col md:flex-row md:items-center gap-2">
                      <Dropdown items={filter_order_by} label="Order by:" onSelect={(value) => console.log(value)} />
                      <Dropdown label="Status:" className="min-w-[180px]" items={filter_status} onSelect={(value) => console.log(value)} />
                   </div>
                </div>
                <div className="grid gap-8">
                   <TabsContent value="account">
-                     <div className="grid grid-cols-2 gap-4">
+                     <div className="grid md:grid-cols-2 gap-4">
                         {results
                            .filter((article) => article.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
                            .filter((article) => article.access_type === null)

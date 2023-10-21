@@ -38,7 +38,8 @@ module.exports = withMT({
          },
          gridTemplateColumns: {
             'auto-min': 'auto min-content',
-            'max-auto': 'max-content auto'
+            'max-auto': 'max-content auto',
+            'max-min-auto': 'max-content min-content auto'
          },
          fontSize: {
             xxs: '0.625rem',
