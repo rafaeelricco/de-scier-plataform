@@ -16,7 +16,7 @@ const Root: React.FC<{
 }> = ({ children, className }: { children: React.ReactNode; className?: string }) => {
    return (
       <React.Fragment>
-         <div className={twMerge('grid gap-4 grid-flow-col justify-start items-center mb-8', className)}>{children}</div>
+         <div className={twMerge('grid gap-4 grid-flow-col justify-start items-center mb-4 md:mb-8', className)}>{children}</div>
       </React.Fragment>
    )
 }

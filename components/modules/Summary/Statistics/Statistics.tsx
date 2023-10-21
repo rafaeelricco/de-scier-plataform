@@ -73,7 +73,9 @@ const Statistics: React.FC = () => {
                {carrousel.map((_, index) => (
                   <div
                      key={index}
-                     className={`w-3 h-3 mx-auto ${index === currentSlide ? 'bg-primary-main' : 'bg-[#D9D9D9]'} rounded-sm lg:w-2 lg:h-2 2xl:w-3 2xl:h-3`}
+                     className={`w-2 h-2 md:w-3 md:h-3 mx-auto ${
+                        index === currentSlide ? 'bg-primary-main' : 'bg-[#D9D9D9]'
+                     } rounded-sm transition-all duration-200`}
                   />
                ))}
             </div>

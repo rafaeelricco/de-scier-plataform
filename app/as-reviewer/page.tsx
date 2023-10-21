@@ -21,7 +21,7 @@ export default function AsReviewerPage() {
 
    return (
       <React.Fragment>
-         <Title.Root className="m-0 mb-4">
+         <Title.Root>
             <Title.Title>As Reviewer/Editor</Title.Title>
          </Title.Root>
          <Tabs defaultValue="account">

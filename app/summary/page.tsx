@@ -13,7 +13,7 @@ import React from 'react'
 export default function HomePage() {
    return (
       <React.Fragment>
-         <Title.Root className="mb-4 md:mb-8">
+         <Title.Root>
             <Title.Title>My performance</Title.Title>
          </Title.Root>
          <div className="grid gap-8">

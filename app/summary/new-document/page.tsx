@@ -140,7 +140,7 @@ export default function NewDocumentPage() {
                )}
             </Dialog.Content>
          </Dialog.Root>
-         <Title.Root className="mb-6 md:mb-8">
+         <Title.Root>
             <Title.Title>Submit new document</Title.Title>
          </Title.Root>
          <div className="grid gap-6 pb-14">

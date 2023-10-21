@@ -54,7 +54,7 @@ const Content: React.FC<Dialog.DialogContentProps> = ({ children, className, ...
    return (
       <React.Fragment>
          <Dialog.Content
-            className={twMerge('content', 'bg-background-primary w-[50%] p-6 max-h-[95%] h-fit transition-all duration-500', className)}
+            className={twMerge('content', 'bg-background-primary w-[50%] p-6 max-h-[95%] h-auto transition-all duration-500', className)}
             {...props}
          >
             {children}
