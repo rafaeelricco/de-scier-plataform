@@ -1,4 +1,5 @@
 'use client'
+
 import Box from '@/components/common/Box/Box'
 import { Pills } from '@/components/common/Button/Pill/Pill'
 import Dropzone from '@/components/common/Dropzone/Dropzone'
@@ -14,7 +15,7 @@ import React, { useState } from 'react'
 import { Clipboard, PlusCircle, PlusCircleDotted } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 
-export default function NewDocumentPage() {
+export default function SubmitNewPaperPage() {
    const [typeOfAccess, setTypeOfAccess] = useState('open-access')
    const [items, setItems] = React.useState(authors_mock.map((author, index) => ({ ...author, id: index + 1 })))
    const [share, setShare] = useState('')

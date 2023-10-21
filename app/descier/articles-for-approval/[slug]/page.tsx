@@ -21,7 +21,7 @@ import { ArrowLeft, Check, Person, PlusCircle, PlusCircleDotted, X } from 'react
 import { CurrencyInput } from 'react-currency-mask'
 import { twMerge } from 'tailwind-merge'
 
-export default function ArticleForApproval({ params }: { params: { slug: string } }) {
+export default function ArticleForApprovalPage({ params }: { params: { slug: string } }) {
    const router = useRouter()
 
    const [items, setItems] = React.useState(authors_mock)

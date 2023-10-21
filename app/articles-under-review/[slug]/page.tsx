@@ -23,7 +23,7 @@ import { ArrowLeft, Check, FileEarmarkText, Person, PlusCircle, PlusCircleDotted
 import { CurrencyInput } from 'react-currency-mask'
 import { twMerge } from 'tailwind-merge'
 
-export default function ArticleInReview({ params }: { params: { slug: string } }) {
+export default function ArticleInReviewPage({ params }: { params: { slug: string } }) {
    const router = useRouter()
 
    const [items, setItems] = React.useState(authors_mock)
