@@ -6,28 +6,51 @@ import GoogleIcon from 'public/svgs/modules/login/google_icon.svg'
 import SuccessIllustration from 'public/svgs/modules/login/register-success.svg'
 import React from 'react'
 import { ArrowLeft, BoxArrowRight, X } from 'react-bootstrap-icons'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import LoginAnimation from '../Login/Animation/Animation'
 import { RegisterModalProps } from './Typing'
+import { RegisterProps } from '@/schemas/register'
+import { registerUserService } from '@/services/user/register.service'
 
 const RegisterModal: React.FC<RegisterModalProps> = ({ onClose, onRegister, onBack, onLogin, onReturnToLogin }: RegisterModalProps) => {
+   const {
+      register,
+      handleSubmit,
+      watch,
+      formState: { errors }
+   } = useForm<RegisterProps>({
+      defaultValues: {
+         name: '',
+         email: '',
+         password: '',
+         confirmPassword: ''
+      }
+   })
+
    const { loading, start, stop } = useLoading()
 
    const success_component = 'success'
    const [component, setComponent] = React.useState('')
 
-   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
+   const onSubmit: SubmitHandler<RegisterProps> = async (data) => {
       start('loading')
 
-      setTimeout(() => {
-         stop('loading')
-      }, 2000)
+      const response = await registerUserService({
+         name: data.name,
+         email: data.email,
+         password: data.password
+      })
 
-      setComponent(success_component)
+      stop('loading')
+
+      if (response.success) {
+         setComponent(success_component)
+         return
+      }
    }
 
    return (
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
          <div className="grid md:grid-cols-2 relative">
             <LoginAnimation />
             <X
@@ -71,19 +94,19 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ onClose, onRegister, onBa
                         <h2 className="font-semibold text-lg text-center text-neutral-gray">or</h2>
                         <Input.Root>
                            <Input.Label>Name</Input.Label>
-                           <Input.Input type="text" placeholder="Type your name" />
+                           <Input.Input type="text" placeholder="Type your name" {...register('name')} />
                         </Input.Root>
                         <Input.Root>
                            <Input.Label>E-mail</Input.Label>
-                           <Input.Input type="email" placeholder="Type your best email" />
+                           <Input.Input type="email" placeholder="Type your best email" {...register('email')} />
                         </Input.Root>
                         <Input.Root>
                            <Input.Label>Password</Input.Label>
-                           <Input.Password placeholder="Type your password" />
+                           <Input.Password placeholder="Type your password" {...register('password')} />
                         </Input.Root>
                         <Input.Root>
                            <Input.Label>Password confirmation</Input.Label>
-                           <Input.Password placeholder="Type your password again" />
+                           <Input.Password placeholder="Type your password again" {...register('confirmPassword')} />
                         </Input.Root>
                      </div>
                      <Button.Button loading={loading.loading} type="submit" onClick={onRegister}>
