@@ -30,10 +30,10 @@ const Root: React.FC<DrawerRootProps> = ({ children, className, open = false }: 
    return (
       <React.Fragment>
          <div className="flex">
-            <input type="checkbox" id="drawer-toggle" className="relative sr-only peer" defaultChecked={open} />
+            <input type="checkbox" id="drawer-toggle" className="relative sr-only peer pointer-events-none hidden" defaultChecked={open} />
             <label
                htmlFor="drawer-toggle"
-               className="absolute top-0 left-0 inline-block p-4 transition-all duration-500 bg-indigo-500 rounded-lg peer-checked:rotate-180 peer-checked:left-64 z-0"
+               className="absolute top-0 left-0 p-4 transition-all duration-500 bg-transparent rounded-lg peer-checked:rotate-180 peer-checked:left-64 z-0 pointer-events-none hidden"
             />
             <Overlay className="peer-checked:opacity-100" checked={open} />
             {children}

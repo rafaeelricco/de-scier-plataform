@@ -1,4 +1,4 @@
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import * as Button from '@components/common/Button/Button'
 import Image from 'next/image'
 import ShapeDeScierHandBookBottom from 'public/svgs/modules/sidebar/Ellipse 46.svg'
@@ -10,7 +10,6 @@ import SubmitedItem from '../../Profile/SubmitedItem/SubmitedItem'
 import { SidesProps } from '../Typing'
 
 export const MobileProfileComponent: React.FC<SidesProps> = ({ onClose }: SidesProps) => {
-   const [openProfile, setOpenProfile] = React.useState(true)
    return (
       <React.Fragment>
          <ScrollArea className="h-[calc(100vh-7.5rem)]">
@@ -18,11 +17,8 @@ export const MobileProfileComponent: React.FC<SidesProps> = ({ onClose }: SidesP
                <div className="flex justify-between items-center">
                   <h3 className="text-xl font-semibold">My profile</h3>
                   <X
-                     className="w-10 h-min mb-2 cursor-pointer hover:text-status-error transition-all duration-500 ease-out md:hover:scale-110 md:hover:rotate-180 transform"
-                     onClick={() => {
-                        setOpenProfile(false)
-                        onClose()
-                     }}
+                     className="w-10 h-10 mb-2 cursor-pointer hover:text-status-error transition-all duration-500 ease-out md:hover:scale-110 md:hover:rotate-180 transform"
+                     onClick={() => onClose()}
                   />
                </div>
                <div className="flex flex-col gap-8 h-full right-0 justify-between bg-[#FEFEFE] z-[9998] relative">
@@ -75,6 +71,7 @@ export const MobileProfileComponent: React.FC<SidesProps> = ({ onClose }: SidesP
                   </div>
                </div>
             </div>
+            <ScrollBar orientation="vertical" hidden />
          </ScrollArea>
       </React.Fragment>
    )
