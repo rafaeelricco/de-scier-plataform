@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import ForgotPasswordModal from '@/components/modules/ForgotPassword/ForgotPassword'
@@ -7,6 +8,7 @@ import { ConfirmProfileRequestProps, confirmProfileService } from '@/services/us
 import * as Dialog from '@components/common/Dialog/Digalog'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import { twMerge } from 'tailwind-merge'
 
 export default function LoginPage() {
@@ -16,21 +18,25 @@ export default function LoginPage() {
 
    const queryParams = useSearchParams()
 
+   const [isProfileConfirmed, setIsProfileConfirmed] = useState(false)
+
    useEffect(() => {
       const encodedConfirmProfileData = queryParams.get('data')
       if (encodedConfirmProfileData) {
+         const confirmProfile = async (confirmProfileData: ConfirmProfileRequestProps) => {
+            if (!isProfileConfirmed) {
+               const response = await confirmProfileService(confirmProfileData)
+               if (response.success) {
+                  toast.success(' Your registration is now confirmed')
+                  setIsProfileConfirmed(true)
+                  return
+               }
+            }
+         }
          const decodedConfirmProfileData = JSON.parse(Buffer.from(encodedConfirmProfileData, 'base64').toString('ascii'))
          confirmProfile(decodedConfirmProfileData)
       }
-   }, [queryParams])
-
-   const confirmProfile = async (confirmProfileData: ConfirmProfileRequestProps) => {
-      const response = await confirmProfileService(confirmProfileData)
-      if (response.success) {
-         alert('logado')
-         return
-      }
-   }
+   }, [])
 
    const [component, setComponent] = useState(login_component)
 
