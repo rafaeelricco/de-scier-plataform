@@ -1,6 +1,6 @@
 import { ScrollArea } from '@/components/ui/scroll-area'
 import * as Button from '@components/common/Button/Button'
-import { Drawer } from '@material-tailwind/react'
+import { Drawer } from '@mantine/core'
 import Image from 'next/image'
 import ShapeDeScierHandBookBottom from 'public/svgs/modules/sidebar/Ellipse 46.svg'
 import ShapeDeScierHandBookTop from 'public/svgs/modules/sidebar/Ellipse 48.svg'
@@ -15,14 +15,13 @@ export const MobileProfileComponent: React.FC<SidesProps> = ({ onClose }: SidesP
    return (
       <React.Fragment>
          <Drawer
-            placement="right"
-            open={openProfile}
-            className="p-6"
-            size={728 * 0.8}
+            opened={openProfile}
             onClose={() => {
                setOpenProfile(false)
                onClose()
             }}
+            title="Authentication"
+            overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
          >
             <ScrollArea className="h-[calc(100vh-7.5rem)]">
                <div className="grid gap-4 content-start">

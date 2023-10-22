@@ -4,7 +4,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { items } from '@/mock/sidebar_items'
 import { home_routes } from '@/routes/home'
 import * as Button from '@components/common/Button/Button'
-import { Drawer } from '@material-tailwind/react'
+import { Drawer } from '@mantine/core'
 import { usePathname, useRouter } from 'next/navigation'
 import LogoDeScier from 'public/svgs/common/logo/deScier - Logo copy.svg'
 import React from 'react'
@@ -20,14 +20,12 @@ export const MobileSidebarComponent: React.FC<SidesProps> = ({ onClose }: SidesP
    return (
       <React.Fragment>
          <Drawer
-            placement="left"
-            open={openSidebar}
+            opened={openSidebar}
             onClose={() => {
                setOpenSidebar(false)
                onClose()
             }}
-            className="p-6 "
-            size={728 * 0.8}
+            overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
          >
             <ScrollArea className="h-[calc(100vh-7.5rem)]">
                <div className="flex flex-col gap-8 content-between">

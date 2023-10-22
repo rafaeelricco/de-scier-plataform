@@ -1,15 +1,15 @@
 /** @type {import('tailwindcss').Config} */
-const withMT = require('@material-tailwind/react/utils/withMT')
+// const withMT = require('@material-tailwind/react/utils/withMT')
 
-module.exports = withMT({
+module.exports = {
    darkMode: ['class'],
    content: [
       './pages/**/*.{ts,tsx}',
       './components/**/*.{ts,tsx}',
       './app/**/*.{ts,tsx}',
-      './src/**/*.{ts,tsx}',
-      './node_modules/@material-tailwind/react/components/**/*.{js,ts,jsx,tsx}',
-      './node_modules/@material-tailwind/react/theme/components/**/*.{js,ts,jsx,tsx}'
+      './src/**/*.{ts,tsx}'
+      //   './node_modules/@material-tailwind/react/components/**/*.{js,ts,jsx,tsx}',
+      //   './node_modules/@material-tailwind/react/theme/components/**/*.{js,ts,jsx,tsx}'
    ],
    theme: {
       container: {
@@ -179,4 +179,4 @@ module.exports = withMT({
       }
    },
    plugins: [require('tailwindcss-animate')]
-})
+}
