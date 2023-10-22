@@ -1,16 +1,6 @@
+import { DrawerContentProps, DrawerOverlayProps, DrawerRootProps } from '@components/common/Drawer/Typing'
 import React from 'react'
 import { twJoin, twMerge } from 'tailwind-merge'
-
-interface DrawerRootProps {
-   className?: string
-   children?: React.ReactNode
-   open?: boolean
-}
-
-interface DrawerOverlayProps {
-   className?: string
-   checked?: boolean
-}
 
 const Overlay: React.FC<DrawerOverlayProps> = ({ className, checked }: DrawerOverlayProps) => {
    return (
@@ -50,12 +40,6 @@ const Root: React.FC<DrawerRootProps> = ({ children, className, open = false }: 
          </div>
       </React.Fragment>
    )
-}
-
-interface DrawerContentProps {
-   className?: string
-   children?: React.ReactNode
-   position?: 'left' | 'right'
 }
 
 const Content: React.FC<DrawerContentProps> = ({ children, className, position = 'right' }: DrawerContentProps) => {
