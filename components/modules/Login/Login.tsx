@@ -49,11 +49,11 @@ const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onFo
       router.push(home_routes.summary)
    }
 
-   const loginWithGoogle = async () => {
-      const authResult = await signIn('google', {
-         callbackUrl: '/'
+   const loginWithGoogle = async (e: React.MouseEvent<HTMLElement>) => {
+      e.preventDefault()
+      await signIn('google', {
+         callbackUrl: '/summary'
       })
-      console.log(authResult)
    }
 
    return (

@@ -147,23 +147,8 @@ const authOptions: NextAuthOptions = {
                throw new Error('Unauthorized')
             }
 
-            // Get user basic info
-            const userInfoResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/profile`, {
-               method: 'GET',
-               headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${data.token}`
-               }
-            })
-
-            if (userInfoResponse.status !== 200) {
-               throw new Error('Error getting user basic info')
-            }
-
-            const userInfo = await userInfoResponse.json()
-
             token.token = data.token
-            token.userInfo = userInfo
+            token.userInfo = data.user
 
             return {
                ...token,

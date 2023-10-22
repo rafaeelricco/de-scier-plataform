@@ -15,13 +15,11 @@ const matcherRegex = new RegExp('^ (?!/ (?:_next/static|favicon\\.ico|swc\\.js|a
 
 export function middleware(request: NextRequest) {
    /** @dev Extract the 'next-auth.session-token' cookie from the request. */
-   const standard = request.cookies.get('next-auth.session-token')
+   const standard = request.cookies.get('next-auth.session-token') ?? request.cookies.get('next-auth.session-token.0')
    const secure = request.cookies.get('__Secure-next-auth.session-token')
 
    /** @dev Determine if the user is authenticated. */
    const isAuthenticated = standard || secure
-
-   console.log('midlerafagshasjkaskshghhkahsjj')
 
    /**
     * @notice Check for the absence of the authentication cookie.
@@ -29,10 +27,8 @@ export function middleware(request: NextRequest) {
     * `/login` page, redirect them to the login page.
     */
    if (!isAuthenticated && request.nextUrl.pathname !== '/login') {
-      console.log('req', request.nextUrl.pathname)
       const url = request.nextUrl.clone()
       url.pathname = '/login'
-      console.log('dsmmdsd.s.')
 
       return NextResponse.redirect(url)
    }
