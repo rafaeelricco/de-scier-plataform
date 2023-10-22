@@ -18,6 +18,8 @@ export default function LoginPage() {
 
    const queryParams = useSearchParams()
 
+   const [component, setComponent] = useState(login_component)
+
    const [isProfileConfirmed, setIsProfileConfirmed] = useState(false)
 
    useEffect(() => {
@@ -37,8 +39,6 @@ export default function LoginPage() {
          confirmProfile(decodedConfirmProfileData)
       }
    }, [])
-
-   const [component, setComponent] = useState(login_component)
 
    return (
       <main className="container">

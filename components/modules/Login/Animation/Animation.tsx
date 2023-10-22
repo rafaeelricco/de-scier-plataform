@@ -27,7 +27,13 @@ const LoginAnimation: React.FC = () => {
                </div>
                <h2 className="font-semibold text-lg md:text-xl text-neutral-white">Join the DeSci movement!</h2>
             </div>
-            <object className="login-animation" id="animated-svg" type="image/svg+xml" data="/svgs/modules/login/deScier - Login animation (1).svg" />
+            <object
+               className="login-animation"
+               id="animated-svg"
+               type="image/svg+xml"
+               data-autoplay={true}
+               data="/svgs/modules/login/descier_login_animation.svg"
+            />
             <BlobShape className="login-blob-shape" />
             <Image quality={100} width={184} height={184} src={deScierStamp} alt="deScier stamp" className="login-stamp" />
          </div>

@@ -2,12 +2,60 @@ import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import '@styles/login.css'
 import GoogleIcon from 'public/svgs/modules/login/google_icon.svg'
-import React from 'react'
+import React, { useState } from 'react'
+import { signIn } from 'next-auth/react'
 import { X } from 'react-bootstrap-icons'
 import LoginAnimation from './Animation/Animation'
 import { LoginModalProps } from './Typing'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { LoginProps } from '@/schemas/login'
+import { toast } from 'react-toastify'
+import { home_routes } from '@/routes/home'
+import { useRouter } from 'next/navigation'
 
 const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onForgotPassword, onLogin, onRegister }: LoginModalProps) => {
+   const router = useRouter()
+
+   const [loading, setLoading] = useState(false)
+
+   const {
+      register,
+      handleSubmit,
+      watch,
+      formState: { errors }
+   } = useForm<LoginProps>({
+      defaultValues: {
+         email: '',
+         password: ''
+      }
+   })
+
+   const onSubmit: SubmitHandler<LoginProps> = async (data) => {
+      setLoading(true)
+      const authResult = await signIn('credentials', {
+         redirect: false,
+         email: data.email,
+         password: data.password
+      })
+
+      setLoading(false)
+
+      if (authResult?.error) {
+         toast.error('Login error. Check your credentials.')
+         return
+      }
+
+      toast.success('Successful login')
+      router.push(home_routes.summary)
+   }
+
+   const loginWithGoogle = async () => {
+      const authResult = await signIn('google', {
+         callbackUrl: '/'
+      })
+      console.log(authResult)
+   }
+
    return (
       <React.Fragment>
          <div className="grid md:grid-cols-2 relative">
@@ -27,8 +75,8 @@ const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onFo
                      </p>
                   </React.Fragment>
                )}
-               <div className="grid gap-6">
-                  <Button.Button variant="outline" className="rounded-full px-4 py-2">
+               <form className="grid gap-6" onSubmit={handleSubmit(onSubmit)}>
+                  <Button.Button variant="outline" className="rounded-full px-4 py-2" onClick={loginWithGoogle}>
                      <GoogleIcon className="w-6" />
                      <span className="text-base font-semibold">Login with Google</span>
                   </Button.Button>
@@ -36,14 +84,16 @@ const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onFo
                      <h2 className="font-semibold text-lg text-center text-neutral-gray">or</h2>
                      <Input.Root>
                         <Input.Label>E-mail</Input.Label>
-                        <Input.Input type="email" placeholder="Type your best email" />
+                        <Input.Input type="email" placeholder="Type your best email" {...register('email')} />
                      </Input.Root>
                      <Input.Root>
                         <Input.Label>Password</Input.Label>
-                        <Input.Password placeholder="Type your password" />
+                        <Input.Password placeholder="Type your password" {...register('password')} />
                      </Input.Root>
                   </div>
-                  <Button.Button onClick={onLogin}>Login</Button.Button>
+                  <Button.Button type="submit" loading={loading}>
+                     Login
+                  </Button.Button>
                   <p
                      className="text-secundary_blue-main text-sm text-center cursor-pointer transition-all hover:underline hover:text-primary-hover underline hover:font-semibold duration-300"
                      onClick={onForgotPassword}
@@ -51,7 +101,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onFo
                      Forgot your password? Click here.
                   </p>
                   <div className="divider-h my-6" />
-               </div>
+               </form>
                <Button.Button variant="outline" onClick={onRegister}>
                   Not a user? Register now
                </Button.Button>

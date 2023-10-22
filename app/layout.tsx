@@ -4,6 +4,7 @@ import '@styles/utils.css'
 import type { Metadata } from 'next'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { AuthProvider } from './auth-provider'
 
 export const metadata: Metadata = {
    title: 'deScier Plataform - Decentralized Science',
@@ -25,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
          </head>
          <body>
             <ProgressBar />
-            {children}
+            <AuthProvider>{children}</AuthProvider>
             <ToastContainer />
          </body>
       </html>
