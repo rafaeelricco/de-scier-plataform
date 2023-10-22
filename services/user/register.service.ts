@@ -14,9 +14,12 @@ export const registerUserService = async (data: RegisterRequestProps) => {
       }
    }
 
+   const responseData = await response.json()
+   const message = responseData.message ?? 'Error in register user.'
+
    return {
       success: false,
-      message: 'Error in register user'
+      message: message
    }
 }
 

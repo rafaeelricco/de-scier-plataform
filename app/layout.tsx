@@ -2,6 +2,8 @@ import ProgressBar from '@/lib/nprogress'
 import '@styles/globals.css'
 import '@styles/utils.css'
 import type { Metadata } from 'next'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export const metadata: Metadata = {
    title: 'deScier Plataform - Decentralized Science',
@@ -24,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
          <body>
             <ProgressBar />
             {children}
+            <ToastContainer />
          </body>
       </html>
    )

@@ -11,6 +11,7 @@ import LoginAnimation from '../Login/Animation/Animation'
 import { RegisterModalProps } from './Typing'
 import { RegisterProps } from '@/schemas/register'
 import { registerUserService } from '@/services/user/register.service'
+import { toast } from 'react-toastify'
 
 const RegisterModal: React.FC<RegisterModalProps> = ({ onClose, onRegister, onBack, onLogin, onReturnToLogin }: RegisterModalProps) => {
    const {
@@ -47,6 +48,8 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ onClose, onRegister, onBa
          setComponent(success_component)
          return
       }
+
+      toast.error(response.message)
    }
 
    return (
