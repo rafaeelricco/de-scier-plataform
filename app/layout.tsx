@@ -1,4 +1,5 @@
 import ProgressBar from '@/lib/nprogress'
+import { MaterialTailwindThemeProvider } from '@/lib/theme-provider'
 import '@styles/globals.css'
 import '@styles/utils.css'
 import type { Metadata } from 'next'
@@ -23,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
          </head>
          <body>
             <ProgressBar />
-            {children}
+            <MaterialTailwindThemeProvider>{children}</MaterialTailwindThemeProvider>
          </body>
       </html>
    )
