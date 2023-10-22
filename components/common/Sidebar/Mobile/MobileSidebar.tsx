@@ -15,16 +15,9 @@ import { SidesProps } from '../Typing'
 export const MobileSidebarComponent: React.FC<SidesProps> = ({ onClose }: SidesProps) => {
    const router = useRouter()
    const currentPath = usePathname()
+   const [openSidebar, setOpenSidebar] = React.useState(true)
    return (
       <React.Fragment>
-         {/* <Drawer
-            opened={true}
-            onClose={() => {
-               close()
-               onClose()
-            }}
-            overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-         > */}
          <ScrollArea className="h-[calc(100vh-7.5rem)]">
             <div className="flex flex-col gap-8 content-between">
                <div className="flex flex-col gap-6 flex-grow">
@@ -33,7 +26,7 @@ export const MobileSidebarComponent: React.FC<SidesProps> = ({ onClose }: SidesP
                      <X
                         className="w-10 h-min mb-2 cursor-pointer hover:text-status-error transition-all duration-500 ease-out md:hover:scale-110 md:hover:rotate-180 transform"
                         onClick={() => {
-                           //    setOpenSidebar(false)
+                           setOpenSidebar(false)
                            onClose()
                         }}
                      />
@@ -53,7 +46,6 @@ export const MobileSidebarComponent: React.FC<SidesProps> = ({ onClose }: SidesP
                <Logout onLogout={() => router.push('/login')} />
             </div>
          </ScrollArea>
-         {/* </Drawer> */}
       </React.Fragment>
    )
 }

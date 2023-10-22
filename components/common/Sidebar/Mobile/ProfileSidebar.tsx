@@ -13,15 +13,6 @@ export const MobileProfileComponent: React.FC<SidesProps> = ({ onClose }: SidesP
    const [openProfile, setOpenProfile] = React.useState(true)
    return (
       <React.Fragment>
-         {/* <Drawer
-            opened={openProfile}
-            onClose={() => {
-               setOpenProfile(false)
-               onClose()
-            }}
-            title="Authentication"
-            overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-         > */}
          <ScrollArea className="h-[calc(100vh-7.5rem)]">
             <div className="grid gap-4 content-start">
                <div className="flex justify-between items-center">
@@ -85,7 +76,6 @@ export const MobileProfileComponent: React.FC<SidesProps> = ({ onClose }: SidesP
                </div>
             </div>
          </ScrollArea>
-         {/* </Drawer> */}
       </React.Fragment>
    )
 }
