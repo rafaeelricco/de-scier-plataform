@@ -1,5 +1,4 @@
 import ProgressBar from '@/lib/nprogress'
-import { ColorSchemeScript, MantineProvider } from '@mantine/core'
 import '@styles/globals.css'
 import '@styles/utils.css'
 import type { Metadata } from 'next'
@@ -14,8 +13,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
    return (
       <html lang="en">
          <head>
-            <ColorSchemeScript />
-
             <link rel="preconnect" href="https://fonts.googleapis.com" />
             <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
             {/* eslint-disable-next-line @next/next/no-page-custom-font */}
@@ -26,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
          </head>
          <body>
             <ProgressBar />
-            <MantineProvider>{children}</MantineProvider>
+            {children}
          </body>
       </html>
    )
