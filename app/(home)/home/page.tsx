@@ -9,6 +9,7 @@ import * as Input from '@components/common/Input/Input'
 import '@styles/home.css'
 import Image from 'next/image'
 import IllustrationHero from 'public/svgs/modules/home/illustration-home.svg'
+import ShapeMobile from 'public/svgs/modules/home/shape-mobile.svg'
 import CirclesHero from 'public/svgs/modules/home/shapes/circles.svg'
 import ShapeHero from 'public/svgs/modules/home/shapes/shape1.svg'
 import ShapeSecondary from 'public/svgs/modules/home/shapes/shape2.svg'
@@ -59,9 +60,12 @@ export default function HomePage() {
                </div>
             </div>
          </div>
-         <div className="relative"></div>
          <div className="grid gap-52">
-            <div className="relative flex lg:justify-center">
+            <div className="relative w-full flex items-center justify-center lg:hidden">
+               <IllustrationHero className="w-full h-full mt-12 max-w-[372px]" />
+               <ShapeMobile className="absolute z-[-1] w-screen -bottom-" />
+            </div>
+            <div className="relative flex lg:justify-center mt-8 lg:mt-0">
                <CirclesHero className="absolute left-[-14rem] bottom-0 min-w-[200px] max-w-[200px]" />
                <h2 className="text-lg lg:text-1xl lg:max-w-[50ch] text-center w-full lg:my-auto lg:mx-0 lg:z-10 lg:mt-[-2.5rem]">
                   Our enviroment is powered by <span className="font-bold bg-purple bg-clip-text text-transparent">blockchain technology</span>, where we
@@ -70,7 +74,7 @@ export default function HomePage() {
                      authors having 100% of the ownership and copyright of their creations.
                   </span>
                </h2>
-               <ShapeSecondary className="absolute z-0 left-[-13rem] top-[4rem] max-w-[472px] max-h-[680px]" />
+               <ShapeSecondary className="absolute max-w-[372px] z-0 left-[-13rem] top-72 lg:top-[4rem] lg:max-w-[472px] lg:max-h-[680px]" />
             </div>
             <div className="relative h-fit">
                <div className="border-neutral-stroke_light rounded-3xl shadow-search backdrop-blur-md bg-white-home px-8 py-6 grid gap-4 relative z-10">
