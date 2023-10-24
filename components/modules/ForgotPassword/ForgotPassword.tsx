@@ -1,13 +1,29 @@
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import '@styles/login.css'
-import React from 'react'
+import React, { useState } from 'react'
 import { ArrowLeft, X } from 'react-bootstrap-icons'
 import GenericSuccess from '../Profile/Modals/Success'
+import {
+   ConfirmRecoveryPasswordProps,
+   confirmRecoveryPasswordRequestService,
+   recoveryPasswordRequestService,
+   validateRecoveryPasswordRequesService
+} from '@/services/user/forgotPassword.service'
+import { toast } from 'react-toastify'
+import { UseFormRegister, useForm } from 'react-hook-form'
 
 type ForgotPasswordModalProps = { onClose: () => void; onBack: () => void }
 
 const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onBack, onClose }: ForgotPasswordModalProps) => {
+   const { register, getValues } = useForm<ConfirmRecoveryPasswordProps>({
+      defaultValues: {
+         confirmationCode: '',
+         email: '',
+         newPassword: '',
+         confirmPassword: ''
+      }
+   })
    const [component, setComponent] = React.useState({
       insert_email: true,
       insert_code: false,
@@ -15,7 +31,14 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onBack, onClo
       success: false
    })
 
-   const handleInsertEmailContinue = () => {
+   const handleInsertEmailContinue = async () => {
+      const toastId = toast.loading('Requesting recovery password code...')
+      const response = await recoveryPasswordRequestService(getValues('email'))
+      toast.dismiss(toastId)
+      if (!response.success) {
+         toast.error(response.message)
+         return
+      }
       setComponent({
          insert_email: false,
          insert_code: true,
@@ -24,7 +47,17 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onBack, onClo
       })
    }
 
-   const handleInsertCodeContinue = () => {
+   const handleInsertCodeContinue = async () => {
+      const toastId = toast.loading('Validating code...')
+      const response = await validateRecoveryPasswordRequesService({
+         email: getValues('email'),
+         confirmationCode: getValues('confirmationCode')
+      })
+      toast.dismiss(toastId)
+      if (!response.success) {
+         toast.error(response.message)
+         return
+      }
       setComponent({
          insert_email: false,
          insert_code: false,
@@ -42,7 +75,20 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onBack, onClo
       })
    }
 
-   const handleInsertNewPasswordContinue = () => {
+   const handleInsertNewPasswordContinue = async () => {
+      const toastId = toast.loading('Resetting password...')
+      const response = await confirmRecoveryPasswordRequestService({
+         email: getValues('email'),
+         confirmationCode: getValues('confirmationCode'),
+         newPassword: getValues('newPassword'),
+         confirmPassword: getValues('confirmPassword')
+      })
+      toast.dismiss(toastId)
+      if (!response.success) {
+         toast.error(response.message)
+         return
+      }
+
       setComponent({
          insert_email: false,
          insert_code: false,
@@ -53,10 +99,12 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onBack, onClo
 
    return (
       <form>
-         {component.insert_email && <InserEmail onClose={onClose} onContinue={handleInsertEmailContinue} onBack={onBack} />}
-         {component.insert_code && <InsertCode onClose={onClose} onContinue={handleInsertCodeContinue} onBack={handleInsertCodeBack} />}
+         {component.insert_email && <InserEmail onClose={onClose} onContinue={handleInsertEmailContinue} onBack={onBack} register={register} />}
+         {component.insert_code && (
+            <InsertCode onClose={onClose} onContinue={handleInsertCodeContinue} onBack={handleInsertCodeBack} register={register} />
+         )}
          {component.insert_new_password && (
-            <InsertNewPassword onClose={onClose} onContinue={handleInsertNewPasswordContinue} onBack={handleInsertCodeBack} />
+            <InsertNewPassword onClose={onClose} onContinue={handleInsertNewPasswordContinue} onBack={handleInsertCodeBack} register={register} />
          )}
          {component.success && (
             <div className="w-ful grid gap-6 md:p-16 relative p-6 pb-12">
@@ -84,9 +132,14 @@ const Header: React.FC<HeaderProps> = ({ onBack, onClose }: HeaderProps) => {
    )
 }
 
-type InsertEmailProps = { onClose: () => void; onBack: () => void; onContinue: () => void }
+type InsertEmailProps = {
+   onClose: () => void
+   onBack: () => void
+   onContinue: () => void
+   register: UseFormRegister<ConfirmRecoveryPasswordProps>
+}
 
-const InserEmail: React.FC<InsertEmailProps> = ({ onBack, onClose, onContinue }: InsertEmailProps) => {
+const InserEmail: React.FC<InsertEmailProps> = ({ onBack, onClose, onContinue, register }: InsertEmailProps) => {
    return (
       <React.Fragment>
          <div className="w-ful grid gap-6 md:p-16 relative p-6 pb-12">
@@ -95,7 +148,7 @@ const InserEmail: React.FC<InsertEmailProps> = ({ onBack, onClose, onContinue }:
                <div className="grid gap-6">
                   <Input.Root>
                      <Input.Label>E-mail</Input.Label>
-                     <Input.Input type="email" placeholder="Type your best email" />
+                     <Input.Input type="email" placeholder="Type your best email" {...register('email')} />
                   </Input.Root>
                </div>
                <Button.Button onClick={onContinue}>Continue</Button.Button>
@@ -105,9 +158,9 @@ const InserEmail: React.FC<InsertEmailProps> = ({ onBack, onClose, onContinue }:
    )
 }
 
-type InsertCodeProps = { onClose: () => void; onBack: () => void; onContinue: () => void }
+type InsertCodeProps = { onClose: () => void; onBack: () => void; onContinue: () => void; register: UseFormRegister<ConfirmRecoveryPasswordProps> }
 
-const InsertCode: React.FC<InsertCodeProps> = ({ onBack, onClose, onContinue }: InsertCodeProps) => {
+const InsertCode: React.FC<InsertCodeProps> = ({ onBack, onClose, onContinue, register }: InsertCodeProps) => {
    return (
       <React.Fragment>
          <div className="w-ful grid gap-6 md:p-16 relative p-6 pb-12">
@@ -120,7 +173,7 @@ const InsertCode: React.FC<InsertCodeProps> = ({ onBack, onClose, onContinue }: 
                <div className="grid gap-6">
                   <Input.Root>
                      <Input.Label>Code</Input.Label>
-                     <Input.Input placeholder="Insert the confirmation code" />
+                     <Input.Input placeholder="Insert the confirmation code" {...register('confirmationCode')} />
                   </Input.Root>
                </div>
                <Button.Button onClick={onContinue}>Continue</Button.Button>
@@ -130,9 +183,9 @@ const InsertCode: React.FC<InsertCodeProps> = ({ onBack, onClose, onContinue }: 
    )
 }
 
-type InsertNewPasswordProps = { onClose: () => void; onBack: () => void; onContinue: () => void }
+type InsertNewPasswordProps = { onClose: () => void; onBack: () => void; onContinue: () => void; register: UseFormRegister<ConfirmRecoveryPasswordProps> }
 
-const InsertNewPassword: React.FC<InsertNewPasswordProps> = ({ onBack, onClose, onContinue }: InsertNewPasswordProps) => {
+const InsertNewPassword: React.FC<InsertNewPasswordProps> = ({ onBack, onClose, onContinue, register }: InsertNewPasswordProps) => {
    return (
       <React.Fragment>
          <div className="w-ful grid gap-6 md:p-16 relative p-6 pb-12">
@@ -141,11 +194,11 @@ const InsertNewPassword: React.FC<InsertNewPasswordProps> = ({ onBack, onClose, 
                <div className="grid gap-6">
                   <Input.Root>
                      <Input.Label>Password</Input.Label>
-                     <Input.Password placeholder="Type your password" />
+                     <Input.Password placeholder="Type your password" {...register('newPassword')} />
                   </Input.Root>
                   <Input.Root>
                      <Input.Label>Password confirmation</Input.Label>
-                     <Input.Password placeholder="Type your password again" />
+                     <Input.Password placeholder="Type your password again" {...register('confirmPassword')} />
                   </Input.Root>
                </div>
                <Button.Button onClick={onContinue}>Continue</Button.Button>
