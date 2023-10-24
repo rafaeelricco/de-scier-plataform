@@ -10,16 +10,11 @@ export function HeaderMobile() {
 
    return (
       <React.Fragment>
-         <aside className="md:hidden z-50">
+         <aside className="lg:hidden z-50">
             <div className="mx-auto max-w-screen-xl px-6 py-3 rounded-none bg-white shadow-ligh">
                <div className="flex items-center justify-between">
                   <div className="flex justify-start items-center flex-grow gap-2">
-                     <button
-                        className="relative group"
-                        onClick={() => {
-                           setOpenNav('sidebar')
-                        }}
-                     >
+                     <button className="relative group" onClick={() => setOpenNav('sidebar')}>
                         <div className="relative flex overflow-hidden items-center justify-center rounded-full w-[45px] h-[45px] transform transition-all ring-0 hover:ring-8 group-focus:ring-4 ring-opacity-60 ring-primary-main duration-200">
                            <div className="flex flex-col justify-between w-[24px] h-[18px] transform transition-all duration-300 origin-center overflow-hidden">
                               <div className="bg-primary-main h-[2px] w-7 transform transition-all duration-300 origin-left group-focus:translate-x-10" />

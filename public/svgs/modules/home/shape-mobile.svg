@@ -1,21 +1,17 @@
-<svg viewBox="0 0 375 431" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g filter="url(#filter0_b_613_16112)">
-        <path
-            d="M-114.929 302.573C-105.86 244.47 -88.6474 90.1046 52.5692 34.1936C94.7945 17.4756 328.55 -8.56407 375 2.76913L374.999 431C92.6245 422.97 -119.436 331.444 -114.929 302.573Z"
-            fill="url(#paint0_linear_613_16112)" />
-    </g>
-    <defs>
-        <filter id="filter0_b_613_16112" x="-131" y="-16" width="522" height="463" filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB">
-            <feFlood flood-opacity="0" result="BackgroundImageFix" />
-            <feGaussianBlur in="BackgroundImageFix" stdDeviation="8" />
-            <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_613_16112" />
-            <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_613_16112" result="shape" />
-        </filter>
-        <linearGradient id="paint0_linear_613_16112" x1="95.0416" y1="-16.9806" x2="293.544" y2="364.875"
-            gradientUnits="userSpaceOnUse">
-            <stop stop-color="#CF56FB" stop-opacity="0.384675" />
-            <stop offset="1" stop-color="#2433C6" stop-opacity="0.44" />
-        </linearGradient>
-    </defs>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 27.9.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 375 320" style="enable-background:new 0 0 375 320;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:url(#SVGID_1_);}
+</style>
+<g>
+	
+		<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="65.3971" y1="220.0674" x2="229.617" y2="-95.8396" gradientTransform="matrix(1 0 0 -1 0 210)">
+		<stop  offset="0" style="stop-color:#CF56FB;stop-opacity:0.3847"/>
+		<stop  offset="1" style="stop-color:#2433C6;stop-opacity:0.44"/>
+	</linearGradient>
+	<path class="st0" d="M-114.9,224.6c9.1-43.1,26.3-157.7,167.5-199.3C94.8,13,328.5-6.4,375,2.1l0,317.9
+		C92.6,314-119.4,246.1-114.9,224.6z"/>
+</g>
 </svg>

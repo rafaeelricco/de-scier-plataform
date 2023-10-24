@@ -18,54 +18,56 @@ import React from 'react'
 import { CaretRightFill, Eye, HandThumbsUpFill, Person, Search } from 'react-bootstrap-icons'
 
 export default function HomePage() {
-   const { md, lg } = useWindowDimension()
+   const { sm, md, lg, xl, xxl } = useWindowDimension()
+   console.log(sm, md, lg, xl, xxl)
 
    return (
       <React.Fragment>
-         <IllustrationHero className="hidden md:block absolute right-0 top-60 w-full h-full max-w-[708px] max-h-[554px]" />
-         <ShapeHero className="hidden md:block absolute right-0 top-0 z-[-1] w-full h-full max-w-[742px] max-h-[872px]" />
+         <IllustrationHero className="hidden md:block lg:w-[45%] xl:w-1/2 absolute right-0 md:top-48 lg:top-50 xl:top-60 h-full lg:max-w-[600px] xl:max-w-[708px] max-h-[554px]" />
+         <ShapeHero className="hidden md:block lg:w-3/4 xl:w-full absolute right-0 top-0 z-[-1] md:max-w-[600px] md:max-h-[700px] lg:max-w-[700px] lg:max-h-[800px] xl:max-w-[742px] xl:max-h-[872px]" />
+
          <div className="h-auto lg:pt-24 lg:h-[calc(100vh-14rem)]">
             <div className="grid gap-6 content-start">
                <div className="grid gap-2 mt-8 lg:mt-28">
-                  <h1 className="text-3xl font-bold lg:text-5xl max-w-[20ch] bg-purple bg-clip-text text-transparent">
+                  <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold md:max-w-[20ch] bg-purple bg-clip-text text-transparent">
                      A new future for scientific publications
                   </h1>
-                  <p className="text-lg max-w-[50ch]">
-                     In deScier, scientific papers are published in a community created by scientists, for scientists.{' '}
+                  <p className="text-sm md:text-base lg:text-lg max-w-[50ch]">
+                     In deScier, scientific papers are published in a community created by scientists, for scientists.
                   </p>
                </div>
-               <div className="py-3 px-4 bg-white flex flex-col md:flex-row gap-3 lg:gap-4 rounded-xl lg:rounded-full shadow-search lg:w-fit h-fit">
+               <div className="py-3 px-4 max-w-full lg:max-w-[50vw]  xl:max-w-[600px] 2xl:max-w-full bg-white grid sm:grid-flow-col sm:items-center gap-3 lg:gap-4 rounded-xl lg:rounded-full shadow-search lg:w-fit h-fit ">
                   <Input.Input
-                     className="rounded-full py-3 px-4 border-neutral-stroke_light bg-transparent shadow-none border focus:outline-none focus:border-neutral-stroke_light text-sm w-full"
+                     className="rounded-full py-2 md:py-3 px-3 md:px-4 border-neutral-stroke_light bg-transparent shadow-none border focus:outline-none focus:border-neutral-stroke_light text-xs md:text-sm w-full"
                      placeholder="Find articles with terms"
                      icon={
                         <React.Fragment>
-                           <Search className="w-5 h-5 ml-1 text-neutral-light_gray" />
+                           <Search className="w-4 md:w-5 h-4 md:h-5 ml-1 text-neutral-light_gray" />
                         </React.Fragment>
                      }
                   />
                   <Input.Input
-                     className="rounded-full py-3 px-4 border-neutral-stroke_light bg-transparent shadow-none border focus:outline-none focus:border-neutral-stroke_light text-sm w-full mt-2 md:mt-0"
+                     className="rounded-full py-2 md:py-3 px-3 md:px-4 border-neutral-stroke_light bg-transparent shadow-none border focus:outline-none focus:border-neutral-stroke_light text-xs md:text-sm w-full"
                      placeholder="Search for an author"
                      icon={
                         <React.Fragment>
-                           <Person className="w-5 h-5 ml-1 text-neutral-light_gray" />
+                           <Person className="w-4 md:w-5 h-4 md:h-5 ml-1 text-neutral-light_gray" />
                         </React.Fragment>
                      }
                   />
-                  <Button.Button variant="outline" className="rounded-full py-3 px-6 text-sm mt-2 md:mt-0 w-full md:w-auto">
+                  <Button.Button variant="outline" className="rounded-full py-2 md:py-3 px-5 md:px-6 text-xs md:text-sm w-full">
                      Search
-                     <Search className="w-5 h-5" />
+                     <Search className="w-4 md:w-5 h-4 md:h-5 ml-1" />
                   </Button.Button>
                </div>
             </div>
          </div>
          <div className="grid gap-52">
             <div className="relative w-full flex items-center justify-center lg:hidden">
-               <IllustrationHero className="w-full h-full mt-12 max-w-[372px]" />
-               <ShapeMobile className="absolute z-[-1] w-screen -bottom-" />
+               <IllustrationHero className="w-[90%] sm:w-3/4 h-auto mt-8 sm:mt-12 max-w-[372px] md:hidden" />
+               <ShapeMobile className="absolute z-[-1] w-screen md:hidden" />
             </div>
-            <div className="relative flex lg:justify-center mt-8 lg:mt-0">
+            <div className="relative flex lg:justify-center md:mt-8 lg:mt-0">
                <CirclesHero className="absolute left-[-14rem] bottom-0 min-w-[200px] max-w-[200px]" />
                <h2 className="text-lg lg:text-1xl lg:max-w-[50ch] text-center w-full lg:my-auto lg:mx-0 lg:z-10 lg:mt-[-2.5rem]">
                   Our enviroment is powered by <span className="font-bold bg-purple bg-clip-text text-transparent">blockchain technology</span>, where we
