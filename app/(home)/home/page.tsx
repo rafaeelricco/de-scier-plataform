@@ -23,13 +23,14 @@ export default function HomePage() {
 
    return (
       <React.Fragment>
-         <IllustrationHero className="hidden md:block lg:w-[45%] xl:w-1/2 absolute right-0 md:top-48 lg:top-50 xl:top-60 h-full lg:max-w-[600px] xl:max-w-[708px] max-h-[554px]" />
-         <ShapeHero className="hidden md:block lg:w-3/4 xl:w-full absolute right-0 top-0 z-[-1] md:max-w-[600px] md:max-h-[700px] lg:max-w-[700px] lg:max-h-[800px] xl:max-w-[742px] xl:max-h-[872px]" />
+         {/* quando entrar em resolução mobile, desaparece estas duas */}
+         <IllustrationHero className="hidden lg:block lg:w-[45%] xl:w-1/2 absolute right-0 md:top-48 lg:top-50 xl:top-60 h-full lg:max-w-[600px] xl:max-w-[708px] max-h-[554px]" />
+         <ShapeHero className="hidden lg:block lg:w-3/4 xl:w-full absolute right-0 top-0 z-[-1] md:max-w-[600px] md:max-h-[700px] lg:max-w-[700px] lg:max-h-[800px] xl:max-w-[742px] xl:max-h-[872px]" />
 
          <div className="h-auto lg:pt-24 lg:h-[calc(100vh-14rem)]">
             <div className="grid gap-6 content-start">
                <div className="grid gap-2 mt-8 lg:mt-28">
-                  <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold md:max-w-[20ch] bg-purple bg-clip-text text-transparent">
+                  <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold lg:max-w-[20ch] bg-purple bg-clip-text text-transparent">
                      A new future for scientific publications
                   </h1>
                   <p className="text-sm md:text-base lg:text-lg max-w-[50ch]">
@@ -64,8 +65,8 @@ export default function HomePage() {
          </div>
          <div className="grid gap-52">
             <div className="relative w-full flex items-center justify-center lg:hidden">
-               <IllustrationHero className="w-[90%] sm:w-3/4 h-auto mt-8 sm:mt-12 max-w-[372px] md:hidden" />
-               <ShapeMobile className="absolute z-[-1] w-screen md:hidden" />
+               <IllustrationHero className="w-[90%] sm:w-3/4 h-auto mt-8 sm:mt-12 max-w-[372px] md:max-w-[454px] lg:hidden" />
+               <ShapeMobile className="absolute z-[-1] w-[250vw] sm:w-[200vw] md:w-[164vw] lg:hidden" />
             </div>
             <div className="relative flex lg:justify-center md:mt-8 lg:mt-0">
                <CirclesHero className="absolute left-[-14rem] bottom-0 min-w-[200px] max-w-[200px]" />
