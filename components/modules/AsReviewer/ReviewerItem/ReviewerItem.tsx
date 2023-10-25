@@ -26,8 +26,8 @@ const ReviewerItem: React.FC<ReviewerItemProps> = ({
             <div>
                {added_as == 'reviewer' && (
                   <div className="flex items-center gap-2">
-                     <CardText className="text-yellow-400 lg:text-base" />
-                     <p className="text-sm md:text-base font-semibold  text-yellow-400">Added as Reviewer</p>
+                     <CardText className="text-[#EFB521] lg:text-base" />
+                     <p className="text-sm md:text-base font-semibold  text-[#EFB521]">Added as Reviewer</p>
                   </div>
                )}
                {added_as == 'editor' && (

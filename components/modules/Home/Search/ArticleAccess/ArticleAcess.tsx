@@ -41,7 +41,6 @@ export const ArticleAcess: React.FC<ArticleAcessProps> = ({ access_type, date, v
                   )}
                </React.Fragment>
             )}
-
             <p className="text-base text-center? font-regular">Document published in {formatDate(date)}</p>
          </div>
       </React.Fragment>

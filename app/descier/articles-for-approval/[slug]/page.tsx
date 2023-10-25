@@ -311,7 +311,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                                  <p
                                     className={twMerge(
                                        'text-sm text-secundary_blue-main first-letter:uppercase font-semibold',
-                                       `${item.role == 'reviewer' && 'text-yellow-400'}`,
+                                       `${item.role == 'reviewer' && 'text-[#EFB521]'}`,
                                        `${item.role == 'editor' && 'text-terciary-main'}`
                                     )}
                                  >
