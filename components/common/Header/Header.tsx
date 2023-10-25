@@ -3,14 +3,13 @@
 import ForgotPasswordModal from '@/components/modules/ForgotPassword/ForgotPassword'
 import LoginModal from '@/components/modules/Login/Login'
 import RegisterModal from '@/components/modules/Register/Register'
-import { home_routes } from '@/routes/home'
+import { links } from '@/mock/sidebar_home_items'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import DeScierLogo from 'public/svgs/common/logo/deScier - Logo.svg'
 import React from 'react'
-import sha256 from 'sha256'
 import { twMerge } from 'tailwind-merge'
 
 const Header: React.FC = () => {
@@ -93,33 +92,5 @@ const Header: React.FC = () => {
       </React.Fragment>
    )
 }
-
-const links = [
-   {
-      id: sha256('1'),
-      label: 'Home',
-      link: home_routes.home.index
-   },
-   {
-      id: sha256('2'),
-      label: 'Search',
-      link: home_routes.home.search
-   },
-   {
-      id: sha256('3'),
-      label: 'About us',
-      link: 'https://descier.science/'
-   },
-   {
-      id: sha256('4'),
-      label: 'Dashboard',
-      link: home_routes.summary
-   },
-   {
-      id: sha256('5'),
-      label: 'My IP',
-      link: '/my-ip'
-   }
-]
 
 export default Header

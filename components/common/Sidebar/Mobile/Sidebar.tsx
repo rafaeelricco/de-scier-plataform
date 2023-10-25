@@ -1,6 +1,8 @@
 'use client'
 
+import { home_routes } from '@/routes/home'
 import * as Drawer from '@components/common/Drawer/Drawer'
+import Link from 'next/link'
 import LogoDeScier from 'public/svgs/common/logo/deScier - Logo copy.svg'
 import React from 'react'
 import { Person } from 'react-bootstrap-icons'
@@ -35,7 +37,9 @@ export function SidebarMobile() {
                      </div>
                   </button>
                   <div className="flex items-center justify-center flex-grow gap-2">
-                     <LogoDeScier data-name="logo_deScier" id="logo_deScier" className="w-9 h-9" />
+                     <Link href={home_routes.summary}>
+                        <LogoDeScier data-name="logo_deScier" id="logo_deScier" className="w-9 h-9" />
+                     </Link>
                      <p className="text-neutral-gray mb-1">Dashboard</p>
                   </div>
                   <Person
