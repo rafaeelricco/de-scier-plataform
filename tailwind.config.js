@@ -47,7 +47,8 @@ module.exports = {
             'auto-min': 'auto min-content',
             'max-auto': 'max-content auto',
             'max-min-auto': 'max-content min-content auto',
-            '4-min-content': 'repeat(4, min-content)'
+            '4-min-content': 'repeat(4, min-content)',
+            'max-1px-auto': 'max-content 1px auto'
          },
          fontSize: {
             xxs: '0.625rem',

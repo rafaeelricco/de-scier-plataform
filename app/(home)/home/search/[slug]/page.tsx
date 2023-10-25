@@ -130,7 +130,8 @@ export default function Page({ params }: { params: { slug: string } }) {
                   />
                </div>
             </div>
-            <div className="flex items-start gap-8 mb-10">
+            <div className="flex items-start flex-col lg:flex-row gap-8 mb-10">
+               <ArticleAcess access_type="paid" date="11/11/2000" value={48} onBuyDocument={() => setPurchase({ ...purchase, checkout: true })} />
                <div className="flex flex-col gap-6 bg-white rounded-xl h-fit w-full flex-grow p-6">
                   <div className="flex gap-6 items-center justify-between">
                      <div className="flex gap-6 items-center">
@@ -248,7 +249,6 @@ export default function Page({ params }: { params: { slug: string } }) {
                      <p className="text-lg">Like the article</p>
                   </div>
                </div>
-               <ArticleAcess access_type="paid" date="11/11/2000" value={48} onBuyDocument={() => setPurchase({ ...purchase, checkout: true })} />
             </div>
          </div>
       </React.Fragment>

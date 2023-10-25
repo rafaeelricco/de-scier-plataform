@@ -24,10 +24,10 @@ export default function SearchArticlesPage() {
    return (
       <React.Fragment>
          <div className="flex flex-col gap-6">
-            <Title.Root>
-               <Title.Title className="text-3xl">Search</Title.Title>
+            <Title.Root className="mt-8 mb-0 lg:mt-14 md:mb-0">
+               <Title.Title className="text-3xl mb-0">Search</Title.Title>
             </Title.Root>
-            <div className="flex items-center w-full gap-6">
+            <div className="flex flex-col md:flex-row w-full gap-6">
                <div className="w-full flex-grow">
                   <Input.Input
                      className="rounded-full py-3 px-4 border-neutral-stroke_light bg-transparent shadow-none border focus:outline-none focus:border-neutral-stroke_light text-sm bg-white"
@@ -50,19 +50,19 @@ export default function SearchArticlesPage() {
                      }
                   />
                </div>
-               <Button.Button variant="primary" className="rounded-full py-3 px-6 text-sm w-fit">
+               <Button.Button variant="primary" className="rounded-full py-3 px-6 text-sm w-full md:w-fit">
                   Search
                   <Search className="w-5 h-5" />
                </Button.Button>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap justify-center md:justify-start items-center gap-2">
                <Dropdown no_selected items={filter_order_by} label="Year of publication" onSelect={(value) => console.log(value)} />
                <Dropdown no_selected label="Field" className="min-w-fit px-8" items={filter_status} onSelect={(value) => console.log(value)} />
                <Dropdown no_selected label="Language" className="min-w-fit px-8" items={filter_status} onSelect={(value) => console.log(value)} />
                <Dropdown no_selected label="Access" className="min-w-fit px-8" items={filter_status} onSelect={(value) => console.log(value)} />
             </div>
             <div className="flex flex-col gap-6 mt-6">
-               <div className="grid grid-cols-2 gap-4">
+               <div className="grid md:grid-cols-2 gap-4">
                   {results
                      .filter((article) => article.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
                      .slice((page - 1) * per_page, page * per_page)
