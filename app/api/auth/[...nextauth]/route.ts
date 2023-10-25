@@ -52,7 +52,8 @@ const authOptions: NextAuthOptions = {
 
                return {
                   token,
-                  ...{ email: credentials?.email }
+                  ...{ email: credentials?.email },
+                  userInfo: data.user
                }
             } catch (error) {
                console.log(error)
@@ -85,7 +86,7 @@ const authOptions: NextAuthOptions = {
             return {
                token,
                email: userInfo?.email,
-               userInfo
+               userInfo: userInfo.user
             }
          }
       }),
@@ -162,6 +163,7 @@ const authOptions: NextAuthOptions = {
          // pass the token to the session callback
          return { ...token, ...user, ...profile, ...account }
       },
+
       async session({ session, token }): Promise<any> {
          const user_infos = {
             name: token?.name,

@@ -5,15 +5,21 @@ import ForgotPasswordModal from '@/components/modules/ForgotPassword/ForgotPassw
 import UpdatePassword from '@/components/modules/Profile/Modals/ChangePassword'
 import UpdateProfile from '@/components/modules/Profile/Modals/EditProfile'
 import UpdateEmail from '@/components/modules/Profile/Modals/UpdateEmail'
+import { User } from '@/types/next-auth'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Title from '@components/common/Title/Page'
 import { motion } from 'framer-motion'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import React from 'react'
 import { BoxArrowRight, Envelope, Lock, Pencil } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 
 export default function ProfilePage() {
+   const { data: session } = useSession()
+
+   const [profileInfo, setProfileInfo] = React.useState<User>()
+
    const [profile, setProfile] = React.useState({
       edit_profile: false,
       edit_profile_sucess: false
@@ -35,6 +41,14 @@ export default function ProfilePage() {
       insert_new_password: false,
       recover_password_sucess: false
    })
+
+   React.useEffect(() => {
+      console.log(session?.user)
+      if (session?.user) {
+         setProfileInfo(session?.user?.userInfo)
+      }
+   }, [session])
+
    return (
       <React.Fragment>
          <Dialog.Root open={profile.edit_profile || profile.edit_profile_sucess}>
@@ -47,8 +61,8 @@ export default function ProfilePage() {
                )}
             >
                <UpdateProfile
-                  name="Caroline Nunes"
-                  title="Biologist"
+                  name={profileInfo?.name ?? ''}
+                  title={profileInfo?.title ?? ''}
                   success={profile.edit_profile_sucess}
                   edit_profile={profile.edit_profile}
                   onClose={() => setProfile({ ...profile, edit_profile: false, edit_profile_sucess: false })}
@@ -132,22 +146,29 @@ export default function ProfilePage() {
          <Box className="h-fit py-10 px-8">
             <div className="grid gap-8">
                <div className="grid gap-6">
-                  <Image
-                     width={144}
-                     quality={50}
-                     height={144}
-                     alt="profile-image"
-                     src="/svgs/common/sidebar/placeholder-image.jpeg"
-                     className="w-36 h-36 bg-status-pending rounded-full mx-auto my-0 lg:w-24 lg:h-24 2xl:w-36 2xl:h-36"
-                  />
+                  {profileInfo?.avatar ? (
+                     <Image
+                        width={144}
+                        quality={50}
+                        height={144}
+                        alt="profile-image"
+                        src={profileInfo?.avatar ?? ''}
+                        className="w-36 h-36 bg-status-pending rounded-full mx-auto my-0 lg:w-24 lg:h-24 2xl:w-36 2xl:h-36"
+                     />
+                  ) : (
+                     <div className="flex justify-center items-center w-40 h-40 bg-status-pending rounded-full mx-auto my-0 lg:w-28 lg:h-28 2xl:w-36 2xl:h-36">
+                        <p className="text-5xl w-full px-6 text-center">{profileInfo?.name.charAt(0).toUpperCase()}</p>
+                     </div>
+                  )}
+
                   <div className="grid gap-2">
-                     <h1 className="text-xl text-secundary_blue-main font-semibold flex justify-center lg:text-lg 2xl:text-xl">Caroline Nunes</h1>
+                     <h1 className="text-xl text-secundary_blue-main font-semibold flex justify-center lg:text-lg 2xl:text-xl">{profileInfo?.name}</h1>
                      <div className="grid md:grid-flow-col items-center justify-center gap-2 md:gap-4">
-                        <p className="text-sm text-primary-main font-regular select-none text-center">Biologist</p>
+                        <p className="text-sm text-primary-main font-regular select-none text-center">{profileInfo?.title}</p>
                         <hr className="divider-h md:divider-v" />
                         <div className="flex items-center gap-2">
                            <Envelope className="w-4 h-5 fill-neutral-gray" />
-                           <p className="text-sm text-neutral-gray select-none">caroline@emanagroup.com</p>
+                           <p className="text-sm text-neutral-gray select-none">{profileInfo?.email}</p>
                         </div>
                      </div>
                   </div>

@@ -6,7 +6,15 @@ import React from 'react'
 import { X } from 'react-bootstrap-icons'
 import GenericSuccess from './Success'
 
-const UpdateProfile: React.FC<UpdateProfileProps> = ({ onClose, onConfirm, name, title, success = false, edit_profile = true }: UpdateProfileProps) => {
+const UpdateProfile: React.FC<UpdateProfileProps> = ({
+   onClose,
+   onConfirm,
+   name,
+   image,
+   title,
+   success = false,
+   edit_profile = true
+}: UpdateProfileProps) => {
    const [loading, setLoading] = React.useState(false)
 
    return (
@@ -22,14 +30,21 @@ const UpdateProfile: React.FC<UpdateProfileProps> = ({ onClose, onConfirm, name,
                   <h3 className="text-xl font-semibold">Edit profile</h3>
                </div>
                <div className="flex flex-col md:flex-row items-center gap-6">
-                  <Image
-                     quality={50}
-                     width={160}
-                     height={160}
-                     alt="profile-image"
-                     src="/svgs/common/sidebar/placeholder-image.jpeg"
-                     className="w-40 h-40 bg-status-pending rounded-full mx-auto my-0 lg:w-28 lg:h-28 2xl:w-36 2xl:h-36"
-                  />
+                  {image ? (
+                     <Image
+                        quality={50}
+                        width={160}
+                        height={160}
+                        alt="profile-image"
+                        src={image ?? ''}
+                        className="w-40 h-40 bg-status-pending rounded-full mx-auto my-0 lg:w-28 lg:h-28 2xl:w-36 2xl:h-36"
+                     />
+                  ) : (
+                     <div className="flex justify-center items-center w-40 h-40 bg-status-pending rounded-full mx-auto my-0 lg:w-28 lg:h-28 2xl:w-48 2xl:h-36">
+                        <p className="text-5xl w-full px-6 text-center">{name.charAt(0).toUpperCase()}</p>
+                     </div>
+                  )}
+
                   <div className="w-full">
                      <Dropzone placeholder="Upload profile picture" setSelectedFile={(file) => console.log(file)} />
                   </div>
@@ -58,6 +73,7 @@ const UpdateProfile: React.FC<UpdateProfileProps> = ({ onClose, onConfirm, name,
 interface UpdateProfileProps {
    name: string
    title: string
+   image?: string
    success?: boolean
    edit_profile?: boolean
    onConfirm: () => void
