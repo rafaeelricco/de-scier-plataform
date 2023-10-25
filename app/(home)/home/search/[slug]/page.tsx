@@ -31,9 +31,9 @@ export default function Page({ params }: { params: { slug: string } }) {
             <Dialog.Content
                className={twMerge(
                   'max-w-[1024px] w-full h-fit',
-                  `${purchase.processing && 'max-w-[600px] px-16 py-14'}`,
-                  `${purchase.success && 'max-w-[600px] px-16 py-14'}`,
-                  `${purchase.error && 'max-w-[600px] px-16 py-14'}`,
+                  `${purchase.processing && 'max-w-[600px] md:px-16 md:py-14'}`,
+                  `${purchase.success && 'max-w-[600px] md:px-16 md:py-14'}`,
+                  `${purchase.error && 'max-w-[600px] md:px-16 md:py-14'}`,
                   `${purchase.my_articles && 'max-w-[80%]'}`
                )}
             >

@@ -30,14 +30,14 @@ export const Checkout: React.FC<CheckoutProps> = ({ article, onPurchase, onSetPa
             className="w-8 h-8 absolute top-4 right-4 cursor-pointer hover:text-status-error transition-all duration-500 ease-out hover:scale-110 hover:rotate-180 transform"
             onClick={onClose}
          />
-         <div className="flex">
-            <div className="flex flex-col gap-6 py-14 px-8 w-1/2">
+         <div className="flex flex-col gap-6 pb-14 md:pb-0 md:flex-row">
+            <div className="flex flex-col gap-6 md:py-14 md:px-8 md:w-1/2">
                <h3 className="text-xl font-semibold">Purchase document</h3>
                <Item article={article} />
                <hr className="divider-h" />
             </div>
-            <hr className="divider-v h-full" />
-            <div className="flex flex-col gap-6 py-14 px-8 w-1/2">
+            <hr className="hidden md:block bg-neutral-stroke_light h-full w-[1px]" />
+            <div className="flex flex-col gap-6 md:py-14 md:px-8 md:w-1/2">
                <h3 className="text-lg font-semibold">Checkout options</h3>
                <Resume article={article} onPurchase={onPurchase} onSetPaymentOption={onSetPaymentOption} onClose={onClose} />
             </div>
