@@ -1,4 +1,5 @@
 import { DrawerContentProps, DrawerOverlayProps, DrawerRootProps } from '@components/common/Drawer/Typing'
+import { usePathname, useRouter } from 'next/navigation'
 import React from 'react'
 import { twJoin, twMerge } from 'tailwind-merge'
 
@@ -17,6 +18,9 @@ const Overlay: React.FC<DrawerOverlayProps> = ({ className, checked }: DrawerOve
 }
 
 const Root: React.FC<DrawerRootProps> = ({ children, className, open = false }: DrawerRootProps) => {
+   const router = useRouter()
+   const path = usePathname()
+
    React.useEffect(() => {
       if (open) {
          document.body.style.overflow = 'hidden'
@@ -27,12 +31,13 @@ const Root: React.FC<DrawerRootProps> = ({ children, className, open = false }: 
          document.body.style.overflow = 'auto'
       }
    }, [open])
+
    return (
       <React.Fragment>
          <div className="flex">
             <input type="checkbox" id="drawer-toggle" className="relative sr-only peer pointer-events-none hidden" defaultChecked={open} />
             <label
-               htmlFor="drawer-toggle"
+               htmlFor={`drawer-toggle-${path}`}
                className="absolute top-0 left-0 p-4 transition-all duration-500 bg-transparent rounded-lg peer-checked:rotate-180 peer-checked:left-64 z-0 pointer-events-none hidden"
             />
             <Overlay className="peer-checked:opacity-100" checked={open} />
