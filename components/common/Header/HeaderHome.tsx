@@ -9,6 +9,7 @@ import { usePathname } from 'next/navigation'
 import LogoDeScier from 'public/svgs/common/logo/deScier - Logo copy.svg'
 import React from 'react'
 import { X } from 'react-bootstrap-icons'
+import sha256 from 'sha256'
 import { twMerge } from 'tailwind-merge'
 
 export function HeaderMobile() {
@@ -80,16 +81,32 @@ export function HeaderMobile() {
                   <div className="grid gap-2">
                      {links.map((link) => (
                         <div className="flex" key={link.id}>
-                           <Link
-                              href={link.link}
-                              className={twMerge(
-                                 'text-base text-neutral-light_gray hover:text-primary-main transition-all duration-200 p-2',
-                                 `${verifyPath(link.label.toLowerCase()) && 'font-semibold text-primary-main'}`
-                              )}
-                              onClick={() => setOpenNav(false)}
-                           >
-                              {link.label}
-                           </Link>
+                           {link.id === sha256('4') ? (
+                              <Link
+                                 href={link.link}
+                                 className={twMerge(
+                                    'text-base text-neutral-light_gray hover:text-primary-main transition-all duration-200 p-2',
+                                    `${verifyPath(link.label.toLowerCase()) && 'font-semibold text-primary-main'}`
+                                 )}
+                                 target="_blank"
+                                 rel="noopener noreferrer"
+                              >
+                                 {link.label}
+                              </Link>
+                           ) : (
+                              <Link
+                                 target="_blank"
+                                 rel="noopener noreferrer"
+                                 href={link.link}
+                                 className={twMerge(
+                                    'text-base text-neutral-light_gray hover:text-primary-main transition-all duration-200 p-2',
+                                    `${verifyPath(link.label.toLowerCase()) && 'font-semibold text-primary-main'}`
+                                 )}
+                                 onClick={() => setOpenNav(false)}
+                              >
+                                 {link.label}
+                              </Link>
+                           )}
                         </div>
                      ))}
                   </div>
