@@ -10,18 +10,21 @@ import { authors_mock } from '@/mock/submit_new_document'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import LikedIcon from 'public/svgs/common/likes/Icons/liked.svg'
+import UnlikedIcon from 'public/svgs/common/likes/Icons/unliked.svg'
 import FacebookIcon from 'public/svgs/modules/home/article-details/facebook.svg'
 import LinkIcon from 'public/svgs/modules/home/article-details/link.svg'
 import TelegramIcon from 'public/svgs/modules/home/article-details/telegram.svg'
 import TwitterIcon from 'public/svgs/modules/home/article-details/twitter.svg'
 import WhatsAppIcon from 'public/svgs/modules/home/article-details/whatsapp.svg'
 import React from 'react'
-import { ArrowLeft, Eye, HandThumbsUp, HandThumbsUpFill } from 'react-bootstrap-icons'
+import { ArrowLeft, Eye, HandThumbsUpFill } from 'react-bootstrap-icons'
 import sha256 from 'sha256'
 import { twMerge } from 'tailwind-merge'
 
 export default function Page({ params }: { params: { slug: string } }) {
    const router = useRouter()
+   const [liked, setLiked] = React.useState(false)
    const [purchase, setPurchase] = React.useState({ checkout: false, processing: false, success: false, error: false, my_articles: false })
 
    return (
@@ -257,8 +260,29 @@ export default function Page({ params }: { params: { slug: string } }) {
                      </div>
                   </div>
                   <div className="flex items-center gap-2">
-                     <HandThumbsUp className="w-6 h-6 cursor-pointer" />
-                     <p className="text-lg">Like the article</p>
+                     {liked ? (
+                        <LikedIcon
+                           className="ml-1 w-6 h-6 cursor-pointer"
+                           onClick={() => {
+                              setLiked(!liked)
+                           }}
+                        />
+                     ) : (
+                        <UnlikedIcon
+                           className="ml-1 w-6 h-6 cursor-pointer"
+                           onClick={() => {
+                              setLiked(!liked)
+                           }}
+                        />
+                     )}
+                     <p
+                        className="text-lg cursor-pointer"
+                        onClick={() => {
+                           setLiked(!liked)
+                        }}
+                     >
+                        Like the article
+                     </p>
                   </div>
                </div>
             </div>
