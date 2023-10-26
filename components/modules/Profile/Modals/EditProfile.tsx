@@ -45,8 +45,6 @@ const UpdateProfile: React.FC<UpdateProfileProps> = ({
             filename: file.name,
             mimetype: file.type
          })
-
-         console.log(fileUrl)
       }
 
       const udpatedInfo = {
@@ -61,7 +59,7 @@ const UpdateProfile: React.FC<UpdateProfileProps> = ({
             }
          }
       }
-      console.log(udpatedInfo)
+
       await updateSession(udpatedInfo)
       setLoading(false)
 
