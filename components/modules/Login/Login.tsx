@@ -13,7 +13,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onFo
          <div className="grid md:grid-cols-2 relative">
             <X
                size={32}
-               className="md:hidden absolute z-20 bg-white rounded-md right-4 top-4 cursor-pointer hover:scale-110 transition-all duration-200"
+               className="absolute z-20 bg-white rounded-md right-4 top-4 cursor-pointer hover:scale-110 transition-all duration-200"
                onClick={onClose}
             />
             <LoginAnimation />

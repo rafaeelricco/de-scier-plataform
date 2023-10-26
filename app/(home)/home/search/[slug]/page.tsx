@@ -89,7 +89,7 @@ export default function Page({ params }: { params: { slug: string } }) {
             </Dialog.Content>
          </Dialog.Root>
          <div className="grid gap-8">
-            <div className="flex items-center gap-4 pt-12">
+            <div className="flex items-center gap-4 pt-8 md:pt-12">
                <ArrowLeft size={32} className="hover:scale-110 transition-all cursor-pointer" onClick={() => router.back()} />
                <h1 className="text-1xl font-semibold">Return</h1>
             </div>
@@ -276,7 +276,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                         />
                      )}
                      <p
-                        className="text-lg cursor-pointer"
+                        className="text-lg cursor-pointer select-none"
                         onClick={() => {
                            setLiked(!liked)
                         }}
