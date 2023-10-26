@@ -11,8 +11,8 @@ export const BannerStartPublishing: React.FC = () => {
                <IllustrationBannerFooter className="w-48 lg:w-60 shrink-0 mb-4 md:mb-0" />
                <div className="flex flex-col gap-4">
                   <div className="grid gap-2">
-                     <p className="text-lg font-semibold text-white">Want to publish a scientific paper?</p>
-                     <p className="text-base font-regular text-white">
+                     <p className="text-base md:text-lg font-semibold text-white">Want to publish a scientific paper?</p>
+                     <p className="text-sm md:text-base font-regular text-white">
                         Publishing in DeScier is fast and easy, with peer selected review, and 100% author owned copyright. Join the movement now!
                      </p>
                   </div>

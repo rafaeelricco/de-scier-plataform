@@ -92,9 +92,9 @@ export default function HomePage() {
             </div>
             <div className="relative pt-8 sm:pt-12 md:pt-16 lg:pl-0 lg:pr-0 lg:-ml-52 lg:-mr-52">
                <div className="relative z-20">
-                  <div className="px-4 sm:px-12 md:px-24 lg:px-72 grid gap-4 sm:gap-6 lg:gap-8">
+                  <div className="px-1 lg:px-72 grid gap-4 sm:gap-6 lg:gap-8">
                      <div className="grid gap-4 sm:gap-6 lg:gap-10">
-                        <div className="grid gap-3 sm:gap-4 md:gap-6 lg:gap-x-6 gap-y-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                        <div className="grid gap-3 sm:gap-4 md:gap-6 lg:gap-x-6 gap-y-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                            <h3 className="text-xl sm:text-2xl lg:text-3xl font-semibold col-span-full">Latest articles</h3>
                            {articles.slice(0, lg ? 8 : 3).map((article, index) => (
                               <React.Fragment key={article.id}>
@@ -122,7 +122,7 @@ export default function HomePage() {
                         </div>
                      </div>
                   </div>
-                  <div className="mt-12 sm:mt-16 lg:mt-24 px-4 sm:px-12 md:px-24 lg:px-56 mb-12 sm:mb-16 lg:mb-24">
+                  <div className="mt-12 sm:mt-16 lg:mt-24 px-2 sm:px-12 md:px-24 lg:px-56 mb-12 sm:mb-16 lg:mb-24">
                      <BannerStartPublishing />
                   </div>
                </div>

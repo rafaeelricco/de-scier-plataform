@@ -73,7 +73,7 @@ const PublishedStatus: React.FC<PublishedStatusProps> = ({ published_date, acces
             <div className="grid gap-2">
                {access_type == 'open' ? (
                   <React.Fragment>
-                     <div className="flex gap-2 items-center">
+                     <div className="flex flex-wrap gap-2 items-center">
                         <div className="w-3 h-3 bg-status-green rounded-full" />
                         <p className="text-sm">Open access</p>
                         <span className="text-neutral-gray">•</span>
