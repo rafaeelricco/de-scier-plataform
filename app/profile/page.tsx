@@ -63,6 +63,7 @@ export default function ProfilePage() {
                <UpdateProfile
                   name={profileInfo?.name ?? ''}
                   title={profileInfo?.title ?? ''}
+                  image={profileInfo?.avatar ?? ''}
                   success={profile.edit_profile_sucess}
                   edit_profile={profile.edit_profile}
                   onClose={() => setProfile({ ...profile, edit_profile: false, edit_profile_sucess: false })}

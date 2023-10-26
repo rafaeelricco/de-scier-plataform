@@ -1,7 +1,7 @@
 import { UseFormSetValue } from 'react-hook-form'
 
 interface DropzoneProps {
-   setSelectedFile?: (file: FileWithPreview | null) => void
+   setSelectedFile?: (file: StoredFile | null) => void
    error_message?: any
    fileName?: FileWithPreview['name']
    setValue?: UseFormSetValue<any>

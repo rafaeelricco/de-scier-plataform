@@ -29,7 +29,7 @@ const nextConfig = {
       removeConsole: process.env.NODE_ENV === 'prod' ? true : false
    },
    images: {
-      domains: ['random.imagecdn.app', 'source.unsplash.com']
+      domains: ['random.imagecdn.app', 'source.unsplash.com', 'descier-tcc.s3.sa-east-1.amazonaws.com']
    },
    // See more in: https://nextjs.org/docs/app/api-reference/next-config-js/redirects
    async redirects() {
