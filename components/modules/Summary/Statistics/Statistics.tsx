@@ -86,7 +86,7 @@ const Statistics: React.FC = () => {
 
 const TotalArticles: React.FC<{ total_articles: number }> = ({ total_articles }) => {
    return (
-      <div className="grid md:grid-flow-col items-center">
+      <div className="grid lg:grid-flow-col items-center">
          <StatisticsIllustration className="w-full max-w-[170px] md:max-w-[14rem] mx-auto my-0" />
          <div className="grid justify-items-center content-center">
             <h3 className="gradient-grad-2 font-bold text-3xl lg:text-3xl 2xl:text-5xl">33</h3>
@@ -98,7 +98,7 @@ const TotalArticles: React.FC<{ total_articles: number }> = ({ total_articles })
 
 const TotalLikes: React.FC<{ total_likes: number }> = ({ total_likes }) => {
    return (
-      <div className="grid md:grid-flow-col items-center">
+      <div className="grid lg:grid-flow-col items-center">
          <LikesIllustration className="w-full max-w-[170px] md:max-w-[14rem] mx-auto my-0" />
          <div className="grid justify-items-center content-center">
             <h3 className="gradient-grad-2 font-bold text-3xl lg:text-3xl 2xl:text-5xl">123k</h3>
@@ -110,7 +110,7 @@ const TotalLikes: React.FC<{ total_likes: number }> = ({ total_likes }) => {
 
 const TotalViews: React.FC<{ total_views: number }> = ({ total_views }) => {
    return (
-      <div className="grid md:grid-flow-col items-center">
+      <div className="grid lg:grid-flow-col items-center">
          <ViewsIllustration className="w-full max-w-[170px] md:max-w-[14rem] mx-auto my-0" />
          <div className="grid justify-items-center content-center">
             <h3 className="gradient-grad-2 font-bold text-3xl lg:text-3xl 2xl:text-5xl">10m</h3>
