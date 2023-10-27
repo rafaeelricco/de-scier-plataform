@@ -23,10 +23,8 @@ export default function HomePage() {
 
    return (
       <React.Fragment>
-         {/* quando entrar em resolução mobile, desaparece estas duas */}
          <IllustrationHero className="hidden lg:block lg:w-[45%] xl:w-1/2 absolute right-0 md:top-48 lg:top-50 xl:top-60 h-full lg:max-w-[600px] xl:max-w-[708px] max-h-[554px]" />
          <ShapeHero className="hidden lg:block lg:w-3/4 xl:w-full absolute right-0 top-0 z-[-1] md:max-w-[600px] md:max-h-[700px] lg:max-w-[700px] lg:max-h-[800px] xl:max-w-[742px] xl:max-h-[872px]" />
-
          <div className="h-auto lg:pt-24 lg:h-[calc(100vh-14rem)]">
             <div className="grid gap-6 content-start">
                <div className="grid gap-2 mt-8 lg:mt-28">

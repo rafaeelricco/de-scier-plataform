@@ -62,7 +62,7 @@ export default function SearchArticlesPage() {
                <Dropdown no_selected label="Access" className="min-w-fit px-8" items={filter_status} onSelect={(value) => console.log(value)} />
             </div>
             <div className="flex flex-col gap-6 mt-6">
-               <div className="grid md:grid-cols-2 gap-4">
+               <div className="grid md:grid-cols-2 gap-6 md:gap-4">
                   {results
                      .filter((article) => article.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
                      .slice((page - 1) * per_page, page * per_page)

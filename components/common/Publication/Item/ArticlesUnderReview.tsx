@@ -31,10 +31,10 @@ const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
             <div className="grid gap-2 mt-[-8px]">
                <div>
                   <Link href={link}>
-                     <h6 className="text-base sm:text-lg font-semibold text-secundary_blue-main">{truncate(title, { length: 40 })}</h6>
+                     <h6 className="text-base font-semibold text-secundary_blue-main">{truncate(title, { length: 40 })}</h6>
                   </Link>
                   <div className="flex items-center gap-2">
-                     <p className="text-sm text-neutral-gray lg:text-sm 2xl:text-base">Under review since</p>
+                     <p className="text-sm text-neutral-gray lg:text-sm">Under review since</p>
                      <p className="text-base font-semibold lg:text-sm 2xl:text-base">{since}</p>
                   </div>
                </div>
@@ -44,11 +44,15 @@ const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
                         className="grid grid-flow-col gap-2
                       md:gap-1 items-center "
                      >
-                        {status_editor == 'approved' && <p className="text-sm md:text-base font-semibold text-status-green">Editor Approval</p>}
-                        {status_editor == 'pending' && <p className="text-sm md:text-base font-semibold text-status-pending">Editor pending</p>}
+                        {status_editor == 'approved' && <p className="text-sm 2xl:text-base font-semibold text-status-green">Editor Approval</p>}
+                        {status_editor == 'pending' && <p className="text-sm 2xl:text-base font-semibold text-status-pending truncate">Editor pending</p>}
                         <span className="text-sm md:text-base font-semibold text-neutral-light_gray">/</span>
-                        {status_reviewer == 'approved' && <p className="text-sm md:text-base font-semibold text-status-green">Reviewer approval</p>}
-                        {status_reviewer == 'pending' && <p className="text-sm md:text-base font-semibold text-status-pending">Reviewer pending</p>}
+                        {status_reviewer == 'approved' && (
+                           <p className="text-sm 2xl:text-base font-semibold text-status-green truncate">Reviewer approval</p>
+                        )}
+                        {status_reviewer == 'pending' && (
+                           <p className="text-sm 2xl:text-base font-semibold text-status-pending truncate">Reviewer pending</p>
+                        )}
                      </div>
                   </div>
                </div>
