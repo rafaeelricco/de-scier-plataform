@@ -3,6 +3,11 @@ import * as Input from '@components/common/Input/Input'
 import React from 'react'
 import { X } from 'react-bootstrap-icons'
 import GenericSuccess from './Success'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { UpdateUserProps } from '@/schemas/updateUser'
+import { checkPasswordService } from '@/services/user/checkPassword.service'
+import { updateUserService } from '@/services/user/update.service'
+import { toast } from 'react-toastify'
 
 const UpdatePassword: React.FC<UpdatePasswordProps> = ({
    onClose,
@@ -13,6 +18,47 @@ const UpdatePassword: React.FC<UpdatePasswordProps> = ({
    insert_current_password = true,
    success = false
 }: UpdatePasswordProps) => {
+   const { register, handleSubmit } = useForm<UpdateUserProps>({})
+
+   const [loading, setLoading] = React.useState(false)
+   const [confirmPassword, setConfirmPassword] = React.useState('')
+
+   const handleCheckPassword: SubmitHandler<UpdateUserProps> = async (data) => {
+      setLoading(true)
+      const response = await checkPasswordService({
+         password: data.currentPassword!
+      })
+
+      if (!response.success) {
+         setLoading(false)
+         toast.error(response.message)
+         return
+      }
+
+      setLoading(false)
+
+      onSetPassword()
+   }
+
+   const handleUpdatePassword: SubmitHandler<UpdateUserProps> = async (data) => {
+      setLoading(true)
+      if (data.newPassword !== confirmPassword) {
+         setLoading(false)
+         toast.error("Passwords don't match")
+         return
+      }
+      const response = await updateUserService(data)
+
+      if (!response.success) {
+         setLoading(false)
+         toast.error(response.message)
+         return
+      }
+
+      setLoading(false)
+
+      onSetNewPassword()
+   }
    return (
       <React.Fragment>
          <X
@@ -21,36 +67,40 @@ const UpdatePassword: React.FC<UpdatePasswordProps> = ({
          />
          {success && <GenericSuccess onClose={onClose} text="Password updated" message="Your password was updated." button_text="Return" />}
          {new_password && (
-            <div className="grid gap-6">
+            <form className="grid gap-6" onSubmit={handleSubmit(handleUpdatePassword)}>
                <div className="grid gap-2">
                   <h3 className="text-xl font-semibold">New password</h3>
                </div>
                <div className="grid gap-6">
                   <Input.Root>
-                     <Input.Label>Current Password</Input.Label>
-                     <Input.Password placeholder="Type your password" />
+                     <Input.Label>Password</Input.Label>
+                     <Input.Password placeholder="Type your password" {...register('newPassword')} />
                   </Input.Root>
                   <Input.Root>
                      <Input.Label>Password confirmation</Input.Label>
-                     <Input.Password placeholder="Type your password again" />
+                     <Input.Password
+                        placeholder="Type your password again"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                     />
                   </Input.Root>
                </div>
-               <Button.Button className="py-3 px-4" onClick={onSetNewPassword}>
+               <Button.Button className="py-3 px-4" type="submit" loading={loading}>
                   Continue
                </Button.Button>
-            </div>
+            </form>
          )}
          {insert_current_password && (
-            <div className="grid gap-6">
+            <form className="grid gap-6" onSubmit={handleSubmit(handleCheckPassword)}>
                <div className="grid gap-2">
                   <h3 className="text-xl font-semibold">Change password</h3>
                </div>
                <Input.Root>
                   <Input.Label>Current Password</Input.Label>
-                  <Input.Password placeholder="Type your current password" />
+                  <Input.Password placeholder="Type your current password" {...register('currentPassword')} />
                </Input.Root>
                <div className="grid gap-6">
-                  <Button.Button className="py-3 px-8" onClick={onSetPassword}>
+                  <Button.Button className="py-3 px-8" type="submit" loading={loading}>
                      Continue
                   </Button.Button>
                   <p
@@ -60,7 +110,7 @@ const UpdatePassword: React.FC<UpdatePasswordProps> = ({
                      Forgot your password? Click here.
                   </p>
                </div>
-            </div>
+            </form>
          )}
       </React.Fragment>
    )
