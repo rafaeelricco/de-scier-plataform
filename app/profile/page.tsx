@@ -5,18 +5,22 @@ import ForgotPasswordModal from '@/components/modules/ForgotPassword/ForgotPassw
 import UpdatePassword from '@/components/modules/Profile/Modals/ChangePassword'
 import UpdateProfile from '@/components/modules/Profile/Modals/EditProfile'
 import UpdateEmail from '@/components/modules/Profile/Modals/UpdateEmail'
+import { home_routes } from '@/routes/home'
 import { User } from '@/types/next-auth'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Title from '@components/common/Title/Page'
 import { motion } from 'framer-motion'
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 import { BoxArrowRight, Envelope, Lock, Pencil } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 
 export default function ProfilePage() {
    const { data: session } = useSession()
+
+   const router = useRouter()
 
    const [profileInfo, setProfileInfo] = React.useState<User>()
 
@@ -41,6 +45,11 @@ export default function ProfilePage() {
       insert_new_password: false,
       recover_password_sucess: false
    })
+
+   const handleLogout = async () => {
+      await signOut()
+      router.push(home_routes.home.index)
+   }
 
    React.useEffect(() => {
       console.log(session?.user)
@@ -206,6 +215,7 @@ export default function ProfilePage() {
                         <motion.div
                            whileTap={{ scale: 0.95 }}
                            className="border py-6 md:py-14 px-2 flex items-center justify-center gap-4 rounded-lg cursor-pointer hover:border-primary-light transition-colors duration-300 ease-in-out"
+                           onClick={handleLogout}
                         >
                            <BoxArrowRight className="w-5 h-5 fill-neutral-gray" />
                            <p className="text-base text-neutral-gray">Log out</p>

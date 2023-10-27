@@ -1,9 +1,19 @@
+import { home_routes } from '@/routes/home'
+import { signOut } from 'next-auth/react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import LogoutIcon from 'public/svgs/common/sidebar/Icons/logout.svg'
 import PlaceholderImage from 'public/svgs/common/sidebar/placeholder-image.jpeg'
 import React from 'react'
 
 const Logout: React.FC<{ onLogout: () => void }> = ({ onLogout }: { onLogout: () => void }) => {
+   const router = useRouter()
+
+   const handleLogout = async () => {
+      await signOut()
+      router.push(home_routes.home.index)
+   }
+
    return (
       <React.Fragment>
          <div className="grid grid-flow-col items-center justify-start gap-4">
@@ -28,6 +38,7 @@ const Logout: React.FC<{ onLogout: () => void }> = ({ onLogout }: { onLogout: ()
                <LogoutIcon
                   width={18}
                   className="fill-neutral-light_gray cursor-pointer hover:fill-primary-main transition-all duration-300 hover:scale-110 mt-[2px]"
+                  onClick={handleLogout}
                />
             </div>
          </div>
