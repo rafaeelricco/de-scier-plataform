@@ -9,8 +9,10 @@ export default function ArticlesUnderReviewLayout({ children }: { children: Reac
    return (
       <React.Fragment>
          <section className="home scrollbar-hidden md:grid-cols-1">
-            <Sidebar />
-            <SidebarMobile />
+            <div>
+               <Sidebar />
+               <SidebarMobile />
+            </div>
             <div className="col-2 row-1 my-0 mb-10 mx-6 lg:my-10 lg:mx-2 ">{children}</div>
             <Profile />
          </section>
