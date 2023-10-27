@@ -11,7 +11,7 @@ import { NextRequest, NextResponse } from 'next/server'
  * sensitive routes.
  */
 
-const matcherRegex = new RegExp('^ (?!/ (?:_next/static|favicon\\.ico|swc\\.js|api) (?:/|$))')
+const publicRoutes = ['/home', '/login']
 
 export function middleware(request: NextRequest) {
    /** @dev Extract the 'next-auth.session-token' cookie from the request. */
@@ -26,7 +26,7 @@ export function middleware(request: NextRequest) {
     * @dev If the user isn't authenticated and isn't already on the
     * `/login` page, redirect them to the login page.
     */
-   if (!isAuthenticated && request.nextUrl.pathname !== '/login') {
+   if (!isAuthenticated && !publicRoutes.includes(request.nextUrl.pathname)) {
       const url = request.nextUrl.clone()
       url.pathname = '/login'
 
@@ -65,6 +65,6 @@ export const config = {
        * - favicon.ico (favicon file)
        * - /public/* (public files)
        */
-      '/((?!api|_next/static|_next/image|favicon.ico|svgs/).*)'
+      '/((?!api|_next/static|_next/image|favicon.ico|svgs/|home/).*)'
    ]
 }
