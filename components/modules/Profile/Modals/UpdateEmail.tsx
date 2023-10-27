@@ -3,6 +3,12 @@ import * as Input from '@components/common/Input/Input'
 import React from 'react'
 import { X } from 'react-bootstrap-icons'
 import GenericSuccess from './Success'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { UpdateUserProps } from '@/schemas/updateUser'
+import { updateUserService } from '@/services/user/update.service'
+import { toast } from 'react-toastify'
+import { useSession } from 'next-auth/react'
+import { checkPasswordService } from '@/services/user/checkPassword.service'
 
 const UpdateEmail: React.FC<UpdateEmailProps> = ({
    onClose,
@@ -13,6 +19,55 @@ const UpdateEmail: React.FC<UpdateEmailProps> = ({
    insert_password = true,
    success = false
 }: UpdateEmailProps) => {
+   const { data: session, update: updateSession } = useSession()
+
+   const { register, handleSubmit } = useForm<UpdateUserProps>({})
+
+   const [loading, setLoading] = React.useState(false)
+
+   const handleCheckPassword: SubmitHandler<UpdateUserProps> = async (data) => {
+      setLoading(true)
+      const response = await checkPasswordService({
+         password: data.currentPassword!
+      })
+
+      if (!response.success) {
+         setLoading(false)
+         toast.error(response.message)
+         return
+      }
+
+      setLoading(false)
+
+      onSetPassword()
+   }
+
+   const handleUpdateEmail: SubmitHandler<UpdateUserProps> = async (data) => {
+      setLoading(true)
+      const response = await updateUserService(data)
+
+      if (!response.success) {
+         setLoading(false)
+         toast.error(response.message)
+         return
+      }
+
+      const udpatedInfo = {
+         ...session,
+         user: {
+            ...session?.user,
+            userInfo: {
+               ...session?.user?.userInfo,
+               email: data.email || session?.user?.userInfo?.email
+            }
+         }
+      }
+
+      await updateSession(udpatedInfo)
+      setLoading(false)
+
+      onSetNewEmail()
+   }
    return (
       <React.Fragment>
          <X
@@ -21,30 +76,30 @@ const UpdateEmail: React.FC<UpdateEmailProps> = ({
          />
          {success && <GenericSuccess onClose={onClose} text="E-mail updated" message="Your e-mail was updated." button_text="Return" />}
          {new_email && (
-            <div className="grid gap-6">
+            <form className="grid gap-6" onSubmit={handleSubmit(handleUpdateEmail)}>
                <div className="grid gap-2">
                   <h3 className="text-xl font-semibold">Change e-mail</h3>
                </div>
                <Input.Root>
                   <Input.Label>New e-mail</Input.Label>
-                  <Input.Password placeholder="Type your password" />
+                  <Input.Input placeholder="Type your new e-mail" {...register('email')} />
                </Input.Root>
-               <Button.Button className="py-3 px-4" onClick={onSetNewEmail}>
+               <Button.Button className="py-3 px-4" type="submit" loading={loading}>
                   Continue
                </Button.Button>
-            </div>
+            </form>
          )}
          {insert_password && (
-            <div className="grid gap-6">
+            <form className="grid gap-6" onSubmit={handleSubmit(handleCheckPassword)}>
                <div className="grid gap-2">
                   <h3 className="text-xl font-semibold">Change e-mail</h3>
                </div>
                <Input.Root>
                   <Input.Label>Password</Input.Label>
-                  <Input.Password placeholder="Type your password" />
+                  <Input.Password placeholder="Type your password" {...register('currentPassword')} />
                </Input.Root>
                <div className="grid gap-6">
-                  <Button.Button className="py-3 px-8" onClick={onSetPassword}>
+                  <Button.Button className="py-3 px-8" type="submit" loading={loading}>
                      Continue
                   </Button.Button>
                   <p
@@ -54,7 +109,7 @@ const UpdateEmail: React.FC<UpdateEmailProps> = ({
                      Forgot your password? Click here.
                   </p>
                </div>
-            </div>
+            </form>
          )}
       </React.Fragment>
    )
