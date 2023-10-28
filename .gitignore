@@ -37,3 +37,8 @@ bun.lockb
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local env files
+.env*.local
+.env.local
+.env

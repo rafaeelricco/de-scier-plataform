@@ -19,7 +19,7 @@ import { CurrencyInput } from 'react-currency-mask'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 export default function SubmitNewPaperPage() {
-   const [typeOfAccess, setTypeOfAccess] = useState('open-access')
+   const [access_type, setAccessType] = useState('open-access')
    const [items, setItems] = React.useState(authors_mock.map((author, index) => ({ ...author, id: index + 1 })))
    const [share, setShare] = useState('')
    const [authors, setAuthors] = useState<Author[]>(authors_mock)
@@ -210,8 +210,8 @@ export default function SubmitNewPaperPage() {
                      </Input.Root>
                   </div>
                </div>
-               <div className="grid gap-2">
-                  <div className="hidden md:block">
+               <div>
+                  <div className="hidden lg:grid lg:gap-2">
                      <h3 className="text-sm font-semibold">Document type</h3>
                      <Pills
                         onSelect={(value) => {
@@ -220,17 +220,11 @@ export default function SubmitNewPaperPage() {
                         items={document_types}
                      />
                   </div>
-                  <Input.Root>
-                     <Input.Select
-                        label={'Document type'}
-                        options={document_types}
-                        onValueChange={(value) => {
-                           setValue('documentType', value), trigger('documentType')
-                        }}
-                        placeholder="Title of the field"
-                     />
-                     <Input.Error>{errors.documentType?.message}</Input.Error>
-                  </Input.Root>
+                  <div className="block md:hidden">
+                     <Input.Root>
+                        <Input.Select label={'Document type'} options={document_types} placeholder="Title of the field" />
+                     </Input.Root>
+                  </div>
                </div>
                <Dropzone setSelectedFile={(file) => console.log(file)} />
                <Input.Root>
@@ -349,8 +343,8 @@ export default function SubmitNewPaperPage() {
                      <Input.Select
                         label={'Type of access'}
                         placeholder="Select the type of access"
-                        onValueChange={(value) => setTypeOfAccess(value)}
-                        value={typeOfAccess}
+                        onValueChange={(value) => setAccessType(value)}
+                        value={access_type}
                         options={[
                            {
                               label: 'Open Access',
@@ -363,13 +357,13 @@ export default function SubmitNewPaperPage() {
                         ]}
                      />
                   </Input.Root>
-                  {typeOfAccess == 'open-access' && (
+                  {access_type == 'open-access' && (
                      <Input.Root>
                         <Input.Label className="text-neutral-gray text-sm font-semibold pl-2">Valor total</Input.Label>
                         <Input.Input disabled placeholder="R$" />
                      </Input.Root>
                   )}
-                  {typeOfAccess == 'paid-access' && (
+                  {access_type == 'paid-access' && (
                      <React.Fragment>
                         <Input.Root>
                            <Input.Label>Price</Input.Label>
@@ -382,7 +376,7 @@ export default function SubmitNewPaperPage() {
                      </React.Fragment>
                   )}
                </div>
-               {typeOfAccess == 'paid-access' && (
+               {access_type == 'paid-access' && (
                   <React.Fragment>
                      <div className="grid gap-2">
                         <p className="text-sm font-semibold">Authorship settings</p>
