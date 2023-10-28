@@ -3,6 +3,7 @@ import { getSession } from 'next-auth/react'
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 type UploadFileProps = {
+   documentId?: string
    fileLocalUrl: string
    filename: string
    mimetype: string
@@ -40,4 +41,25 @@ export const uploadAvatarService = async (body: UploadFileProps): Promise<string
    const data = await request.json()
 
    return data?.fileUrl
+}
+
+export const uploadDocumentService = async (body: UploadFileProps) => {
+   const session = await getSession()
+   const file = await localUrlToFile(body.fileLocalUrl, body.filename)
+   const formData = new FormData()
+   formData.append('file', file)
+   formData.append('mimetype', body.mimetype)
+
+   const request = await fetch(`${API_URL}/documents/upload/${body.documentId}`, {
+      method: 'POST',
+      body: formData,
+      headers: {
+         Authorization: `Bearer ${session?.user?.token}`,
+         'Access-Control-Allow-Origin': '*'
+      }
+   })
+
+   const responseStatus = request.status === 200
+
+   return responseStatus
 }

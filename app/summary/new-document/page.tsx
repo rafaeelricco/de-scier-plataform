@@ -21,6 +21,8 @@ import { Clipboard, PlusCircle, PlusCircleDotted, X } from 'react-bootstrap-icon
 import { CurrencyInput } from 'react-currency-mask'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
+import { uploadDocumentService } from '@/services/file/file.service'
+import { StoredFile } from '@/components/common/Dropzone/Typing'
 
 export default function SubmitNewPaperPage() {
    const [access_type, setAccessType] = useState('open-access')
@@ -31,6 +33,7 @@ export default function SubmitNewPaperPage() {
    const [authorship_settings, setAuthorshipSettings] = useState<Author>()
    const [dialog, setDialog] = useState({ author: false, share_split: false, edit_author: false })
    const [keywords_temp, setKeywordsTemp] = useState<string | undefined>()
+   const [documentFile, setDocumentFile] = useState<StoredFile | null>()
    console.log(keywords_temp)
 
    const {
@@ -52,12 +55,11 @@ export default function SubmitNewPaperPage() {
          accessType: 'FREE',
          documentType: '',
          field: '',
-         price: '',
+         price: '0',
          title: '',
          keywords: []
       }
    })
-   console.log(watch('keywords'))
 
    const {
       append,
@@ -69,22 +71,27 @@ export default function SubmitNewPaperPage() {
       name: 'keywords',
       control: control
    })
+   console.log(watch('keywords'))
+   console.log(errors)
 
    const onReorder = (newOrder: typeof items) => {
       setItems((prevItems) => [...newOrder])
    }
 
    const handleSubmitDocument: SubmitHandler<CreateDocumentProps> = async (data) => {
-      console.log('sunmit')
-      console.log(data)
-      const mockData = {
+      if (!documentFile) {
+         toast.error('You need upload a document file.')
+         return
+      }
+      const requestData = {
          abstract: data.abstract,
-         accessType: access_type === 'open-acess' ? 'FREE' : 'PAID',
+         accessType: data.accessType,
          documentType: data.documentType,
          field: data.field,
          price: Number(data.price),
          title: data.title,
-         abstractChart: 'dsdsdsdsdsdds'
+         abstractChart: 'dsdsdsdsdsdds',
+         keywords: data.keywords.map((item) => item.name)
       }
 
       const authors = [
@@ -92,19 +99,29 @@ export default function SubmitNewPaperPage() {
             name: 'Pedro author',
             email: 'pedro@email.com',
             title: 'developer',
-            revenuePercent: 1,
+            revenuePercent: 0,
             walletAddress: '0x32323232323232332332'
          }
       ]
       const response = await submitNewDocumentService({
-         ...mockData,
-         authors,
-         keywords: ['teste']
+         ...requestData,
+         authors
       })
 
       if (!response.success) {
          toast.error(response.message)
          return
+      }
+      console.log('documentFile', documentFile)
+      const isSuccess = await uploadDocumentService({
+         documentId: response.documentId,
+         fileLocalUrl: documentFile.preview,
+         filename: documentFile.name,
+         mimetype: documentFile.type
+      })
+
+      if (!isSuccess) {
+         toast.warning('There was an error uploading your file. But you can upload later.')
       }
 
       toast.success(response.message)
@@ -113,7 +130,7 @@ export default function SubmitNewPaperPage() {
    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.keyCode === 13) {
          e.preventDefault()
-         append({ id: uniqueId(), name: keywords_temp as string })
+         append({ id: uniqueId('key'), name: keywords_temp as string })
          setKeywordsTemp('')
       }
    }
@@ -260,7 +277,7 @@ export default function SubmitNewPaperPage() {
                                     variant="outline"
                                     className="px-2 py-0 border-neutral-light_gray hover:bg-neutral-light_gray hover:bg-opacity-10 flex items-center gap-1 rounded-sm"
                                     onClick={() => {
-                                       append({ id: uniqueId(), name: keywords_temp as string })
+                                       append({ id: uniqueId('key'), name: keywords_temp as string })
                                        setKeywordsTemp('')
                                     }}
                                  >
@@ -303,7 +320,7 @@ export default function SubmitNewPaperPage() {
                      <Pills items={document_types} onSelect={(value) => setValue('documentType', value.label)} />
                   </div>
                </div>
-               <Dropzone setSelectedFile={(file) => console.log(file)} />
+               <Dropzone setSelectedFile={(file) => setDocumentFile(file)} />
                <Input.Root>
                   <Input.Label className="flex gap-2 items-center">
                      <span className="text-sm font-semibold">Abstract</span>
