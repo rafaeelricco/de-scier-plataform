@@ -285,7 +285,6 @@ export default function SubmitNewPaperPage() {
                   }}
                   setSelectedFile={(file) => console.log(file)}
                />
-
                <Input.Root>
                   <Input.Label className="flex gap-2 items-center">
                      <span className="text-sm font-semibold">Abstract</span>

@@ -1,9 +1,9 @@
 import { ArticleItemProps } from '@/components/modules/Home/Search/ArticleItem/Typing'
-import sha256 from 'sha256'
+import { uniqueId } from 'lodash'
 
 export const articles: ArticleItemProps[] = [
    {
-      id: sha256('Understanding Blockchain Technology'),
+      id: uniqueId(),
       title: 'Understanding Blockchain Technology',
       authors: [
          { id: 1, name: 'Alice Thompson' },
@@ -20,7 +20,7 @@ export const articles: ArticleItemProps[] = [
       ]
    },
    {
-      id: sha256('Basics of Quantum Physics'),
+      id: uniqueId(),
       title: 'Basics of Quantum Physics',
       authors: [
          { id: 3, name: 'Carol White' },
@@ -38,7 +38,7 @@ export const articles: ArticleItemProps[] = [
       ]
    },
    {
-      id: sha256('The World of Computer Algorithms'),
+      id: uniqueId(),
       title: 'The World of Computer Algorithms',
       authors: [
          { id: 6, name: 'Frank Johnson' },
@@ -55,7 +55,7 @@ export const articles: ArticleItemProps[] = [
       ]
    },
    {
-      id: sha256('Machine Learning for Beginners'),
+      id: uniqueId(),
       title: 'Machine Learning for Beginners',
       authors: [
          { id: 8, name: 'Henry Wilson' },
@@ -74,7 +74,7 @@ export const articles: ArticleItemProps[] = [
       ]
    },
    {
-      id: sha256('Evolution of Modern Databases'),
+      id: uniqueId(),
       title: 'Evolution of Modern Databases',
       authors: [{ id: 12, name: 'Larry Fisher' }],
       image: 'https://source.unsplash.com/random/900×700/?database',
@@ -88,7 +88,7 @@ export const articles: ArticleItemProps[] = [
       ]
    },
    {
-      id: sha256('Introduction to Virtual Reality'),
+      id: uniqueId(),
       title: 'Introduction to Virtual Reality',
       authors: [
          { id: 13, name: 'Martin King' },
@@ -105,7 +105,7 @@ export const articles: ArticleItemProps[] = [
       ]
    },
    {
-      id: sha256('Modern Web Development Trends'),
+      id: uniqueId(),
       title: 'Modern Web Development Trends',
       authors: [
          { id: 15, name: 'Oscar Prince' },
@@ -122,7 +122,7 @@ export const articles: ArticleItemProps[] = [
       ]
    },
    {
-      id: sha256('IoT and its Applications'),
+      id: uniqueId(),
       title: 'IoT and its Applications',
       authors: [{ id: 17, name: 'Quincy Stevens' }],
       image: 'https://source.unsplash.com/random/900×700/?iot',
@@ -136,7 +136,7 @@ export const articles: ArticleItemProps[] = [
       ]
    },
    {
-      id: sha256('Digital Art and Design Principles'),
+      id: uniqueId(),
       title: 'Digital Art and Design Principles',
       authors: [
          { id: 18, name: 'Rachel Stone' },
@@ -153,7 +153,7 @@ export const articles: ArticleItemProps[] = [
       ]
    },
    {
-      id: sha256('Augmented Reality in Today’s World'),
+      id: uniqueId(),
       title: 'Augmented Reality in Today’s World',
       authors: [
          { id: 20, name: 'Ursula Vance' },

@@ -45,8 +45,7 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
    // see more about useDropzone here: https://react-dropzone.js.org/
    const { getRootProps, getInputProps, isDragAccept, isDragActive, isDragReject, isFocused } = useDropzone({
       onDrop,
-      multiple: false,
-      accept: accept
+      multiple: false
    })
 
    return (
