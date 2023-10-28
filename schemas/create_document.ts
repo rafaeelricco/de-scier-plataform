@@ -1,23 +1,23 @@
 import * as zod from 'zod'
 
 const AuthorSchema = zod.object({
-   name: zod.string({ required_error: 'Name is required' }),
-   email: zod.string({ required_error: 'Email is required' }).email(),
-   title: zod.string({ required_error: 'Title is required' }),
-   revenuePercent: zod.number().min(0).max(1).optional(),
-   wallet_address: zod.number().optional()
+   name: zod.string().min(3, { message: 'Name must be at least 3 characters' }),
+   email: zod.string().email({ message: 'Invalid email' }),
+   title: zod.string().min(3, { message: 'Title must be at least 3 characters' }),
+   revenuePercent: zod.coerce.number().min(0, { message: 'Revenue percent must be at least 0' }),
+   walletAddress: zod.coerce.number().optional()
 })
 
 export const CreateDocumentSchema = zod.object({
-   title: zod.string({ required_error: 'Title is required' }),
-   abstract: zod.string({ required_error: 'Abstract is required' }),
+   title: zod.string().min(3, { message: 'Title must be at least 3 characters' }),
+   abstract: zod.string().min(3, { message: 'Abstract must be at least 3 characters' }),
    abstractChart: zod.string().optional(),
    field: zod.string({ required_error: 'Field is required' }),
    documentType: zod.string({ required_error: 'Document type is required' }),
    accessType: zod.enum(['FREE', 'PAID'], {
       required_error: 'Access type is required'
    }),
-   price: zod.number({ required_error: 'Price is required' })
+   price: zod.coerce.number({ required_error: 'Price is required' })
 })
 
 /**

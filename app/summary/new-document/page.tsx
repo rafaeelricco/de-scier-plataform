@@ -5,12 +5,13 @@ import { Pills } from '@/components/common/Button/Pill/Pill'
 import Dropzone from '@/components/common/Dropzone/Dropzone'
 import { document_types } from '@/mock/document_types'
 import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
-import { CreateDocumentProps } from '@/schemas/createDocument'
 import { submitNewDocumentService } from '@/services/document/submit.service'
+import { CreateDocumentProps, CreateDocumentSchema } from '@/schemas/create_document'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Reorder } from 'framer-motion'
 import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React, { useState } from 'react'
@@ -32,16 +33,21 @@ export default function SubmitNewPaperPage() {
       edit_author: false
    })
 
-   const { register, handleSubmit } = useForm<CreateDocumentProps>({
-      defaultValues: {
-         abstract: '',
-         abstractChart: '',
-         accessType: 'FREE',
-         documentType: '',
-         field: '',
-         price: 0,
-         title: ''
-      }
+   /** @dev Initializes the form state. */
+   const {
+      register,
+      handleSubmit,
+      watch,
+      formState: { errors, isValid },
+      setValue,
+      trigger,
+      getValues,
+      control,
+      clearErrors,
+      setError
+   } = useForm<CreateDocumentProps>({
+      resolver: zodResolver(CreateDocumentSchema),
+      defaultValues: { abstract: '', abstractChart: '', accessType: 'FREE', documentType: '', field: '', price: 0, title: '' }
    })
 
    const onReorder = (newOrder: typeof items) => {
@@ -49,7 +55,8 @@ export default function SubmitNewPaperPage() {
    }
 
    const handleSubmitDocument: SubmitHandler<CreateDocumentProps> = async (data) => {
-      const mockData: CreateDocumentProps = {
+      console.log(data)
+      /* const mockData: CreateDocumentProps = {
          abstract: 'exemplo',
          accessType: 'FREE',
          documentType: 'paper',
@@ -79,7 +86,7 @@ export default function SubmitNewPaperPage() {
          return
       }
 
-      toast.success(response.message)
+      toast.success(response.message) */
    }
 
    return (
