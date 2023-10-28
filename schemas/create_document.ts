@@ -17,7 +17,7 @@ export const CreateDocumentSchema = zod.object({
    accessType: zod.enum(['FREE', 'PAID'], {
       required_error: 'Access type is required'
    }),
-   price: zod.coerce.number({ required_error: 'Price is required' })
+   price: zod.string({ required_error: 'Price is required' })
 })
 
 /**

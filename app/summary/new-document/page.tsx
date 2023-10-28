@@ -47,7 +47,7 @@ export default function SubmitNewPaperPage() {
       setError
    } = useForm<CreateDocumentProps>({
       resolver: zodResolver(CreateDocumentSchema),
-      defaultValues: { abstract: '', abstractChart: '', accessType: 'FREE', documentType: '', field: '', price: 0, title: '' }
+      defaultValues: { abstract: '', abstractChart: '', accessType: 'FREE', documentType: '', field: '', price: '0', title: '' }
    })
 
    const onReorder = (newOrder: typeof items) => {
@@ -55,14 +55,15 @@ export default function SubmitNewPaperPage() {
    }
 
    const handleSubmitDocument: SubmitHandler<CreateDocumentProps> = async (data) => {
+      console.log('sunmit')
       console.log(data)
-      /* const mockData: CreateDocumentProps = {
-         abstract: 'exemplo',
-         accessType: 'FREE',
-         documentType: 'paper',
-         field: 'TI',
-         price: 0,
-         title: 'Um documento de exemplo',
+      const mockData = {
+         abstract: data.abstract,
+         accessType: typeOfAccess === 'open-acess' ? 'FREE' : 'PAID',
+         documentType: data.documentType,
+         field: data.field,
+         price: Number(data.price),
+         title: data.title,
          abstractChart: 'dsdsdsdsdsdds'
       }
 
@@ -71,7 +72,7 @@ export default function SubmitNewPaperPage() {
             name: 'Pedro author',
             email: 'pedro@email.com',
             title: 'developer',
-            revenuePercent: 0,
+            revenuePercent: 1,
             walletAddress: '0x32323232323232332332'
          }
       ]
@@ -86,7 +87,7 @@ export default function SubmitNewPaperPage() {
          return
       }
 
-      toast.success(response.message) */
+      toast.success(response.message)
    }
 
    return (
@@ -184,6 +185,7 @@ export default function SubmitNewPaperPage() {
                            <Input.Root>
                               <Input.Label>Title</Input.Label>
                               <Input.Input placeholder="Ex: Biologist" />
+                              {errors.field?.message}
                            </Input.Root>
                         </div>
                         <div className="grid grid-cols-2 items-center gap-6">
@@ -238,18 +240,15 @@ export default function SubmitNewPaperPage() {
                            <span className="text-sm font-semibold">Field</span>
                            <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
                         </Input.Label>
-                        <Input.Input placeholder="Title of the field" />
+                        <Input.Input placeholder="Title of the field" {...register('field')} />
                      </Input.Root>
                   </div>
                </div>
                <div className="grid gap-2">
                   <div className="hidden md:block">
                      <h3 className="text-sm font-semibold">Document type</h3>
-                     <Pills items={document_types} />
+                     <Pills items={document_types} onSelect={(value) => setValue('documentType', value.label)} />
                   </div>
-                  <Input.Root>
-                     <Input.Select label={'Document type'} options={document_types} placeholder="Title of the field" />
-                  </Input.Root>
                </div>
                <Dropzone setSelectedFile={(file) => console.log(file)} />
                <Input.Root>
@@ -257,7 +256,7 @@ export default function SubmitNewPaperPage() {
                      <span className="text-sm font-semibold">Abstract</span>
                      <span className="text-sm text-neutral-light_gray font-semibold">0/2000 words</span>
                   </Input.Label>
-                  <Input.TextArea rows={4} placeholder="Title of the field" />
+                  <Input.TextArea rows={4} placeholder="Title of the field" {...register('abstract')} />
                </Input.Root>
                <div className="flex flex-col md:flex-row md:items-center gap-4">
                   <Button.Button variant="outline" className="px-4 py-3 md:w-fit text-sm">
@@ -404,7 +403,7 @@ export default function SubmitNewPaperPage() {
                            <Input.Label>Price</Input.Label>
                            <CurrencyInput
                               currency="USD"
-                              onChangeValue={(event, originalValue, maskedValue) => console.log(maskedValue)}
+                              onChangeValue={(event, originalValue, maskedValue) => setValue('price', originalValue.toString())}
                               InputElement={<Input.Input placeholder="USD" />}
                            />
                         </Input.Root>
