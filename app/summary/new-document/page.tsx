@@ -72,21 +72,20 @@ export default function SubmitNewPaperPage() {
       name: 'keywords',
       control: control
    })
-   console.log(watch('keywords'))
-   console.log(errors)
 
    const onReorder = (newOrder: typeof items) => {
       setItems((prevItems) => [...newOrder])
    }
 
    const handleSubmitDocument: SubmitHandler<CreateDocumentProps> = async (data) => {
-      if (!documentFile || !cover) {
+      /* if (!documentFile || !cover) {
          toast.error('You need upload a document file.')
          return
-      }
+      } */
+      console.log(data)
       const requestData = {
          abstract: data.abstract,
-         accessType: data.accessType,
+         accessType: access_type === 'open-access' ? 'FREE' : 'PAID',
          documentType: data.documentType,
          field: data.field,
          price: Number(data.price),
@@ -102,7 +101,7 @@ export default function SubmitNewPaperPage() {
             name: 'Pedro author',
             email: 'pedro@email.com',
             title: 'developer',
-            revenuePercent: 0,
+            revenuePercent: 1,
             walletAddress: '0x32323232323232332332'
          }
       ]
@@ -117,7 +116,7 @@ export default function SubmitNewPaperPage() {
       }
 
       // Upload document file
-      const uploadDocumentSuccess = await uploadDocumentFileService({
+      /*  const uploadDocumentSuccess = await uploadDocumentFileService({
          documentId: response.documentId,
          fileLocalUrl: documentFile.preview,
          filename: documentFile.name,
@@ -126,10 +125,10 @@ export default function SubmitNewPaperPage() {
 
       if (!uploadDocumentSuccess) {
          toast.warning('There was an error uploading your file. But you can upload later.')
-      }
+      } */
 
       // Upload cover image
-      const uploadCoverSuccess = await uploadDocumentFileService({
+      /* const uploadCoverSuccess = await uploadDocumentFileService({
          documentId: response.documentId,
          fileLocalUrl: cover.preview,
          filename: cover.name,
@@ -138,7 +137,7 @@ export default function SubmitNewPaperPage() {
 
       if (!uploadCoverSuccess) {
          toast.warning('There was an error uploading your file. But you can upload later.')
-      }
+      } */
 
       toast.success(response.message)
    }
@@ -491,7 +490,7 @@ export default function SubmitNewPaperPage() {
                            <Input.Label>Price</Input.Label>
                            <CurrencyInput
                               currency="USD"
-                              onChangeValue={(event, originalValue, maskedValue) => console.log(maskedValue)}
+                              onChangeValue={(event, originalValue, maskedValue) => setValue('price', originalValue.toString())}
                               InputElement={<Input.Input placeholder="USD" />}
                            />
                         </Input.Root>
