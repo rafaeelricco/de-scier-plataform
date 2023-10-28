@@ -3,6 +3,7 @@
 import Box from '@/components/common/Box/Box'
 import { Pills } from '@/components/common/Button/Pill/Pill'
 import Dropzone from '@/components/common/Dropzone/Dropzone'
+import { access_type_options } from '@/mock/access_type'
 import { document_types } from '@/mock/document_types'
 import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { submitNewDocumentService } from '@/services/document/submit.service'
@@ -13,11 +14,12 @@ import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Reorder } from 'framer-motion'
+import { uniqueId } from 'lodash'
 import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React, { useState } from 'react'
-import { Clipboard, PlusCircle, PlusCircleDotted } from 'react-bootstrap-icons'
+import { Clipboard, PlusCircle, PlusCircleDotted, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
 export default function SubmitNewPaperPage() {
@@ -28,6 +30,8 @@ export default function SubmitNewPaperPage() {
    const [authorship, setAuthorship] = useState<Authorship[]>([])
    const [authorship_settings, setAuthorshipSettings] = useState<Author>()
    const [dialog, setDialog] = useState({ author: false, share_split: false, edit_author: false })
+   const [keywords_temp, setKeywordsTemp] = useState<string | undefined>()
+   console.log(keywords_temp)
 
    const {
       register,
@@ -42,11 +46,29 @@ export default function SubmitNewPaperPage() {
       setError
    } = useForm<CreateDocumentProps>({
       resolver: zodResolver(CreateDocumentSchema),
-      defaultValues: { abstract: '', abstractChart: '', accessType: 'FREE', documentType: '', field: '', price: '0', title: '' }
+      defaultValues: {
+         abstract: '',
+         abstractChart: '',
+         accessType: 'FREE',
+         documentType: '',
+         field: '',
+         price: '',
+         title: '',
+         keywords: []
+      }
    })
+   console.log(watch('keywords'))
 
-   console.log('errors', errors)
-   console.log('watch', watch())
+   const {
+      append,
+      replace,
+      update,
+      remove,
+      fields: keywords
+   } = useFieldArray({
+      name: 'keywords',
+      control: control
+   })
 
    const onReorder = (newOrder: typeof items) => {
       setItems((prevItems) => [...newOrder])
@@ -86,6 +108,14 @@ export default function SubmitNewPaperPage() {
       }
 
       toast.success(response.message)
+   }
+
+   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.keyCode === 13) {
+         e.preventDefault()
+         append({ id: uniqueId(), name: keywords_temp as string })
+         setKeywordsTemp('')
+      }
    }
 
    return (
@@ -219,12 +249,20 @@ export default function SubmitNewPaperPage() {
                         <Input.Label>Add keywords (Max 5)</Input.Label>
                         <Input.Input
                            placeholder="Title of the article"
+                           value={keywords_temp}
+                           onKeyDown={(e) => handleKeyDown(e)}
+                           onInput={(e) => setKeywordsTemp(e.currentTarget.value)}
                            end
                            icon={
                               <React.Fragment>
                                  <Button.Button
+                                    type="button"
                                     variant="outline"
                                     className="px-2 py-0 border-neutral-light_gray hover:bg-neutral-light_gray hover:bg-opacity-10 flex items-center gap-1 rounded-sm"
+                                    onClick={() => {
+                                       append({ id: uniqueId(), name: keywords_temp as string })
+                                       setKeywordsTemp('')
+                                    }}
                                  >
                                     <PlusCircle className="w-3 fill-neutral-light_gray" />
                                     <span className="font-semibold text-xs text-neutral-light_gray">Add keyword</span>
@@ -232,6 +270,20 @@ export default function SubmitNewPaperPage() {
                               </React.Fragment>
                            }
                         />
+                        <div className="flex flex-wrap gap-1">
+                           {keywords.map((keyword, index) => (
+                              <div
+                                 className="border rounded-md border-neutral-stroke_light flex items-center px-1 sm:px-2 py-[2px] bg-white w-fit"
+                                 key={keyword.id}
+                              >
+                                 <X
+                                    className="w-5 h-fit fill-neutral-stroke_light hover:fill-status-error cursor-pointer transition-all duration-200 hover:scale-110"
+                                    onClick={() => remove(index)}
+                                 />
+                                 <span className="text-xxs sm:text-xs text-primary-main">{keyword.name}</span>
+                              </div>
+                           ))}
+                        </div>
                      </Input.Root>
                   </div>
                   <div className="grid md:grid-cols-2 items-start gap-6">
@@ -380,16 +432,7 @@ export default function SubmitNewPaperPage() {
                         placeholder="Select the type of access"
                         onValueChange={(value) => setAccessType(value)}
                         value={access_type}
-                        options={[
-                           {
-                              label: 'Open Access',
-                              value: 'open-access'
-                           },
-                           {
-                              label: 'Paid Access',
-                              value: 'paid-access'
-                           }
-                        ]}
+                        options={access_type_options}
                      />
                   </Input.Root>
                   {access_type == 'open-access' && (
