@@ -5,7 +5,7 @@ export const AuthorSchema = zod.object({
    name: zod.string().min(3, 'Name must be at least 3 characters.'),
    email: zod.string().email('Invalid email address.'),
    title: zod.string().min(3, 'Title must be at least 3 characters.'),
-   revenuePercent: zod.string().min(1, 'Revenue percent must be at least 1 character.'),
+   revenuePercent: zod.string().optional(),
    walletAddress: zod.string().optional().nullable()
 })
 

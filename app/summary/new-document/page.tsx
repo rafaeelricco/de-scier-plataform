@@ -18,8 +18,9 @@ import * as Title from '@components/common/Title/Page'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Reorder } from 'framer-motion'
 import { uniqueId } from 'lodash'
+import { useSession } from 'next-auth/react'
 import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Clipboard, Pencil, PlusCircle, PlusCircleDotted, Trash, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
@@ -27,14 +28,15 @@ import { toast } from 'react-toastify'
 import { twMerge } from 'tailwind-merge'
 
 export default function SubmitNewPaperPage() {
+   const { data: session } = useSession()
    const [access_type, setAccessType] = useState('open-access')
-   const [items, setItems] = React.useState<Author[]>(authors_mock.map((author, index) => ({ ...author, id: String(index + 1) })))
+
    const [share, setShare] = useState('')
-   const [authors, setAuthors] = useState<Author[]>(authors_mock)
+   const [wallet, setWallet] = useState('')
+   const [authors, setAuthors] = useState<Author[]>([])
    const [authorship, setAuthorship] = useState<Authorship[]>([])
    const [authorship_settings, setAuthorshipSettings] = useState<Author>()
-   const [author_to_edit, setAuthorToEdit] = useState<AuthorProps | undefined>(undefined)
-   console.log(author_to_edit)
+   const [author_to_edit, setAuthorToEdit] = useState<Author | undefined>(undefined)
    const [dialog, setDialog] = useState({ author: false, share_split: false, edit_author: false })
    const [keywords_temp, setKeywordsTemp] = useState<string | undefined>()
    const [documentFile, setDocumentFile] = useState<StoredFile | null>()
@@ -76,16 +78,16 @@ export default function SubmitNewPaperPage() {
       control: control
    })
 
-   const onReorder = (newOrder: typeof items) => {
-      setItems((prevItems) => [...newOrder])
+   const onReorder = (newOrder: typeof authors) => {
+      setAuthors((prevItems) => [...newOrder])
    }
 
    const handleSubmitDocument: SubmitHandler<CreateDocumentProps> = async (data) => {
-      /* if (!documentFile || !cover) {
+      if (!documentFile || !cover) {
          toast.error('You need upload a document file.')
          return
-      } */
-      console.log(data)
+      }
+
       const requestData = {
          abstract: data.abstract,
          accessType: access_type === 'open-access' ? 'FREE' : 'PAID',
@@ -97,19 +99,17 @@ export default function SubmitNewPaperPage() {
          keywords: data.keywords.map((item) => item.name)
       }
 
-      const authors = [
-         {
-            name: 'Pedro author',
-            email: 'pedro@email.com',
-            title: 'developer',
-            revenuePercent: 1,
-            walletAddress: '0x32323232323232332332'
-         }
-      ]
+      const documentAuthors = authors.map((item) => ({
+         email: item.email,
+         name: item.name,
+         revenuePercent: Number(item.share?.substring(0, item.share.length - 1)) || 0,
+         title: item.title,
+         walletAddress: item.wallet || ''
+      }))
 
       const response = await submitNewDocumentService({
          ...requestData,
-         authors
+         authors: documentAuthors
       })
 
       if (!response.success) {
@@ -118,7 +118,7 @@ export default function SubmitNewPaperPage() {
       }
 
       // Upload document file
-      /*  const uploadDocumentSuccess = await uploadDocumentFileService({
+      const uploadDocumentSuccess = await uploadDocumentFileService({
          documentId: response.documentId,
          fileLocalUrl: documentFile.preview,
          filename: documentFile.name,
@@ -127,10 +127,10 @@ export default function SubmitNewPaperPage() {
 
       if (!uploadDocumentSuccess) {
          toast.warning('There was an error uploading your file. But you can upload later.')
-      } */
+      }
 
       // Upload cover image
-      /* const uploadCoverSuccess = await uploadDocumentFileService({
+      const uploadCoverSuccess = await uploadDocumentFileService({
          documentId: response.documentId,
          fileLocalUrl: cover.preview,
          filename: cover.name,
@@ -139,7 +139,7 @@ export default function SubmitNewPaperPage() {
 
       if (!uploadCoverSuccess) {
          toast.warning('There was an error uploading your file. But you can upload later.')
-      } */
+      }
 
       toast.success(response.message)
    }
@@ -151,6 +151,21 @@ export default function SubmitNewPaperPage() {
          setKeywordsTemp('')
       }
    }
+
+   useEffect(() => {
+      if (session?.user) {
+         const author = {
+            id: '1',
+            email: session?.user?.userInfo.email,
+            name: session?.user?.userInfo.name,
+            revenuePercent: 0,
+            title: session?.user?.userInfo.title || '',
+            walletAddress: session?.user?.userInfo.walletAddress || ''
+         }
+         setAuthors([author])
+      }
+   }, [session?.user])
+
    return (
       <React.Fragment>
          <Dialog.Root open={dialog.author || dialog.share_split || dialog.edit_author}>
@@ -167,7 +182,7 @@ export default function SubmitNewPaperPage() {
                            revenuePercent: value.revenuePercent
                         }
                         console.log(newAuthor)
-                        setItems((prevItems) => [...prevItems, newAuthor])
+                        setAuthors((prevItems) => [...prevItems, newAuthor])
                      }}
                      onClose={() => setDialog({ ...dialog, author: false })}
                   />
@@ -176,7 +191,7 @@ export default function SubmitNewPaperPage() {
                   <NewAuthor
                      onEditAuthor={author_to_edit}
                      onUpdateAuthor={(updatedAuthor) => {
-                        setItems((prevItems) => {
+                        setAuthors((prevItems) => {
                            return prevItems.map((item) => (item.id === author_to_edit?.id ? { ...item, ...updatedAuthor } : item))
                         })
                      }}
@@ -201,7 +216,7 @@ export default function SubmitNewPaperPage() {
                               </Input.Root>
                               <Input.Root>
                                  <Input.Label optional>Wallet</Input.Label>
-                                 <Input.Input placeholder="Crypto wallet adress to recieve the revenue" />
+                                 <Input.Input placeholder="Crypto wallet adress to recieve the revenue" onChange={(e) => setWallet(e.target.value)} />
                               </Input.Root>
                            </div>
                            <Button.Button
@@ -225,8 +240,11 @@ export default function SubmitNewPaperPage() {
                                  const authorIndex = authors.findIndex((author) => author.id === authorship_settings!.id)
 
                                  const updatedAuthors = [...authors]
-                                 updatedAuthors[authorIndex] = updatedAuthor
+                                 updatedAuthors[authorIndex].share = share.includes('%') ? share : share + '%'
+                                 updatedAuthors[authorIndex].wallet = wallet
                                  setAuthors(updatedAuthors)
+
+                                 console.log(authors)
 
                                  setDialog({ ...dialog, share_split: false })
                               }}
@@ -394,9 +412,9 @@ export default function SubmitNewPaperPage() {
                               </React.Fragment>
                            ))}
                         </div>
-                        <Reorder.Group axis="y" values={items} onReorder={onReorder}>
+                        <Reorder.Group axis="y" values={authors} onReorder={onReorder}>
                            <div className="grid gap-2">
-                              {items.map((item, index) => (
+                              {authors.map((item, index) => (
                                  <Reorder.Item key={item.id} value={item} id={item.id}>
                                     <div className="grid md:grid-cols-3 items-center px-0 py-3 rounded-md cursor-grab">
                                        <div className="flex items-center gap-4">
@@ -425,8 +443,8 @@ export default function SubmitNewPaperPage() {
                                                    <Trash
                                                       className="fill-status-error w-5 h-full cursor-pointer hover:scale-110 transition-all duration-200"
                                                       onClick={() => {
-                                                         const new_list = items.filter((author) => author.id !== item.id)
-                                                         setItems(new_list)
+                                                         const new_list = authors.filter((author) => author.id !== item.id)
+                                                         setAuthors(new_list)
                                                       }}
                                                    />
                                                    <Pencil
