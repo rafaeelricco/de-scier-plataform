@@ -1,12 +1,14 @@
+import { uniqueId } from 'lodash'
+
 export type Author = {
-   id: number
+   id: string
    name: string
    title: string
    email: string
    share?: string | null
    wallet?: string | null
-   role: string
-   status: string
+   role?: string
+   status?: string
 }
 
 export type Authorship = {
@@ -18,7 +20,7 @@ export type Authorship = {
 
 export const authors_mock: Author[] = [
    {
-      id: 1,
+      id: uniqueId(),
       name: 'Caroline Nunes',
       title: 'Neurologist',
       email: 'caroline@gmail.com',
@@ -26,47 +28,47 @@ export const authors_mock: Author[] = [
       wallet: null,
       role: 'reviewer',
       status: 'pending'
-   },
-   {
-      id: 2,
-      name: 'Roberto Silva',
-      title: 'Cardiologist',
-      email: 'roberto@gmail.com',
-      share: null,
-      wallet: null,
-      role: 'reviewer',
-      status: 'pending'
-   },
-   {
-      id: 3,
-      name: 'Luciana Menezes',
-      title: 'Dermatologist',
-      email: 'luciana@gmail.com',
-      share: null,
-      wallet: null,
-      role: 'reviewer',
-      status: 'approved'
-   },
-   {
-      id: 4,
-      name: 'Paulo Fernandes',
-      title: 'Orthopedist',
-      email: 'paulo@gmail.com',
-      share: null,
-      wallet: null,
-      role: 'editor',
-      status: 'approved'
-   },
-   {
-      id: 5,
-      name: 'Juliana Ramos',
-      title: 'Endocrinologist',
-      email: 'juliana@gmail.com',
-      share: null,
-      wallet: null,
-      role: 'editor',
-      status: 'pending'
    }
+   //    {
+   //       id: 2,
+   //       name: 'Roberto Silva',
+   //       title: 'Cardiologist',
+   //       email: 'roberto@gmail.com',
+   //       share: null,
+   //       wallet: null,
+   //       role: 'reviewer',
+   //       status: 'pending'
+   //    },
+   //    {
+   //       id: 3,
+   //       name: 'Luciana Menezes',
+   //       title: 'Dermatologist',
+   //       email: 'luciana@gmail.com',
+   //       share: null,
+   //       wallet: null,
+   //       role: 'reviewer',
+   //       status: 'approved'
+   //    },
+   //    {
+   //       id: 4,
+   //       name: 'Paulo Fernandes',
+   //       title: 'Orthopedist',
+   //       email: 'paulo@gmail.com',
+   //       share: null,
+   //       wallet: null,
+   //       role: 'editor',
+   //       status: 'approved'
+   //    },
+   //    {
+   //       id: 5,
+   //       name: 'Juliana Ramos',
+   //       title: 'Endocrinologist',
+   //       email: 'juliana@gmail.com',
+   //       share: null,
+   //       wallet: null,
+   //       role: 'editor',
+   //       status: 'pending'
+   //    }
 ]
 
 export const authors_headers = [
