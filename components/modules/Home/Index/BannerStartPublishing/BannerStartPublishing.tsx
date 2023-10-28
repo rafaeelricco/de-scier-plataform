@@ -7,17 +7,17 @@ export const BannerStartPublishing: React.FC = () => {
    return (
       <React.Fragment>
          <div className="bg-secundary_blue-main p-6 lg:py-6 lg:px-12 flex justify-center rounded-md">
-            <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-20">
-               <IllustrationBannerFooter className="w-60 shrink-0" />
+            <div className="flex flex-col lg:flex-row items-center gap-2 lg:gap-20">
+               <IllustrationBannerFooter className="w-48 lg:w-60 shrink-0 mb-4 md:mb-0" />
                <div className="flex flex-col gap-4">
                   <div className="grid gap-2">
-                     <p className="text-lg font-semibold text-white">Want to publish a scientific paper?</p>
-                     <p className="text-base font-regular text-white">
+                     <p className="text-base md:text-lg font-semibold text-white">Want to publish a scientific paper?</p>
+                     <p className="text-sm md:text-base font-regular text-white">
                         Publishing in DeScier is fast and easy, with peer selected review, and 100% author owned copyright. Join the movement now!
                      </p>
                   </div>
                   <div className="lg:flex lg:justify-end">
-                     <Button.Button className="py-3 px-10 lg:w-fit w-full">Start publishing now!</Button.Button>
+                     <Button.Button className="py-3 px-10 lg:w-fit w-full text-sm lg:text-base">Start publishing now!</Button.Button>
                   </div>
                </div>
             </div>

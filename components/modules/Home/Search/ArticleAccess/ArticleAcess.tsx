@@ -9,7 +9,7 @@ import { twMerge } from 'tailwind-merge'
 export const ArticleAcess: React.FC<ArticleAcessProps> = ({ access_type, date, value, className, onBuyDocument, onViewDocument }: ArticleAcessProps) => {
    return (
       <React.Fragment>
-         <div className={twMerge('flex flex-col gap-4 bg-white rounded-xl h-fit w-[490px] p-6', className)}>
+         <div className={twMerge('flex flex-col gap-4 bg-white rounded-xl h-fit w-full lg:w-[490px] p-6', className)}>
             {access_type === 'author' ? (
                <React.Fragment>
                   <div className="flex items-center gap-6">
@@ -41,7 +41,6 @@ export const ArticleAcess: React.FC<ArticleAcessProps> = ({ access_type, date, v
                   )}
                </React.Fragment>
             )}
-
             <p className="text-base text-center? font-regular">Document published in {formatDate(date)}</p>
          </div>
       </React.Fragment>

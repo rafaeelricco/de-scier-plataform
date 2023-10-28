@@ -62,7 +62,7 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
                                  <p className="text-sm font-semibold text-center">{placeholder || 'Upload Paper File (.docx)'}</p>
                                  <p className="text-sm font-regular text-center">{message || 'Drop your file here or'}</p>
                               </div>
-                              <Button.Button variant="outline" className="py-2 px-6 text-sm w-fit mx-auto my-0">
+                              <Button.Button variant="outline" className="py-2 px-6 text-xs sm:text-sm w-fit mx-auto my-0">
                                  <Upload size={18} />
                                  Select a file from my computer
                               </Button.Button>
@@ -77,8 +77,8 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
                            )}
                            <div className="grid gap-2 items-center content-center">
                               <div className="grid justify-item-center gap-2 grid-flow-col justify-center items-center">
-                                 <FileEarmarkText size={18} />
-                                 <p className="text-sm font-semibold text-center">{files[0]?.name}</p>
+                                 <FileEarmarkText className="w-4 h-4 sm:w-5 sm:h-5 sm:mb-[2px]" />
+                                 <p className="text-xs sm:text-sm font-semibold text-center">{files[0]?.name}</p>
                               </div>
                               <Button.Button
                                  variant="outline"

@@ -13,32 +13,34 @@ import React from 'react'
 export default function HomePage() {
    return (
       <React.Fragment>
-         <Title.Root>
-            <Title.Title>My performance</Title.Title>
-         </Title.Root>
-         <div className="grid gap-8">
-            <Box className="flex flex-col w-full md:flex-row gap-5 items-center px-4 py-6 md:py-6 md:px-8">
-               <div className="w-full md:w-fit flex-shrink-0">
-                  <Submission />
-               </div>
-               <div className="divider-v" />
-               <div className="w-full md:flex-grow">
-                  <Publications />
-               </div>
-            </Box>
-            <div className="grid md:grid-cols-2 gap-8">
-               <Box className="h-full px-4 py-6 md:py-6 md:px-8">
-                  <h3 className="text-xl font-[500] lg:text-lg 2xl:text-xl">Statistics</h3>
-                  <Statistics />
+         <div>
+            <Title.Root>
+               <Title.Title>My performance</Title.Title>
+            </Title.Root>
+            <div className="grid gap-8">
+               <Box className="flex flex-col w-full lg:flex-row gap-5 items-center px-4 py-6 md:py-6 md:px-8">
+                  <div className="w-full md:w-fit flex-shrink-0">
+                     <Submission />
+                  </div>
+                  <div className="divider-v" />
+                  <div className="w-full md:flex-grow">
+                     <Publications />
+                  </div>
                </Box>
-               <Box className="h-fit px-4 py-6 md:py-6 md:px-8">
-                  <h3 className="text-xl font-[500] lg:text-lg 2xl:text-xl">Earnings</h3>
-                  <Earnings />
+               <div className="grid lg:grid-cols-2 gap-8">
+                  <Box className="h-full px-4 py-6 md:py-6 md:px-8">
+                     <h3 className="text-xl font-[500] lg:text-lg 2xl:text-xl">Statistics</h3>
+                     <Statistics />
+                  </Box>
+                  <Box className="h-fit px-4 py-6 md:py-6 md:px-8">
+                     <h3 className="text-xl font-[500] lg:text-lg 2xl:text-xl">Earnings</h3>
+                     <Earnings />
+                  </Box>
+               </div>
+               <Box className="h-fit w-full px-4 py-6 md:py-6 md:px-8">
+                  <TopPapers />
                </Box>
             </div>
-            <Box className="h-fit w-full px-4 py-6 md:py-6 md:px-8">
-               <TopPapers />
-            </Box>
          </div>
       </React.Fragment>
    )

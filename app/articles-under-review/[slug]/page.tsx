@@ -23,7 +23,7 @@ import { ArrowLeft, Check, FileEarmarkText, Person, PlusCircle, PlusCircleDotted
 import { CurrencyInput } from 'react-currency-mask'
 import { twMerge } from 'tailwind-merge'
 
-export default function ArticleInReview({ params }: { params: { slug: string } }) {
+export default function ArticleInReviewPage({ params }: { params: { slug: string } }) {
    const router = useRouter()
 
    const [items, setItems] = React.useState(authors_mock)
@@ -319,7 +319,7 @@ export default function ArticleInReview({ params }: { params: { slug: string } }
                                  <p
                                     className={twMerge(
                                        'text-sm text-secundary_blue-main first-letter:uppercase font-semibold',
-                                       `${item.role == 'reviewer' && 'text-yellow-400'}`,
+                                       `${item.role == 'reviewer' && 'text-[#EFB521]'}`,
                                        `${item.role == 'editor' && 'text-terciary-main'}`
                                     )}
                                  >

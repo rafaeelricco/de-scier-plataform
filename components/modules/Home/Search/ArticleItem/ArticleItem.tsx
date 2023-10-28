@@ -11,16 +11,16 @@ import { ArticleItemProps } from './Typing'
 const ArticleItem: React.FC<ArticleItemProps> = ({ image, title, access_type, likes, published_date, views, tags, authors }: ArticleItemProps) => {
    return (
       <div className="grid gap-2 bg-[#fff] py-3 px-4 rounded-lg">
-         <div className="grid-article-item justify-start items-center gap-4">
+         <div className="grid lg:grid-cols-max-1px-auto lg:justify-start items-center gap-2 md:gap-4">
             <Image
                src={image}
                width={80}
                height={80}
                alt={title}
                style={{ objectFit: 'cover' }}
-               className="rounded-md lg:w-18 lg:h-18 2xl:w-20 2xl:h-20"
+               className="rounded-md h-28 w-full lg:w-20 lg:h-20 2xl:w-20 2xl:h-20"
             />
-            <hr className="divider-v" />
+            <hr className="hidden lg:block h-full w-[1px] bg-neutral-stroke_light" />
             <div className="grid gap-2">
                <div className="grid gap-2">
                   <div className="grid gap-2">
@@ -73,7 +73,7 @@ const PublishedStatus: React.FC<PublishedStatusProps> = ({ published_date, acces
             <div className="grid gap-2">
                {access_type == 'open' ? (
                   <React.Fragment>
-                     <div className="flex gap-2 items-center">
+                     <div className="flex flex-wrap gap-2 items-center">
                         <div className="w-3 h-3 bg-status-green rounded-full" />
                         <p className="text-sm">Open access</p>
                         <span className="text-neutral-gray">•</span>

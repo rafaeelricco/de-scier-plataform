@@ -21,7 +21,7 @@ export default function ArticlesForApprovalPage() {
    return (
       <React.Fragment>
          <Title.Root>
-            <Title.Title>My articles under review</Title.Title>
+            <Title.Title>Articles for approval</Title.Title>
          </Title.Root>
          <div className="grid gap-6">
             <div className="grid gap-6">

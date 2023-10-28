@@ -1,9 +1,16 @@
 /** @type {import('tailwindcss').Config} */
-const withMT = require('@material-tailwind/react/utils/withMT')
+// const withMT = require('@material-tailwind/react/utils/withMT')
 
-module.exports = withMT({
+module.exports = {
    darkMode: ['class'],
-   content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
+   content: [
+      './pages/**/*.{ts,tsx}',
+      './components/**/*.{ts,tsx}',
+      './app/**/*.{ts,tsx}',
+      './src/**/*.{ts,tsx}'
+      //   './node_modules/@material-tailwind/react/components/**/*.{js,ts,jsx,tsx}',
+      //   './node_modules/@material-tailwind/react/theme/components/**/*.{js,ts,jsx,tsx}'
+   ],
    theme: {
       container: {
          center: true,
@@ -40,7 +47,8 @@ module.exports = withMT({
             'auto-min': 'auto min-content',
             'max-auto': 'max-content auto',
             'max-min-auto': 'max-content min-content auto',
-            '4-min-content': 'repeat(4, min-content)'
+            '4-min-content': 'repeat(4, min-content)',
+            'max-1px-auto': 'max-content 1px auto'
          },
          fontSize: {
             xxs: '0.625rem',
@@ -172,4 +180,4 @@ module.exports = withMT({
       }
    },
    plugins: [require('tailwindcss-animate')]
-})
+}

@@ -6,32 +6,28 @@ import React from 'react'
 import { Eye, HandThumbsUpFill } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 
-export const ArticleCard: React.FC<ArticleCardProps> = ({ authors, id, likes, tags, title, views, image, className, responsive }: ArticleCardProps) => {
+export const ArticleCheckout: React.FC<ArticleCardProps> = ({
+   authors,
+   id,
+   likes,
+   tags,
+   title,
+   views,
+   image,
+   className,
+   responsive
+}: ArticleCardProps) => {
    return (
-      <div className="grid items-start">
-         <div
-            className={twMerge(
-               'max-w-full sm:max-w-[180px] md:max-w-[200px] lg:max-w-[240px] grid gap-3 sm:gap-4 items-start',
-               className,
-               `${responsive && 'max-w-full'}`
-            )}
-         >
-            <div className={twMerge('w-full h-20 sm:h-48 md:h-52 lg:h-60 overflow-hidden rounded-md relative', `${responsive && 'w-full'}`)}>
-               <Image
-                  priority
-                  quality={100}
-                  width={240}
-                  height={240}
-                  src={image}
-                  alt="placeholder"
-                  className={twMerge('w-full h-full object-cover absolute inset-0', `${responsive && 'w-full'}`)}
-               />
+      <div className="flex md:grid items-start">
+         <div className={twMerge('flex md:grid gap-2 md:gap-3', className)}>
+            <div className={twMerge('flex-shrink-0 w-20 md:w-full md:h-52 h-20 overflow-hidden rounded-md relative')}>
+               <Image fill src={image} alt="placeholder" className={twMerge('w-28 h-28 md:w-full md:h-full object-cover absolute inset-0')} />
             </div>
-            <div className="grid gap-1 sm:gap-2">
+            <div className="grid gap-1 md:gap-2 content-center">
                <div className="flex items-center gap-1 flex-wrap">
-                  <p className="text-xs sm:text-sm text-[#5E6992]">{formatAuthors(authors)}</p>
+                  <p className="text-sm text-[#5E6992]">{formatAuthors(authors)}</p>
                </div>
-               <p className="text-sm sm:text-base text-secundary_blue-main font-semibold">{title}</p>
+               <p className="text-base md:text-sm text-secundary_blue-main font-semibold">{title}</p>
                {!likes && !views ? null : (
                   <div className="flex items-center gap-2 sm:gap-4">
                      <div className="flex items-center gap-1">

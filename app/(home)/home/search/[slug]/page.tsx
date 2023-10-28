@@ -10,18 +10,21 @@ import { authors_mock } from '@/mock/submit_new_document'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import LikedIcon from 'public/svgs/common/likes/Icons/liked.svg'
+import UnlikedIcon from 'public/svgs/common/likes/Icons/unliked.svg'
 import FacebookIcon from 'public/svgs/modules/home/article-details/facebook.svg'
 import LinkIcon from 'public/svgs/modules/home/article-details/link.svg'
 import TelegramIcon from 'public/svgs/modules/home/article-details/telegram.svg'
 import TwitterIcon from 'public/svgs/modules/home/article-details/twitter.svg'
 import WhatsAppIcon from 'public/svgs/modules/home/article-details/whatsapp.svg'
 import React from 'react'
-import { ArrowLeft, Eye, HandThumbsUp, HandThumbsUpFill } from 'react-bootstrap-icons'
+import { ArrowLeft, Eye, HandThumbsUpFill } from 'react-bootstrap-icons'
 import sha256 from 'sha256'
 import { twMerge } from 'tailwind-merge'
 
 export default function Page({ params }: { params: { slug: string } }) {
    const router = useRouter()
+   const [liked, setLiked] = React.useState(false)
    const [purchase, setPurchase] = React.useState({ checkout: false, processing: false, success: false, error: false, my_articles: false })
 
    return (
@@ -31,9 +34,9 @@ export default function Page({ params }: { params: { slug: string } }) {
             <Dialog.Content
                className={twMerge(
                   'max-w-[1024px] w-full h-fit',
-                  `${purchase.processing && 'max-w-[600px] px-16 py-14'}`,
-                  `${purchase.success && 'max-w-[600px] px-16 py-14'}`,
-                  `${purchase.error && 'max-w-[600px] px-16 py-14'}`,
+                  `${purchase.processing && 'max-w-[600px] md:px-16 md:py-14'}`,
+                  `${purchase.success && 'max-w-[600px] md:px-16 md:py-14'}`,
+                  `${purchase.error && 'max-w-[600px] md:px-16 md:py-14'}`,
                   `${purchase.my_articles && 'max-w-[80%]'}`
                )}
             >
@@ -86,13 +89,13 @@ export default function Page({ params }: { params: { slug: string } }) {
             </Dialog.Content>
          </Dialog.Root>
          <div className="grid gap-8">
-            <div className="flex items-center gap-4 pt-12">
+            <div className="flex items-center gap-4 pt-8 md:pt-12">
                <ArrowLeft size={32} className="hover:scale-110 transition-all cursor-pointer" onClick={() => router.back()} />
                <h1 className="text-1xl font-semibold">Return</h1>
             </div>
             <div className="bg-white rounded-xl h-fit p-6 flex flex-col gap-4">
                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-2">
+                  <div className="hidden md:flex items-center gap-2">
                      <div className="border border-neutral-stroke_light rounded-md px-2 py-1 w-fit flex items-center flex-shrink gap-2">
                         <div className="w-3 h-3 bg-status-green rounded-full" />
                         <p className="text-sm select-none">Open access</p>
@@ -102,11 +105,23 @@ export default function Page({ params }: { params: { slug: string } }) {
                      <span className="text-black font-semibold">•</span>
                      <p className="text-lg font-semibold text-primary-main">Computer Science, Software engineering</p>
                   </div>
-                  <h3 className="text-3xl text-black font-bold">Hardware security and blockchain systems on the new digital era</h3>
+                  <div className="flex flex-col md:hidden md:items-center gap-2">
+                     <div className="border border-neutral-stroke_light rounded-md px-2 py-1 w-full flex items-center justify-center flex-shrink gap-2">
+                        <div className="w-3 h-3 bg-status-green rounded-full" />
+                        <p className="text-sm select-none">Open access</p>
+                     </div>
+                     <div className="grid grid-flow-col content-start justify-start gap-2 relative">
+                        <p className="text-base text-start font-semibold text-primary-main truncate w-full">
+                           <span className="text-black">Paper -</span> Computer Science, Software engineering
+                        </p>
+                     </div>
+                     <hr className="divider-h w-full my-2" />
+                  </div>
+                  <h3 className="text-2xl md:text-3xl text-black font-bold">Hardware security and blockchain systems on the new digital era</h3>
                   <div className="flex flex-wrap gap-2">
                      {tags.map((tag) => (
                         <div className="border rounded-md border-neutral-stroke_light flex items-center px-2 py-[2px]" key={tag.id}>
-                           <span className="text-sm text-primary-main">{tag.name}</span>
+                           <span className="text-xs md:text-sm text-primary-main">{tag.name}</span>
                         </div>
                      ))}
                   </div>
@@ -121,18 +136,20 @@ export default function Page({ params }: { params: { slug: string } }) {
                      </React.Fragment>
                   ))}
                </div>
-               <div className="relative w-full h-96 rounded-lg overflow-hidden">
+               <div className="relative h-80 md:h-96 rounded-lg overflow-hidden">
                   <Image
                      fill
                      src={'https://source.unsplash.com/random/900×700/?technology'}
                      alt="article-image"
                      style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                     className="object-cover"
                   />
                </div>
             </div>
-            <div className="flex items-start gap-8 mb-10">
+            <div className="flex items-start flex-col lg:flex-row-reverse gap-8 mb-10">
+               <ArticleAcess access_type="paid" date="11/11/2000" value={48} onBuyDocument={() => setPurchase({ ...purchase, checkout: true })} />
                <div className="flex flex-col gap-6 bg-white rounded-xl h-fit w-full flex-grow p-6">
-                  <div className="flex gap-6 items-center justify-between">
+                  <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
                      <div className="flex gap-6 items-center">
                         <div className="flex items-center gap-1">
                            <HandThumbsUpFill className="text-terciary-main w-5 h-5" />
@@ -143,6 +160,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                            <p className="text-lg text-neutral-gray">10k views</p>
                         </div>
                      </div>
+
                      <div className="flex items-center gap-4">
                         <p className="text-lg text-neutral-gray">Share</p>
                         <LinkIcon className="w-6 h-6 flex shrink-0 cursor-pointer transition-all duration-200 hover:scale-110" />
@@ -174,7 +192,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                         ))}
                      </div>
                   </div>
-                  <div className="flex items-center">
+                  <div className="flex gap-4 flex-col md:flex-row md:items-center">
                      <div className="flex flex-col flex-grow">
                         <p className="text-base font-semibold">Field</p>
                         <p className="text-base font-regular">Computer Science, Software engineering</p>
@@ -207,48 +225,66 @@ export default function Page({ params }: { params: { slug: string } }) {
                      </p>
                   </div>
                   <div className="flex flex-col gap-2">
-                     <p className="text-base font-semibold">Visual Abstract</p>
+                     <p className="text-base font-semibold">Visual abstract</p>
                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                     <img loading="lazy" src={'/images/Frame 987.png'} alt="article-image" className="w-fit h-72 object-contain" />
+                     <img loading="lazy" src={'/images/Frame 987.png'} alt="article-image" className="w-fit lg:h-72 object-contain" />
                   </div>
                   <div>
                      <p className="text-base font-semibold">Editors/reviewers</p>
                      <div>
-                        <div>
-                           {authors_mock.map((item, index) => (
-                              <div key={item.id} className="border-b border-neutral-stroke_light">
-                                 <div className="grid grid-cols-5  items-center px-0 py-3 rounded-md">
-                                    <div className="border border-neutral-stroke_light rounded px-2 w-28 flex items-center justify-center">
-                                       <p
-                                          className={twMerge(
-                                             'text-base text-secundary_blue-main first-letter:uppercase font-semibold',
-                                             `${item.role == 'reviewer' && 'text-yellow-400'}`,
-                                             `${item.role == 'editor' && 'text-terciary-main'}`
-                                          )}
-                                       >
-                                          {item.role}
-                                       </p>
-                                    </div>
-                                    <div className="flex items-center gap-4">
-                                       <div>
-                                          <p className="text-base text-secundary_blue-main">{item.name}</p>
-                                       </div>
-                                    </div>
+                        {authors_mock.map((item, index) => (
+                           <div key={item.id} className="border-b border-neutral-stroke_light">
+                              <div className="grid md:grid-cols-5 gap-4  items-center px-0 py-3 rounded-md">
+                                 <div className="border border-neutral-stroke_light rounded px-2 w-full lg:w-28 flex items-center justify-center">
+                                    <p
+                                       className={twMerge(
+                                          'text-base text-secundary_blue-main first-letter:uppercase font-semibold',
+                                          `${item.role == 'reviewer' && 'text-[#EFB521]'}`,
+                                          `${item.role == 'editor' && 'text-terciary-main'}`
+                                       )}
+                                    >
+                                       {item.role}
+                                    </p>
+                                 </div>
+                                 <div className="flex items-center gap-4">
                                     <div>
-                                       <p className="text-base text-secundary_blue-main">{item.title}</p>
+                                       <p className="text-base text-secundary_blue-main">{item.name}</p>
                                     </div>
                                  </div>
+                                 <div>
+                                    <p className="text-base text-secundary_blue-main">{item.title}</p>
+                                 </div>
                               </div>
-                           ))}
-                        </div>
+                           </div>
+                        ))}
                      </div>
                   </div>
                   <div className="flex items-center gap-2">
-                     <HandThumbsUp className="w-6 h-6 cursor-pointer" />
-                     <p className="text-lg">Like the article</p>
+                     {liked ? (
+                        <LikedIcon
+                           className="ml-1 w-6 h-6 cursor-pointer"
+                           onClick={() => {
+                              setLiked(!liked)
+                           }}
+                        />
+                     ) : (
+                        <UnlikedIcon
+                           className="ml-1 w-6 h-6 cursor-pointer"
+                           onClick={() => {
+                              setLiked(!liked)
+                           }}
+                        />
+                     )}
+                     <p
+                        className="text-lg cursor-pointer select-none"
+                        onClick={() => {
+                           setLiked(!liked)
+                        }}
+                     >
+                        Like the article
+                     </p>
                   </div>
                </div>
-               <ArticleAcess access_type="paid" date="11/11/2000" value={48} onBuyDocument={() => setPurchase({ ...purchase, checkout: true })} />
             </div>
          </div>
       </React.Fragment>

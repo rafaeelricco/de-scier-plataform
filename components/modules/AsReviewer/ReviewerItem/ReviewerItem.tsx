@@ -26,14 +26,14 @@ const ReviewerItem: React.FC<ReviewerItemProps> = ({
             <div>
                {added_as == 'reviewer' && (
                   <div className="flex items-center gap-2">
-                     <CardText className="text-yellow-400 lg:text-base" />
-                     <p className="text-sm md:text-base font-semibold  text-yellow-400">Added as Reviewer</p>
+                     <CardText className="text-[#EFB521] lg:text-base" />
+                     <p className="text-sm lg:text-sm font-semibold text-[#EFB521]">Added as Reviewer</p>
                   </div>
                )}
                {added_as == 'editor' && (
                   <div className="flex items-center gap-2">
                      <Pencil className="text-terciary-main lg:text-sm" />
-                     <p className="text-sm md:text-base font-semibold text-terciary-main">Added as Editor</p>
+                     <p className="text-sm lg:text-sm font-semibold text-terciary-main">Added as Editor</p>
                   </div>
                )}
             </div>
@@ -45,7 +45,7 @@ const ReviewerItem: React.FC<ReviewerItemProps> = ({
             <hr className="divider-h mt-1 md:hidden" />
             <div className="grid gap-2">
                <div>
-                  <h6 className="text-lg font-semibold text-secundary_blue-main lg:text-sm 2xl:text-lg">{truncate(title, { length: 40 })}</h6>
+                  <h6 className="text-sm font-semibold text-secundary_blue-main lg:text-base cursor-pointer">{truncate(title, { length: 40 })}</h6>
                   {access_type != 'open' && access_type != 'paid' && (
                      <div className="flex items-center gap-2">
                         <p className="text-sm text-neutral-gray lg:text-sm 2xl:text-base">Under review since</p>
@@ -62,14 +62,12 @@ const ReviewerItem: React.FC<ReviewerItemProps> = ({
                      <div className="border-[1px] rounded-md px-2 border-neutral-stroke_light w-full md:w-fit">
                         <div className="grid grid-flow-col items-center md:justify-start justify-center">
                            <div className="grid grid-flow-col gap-1 items-center">
-                              {status == 'approved' && <p className="text-base font-semibold text-status-green lg:text-xs 2xl:text-base">You approved</p>}
-                              {status == 'pending' && (
-                                 <p className="text-base font-semibold text-status-pending lg:text-xs 2xl:text-base">Approval pending</p>
-                              )}
+                              {status == 'approved' && <p className="text-sm lg:text-sm font-semibold  text-status-green">You approved</p>}
+                              {status == 'pending' && <p className="text-sm lg:text-sm font-semibold  text-status-pending">Approval pending</p>}
                               {status == 'final_approved' && (
-                                 <p className="text-base font-semibold text-status-pending lg:text-xs 2xl:text-base">Final approval pending</p>
+                                 <p className="text-sm lg:text-sm font-semibold text-status-pending">Final approval pending</p>
                               )}
-                              {status == 'rejected' && <p className="text-base font-semibold text-status-error lg:text-xs 2xl:text-base">Rejected</p>}
+                              {status == 'rejected' && <p className="text-sm lg:text-sm font-semibold  text-status-error">Rejected</p>}
                            </div>
                         </div>
                      </div>
