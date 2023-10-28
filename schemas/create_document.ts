@@ -21,7 +21,7 @@ export const CreateDocumentSchema = zod.object({
    documentType: zod.string().min(3, 'Document type must be at least 3 characters.'),
    keywords: zod.array(KeyWordSchema).min(1, 'At least one keyword is required.'),
    accessType: zod.enum(['FREE', 'PAID'], { required_error: 'Access type is required.' }),
-   price: zod.string().min(1, 'Price must be at least 0.')
+   price: zod.string()
 })
 
 /**

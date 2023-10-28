@@ -11,14 +11,16 @@ export const submitNewDocumentService = async (data: SubmitDocumentProps) => {
       body: JSON.stringify(data)
    })
 
+   const responseData = await response.json()
+
    if (response.status === 201) {
       return {
          success: true,
+         documentId: responseData.document.id,
          message: 'Document submitted successfully'
       }
    }
 
-   const responseData = await response.json()
    const message = responseData.message ?? 'Error in submit document.'
 
    return {
