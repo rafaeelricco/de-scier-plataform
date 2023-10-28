@@ -3,10 +3,12 @@
 import Box from '@/components/common/Box/Box'
 import { Pills } from '@/components/common/Button/Pill/Pill'
 import Dropzone from '@/components/common/Dropzone/Dropzone'
+import { StoredFile } from '@/components/common/Dropzone/Typing'
 import { access_type_options } from '@/mock/access_type'
 import { document_types } from '@/mock/document_types'
 import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { CreateDocumentProps, CreateDocumentSchema } from '@/schemas/create_document'
+import { submitNewDocumentService } from '@/services/document/submit.service'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
@@ -21,8 +23,6 @@ import { CurrencyInput } from 'react-currency-mask'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { uploadDocumentFileService } from '@/services/file/file.service'
-import { StoredFile } from '@/components/common/Dropzone/Typing'
-import { submitNewDocumentService } from '@/services/document/submit.service'
 
 export default function SubmitNewPaperPage() {
    const [access_type, setAccessType] = useState('open-access')
@@ -386,7 +386,7 @@ export default function SubmitNewPaperPage() {
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
                   <Dropzone
-                     accept={{ 'image/*': ['.jpeg', '.png'] }}
+                     //  accept={{ 'image/*': ['.jpeg', '.png'] }}
                      placeholder="Upload cover picture (.png, .jpg)"
                      setSelectedFile={(file) => setCover(file)}
                   />

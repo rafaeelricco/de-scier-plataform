@@ -3,9 +3,10 @@ import Image from 'next/image'
 import React from 'react'
 import { FileEarmarkText, Upload } from 'react-bootstrap-icons'
 import { useDropzone } from 'react-dropzone'
+import { twMerge } from 'tailwind-merge'
 import { DropzoneProps, StoredFile } from './Typing'
 
-const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, message, thumbnail, accept }: DropzoneProps) => {
+const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, message, thumbnail = true, accept }: DropzoneProps) => {
    const [files, setFiles] = React.useState<Array<StoredFile>>([])
 
    // function to create file preview
@@ -51,12 +52,17 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
    return (
       <>
          <div>
-            <div className="grid border-[1px] border-dashed border-blue-light bg-[#F1FFFF] rounded-lg p-4 transition duration-300 ease-in-out items-center">
-               <div {...getRootProps({ className: 'dropzone' })}>
+            <div
+               className={twMerge(
+                  'grid border-[1px] border-dashed border-blue-light rounded-lg p-4 transition duration-300 ease-in-out items-center bg-[#F1FFFF] py-6',
+                  `${thumbnail && 'h-44 w-full p-0'}`
+               )}
+            >
+               <div {...getRootProps({ className: 'dropzone flex flex-col gap-2' })} className="overflow-hidden relative">
                   <input {...getInputProps()} />
                   {files.length === 0 ? (
                      <React.Fragment>
-                        <div className="justify-items-center gap-4">
+                        <div className="grid justify-items-center gap-4">
                            <div className="grid gap-2">
                               <div>
                                  <p className="text-sm font-semibold text-center">{placeholder || 'Upload paper file (.docx)'}</p>
@@ -71,18 +77,24 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
                      </React.Fragment>
                   ) : (
                      <React.Fragment>
-                        <div className="flex justify-center gap-2">
+                        <div className="flex flex-col items-center justify-center gap-2">
                            {thumbnail && (
-                              <Image width={128} height={128} src={files[0]?.preview} alt="Thumbnail" className=" w-h-32 h-32 object-cover rounded-md" />
+                              <Image
+                                 width={1920}
+                                 height={1080}
+                                 src={files[0]?.preview}
+                                 alt="Thumbnail"
+                                 className="w-full h-44 object-cover rounded-md brightness-50"
+                              />
                            )}
-                           <div className="grid gap-2 items-center content-center">
+                           <div className="grid gap-2 items-center content-center absolute">
                               <div className="grid justify-item-center gap-2 grid-flow-col justify-center items-center">
-                                 <FileEarmarkText className="w-4 h-4 sm:w-5 sm:h-5 sm:mb-[2px]" />
-                                 <p className="text-xs sm:text-sm font-semibold text-center">{files[0]?.name}</p>
+                                 <FileEarmarkText className="w-4 h-4 sm:w-5 sm:h-5 sm:mb-[2px] fill-white" />
+                                 <p className="text-xs sm:text-sm font-semibold text-white text-center">{files[0]?.name}</p>
                               </div>
                               <Button.Button
                                  variant="outline"
-                                 className="py-2 px-6 text-sm w-fit mx-auto my-0"
+                                 className="py-2 px-6 text-sm w-fit mx-auto my-0 border-white text-white hover:bg-transparent"
                                  onClick={() => {
                                     setFiles([])
                                     setSelectedFile?.(null)
@@ -90,7 +102,7 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
                                     setValue?.('file.name', '')
                                  }}
                               >
-                                 Swap uploaded file
+                                 Change uploaded file
                                  <Upload className="w-5 h-5" />
                               </Button.Button>
                            </div>
