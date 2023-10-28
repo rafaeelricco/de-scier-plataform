@@ -4,6 +4,7 @@ import { Pills } from '@/components/common/Button/Pill/Pill'
 import Dropzone from '@/components/common/Dropzone/Dropzone'
 import { document_types } from '@/mock/document_types'
 import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
+import { CreateDocumentProps } from '@/schemas/createDocument'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
@@ -13,6 +14,7 @@ import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React, { useState } from 'react'
 import { Clipboard, PlusCircle, PlusCircleDotted } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
+import { useForm, SubmitHandler } from 'react-hook-form'
 
 export default function NewDocumentPage() {
    const [typeOfAccess, setTypeOfAccess] = useState('open-access')
@@ -25,6 +27,18 @@ export default function NewDocumentPage() {
       author: false,
       share_split: false,
       edit_author: false
+   })
+
+   const { register, handleSubmit } = useForm<CreateDocumentProps>({
+      defaultValues: {
+         abstract: '',
+         abstractChart: '',
+         accessType: 'FREE',
+         documentType: '',
+         field: '',
+         price: 0,
+         title: ''
+      }
    })
 
    const onReorder = (newOrder: typeof items) => {
@@ -153,7 +167,7 @@ export default function NewDocumentPage() {
                            <span className="text-sm font-semibold">Title</span>
                            <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
                         </Input.Label>
-                        <Input.Input placeholder="Title of the article" />
+                        <Input.Input placeholder="Title of the article" {...register('title')} />
                      </Input.Root>
                      <Input.Root>
                         <Input.Label>Add keywords (Max 5)</Input.Label>
