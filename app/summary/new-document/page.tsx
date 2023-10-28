@@ -4,6 +4,7 @@ import Box from '@/components/common/Box/Box'
 import { Pills } from '@/components/common/Button/Pill/Pill'
 import Dropzone from '@/components/common/Dropzone/Dropzone'
 import { StoredFile } from '@/components/common/Dropzone/Typing'
+import { NewAuthor } from '@/components/modules/Summary/NewArticle/Authors/NewAuthor'
 import { access_type_options } from '@/mock/access_type'
 import { document_types } from '@/mock/document_types'
 import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
@@ -26,7 +27,7 @@ import { toast } from 'react-toastify'
 
 export default function SubmitNewPaperPage() {
    const [access_type, setAccessType] = useState('open-access')
-   const [items, setItems] = React.useState(authors_mock.map((author, index) => ({ ...author, id: index + 1 })))
+   const [items, setItems] = React.useState<Author[]>(authors_mock.map((author, index) => ({ ...author, id: index + 1 })))
    const [share, setShare] = useState('')
    const [authors, setAuthors] = useState<Author[]>(authors_mock)
    const [authorship, setAuthorship] = useState<Authorship[]>([])
@@ -35,7 +36,6 @@ export default function SubmitNewPaperPage() {
    const [keywords_temp, setKeywordsTemp] = useState<string | undefined>()
    const [documentFile, setDocumentFile] = useState<StoredFile | null>()
    const [cover, setCover] = useState<StoredFile | null>()
-   console.log(keywords_temp)
 
    const {
       register,
@@ -95,8 +95,6 @@ export default function SubmitNewPaperPage() {
          keywords: data.keywords.map((item) => item.name)
       }
 
-      console.log(requestData)
-
       const authors = [
          {
             name: 'Pedro author',
@@ -106,6 +104,7 @@ export default function SubmitNewPaperPage() {
             walletAddress: '0x32323232323232332332'
          }
       ]
+
       const response = await submitNewDocumentService({
          ...requestData,
          authors
@@ -150,36 +149,20 @@ export default function SubmitNewPaperPage() {
          setKeywordsTemp('')
       }
    }
-
    return (
       <React.Fragment>
          <Dialog.Root open={dialog.author || dialog.share_split || dialog.edit_author}>
             <Dialog.Overlay />
             <Dialog.Content className="px-16 py-14">
                {dialog.author && (
-                  <React.Fragment>
-                     <Dialog.Title title="New author" onClose={() => setDialog({ ...dialog, author: false })} />
-                     <div className="grid gap-6">
-                        <div className="flex items-center gap-6">
-                           <Input.Root>
-                              <Input.Label>Name</Input.Label>
-                              <Input.Input placeholder="Full name of the author" />
-                           </Input.Root>
-                           <Input.Root>
-                              <Input.Label>Title</Input.Label>
-                              <Input.Input placeholder="Ex: Biologist" {...register('title')} />
-                              <Input.Error>{errors.title?.message}</Input.Error>
-                           </Input.Root>
-                        </div>
-                        <div className="grid grid-cols-2 items-center gap-6">
-                           <Input.Root>
-                              <Input.Label>E-mail</Input.Label>
-                              <Input.Input placeholder="Ex: email@example.com" />
-                           </Input.Root>
-                        </div>
-                        <Button.Button variant="primary">Add Author</Button.Button>
-                     </div>
-                  </React.Fragment>
+                  <NewAuthor
+                     onAddAuthor={(value) => {
+                        console.log(value)
+                     }}
+                     onClose={() => {
+                        setDialog({ ...dialog, author: false })
+                     }}
+                  />
                )}
                {dialog.share_split && (
                   <React.Fragment>
@@ -398,8 +381,13 @@ export default function SubmitNewPaperPage() {
                      <h3 className="text-lg md:text-xl text-terciary-main font-semibold">Authors</h3>
                   </div>
                   <div className="grid gap-6">
-                     <Button.Button variant="outline" className="px-4 py-3 w-full text-sm">
-                        Add Authors for this paper
+                     <Button.Button
+                        type="button"
+                        variant="outline"
+                        className="px-4 py-3 w-full text-sm"
+                        onClick={() => setDialog({ ...dialog, author: true })}
+                     >
+                        Add authors for this paper
                         <PlusCircle className="w-4 fill-primary-main" />
                      </Button.Button>
                      <p className="text-sm">Drag the authors to reorder the list.</p>
@@ -415,8 +403,8 @@ export default function SubmitNewPaperPage() {
                            <div className="grid gap-2">
                               {items.map((item, index) => (
                                  <Reorder.Item key={item.id} value={item}>
-                                    <div className="grid md:grid-cols-3 gap-4 items-center px-0 py-3 rounded-md cursor-grab">
-                                       <div className="flex items-start gap-4">
+                                    <div className="grid md:grid-cols-3 items-center px-0 py-3 rounded-md cursor-grab">
+                                       <div className="flex items-center gap-4">
                                           <div className="flex gap-0 items-center">
                                              <CircleIcon className="w-8 cursor-grab" />
                                              <p className="text-sm text-blue-gray">{index + 1}º</p>
