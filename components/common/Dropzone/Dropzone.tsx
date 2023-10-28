@@ -5,7 +5,7 @@ import { FileEarmarkText, Upload } from 'react-bootstrap-icons'
 import { useDropzone } from 'react-dropzone'
 import { DropzoneProps, StoredFile } from './Typing'
 
-const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, message, thumbnail }: DropzoneProps) => {
+const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, message, thumbnail, accept }: DropzoneProps) => {
    const [files, setFiles] = React.useState<Array<StoredFile>>([])
 
    // function to create file preview

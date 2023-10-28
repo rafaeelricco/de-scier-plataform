@@ -6,7 +6,6 @@ import Dropzone from '@/components/common/Dropzone/Dropzone'
 import { access_type_options } from '@/mock/access_type'
 import { document_types } from '@/mock/document_types'
 import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
-import { submitNewDocumentService } from '@/services/document/submit.service'
 import { CreateDocumentProps, CreateDocumentSchema } from '@/schemas/create_document'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
@@ -23,6 +22,7 @@ import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { uploadDocumentService } from '@/services/file/file.service'
 import { StoredFile } from '@/components/common/Dropzone/Typing'
+import { submitNewDocumentService } from '@/services/document/submit.service'
 
 export default function SubmitNewPaperPage() {
    const [access_type, setAccessType] = useState('open-access')
@@ -34,6 +34,7 @@ export default function SubmitNewPaperPage() {
    const [dialog, setDialog] = useState({ author: false, share_split: false, edit_author: false })
    const [keywords_temp, setKeywordsTemp] = useState<string | undefined>()
    const [documentFile, setDocumentFile] = useState<StoredFile | null>()
+   const [cover, setCover] = useState<StoredFile | null>()
    console.log(keywords_temp)
 
    const {
@@ -79,7 +80,7 @@ export default function SubmitNewPaperPage() {
    }
 
    const handleSubmitDocument: SubmitHandler<CreateDocumentProps> = async (data) => {
-      if (!documentFile) {
+      if (!documentFile || !cover) {
          toast.error('You need upload a document file.')
          return
       }
@@ -113,14 +114,28 @@ export default function SubmitNewPaperPage() {
          return
       }
       console.log('documentFile', documentFile)
-      const isSuccess = await uploadDocumentService({
+
+      // Upload document file
+      const uploadDocumentSuccess = await uploadDocumentService({
          documentId: response.documentId,
          fileLocalUrl: documentFile.preview,
          filename: documentFile.name,
          mimetype: documentFile.type
       })
 
-      if (!isSuccess) {
+      if (!uploadDocumentSuccess) {
+         toast.warning('There was an error uploading your file. But you can upload later.')
+      }
+
+      // Upload cover image
+      const uploadCoverSuccess = await uploadDocumentService({
+         documentId: response.documentId,
+         fileLocalUrl: cover.preview,
+         filename: cover.name,
+         mimetype: cover.type
+      })
+
+      if (!uploadCoverSuccess) {
          toast.warning('There was an error uploading your file. But you can upload later.')
       }
 
@@ -231,7 +246,6 @@ export default function SubmitNewPaperPage() {
                            <Input.Root>
                               <Input.Label>Title</Input.Label>
                               <Input.Input placeholder="Ex: Biologist" />
-                              {errors.field?.message}
                            </Input.Root>
                         </div>
                         <div className="grid grid-cols-2 items-center gap-6">
@@ -249,7 +263,7 @@ export default function SubmitNewPaperPage() {
          <Title.Root>
             <Title.Title>Submit new document</Title.Title>
          </Title.Root>
-         <form className="grid gap-6 pb-14" onSubmit={handleSubmit(handleSubmitDocument)}>
+         <form onSubmit={handleSubmit(handleSubmitDocument)} className="grid gap-6 pb-14">
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
                <h3 className="text-lg md:text-xl font-semibold">Upload new document</h3>
                <div className="grid gap-x-6 gap-y-4">
@@ -287,6 +301,7 @@ export default function SubmitNewPaperPage() {
                               </React.Fragment>
                            }
                         />
+                        <Input.Error>{errors.keywords?.message}</Input.Error>
                         <div className="flex flex-wrap gap-1">
                            {keywords.map((keyword, index) => (
                               <div
@@ -317,16 +332,35 @@ export default function SubmitNewPaperPage() {
                <div>
                   <div className="hidden lg:grid lg:gap-2">
                      <h3 className="text-sm font-semibold">Document type</h3>
-                     <Pills items={document_types} onSelect={(value) => setValue('documentType', value.label)} />
+                     <Pills
+                        onSelect={(value) => {
+                           setValue('documentType', value.value), trigger('documentType')
+                        }}
+                        items={document_types}
+                     />
+                     <Input.Error>{errors.documentType?.message}</Input.Error>
+                  </div>
+                  <div className="block md:hidden">
+                     <Input.Root>
+                        <Input.Select label={'Document type'} options={document_types} placeholder="Title of the field" />
+                        <Input.Error>{errors.documentType?.message}</Input.Error>
+                     </Input.Root>
                   </div>
                </div>
-               <Dropzone setSelectedFile={(file) => setDocumentFile(file)} />
+               <Dropzone
+                  accept={{
+                     'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+                     'application/pdf': ['.pdf']
+                  }}
+                  setSelectedFile={(file) => setDocumentFile(file)}
+               />
                <Input.Root>
                   <Input.Label className="flex gap-2 items-center">
                      <span className="text-sm font-semibold">Abstract</span>
                      <span className="text-sm text-neutral-light_gray font-semibold">0/2000 words</span>
                   </Input.Label>
-                  <Input.TextArea rows={4} placeholder="Title of the field" {...register('abstract')} />
+                  <Input.TextArea {...register('abstract')} rows={4} placeholder="Title of the field" />
+                  <Input.Error>{errors.abstract?.message}</Input.Error>
                </Input.Root>
                <div className="flex flex-col md:flex-row md:items-center gap-4">
                   <Button.Button variant="outline" className="px-4 py-3 md:w-fit text-sm">
@@ -351,7 +385,11 @@ export default function SubmitNewPaperPage() {
                </div>
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
-                  <Dropzone placeholder="Upload cover picture (.png, .jpg)" setSelectedFile={(file) => console.log(file)} />
+                  <Dropzone
+                     accept={{ 'image/*': ['.jpeg', '.png'] }}
+                     placeholder="Upload cover picture (.png, .jpg)"
+                     setSelectedFile={(file) => setCover(file)}
+                  />
                </div>
             </Box>
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
@@ -359,17 +397,7 @@ export default function SubmitNewPaperPage() {
                   <h3 className="text-lg md:text-xl text-terciary-main font-semibold">Authors</h3>
                </div>
                <div className="grid gap-6">
-                  <Button.Button
-                     variant="outline"
-                     className="px-4 py-3 w-full text-sm"
-                     onClick={() =>
-                        setDialog({
-                           author: true,
-                           edit_author: false,
-                           share_split: false
-                        })
-                     }
-                  >
+                  <Button.Button variant="outline" className="px-4 py-3 w-full text-sm">
                      Select Authors for the paper
                      <PlusCircle
                         className="w-4 fill-primary-main 
@@ -387,13 +415,13 @@ export default function SubmitNewPaperPage() {
                      </div>
                      <Reorder.Group axis="y" values={items} onReorder={onReorder}>
                         <div className="grid gap-2">
-                           {items.map((item) => (
+                           {items.map((item, index) => (
                               <Reorder.Item key={item.id} value={item}>
                                  <div className="grid md:grid-cols-3 gap-4 items-center px-0 py-3 rounded-md cursor-grab">
                                     <div className="flex items-start gap-4">
                                        <div className="flex gap-0 items-center">
                                           <CircleIcon className="w-8 cursor-grab" />
-                                          <p className="text-sm text-blue-gray">{item.id}º</p>
+                                          <p className="text-sm text-blue-gray">{index + 1}º</p>
                                        </div>
                                        <div>
                                           <p className="text-sm text-secundary_blue-main font-semibold md:font-regular">{item.name}</p>
@@ -464,7 +492,7 @@ export default function SubmitNewPaperPage() {
                            <Input.Label>Price</Input.Label>
                            <CurrencyInput
                               currency="USD"
-                              onChangeValue={(event, originalValue, maskedValue) => setValue('price', originalValue.toString())}
+                              onChangeValue={(event, originalValue, maskedValue) => console.log(maskedValue)}
                               InputElement={<Input.Input placeholder="USD" />}
                            />
                         </Input.Root>

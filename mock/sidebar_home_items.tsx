@@ -1,29 +1,29 @@
 import { home_routes } from '@/routes/home'
-import sha256 from 'sha256'
+import { uniqueId } from 'lodash'
 
 export const links = [
    {
-      id: sha256('1'),
+      id: uniqueId(),
       label: 'Home',
       link: home_routes.home.index
    },
    {
-      id: sha256('2'),
+      id: uniqueId(),
       label: 'Search',
       link: home_routes.home.search
    },
    {
-      id: sha256('3'),
+      id: uniqueId(),
       label: 'About us',
       link: 'https://descier.science/'
    },
    {
-      id: sha256('4'),
+      id: uniqueId(),
       label: 'Dashboard',
       link: home_routes.summary
    },
    {
-      id: sha256('5'),
+      id: uniqueId(),
       label: 'My IP',
       link: '/my-ip'
    }

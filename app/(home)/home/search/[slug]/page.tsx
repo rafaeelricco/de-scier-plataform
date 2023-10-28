@@ -8,6 +8,7 @@ import { PurchasedArticles } from '@/components/modules/Home/Search/Purchase/Pur
 import { PurchaseSuccess } from '@/components/modules/Home/Search/Purchase/Success'
 import { authors_mock } from '@/mock/submit_new_document'
 import * as Dialog from '@components/common/Dialog/Digalog'
+import { uniqueId } from 'lodash'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import LikedIcon from 'public/svgs/common/likes/Icons/liked.svg'
@@ -19,7 +20,6 @@ import TwitterIcon from 'public/svgs/modules/home/article-details/twitter.svg'
 import WhatsAppIcon from 'public/svgs/modules/home/article-details/whatsapp.svg'
 import React from 'react'
 import { ArrowLeft, Eye, HandThumbsUpFill } from 'react-bootstrap-icons'
-import sha256 from 'sha256'
 import { twMerge } from 'tailwind-merge'
 
 export default function Page({ params }: { params: { slug: string } }) {
@@ -45,7 +45,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                      article={{
                         image: 'https://source.unsplash.com/random/900×700/?technology',
                         date: '11/11/2000',
-                        id: sha256('11/11/2000'),
+                        id: uniqueId('11/11/2000'),
                         price: 48,
                         title: 'Hardware security and blockchain systems on the new digital era'
                      }}
