@@ -16,7 +16,7 @@ import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React, { useState } from 'react'
 import { Clipboard, PlusCircle, PlusCircleDotted } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
 export default function SubmitNewPaperPage() {
    const [typeOfAccess, setTypeOfAccess] = useState('open-access')
@@ -25,13 +25,8 @@ export default function SubmitNewPaperPage() {
    const [authors, setAuthors] = useState<Author[]>(authors_mock)
    const [authorship, setAuthorship] = useState<Authorship[]>([])
    const [authorship_settings, setAuthorshipSettings] = useState<Author>()
-   const [dialog, setDialog] = useState({
-      author: false,
-      share_split: false,
-      edit_author: false
-   })
+   const [dialog, setDialog] = useState({ author: false, share_split: false, edit_author: false })
 
-   /** @dev Initializes the form state. */
    const {
       register,
       handleSubmit,
@@ -48,8 +43,15 @@ export default function SubmitNewPaperPage() {
       defaultValues: { abstract: '', abstractChart: '', accessType: 'FREE', documentType: '', field: '', price: 0, title: '' }
    })
 
+   console.log('errors', errors)
+   console.log('watch', watch())
+
    const onReorder = (newOrder: typeof items) => {
       setItems((prevItems) => [...newOrder])
+   }
+
+   const onSubmit: SubmitHandler<CreateDocumentProps> = (data) => {
+      console.log(data)
    }
 
    return (
@@ -68,7 +70,8 @@ export default function SubmitNewPaperPage() {
                            </Input.Root>
                            <Input.Root>
                               <Input.Label>Title</Input.Label>
-                              <Input.Input placeholder="Ex: Biologist" />
+                              <Input.Input placeholder="Ex: Biologist" {...register('title')} />
+                              <Input.Error>{errors.title?.message}</Input.Error>
                            </Input.Root>
                         </div>
                         <div className="grid grid-cols-2 items-center gap-6">
@@ -164,17 +167,18 @@ export default function SubmitNewPaperPage() {
          <Title.Root>
             <Title.Title>Submit new document</Title.Title>
          </Title.Root>
-         <form className="grid gap-6 pb-14">
+         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6 pb-14">
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
                <h3 className="text-lg md:text-xl font-semibold">Upload new document</h3>
                <div className="grid gap-x-6 gap-y-4">
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid md:grid-cols-2 items-start gap-6">
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
                            <span className="text-sm font-semibold">Title</span>
                            <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
                         </Input.Label>
                         <Input.Input placeholder="Title of the article" {...register('title')} />
+                        <Input.Error>{errors.title?.message}</Input.Error>
                      </Input.Root>
                      <Input.Root>
                         <Input.Label>Add keywords (Max 5)</Input.Label>
@@ -195,23 +199,37 @@ export default function SubmitNewPaperPage() {
                         />
                      </Input.Root>
                   </div>
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid md:grid-cols-2 items-start gap-6">
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
                            <span className="text-sm font-semibold">Field</span>
                            <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
                         </Input.Label>
-                        <Input.Input placeholder="Title of the field" />
+                        <Input.Input placeholder="Title of the field" {...register('field')} />
+                        <Input.Error>{errors.field?.message}</Input.Error>
                      </Input.Root>
                   </div>
                </div>
                <div className="grid gap-2">
                   <div className="hidden md:block">
                      <h3 className="text-sm font-semibold">Document type</h3>
-                     <Pills items={document_types} />
+                     <Pills
+                        onSelect={(value) => {
+                           setValue('documentType', value.value), trigger('documentType')
+                        }}
+                        items={document_types}
+                     />
                   </div>
                   <Input.Root>
-                     <Input.Select label={'Document type'} options={document_types} placeholder="Title of the field" />
+                     <Input.Select
+                        label={'Document type'}
+                        options={document_types}
+                        onValueChange={(value) => {
+                           setValue('documentType', value), trigger('documentType')
+                        }}
+                        placeholder="Title of the field"
+                     />
+                     <Input.Error>{errors.documentType?.message}</Input.Error>
                   </Input.Root>
                </div>
                <Dropzone setSelectedFile={(file) => console.log(file)} />
@@ -416,7 +434,7 @@ export default function SubmitNewPaperPage() {
                   </React.Fragment>
                )}
             </Box>
-            <Button.Button variant="primary">
+            <Button.Button type="submit" variant="primary">
                Submit paper for review
                <Clipboard className="w-5" />
             </Button.Button>
