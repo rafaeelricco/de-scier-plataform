@@ -95,6 +95,8 @@ export default function SubmitNewPaperPage() {
          keywords: data.keywords.map((item) => item.name)
       }
 
+      console.log(requestData)
+
       const authors = [
          {
             name: 'Pedro author',
@@ -113,7 +115,6 @@ export default function SubmitNewPaperPage() {
          toast.error(response.message)
          return
       }
-      console.log('documentFile', documentFile)
 
       // Upload document file
       const uploadDocumentSuccess = await uploadDocumentFileService({

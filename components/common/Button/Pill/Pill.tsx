@@ -14,6 +14,7 @@ export const Pills: React.FC<PillsProps> = ({ items, onSelect }: PillsProps) => 
          {items.map((item, index) => (
             <React.Fragment key={item.id}>
                <button
+                  type="button"
                   data-active={active === index}
                   className={twMerge(
                      'text-sm text-neutral-gray px-4 py-2 border border-neutral-gray hover:text-status-green hover:border-status-green transition-all duration-200 ease-out',
