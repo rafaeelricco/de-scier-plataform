@@ -28,7 +28,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
    const [share, setShare] = React.useState('')
    const [authors, setAuthors] = React.useState<Author[]>(authors_mock)
    const [authorship, setAuthorship] = React.useState<Authorship[]>([])
-   const [typeOfAccess, setTypeOfAccess] = React.useState('open-access')
+   const [access_type, setAccessType] = React.useState('open-access')
    const [authorship_settings, setAuthorshipSettings] = React.useState<Author>()
    const [popover, setPopover] = React.useState({ copy_link: false })
    const [dialog, setDialog] = React.useState({ author: false, share_split: false, edit_author: false, reasoning: false })
@@ -348,8 +348,8 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                      <Input.Select
                         label={'Type of access'}
                         placeholder="Select the type of access"
-                        onValueChange={(value) => setTypeOfAccess(value)}
-                        value={typeOfAccess}
+                        onValueChange={(value) => setAccessType(value)}
+                        value={access_type}
                         options={[
                            {
                               label: 'Open Access',
@@ -362,13 +362,13 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                         ]}
                      />
                   </Input.Root>
-                  {typeOfAccess == 'open-access' && (
+                  {access_type == 'open-access' && (
                      <Input.Root>
                         <Input.Label className="text-neutral-gray text-sm font-semibold pl-2">Valor total</Input.Label>
                         <Input.Input disabled placeholder="R$" />
                      </Input.Root>
                   )}
-                  {typeOfAccess == 'paid-access' && (
+                  {access_type == 'paid-access' && (
                      <React.Fragment>
                         <Input.Root>
                            <Input.Label>Price</Input.Label>
@@ -381,7 +381,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                      </React.Fragment>
                   )}
                </div>
-               {typeOfAccess == 'paid-access' && (
+               {access_type == 'paid-access' && (
                   <React.Fragment>
                      <div className="grid gap-2">
                         <p className="text-sm font-semibold">Authorship settings</p>
