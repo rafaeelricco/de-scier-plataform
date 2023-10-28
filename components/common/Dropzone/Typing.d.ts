@@ -9,6 +9,7 @@ interface DropzoneProps {
    placeholder?: string
    message?: string
    thumbnail?: boolean
+   accept?: MimeTypes
 }
 
 interface FileWithPreview {

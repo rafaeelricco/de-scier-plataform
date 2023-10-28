@@ -1,3 +1,5 @@
+'use client'
+
 import * as Button from '@components/common/Button/Button'
 import Image from 'next/image'
 import React from 'react'
@@ -5,7 +7,13 @@ import { FileEarmarkText, Upload } from 'react-bootstrap-icons'
 import { useDropzone } from 'react-dropzone'
 import { DropzoneProps, StoredFile } from './Typing'
 
-const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, message, thumbnail }: DropzoneProps) => {
+export enum MimeTypes {
+   Images = 'image/*',
+   Docx = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+   PDF = 'application/pdf'
+}
+
+const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, message, thumbnail, accept }: DropzoneProps) => {
    const [files, setFiles] = React.useState<Array<StoredFile>>([])
 
    // function to create file preview
@@ -45,7 +53,8 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
    // see more about useDropzone here: https://react-dropzone.js.org/
    const { getRootProps, getInputProps, isDragAccept, isDragActive, isDragReject, isFocused } = useDropzone({
       onDrop,
-      multiple: false
+      multiple: false,
+      accept: accept
    })
 
    return (

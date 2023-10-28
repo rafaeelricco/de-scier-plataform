@@ -2,7 +2,7 @@
 
 import Box from '@/components/common/Box/Box'
 import { Pills } from '@/components/common/Button/Pill/Pill'
-import Dropzone from '@/components/common/Dropzone/Dropzone'
+import Dropzone, { MimeTypes } from '@/components/common/Dropzone/Dropzone'
 import { access_type_options } from '@/mock/access_type'
 import { document_types } from '@/mock/document_types'
 import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
@@ -278,7 +278,7 @@ export default function SubmitNewPaperPage() {
                      </Input.Root>
                   </div>
                </div>
-               <Dropzone setSelectedFile={(file) => console.log(file)} />
+               <Dropzone accept={MimeTypes.Docx} setSelectedFile={(file) => console.log(file)} />
                <Input.Root>
                   <Input.Label className="flex gap-2 items-center">
                      <span className="text-sm font-semibold">Abstract</span>
@@ -309,7 +309,7 @@ export default function SubmitNewPaperPage() {
                </div>
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
-                  <Dropzone placeholder="Upload cover picture (.png, .jpg)" setSelectedFile={(file) => console.log(file)} />
+                  <Dropzone accept={MimeTypes.Images} placeholder="Upload cover picture (.png, .jpg)" setSelectedFile={(file) => console.log(file)} />
                </div>
             </Box>
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
