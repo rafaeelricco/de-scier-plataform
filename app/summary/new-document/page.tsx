@@ -9,6 +9,7 @@ import { document_types } from '@/mock/document_types'
 import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { CreateDocumentProps, CreateDocumentSchema } from '@/schemas/create_document'
 import { submitNewDocumentService } from '@/services/document/submit.service'
+import { uploadDocumentFileService } from '@/services/file/file.service'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
@@ -22,7 +23,6 @@ import { Clipboard, PlusCircle, PlusCircleDotted, X } from 'react-bootstrap-icon
 import { CurrencyInput } from 'react-currency-mask'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { uploadDocumentFileService } from '@/services/file/file.service'
 
 export default function SubmitNewPaperPage() {
    const [access_type, setAccessType] = useState('open-access')
@@ -265,7 +265,6 @@ export default function SubmitNewPaperPage() {
          </Title.Root>
          <form onSubmit={handleSubmit(handleSubmitDocument)} className="grid gap-6 pb-14">
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
-               <h3 className="text-lg md:text-xl font-semibold">Upload new document</h3>
                <div className="grid gap-x-6 gap-y-4">
                   <div className="grid md:grid-cols-2 items-start gap-6">
                      <Input.Root>
@@ -393,57 +392,56 @@ export default function SubmitNewPaperPage() {
                </div>
             </Box>
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
-               <div className="grid ">
-                  <h3 className="text-lg md:text-xl text-terciary-main font-semibold">Authors</h3>
-               </div>
-               <div className="grid gap-6">
-                  <Button.Button variant="outline" className="px-4 py-3 w-full text-sm">
-                     Select Authors for the paper
-                     <PlusCircle
-                        className="w-4 fill-primary-main 
-                     "
-                     />
-                  </Button.Button>
-                  <p className="text-sm">Drag the authors to reorder the list.</p>
-                  <div className="grid gap-2">
-                     <div className="hidden md:grid grid-cols-3">
-                        {authors_headers.map((header, index) => (
-                           <React.Fragment key={index}>
-                              <p className="text-sm font-semibold">{header.label}</p>
-                           </React.Fragment>
-                        ))}
-                     </div>
-                     <Reorder.Group axis="y" values={items} onReorder={onReorder}>
-                        <div className="grid gap-2">
-                           {items.map((item, index) => (
-                              <Reorder.Item key={item.id} value={item}>
-                                 <div className="grid md:grid-cols-3 gap-4 items-center px-0 py-3 rounded-md cursor-grab">
-                                    <div className="flex items-start gap-4">
-                                       <div className="flex gap-0 items-center">
-                                          <CircleIcon className="w-8 cursor-grab" />
-                                          <p className="text-sm text-blue-gray">{index + 1}º</p>
-                                       </div>
-                                       <div>
-                                          <p className="text-sm text-secundary_blue-main font-semibold md:font-regular">{item.name}</p>
-                                          <div className="block md:hidden">
-                                             <p className="text-sm text-secundary_blue-main">{item.title}</p>
-                                          </div>
-                                          <div className="block md:hidden">
-                                             <p className="text-sm text-secundary_blue-main">{item.email}</p>
-                                          </div>
-                                       </div>
-                                    </div>
-                                    <div className="hidden md:block">
-                                       <p className="text-sm text-secundary_blue-main">{item.title}</p>
-                                    </div>
-                                    <div className="hidden md:block">
-                                       <p className="text-sm text-secundary_blue-main">{item.email}</p>
-                                    </div>
-                                 </div>
-                              </Reorder.Item>
+               <div className="grid gap-2">
+                  <div className="grid">
+                     <h3 className="text-lg md:text-xl text-terciary-main font-semibold">Authors</h3>
+                  </div>
+                  <div className="grid gap-6">
+                     <Button.Button variant="outline" className="px-4 py-3 w-full text-sm">
+                        Add Authors for this paper
+                        <PlusCircle className="w-4 fill-primary-main" />
+                     </Button.Button>
+                     <p className="text-sm">Drag the authors to reorder the list.</p>
+                     <div className="grid gap-2">
+                        <div className="hidden md:grid grid-cols-3">
+                           {authors_headers.map((header, index) => (
+                              <React.Fragment key={index}>
+                                 <p className="text-sm font-semibold">{header.label}</p>
+                              </React.Fragment>
                            ))}
                         </div>
-                     </Reorder.Group>
+                        <Reorder.Group axis="y" values={items} onReorder={onReorder}>
+                           <div className="grid gap-2">
+                              {items.map((item, index) => (
+                                 <Reorder.Item key={item.id} value={item}>
+                                    <div className="grid md:grid-cols-3 gap-4 items-center px-0 py-3 rounded-md cursor-grab">
+                                       <div className="flex items-start gap-4">
+                                          <div className="flex gap-0 items-center">
+                                             <CircleIcon className="w-8 cursor-grab" />
+                                             <p className="text-sm text-blue-gray">{index + 1}º</p>
+                                          </div>
+                                          <div>
+                                             <p className="text-sm text-secundary_blue-main font-semibold md:font-regular">{item.name}</p>
+                                             <div className="block md:hidden">
+                                                <p className="text-sm text-secundary_blue-main">{item.title}</p>
+                                             </div>
+                                             <div className="block md:hidden">
+                                                <p className="text-sm text-secundary_blue-main">{item.email}</p>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div className="hidden md:block">
+                                          <p className="text-sm text-secundary_blue-main">{item.title}</p>
+                                       </div>
+                                       <div className="hidden md:block">
+                                          <p className="text-sm text-secundary_blue-main">{item.email}</p>
+                                       </div>
+                                    </div>
+                                 </Reorder.Item>
+                              ))}
+                           </div>
+                        </Reorder.Group>
+                     </div>
                   </div>
                </div>
             </Box>
