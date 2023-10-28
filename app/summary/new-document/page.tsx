@@ -345,13 +345,13 @@ export default function SubmitNewPaperPage() {
                      </div>
                      <Reorder.Group axis="y" values={items} onReorder={onReorder}>
                         <div className="grid gap-2">
-                           {items.map((item) => (
+                           {items.map((item, index) => (
                               <Reorder.Item key={item.id} value={item}>
                                  <div className="grid md:grid-cols-3 gap-4 items-center px-0 py-3 rounded-md cursor-grab">
                                     <div className="flex items-start gap-4">
                                        <div className="flex gap-0 items-center">
                                           <CircleIcon className="w-8 cursor-grab" />
-                                          <p className="text-sm text-blue-gray">{item.id}º</p>
+                                          <p className="text-sm text-blue-gray">{index + 1}º</p>
                                        </div>
                                        <div>
                                           <p className="text-sm text-secundary_blue-main font-semibold md:font-regular">{item.name}</p>
