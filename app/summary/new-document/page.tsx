@@ -282,10 +282,10 @@ export default function SubmitNewPaperPage() {
                   </div>
                </div>
                <Dropzone
-                  accept={{
-                     'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
-                     'application/pdf': ['.pdf']
-                  }}
+                  //   accept={{
+                  //      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+                  //      'application/pdf': ['.pdf']
+                  //   }}
                   setSelectedFile={(file) => console.log(file)}
                />
                <Input.Root>
@@ -320,7 +320,7 @@ export default function SubmitNewPaperPage() {
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
                   <Dropzone
-                     accept={{ 'image/*': ['.jpeg', '.png'] }}
+                     //  accept={{ 'image/*': ['.jpeg', '.png'] }}
                      placeholder="Upload cover picture (.png, .jpg)"
                      setSelectedFile={(file) => console.log(file)}
                   />
