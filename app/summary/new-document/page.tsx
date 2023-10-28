@@ -5,7 +5,7 @@ import { Pills } from '@/components/common/Button/Pill/Pill'
 import Dropzone from '@/components/common/Dropzone/Dropzone'
 import { document_types } from '@/mock/document_types'
 import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
-import { CreateDocumentProps } from '@/schemas/createDocument'
+import { CreateDocumentProps } from '@/schemas/create_document'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
@@ -15,7 +15,7 @@ import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React, { useState } from 'react'
 import { Clipboard, PlusCircle, PlusCircleDotted } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 
 export default function SubmitNewPaperPage() {
    const [typeOfAccess, setTypeOfAccess] = useState('open-access')
@@ -158,7 +158,7 @@ export default function SubmitNewPaperPage() {
          <Title.Root>
             <Title.Title>Submit new document</Title.Title>
          </Title.Root>
-         <div className="grid gap-6 pb-14">
+         <form className="grid gap-6 pb-14">
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
                <h3 className="text-lg md:text-xl font-semibold">Upload new document</h3>
                <div className="grid gap-x-6 gap-y-4">
@@ -414,7 +414,7 @@ export default function SubmitNewPaperPage() {
                Submit paper for review
                <Clipboard className="w-5" />
             </Button.Button>
-         </div>
+         </form>
       </React.Fragment>
    )
 }
