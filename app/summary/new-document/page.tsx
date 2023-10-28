@@ -6,6 +6,7 @@ import Dropzone from '@/components/common/Dropzone/Dropzone'
 import { document_types } from '@/mock/document_types'
 import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { CreateDocumentProps } from '@/schemas/createDocument'
+import { submitNewDocumentService } from '@/services/document/submit.service'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
@@ -16,6 +17,7 @@ import React, { useState } from 'react'
 import { Clipboard, PlusCircle, PlusCircleDotted } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import { toast } from 'react-toastify'
 
 export default function SubmitNewPaperPage() {
    const [typeOfAccess, setTypeOfAccess] = useState('open-access')
@@ -44,6 +46,40 @@ export default function SubmitNewPaperPage() {
 
    const onReorder = (newOrder: typeof items) => {
       setItems((prevItems) => [...newOrder])
+   }
+
+   const handleSubmitDocument: SubmitHandler<CreateDocumentProps> = async (data) => {
+      const mockData: CreateDocumentProps = {
+         abstract: 'exemplo',
+         accessType: 'FREE',
+         documentType: 'paper',
+         field: 'TI',
+         price: 0,
+         title: 'Um documento de exemplo',
+         abstractChart: 'dsdsdsdsdsdds'
+      }
+
+      const authors = [
+         {
+            name: 'Pedro author',
+            email: 'pedro@email.com',
+            title: 'developer',
+            revenuePercent: 0,
+            walletAddress: '0x32323232323232332332'
+         }
+      ]
+      const response = await submitNewDocumentService({
+         ...mockData,
+         authors,
+         keywords: ['teste']
+      })
+
+      if (!response.success) {
+         toast.error(response.message)
+         return
+      }
+
+      toast.success(response.message)
    }
 
    return (
@@ -158,7 +194,7 @@ export default function SubmitNewPaperPage() {
          <Title.Root>
             <Title.Title>Submit new document</Title.Title>
          </Title.Root>
-         <div className="grid gap-6 pb-14">
+         <form className="grid gap-6 pb-14" onSubmit={handleSubmit(handleSubmitDocument)}>
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
                <h3 className="text-lg md:text-xl font-semibold">Upload new document</h3>
                <div className="grid gap-x-6 gap-y-4">
@@ -247,7 +283,17 @@ export default function SubmitNewPaperPage() {
                   <h3 className="text-lg md:text-xl text-terciary-main font-semibold">Authors</h3>
                </div>
                <div className="grid gap-6">
-                  <Button.Button variant="outline" className="px-4 py-3 w-full text-sm">
+                  <Button.Button
+                     variant="outline"
+                     className="px-4 py-3 w-full text-sm"
+                     onClick={() =>
+                        setDialog({
+                           author: true,
+                           edit_author: false,
+                           share_split: false
+                        })
+                     }
+                  >
                      Select Authors for the paper
                      <PlusCircle
                         className="w-4 fill-primary-main 
@@ -410,11 +456,11 @@ export default function SubmitNewPaperPage() {
                   </React.Fragment>
                )}
             </Box>
-            <Button.Button variant="primary">
+            <Button.Button variant="primary" type="submit">
                Submit paper for review
                <Clipboard className="w-5" />
             </Button.Button>
-         </div>
+         </form>
       </React.Fragment>
    )
 }
