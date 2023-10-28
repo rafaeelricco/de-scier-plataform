@@ -1,6 +1,7 @@
 import * as zod from 'zod'
 
 export const AuthorSchema = zod.object({
+   id: zod.string().min(3, 'Id must be at least 3 characters.'),
    name: zod.string().min(3, 'Name must be at least 3 characters.'),
    email: zod.string().email('Invalid email address.'),
    title: zod.string().min(3, 'Title must be at least 3 characters.'),

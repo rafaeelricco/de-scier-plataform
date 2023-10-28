@@ -1,5 +1,7 @@
+import { uniqueId } from 'lodash'
+
 export type Author = {
-   id: number
+   id: string
    name: string
    title: string
    email: string
@@ -18,7 +20,7 @@ export type Authorship = {
 
 export const authors_mock: Author[] = [
    {
-      id: 1,
+      id: uniqueId(),
       name: 'Caroline Nunes',
       title: 'Neurologist',
       email: 'caroline@gmail.com',
