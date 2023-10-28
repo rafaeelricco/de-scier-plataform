@@ -43,7 +43,7 @@ export const uploadAvatarService = async (body: UploadFileProps): Promise<string
    return data?.fileUrl
 }
 
-export const uploadDocumentService = async (body: UploadFileProps) => {
+export const uploadDocumentFileService = async (body: UploadFileProps) => {
    const session = await getSession()
    const file = await localUrlToFile(body.fileLocalUrl, body.filename)
    const formData = new FormData()

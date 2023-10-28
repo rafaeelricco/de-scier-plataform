@@ -20,7 +20,7 @@ import { Clipboard, PlusCircle, PlusCircleDotted, X } from 'react-bootstrap-icon
 import { CurrencyInput } from 'react-currency-mask'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { uploadDocumentService } from '@/services/file/file.service'
+import { uploadDocumentFileService } from '@/services/file/file.service'
 import { StoredFile } from '@/components/common/Dropzone/Typing'
 import { submitNewDocumentService } from '@/services/document/submit.service'
 
@@ -116,7 +116,7 @@ export default function SubmitNewPaperPage() {
       console.log('documentFile', documentFile)
 
       // Upload document file
-      const uploadDocumentSuccess = await uploadDocumentService({
+      const uploadDocumentSuccess = await uploadDocumentFileService({
          documentId: response.documentId,
          fileLocalUrl: documentFile.preview,
          filename: documentFile.name,
@@ -128,7 +128,7 @@ export default function SubmitNewPaperPage() {
       }
 
       // Upload cover image
-      const uploadCoverSuccess = await uploadDocumentService({
+      const uploadCoverSuccess = await uploadDocumentFileService({
          documentId: response.documentId,
          fileLocalUrl: cover.preview,
          filename: cover.name,
