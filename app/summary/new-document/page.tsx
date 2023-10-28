@@ -235,6 +235,7 @@ export default function SubmitNewPaperPage() {
                               </React.Fragment>
                            }
                         />
+                        <Input.Error>{errors.keywords?.message}</Input.Error>
                         <div className="flex flex-wrap gap-1">
                            {keywords.map((keyword, index) => (
                               <div
@@ -271,10 +272,12 @@ export default function SubmitNewPaperPage() {
                         }}
                         items={document_types}
                      />
+                     <Input.Error>{errors.documentType?.message}</Input.Error>
                   </div>
                   <div className="block md:hidden">
                      <Input.Root>
                         <Input.Select label={'Document type'} options={document_types} placeholder="Title of the field" />
+                        <Input.Error>{errors.documentType?.message}</Input.Error>
                      </Input.Root>
                   </div>
                </div>
@@ -290,7 +293,8 @@ export default function SubmitNewPaperPage() {
                      <span className="text-sm font-semibold">Abstract</span>
                      <span className="text-sm text-neutral-light_gray font-semibold">0/2000 words</span>
                   </Input.Label>
-                  <Input.TextArea rows={4} placeholder="Title of the field" />
+                  <Input.TextArea {...register('abstract')} rows={4} placeholder="Title of the field" />
+                  <Input.Error>{errors.abstract?.message}</Input.Error>
                </Input.Root>
                <div className="flex flex-col md:flex-row md:items-center gap-4">
                   <Button.Button variant="outline" className="px-4 py-3 md:w-fit text-sm">
