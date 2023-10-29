@@ -28,7 +28,7 @@ const SidebarDeScier: React.FC = () => {
                   ))}
                </div>
             </div>
-            <Logout onLogout={() => router.push('/login')} />
+            <Logout onLogout={() => router.push(home_routes.home.index)} />
          </div>
       </React.Fragment>
    )

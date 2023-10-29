@@ -103,7 +103,7 @@ const authOptions: NextAuthOptions = {
       })
    ],
    pages: {
-      signIn: '/login',
+      signIn: '/home',
       error: '/error'
    },
    callbacks: {

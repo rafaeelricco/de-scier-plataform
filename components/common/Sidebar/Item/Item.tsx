@@ -7,12 +7,13 @@ type ItemProps = {
    text: string
    active?: boolean
    href: string
+   onClick?: () => void
 }
 
-const Item: React.FC<ItemProps> = ({ icon, text, active = false, href }: ItemProps) => {
+const Item: React.FC<ItemProps> = ({ icon, text, active = false, href, onClick }: ItemProps) => {
    return (
       <React.Fragment>
-         <Link href={href}>
+         <Link href={href} onClick={onClick}>
             <div
                data-active={active}
                className="relative hover:bg-[#F4E8FF] rounded-md hover:transition-colors duration-200 dark:hover:transition-colors"

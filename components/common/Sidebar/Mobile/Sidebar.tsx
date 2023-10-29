@@ -49,21 +49,13 @@ export function SidebarMobile() {
          <Drawer.Root open={openNav === 'sidebar'}>
             <Drawer.Overlay />
             <Drawer.Content position={'left'} className={twMerge('p-6')}>
-               <MobileSidebarComponent
-                  onClose={() => {
-                     setOpenNav(false)
-                  }}
-               />
+               <MobileSidebarComponent onClose={() => setOpenNav(false)} />
             </Drawer.Content>
          </Drawer.Root>
          <Drawer.Root open={openNav === 'profile'}>
             <Drawer.Overlay />
             <Drawer.Content position={'right'} className={twMerge('p-6')}>
-               <MobileProfileComponent
-                  onClose={() => {
-                     setOpenNav(false)
-                  }}
-               />
+               <MobileProfileComponent onClose={() => setOpenNav(false)} />
             </Drawer.Content>
          </Drawer.Root>
       </React.Fragment>
