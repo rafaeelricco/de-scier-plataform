@@ -7,7 +7,7 @@ import { StoredFile } from '@/components/common/Dropzone/Typing'
 import { NewAuthor } from '@/components/modules/Summary/NewArticle/Authors/NewAuthor'
 import { access_type_options } from '@/mock/access_type'
 import { document_types } from '@/mock/document_types'
-import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
+import { Author, Authorship, authors_headers, authorship_headers } from '@/mock/submit_new_document'
 import { AuthorProps, CreateDocumentProps, CreateDocumentSchema } from '@/schemas/create_document'
 import { submitNewDocumentService } from '@/services/document/submit.service'
 import { uploadDocumentFileService } from '@/services/file/file.service'
@@ -344,6 +344,7 @@ export default function SubmitNewPaperPage() {
                   </div>
                </div>
                <Dropzone
+                  thumbnail={false}
                   accept={{
                      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
                      'application/pdf': ['.pdf']

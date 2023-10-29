@@ -54,7 +54,7 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
          <div>
             <div
                className={twMerge(
-                  'grid border-[1px] border-dashed border-blue-light rounded-lg p-4 transition duration-300 ease-in-out items-center bg-[#F1FFFF] py-6',
+                  'grid border-[1px] border-dashed border-blue-light rounded-lg p-4 transition duration-300 ease-in-out items-center bg-[#F1FFFF] py-6 min-h-[140px]',
                   `${thumbnail && 'h-44 w-full p-0'}`
                )}
             >
@@ -78,7 +78,7 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
                   ) : (
                      <React.Fragment>
                         <div className="flex flex-col items-center justify-center gap-2">
-                           {thumbnail && (
+                           {thumbnail ? (
                               <Image
                                  width={1920}
                                  height={1080}
@@ -86,15 +86,27 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
                                  alt="Thumbnail"
                                  className="w-full h-44 object-cover rounded-md brightness-50"
                               />
-                           )}
-                           <div className="grid gap-2 items-center content-center absolute">
+                           ) : null}
+                           <div className={twMerge('grid gap-2 items-center content-center absolute', `${thumbnail === false && 'relative'}`)}>
                               <div className="grid justify-item-center gap-2 grid-flow-col justify-center items-center">
-                                 <FileEarmarkText className="w-4 h-4 sm:w-5 sm:h-5 sm:mb-[2px] fill-white" />
-                                 <p className="text-xs sm:text-sm font-semibold text-white text-center">{files[0]?.name}</p>
+                                 <FileEarmarkText
+                                    className={twMerge('w-4 h-4 sm:w-5 sm:h-5 sm:mb-[2px] fill-white', `${thumbnail === false && 'fill-black'}`)}
+                                 />
+                                 <p
+                                    className={twMerge(
+                                       'text-xs sm:text-sm font-semibold text-white text-center',
+                                       `${thumbnail === false && 'text-black'}`
+                                    )}
+                                 >
+                                    {files[0]?.name}
+                                 </p>
                               </div>
                               <Button.Button
                                  variant="outline"
-                                 className="py-2 px-6 text-sm w-fit mx-auto my-0 border-white text-white hover:bg-transparent"
+                                 className={twMerge(
+                                    'py-2 px-6 text-sm w-fit mx-auto my-0 border-white text-white hover:bg-transparent',
+                                    `${thumbnail === false && 'border-primary-main text-primary-main hover:bg-transparent'}`
+                                 )}
                                  onClick={() => {
                                     setFiles([])
                                     setSelectedFile?.(null)
