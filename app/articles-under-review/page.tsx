@@ -39,44 +39,46 @@ export default function ArticlesUnderReviewPage() {
                   <Dropdown label="Status:" className="min-w-[180px]" items={filter_status} onSelect={(value) => console.log(value)} />
                </div>
             </div>
-            <div className="grid gap-8">
-               <div className="grid md:grid-cols-2 gap-4">
-                  {loading ? (
-                     <React.Fragment>
-                        <ArticleUnderReviewSkeleton />
-                        <ArticleUnderReviewSkeleton />
-                        <ArticleUnderReviewSkeleton />
-                        <ArticleUnderReviewSkeleton />
-                     </React.Fragment>
-                  ) : (
-                     <React.Fragment>
-                        {results.slice((page - 1) * per_page, page * per_page).map((article) => (
-                           <React.Fragment key={article.id}>
-                              <ArticleUnderReview
-                                 title={article.title}
-                                 since={article.since}
-                                 image={article.image}
-                                 link={home_routes.articles.in_review + '/' + slug(article.title)}
-                                 status_editor={article.status_editor as 'pending' | 'approved'}
-                                 status_reviewer={article.status_reviewer as 'pending' | 'approved'}
-                              />
-                           </React.Fragment>
-                        ))}
-                     </React.Fragment>
-                  )}
+            <div className="min-h-[calc(100vh-50vh)] md:min-h-[calc(100vh-30vh)] relative">
+               <div className="grid gap-8">
+                  <div className="grid md:grid-cols-2 gap-4">
+                     {loading ? (
+                        <React.Fragment>
+                           <ArticleUnderReviewSkeleton />
+                           <ArticleUnderReviewSkeleton />
+                           <ArticleUnderReviewSkeleton />
+                           <ArticleUnderReviewSkeleton />
+                        </React.Fragment>
+                     ) : (
+                        <React.Fragment>
+                           {results.slice((page - 1) * per_page, page * per_page).map((article) => (
+                              <React.Fragment key={article.id}>
+                                 <ArticleUnderReview
+                                    title={article.title}
+                                    since={article.since}
+                                    image={article.image}
+                                    link={home_routes.articles.in_review + '/' + slug(article.title)}
+                                    status_editor={article.status_editor as 'pending' | 'approved'}
+                                    status_reviewer={article.status_reviewer as 'pending' | 'approved'}
+                                 />
+                              </React.Fragment>
+                           ))}
+                        </React.Fragment>
+                     )}
+                  </div>
                </div>
-            </div>
-            <div className="flex justify-center">
-               <PaginationComponent
-                  key={totalPages}
-                  current={page}
-                  perPage={per_page}
-                  total={results.length}
-                  handleFirstPage={() => setPage(1)}
-                  handleNextPage={() => setPage(page + 1)}
-                  handlePreviousPage={() => setPage(page - 1)}
-                  handleLastPage={() => setPage(totalPages)}
-               />
+               <div className="flex justify-center absolute bottom-0 left-0 w-full">
+                  <PaginationComponent
+                     key={totalPages}
+                     current={page}
+                     perPage={per_page}
+                     total={results.length}
+                     handleFirstPage={() => setPage(1)}
+                     handleNextPage={() => setPage(page + 1)}
+                     handlePreviousPage={() => setPage(page - 1)}
+                     handleLastPage={() => setPage(totalPages)}
+                  />
+               </div>
             </div>
          </div>
       </React.Fragment>
