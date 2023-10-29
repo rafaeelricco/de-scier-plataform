@@ -50,7 +50,10 @@ const Header: React.FC = () => {
                {component === register_component && (
                   <RegisterModal
                      onBack={() => setComponent(login_component)}
-                     onClose={() => console.log('close event')}
+                     onClose={() => {
+                        setOpen(false)
+                        setComponent(login_component)
+                     }}
                      onLogin={() => setComponent(login_component)}
                      onRegister={() => setComponent(register_component)}
                      onReturnToLogin={() => setComponent(login_component)}
