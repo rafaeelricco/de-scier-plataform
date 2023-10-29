@@ -2,7 +2,7 @@
 
 import { Dropdown } from '@/components/common/Dropdown/Dropdown'
 import PaginationComponent from '@/components/common/Pagination/Pagination'
-import ArticleUnderReview, { ArticleUnderReviewProps } from '@/components/common/Publication/Item/ArticlesUnderReview'
+import { ArticleUnderReview, ArticleUnderReviewProps } from '@/components/common/Publication/Item/ArticlesUnderReview'
 import { filter_order_by, filter_status } from '@/mock/dropdow_filter_options'
 import { home_routes } from '@/routes/home'
 import * as Button from '@components/common/Button/Button'

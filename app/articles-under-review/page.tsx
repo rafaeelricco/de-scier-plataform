@@ -2,20 +2,27 @@
 
 import { Dropdown } from '@/components/common/Dropdown/Dropdown'
 import PaginationComponent from '@/components/common/Pagination/Pagination'
-import ArticleUnderReview from '@/components/common/Publication/Item/ArticlesUnderReview'
-import { articles_under_review } from '@/mock/article_under_review'
+import { ArticleUnderReview, ArticleUnderReviewProps, ArticleUnderReviewSkeleton } from '@/components/common/Publication/Item/ArticlesUnderReview'
 import { filter_order_by, filter_status } from '@/mock/dropdow_filter_options'
 import { home_routes } from '@/routes/home'
+import { useArticles } from '@/services/document/getArticles.service'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
 import React from 'react'
 import slug from 'slug'
 
 export default function ArticlesUnderReviewPage() {
+   const { articles, loading } = useArticles()
+   console.log(articles)
+
    const per_page = 8
    const [page, setPage] = React.useState(1)
-   const [results, setResults] = React.useState(articles_under_review)
+   const [results, setResults] = React.useState<ArticleUnderReviewProps[]>([])
    const [totalPages, setTotalPages] = React.useState(Math.ceil(results.length / per_page))
+
+   React.useEffect(() => {
+      setResults(articles || [])
+   }, [articles])
 
    return (
       <React.Fragment>
@@ -34,18 +41,29 @@ export default function ArticlesUnderReviewPage() {
             </div>
             <div className="grid gap-8">
                <div className="grid md:grid-cols-2 gap-4">
-                  {results.slice((page - 1) * per_page, page * per_page).map((article) => (
-                     <React.Fragment key={article.id}>
-                        <ArticleUnderReview
-                           title={article.title}
-                           since={article.since}
-                           image={article.image}
-                           link={home_routes.articles.in_review + '/' + slug(article.title)}
-                           status_editor={article.status_editor as 'pending' | 'approved'}
-                           status_reviewer={article.status_reviewer as 'pending' | 'approved'}
-                        />
+                  {loading ? (
+                     <React.Fragment>
+                        <ArticleUnderReviewSkeleton />
+                        <ArticleUnderReviewSkeleton />
+                        <ArticleUnderReviewSkeleton />
+                        <ArticleUnderReviewSkeleton />
                      </React.Fragment>
-                  ))}
+                  ) : (
+                     <React.Fragment>
+                        {results.slice((page - 1) * per_page, page * per_page).map((article) => (
+                           <React.Fragment key={article.id}>
+                              <ArticleUnderReview
+                                 title={article.title}
+                                 since={article.since}
+                                 image={article.image}
+                                 link={home_routes.articles.in_review + '/' + slug(article.title)}
+                                 status_editor={article.status_editor as 'pending' | 'approved'}
+                                 status_reviewer={article.status_reviewer as 'pending' | 'approved'}
+                              />
+                           </React.Fragment>
+                        ))}
+                     </React.Fragment>
+                  )}
                </div>
             </div>
             <div className="flex justify-center">
