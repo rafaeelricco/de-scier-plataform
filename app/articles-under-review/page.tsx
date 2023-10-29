@@ -51,18 +51,22 @@ export default function ArticlesUnderReviewPage() {
                         </React.Fragment>
                      ) : (
                         <React.Fragment>
-                           {results.slice((page - 1) * per_page, page * per_page).map((article) => (
-                              <React.Fragment key={article.id}>
-                                 <ArticleUnderReview
-                                    title={article.title}
-                                    since={article.since}
-                                    image={article.image}
-                                    link={home_routes.articles.in_review + '/' + slug(article.title)}
-                                    status_editor={article.status_editor as 'pending' | 'approved'}
-                                    status_reviewer={article.status_reviewer as 'pending' | 'approved'}
-                                 />
-                              </React.Fragment>
-                           ))}
+                           {results.length === 0 ? (
+                              <p className="text-center col-span-2 text-gray-500 mt-8">Não há artigos em revisão no momento.</p>
+                           ) : (
+                              results.slice((page - 1) * per_page, page * per_page).map((article) => (
+                                 <React.Fragment key={article.id}>
+                                    <ArticleUnderReview
+                                       title={article.title}
+                                       since={article.since}
+                                       image={article.image}
+                                       link={home_routes.articles.in_review + '/' + slug(article.title)}
+                                       status_editor={article.status_editor as 'pending' | 'approved'}
+                                       status_reviewer={article.status_reviewer as 'pending' | 'approved'}
+                                    />
+                                 </React.Fragment>
+                              ))
+                           )}
                         </React.Fragment>
                      )}
                   </div>
