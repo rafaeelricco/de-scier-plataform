@@ -9,10 +9,12 @@ export interface ArticleUnderReviewProps {
    id?: string
    status_editor?: 'pending' | 'approved'
    status_reviewer?: 'pending' | 'approved'
+   status?: string
    image: string
    since: string
    title: string
    link: string
+   document_type?: string
 }
 
 export const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
