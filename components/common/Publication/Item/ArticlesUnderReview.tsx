@@ -1,3 +1,4 @@
+import { Skeleton } from '@/components/ui/skeleton'
 import { truncate } from 'lodash'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -8,13 +9,15 @@ export interface ArticleUnderReviewProps {
    id?: string
    status_editor?: 'pending' | 'approved'
    status_reviewer?: 'pending' | 'approved'
+   status?: string
    image: string
    since: string
    title: string
    link: string
+   document_type?: string
 }
 
-const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
+export const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
    since,
    link,
    status_editor,
@@ -25,7 +28,16 @@ const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
    return (
       <React.Fragment>
          <div className="grid md:grid-cols-max-min-auto md:justify-start items-center gap-4 bg-[#fff] py-3 px-4 rounded-lg">
-            <Image src={image} width={400} height={400} alt={title} style={{ objectFit: 'cover' }} className="rounded-md h-20 w-full object-cover" />
+            <div className="relative w-full md:w-20 h-20">
+               <Image
+                  fill
+                  src={image || 'https://random.imagecdn.app/150/150'}
+                  alt={title}
+                  quality={50}
+                  style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                  className="rounded-md object-cover"
+               />
+            </div>
             <hr className="hidden md:block divider-v" />
             <hr className="block md:hidden divider-h" />
             <div className="grid gap-2 mt-[-8px]">
@@ -62,4 +74,28 @@ const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
    )
 }
 
-export default ArticleUnderReview
+export const ArticleUnderReviewSkeleton: React.FC = () => {
+   return (
+      <React.Fragment>
+         <div className="grid md:grid-cols-max-min-auto items-center gap-4 bg-[#fff] py-3 px-4 rounded-lg">
+            <Skeleton className="rounded-md h-20 w-full md:w-20 object-cover" />
+            <div className="hidden md:block divider-v" />
+            <div className="block md:hidden divider-h" />
+            <div className="grid gap-2 mt-[-8px]">
+               <div className="grid gap-2">
+                  <Skeleton className="w-1/2 h-4" />
+                  <Skeleton className="w-[90%] h-2" />
+                  <Skeleton className="w-[80%] h-2" />
+                  <div className="border-[1px] rounded-md px-2 border-neutral-stroke_light">
+                     <div className="flex gap-2 items-center justify-items-center">
+                        <Skeleton className="w-full h-2" />
+                        <span className="text-xs font-semibold text-slate-200">/</span>
+                        <Skeleton className="w-full h-2" />
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </React.Fragment>
+   )
+}
