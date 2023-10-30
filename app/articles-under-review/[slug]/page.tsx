@@ -11,6 +11,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { comments, files, header_editor_reviewer } from '@/mock/article_under_review'
 import { document_types } from '@/mock/document_types'
 import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
+import { useArticles } from '@/services/document/getArticles.service'
 import { truncate } from '@/utils/format_texts'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
@@ -19,12 +20,13 @@ import { Reorder } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React from 'react'
-import { ArrowLeft, Check, FileEarmarkText, Person, PlusCircle, PlusCircleDotted, X } from 'react-bootstrap-icons'
+import { ArrowLeft, Check, FileEarmarkText, Pencil, Person, PlusCircle, PlusCircleDotted, Trash, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { twMerge } from 'tailwind-merge'
 
 export default function ArticleInReviewPage({ params }: { params: { slug: string } }) {
    const router = useRouter()
+   const { fetch_article } = useArticles()
 
    const [items, setItems] = React.useState(authors_mock)
    const [share, setShare] = React.useState('')
@@ -35,24 +37,16 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
    const [popover, setPopover] = React.useState({ copy_link: false })
    const [dialog, setDialog] = React.useState({ author: false, share_split: false, edit_author: false, reasoning: false })
 
+   React.useEffect(() => {
+      const fetchArticle = async (documentId: string) => {
+         const article = await fetch_article(params.slug)
+         console.log('Article', article)
+      }
+      fetchArticle(params.slug)
+   }, [params.slug, fetch_article])
+
    const onReorder = (newOrder: typeof items) => {
       setItems((prevItems) => [...newOrder])
-   }
-
-   function copyToClipboard() {
-      const textToCopy = document.getElementById('link-to-copy')!.innerText
-
-      navigator.clipboard
-         .writeText(textToCopy)
-         .then(() => {
-            setPopover({ ...popover, copy_link: true })
-            setTimeout(() => {
-               setPopover({ ...popover, copy_link: false })
-            }, 3000)
-         })
-         .catch((err) => {
-            console.error('Erro ao copiar texto: ', err)
-         })
    }
 
    return (
@@ -232,15 +226,15 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                            </React.Fragment>
                         ))}
                      </div>
-                     <Reorder.Group axis="y" values={items} onReorder={onReorder}>
+                     <Reorder.Group axis="y" values={authors} onReorder={onReorder}>
                         <div className="grid gap-2">
-                           {items.map((item) => (
-                              <Reorder.Item key={item.id} value={item}>
-                                 <div className="grid md:grid-cols-3 gap-4 items-center px-0 py-3 rounded-md cursor-grab">
-                                    <div className="flex items-start gap-4">
+                           {authors.map((item, index) => (
+                              <Reorder.Item key={item.id} value={item} id={item.id}>
+                                 <div className="grid md:grid-cols-3 items-center px-0 py-3 rounded-md cursor-grab">
+                                    <div className="flex items-center gap-4">
                                        <div className="flex gap-0 items-center">
-                                          <CircleIcon className="w-8 cursor-grab" />
-                                          <p className="text-sm text-blue-gray">{item.id}º</p>
+                                          <CircleIcon className="w-8" />
+                                          <p className="text-sm text-blue-gray">{index + 1}º</p>
                                        </div>
                                        <div>
                                           <p className="text-sm text-secundary_blue-main font-semibold md:font-regular">{item.name}</p>
@@ -255,8 +249,28 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                                     <div className="hidden md:block">
                                        <p className="text-sm text-secundary_blue-main">{item.title}</p>
                                     </div>
-                                    <div className="hidden md:block">
+                                    <div className="hidden md:flex items-center justify-between">
                                        <p className="text-sm text-secundary_blue-main">{item.email}</p>
+                                       {index !== 0 && (
+                                          <React.Fragment>
+                                             <div className="flex items-center gap-2">
+                                                <Trash
+                                                   className="fill-status-error w-5 h-full cursor-pointer hover:scale-110 transition-all duration-200"
+                                                   onClick={() => {
+                                                      //  const new_list = authors.filter((author) => author.id !== item.id)
+                                                      //  setAuthors(new_list)
+                                                   }}
+                                                />
+                                                <Pencil
+                                                   className="fill-primary-main w-5 h-full cursor-pointer hover:scale-110 transition-all duration-200"
+                                                   onClick={() => {
+                                                      //  setAuthorToEdit(item as unknown as AuthorProps)
+                                                      //  setDialog({ ...dialog, edit_author: true })
+                                                   }}
+                                                />
+                                             </div>
+                                          </React.Fragment>
+                                       )}
                                     </div>
                                  </div>
                               </Reorder.Item>
@@ -283,7 +297,25 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                         </p>
                         <HoverCard open={popover.copy_link}>
                            <HoverCardTrigger>
-                              <Button.Button variant="outline" className="px-4 py-1 text-sm" onClick={copyToClipboard}>
+                              <Button.Button
+                                 variant="outline"
+                                 className="px-4 py-1 text-sm"
+                                 onClick={() => {
+                                    const textToCopy = document.getElementById('link-to-copy')!.innerText
+
+                                    navigator.clipboard
+                                       .writeText(textToCopy)
+                                       .then(() => {
+                                          setPopover({ ...popover, copy_link: true })
+                                          setTimeout(() => {
+                                             setPopover({ ...popover, copy_link: false })
+                                          }, 3000)
+                                       })
+                                       .catch((err) => {
+                                          console.error('Erro ao copiar texto: ', err)
+                                       })
+                                 }}
+                              >
                                  Copy Link
                               </Button.Button>
                            </HoverCardTrigger>
@@ -308,7 +340,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                            <div className="grid md:grid-cols-5  items-center px-0 py-3 rounded-md">
                               <div className="flex items-center gap-4">
                                  <div>
-                                    <p className="text-sm text-secundary_blue-main font-semibold">{item.name}</p>
+                                    <p className="text-sm text-secundary_blue-main font-regular">{item.name}</p>
                                  </div>
                               </div>
                               <div>

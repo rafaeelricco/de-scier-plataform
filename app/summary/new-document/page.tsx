@@ -31,15 +31,15 @@ import mermaid from 'mermaid'
 
 export default function SubmitNewPaperPage() {
    const { data: session } = useSession()
-   const [access_type, setAccessType] = useState('open-access')
 
+   const [dialog, setDialog] = useState({ author: false, share_split: false, edit_author: false })
+   const [access_type, setAccessType] = useState('open-access')
    const [share, setShare] = useState('')
    const [wallet, setWallet] = useState('')
    const [authors, setAuthors] = useState<Author[]>([])
    const [authorship, setAuthorship] = useState<Authorship[]>([])
    const [authorship_settings, setAuthorshipSettings] = useState<Author>()
    const [author_to_edit, setAuthorToEdit] = useState<Author | undefined>(undefined)
-   const [dialog, setDialog] = useState({ author: false, share_split: false, edit_author: false })
    const [keywords_temp, setKeywordsTemp] = useState<string | undefined>()
    const [documentFile, setDocumentFile] = useState<StoredFile | null>()
    const [cover, setCover] = useState<StoredFile | null>()

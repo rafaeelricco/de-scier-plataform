@@ -1,0 +1,113 @@
+export type DocumentPaginationProps = {
+   documents: {
+      pagination: PaginationProps
+      data: DocumentProps[]
+   }
+}
+
+export type DocumentProps = {
+   id: string
+   title: string
+   abstract: string
+   abstractChart: string | null
+   keywords: string
+   field: string
+   cover: string | null
+   documentType: string
+   documentLink: string | null
+   accessType: string
+   price: number
+   status: ApprovalStatus
+   likes: number
+   downloads: number
+   views: number
+   userId: string
+   user?: UserProps
+   reviewerApprovals: number
+   editorsApprovals: number
+   adminApproval: number
+   reviewerInviteLink: string | null
+   documentLike?: DocumentLikeProps[]
+   createdAt: Date
+   updatedAt: Date
+   authorsOnDocuments?: AuthorsOnDocuments[]
+   reviewersOnDocuments?: ReviewersOnDocuments[]
+   documentVersions?: DocumentVersion[]
+   documentComments?: DocumentComment[]
+}
+
+export type ApprovalStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'SUBMITTED'
+
+export type UserProps = {
+   id: string
+   name: string
+   email: string
+   avatar: string | null
+}
+
+export type DocumentComment = {
+   id: string
+   comment: string
+   approvedByAuthor: string
+   authorComment: string | null
+   userId: string
+   user: UserProps
+   documentId: string
+   createdAt: Date
+   updatedAt: Date
+}
+
+export type DocumentLikeProps = {
+   id: string
+   userId?: string
+   documentId: string
+   createdAt: Date
+   updatedAt: Date
+}
+
+export type DocumentVersion = {
+   id: string
+   version: number
+   latest: boolean
+   link: string
+   fileName: string | null
+   documentId: string
+   createdAt: Date
+   updatedAt: Date
+}
+
+export type AuthorsOnDocuments = {
+   id: string
+   authorEmail?: string
+   revenuePercent?: number | null
+   author?: AuthorProps
+}
+
+export type AuthorProps = {
+   id?: string
+   name: string
+   email?: string
+   title: string
+   walletAddress?: string | null
+   createdAt?: Date
+   updatedAt?: Date
+}
+
+export type ReviewersOnDocuments = {
+   id: string
+   reviewerEmail: string
+   documentId: string
+   role: string
+   inviteStatus: string
+   approvedStatus: string
+   reviewer: ReviewerProps
+}
+
+export type ReviewerProps = {
+   id: string
+   name: string
+   email: string
+   title: string
+   createdAt: Date
+   updatedAt: Date
+}
