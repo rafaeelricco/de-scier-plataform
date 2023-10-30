@@ -562,7 +562,11 @@ export default function SubmitNewPaperPage() {
                                              </Button.Button>
                                           )}
                                        </div>
+                                       <div className="w-fit">
+                                          <p className="text-sm text-center text-black w-8">{author.wallet}</p>
+                                       </div>
                                     </div>
+
                                     <hr className="divider-h" />
                                  </React.Fragment>
                               ))}
