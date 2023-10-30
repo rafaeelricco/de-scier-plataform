@@ -8,6 +8,10 @@ type GenerateAbstractProps = {
    filename: string
 }
 
+type GenerateChartProps = {
+   abstract: string
+}
+
 export const generateAbstractService = async (body: GenerateAbstractProps) => {
    const session = await getSession()
 
@@ -39,5 +43,36 @@ export const generateAbstractService = async (body: GenerateAbstractProps) => {
       success: true,
       message: 'Abstract generated successfully.',
       abstract: responseData.abstract
+   }
+}
+
+export const generateChartAbstractService = async (data: GenerateChartProps) => {
+   const session = await getSession()
+
+   const request = await fetch(`${API_URL}/documents/generate-chart`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+         Authorization: `Bearer ${session?.user?.token}`,
+         'Access-Control-Allow-Origin': '*',
+         'content-type': 'application/json'
+      }
+   })
+
+   const responseStatus = request.status === 200
+
+   const responseData = await request.json()
+
+   if (!responseStatus) {
+      return {
+         success: false,
+         message: responseData.message ?? 'Error in generate chart, try again.'
+      }
+   }
+
+   return {
+      success: true,
+      message: 'Chart generated successfully.',
+      chart: responseData.chart
    }
 }

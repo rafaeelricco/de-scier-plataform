@@ -16,7 +16,7 @@ const KeyWordSchema = zod.object({
 
 export const CreateDocumentSchema = zod.object({
    title: zod.string().min(3, 'Title must be at least 3 characters.'),
-   abstract: zod.string().min(3, 'Abstract must be at least 3 characters.'),
+   abstract: zod.string(),
    abstractChart: zod.string().optional(),
    field: zod.string().min(3, 'Field must be at least 3 characters.'),
    documentType: zod.string().min(3, 'Document type must be at least 3 characters.'),

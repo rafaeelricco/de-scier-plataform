@@ -9,7 +9,7 @@ import { access_type_options } from '@/mock/access_type'
 import { document_types } from '@/mock/document_types'
 import { Author, Authorship, authors_headers, authorship_headers } from '@/mock/submit_new_document'
 import { AuthorProps, CreateDocumentProps, CreateDocumentSchema } from '@/schemas/create_document'
-import { generateAbstractService } from '@/services/document/generateAbstract.service'
+import { generateAbstractService, generateChartAbstractService } from '@/services/document/generateAbstract.service'
 import { submitNewDocumentService } from '@/services/document/submit.service'
 import { uploadDocumentFileService } from '@/services/file/file.service'
 import * as Button from '@components/common/Button/Button'
@@ -27,6 +27,7 @@ import { CurrencyInput } from 'react-currency-mask'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { twMerge } from 'tailwind-merge'
+import mermaid from 'mermaid'
 
 export default function SubmitNewPaperPage() {
    const { data: session } = useSession()
@@ -44,6 +45,7 @@ export default function SubmitNewPaperPage() {
    const [cover, setCover] = useState<StoredFile | null>()
    const [abstractLength, setAbstractLength] = useState<number>(0)
    const [abstractText, setAbstractText] = useState<string>('')
+   const [abstractChart, setAbstractChart] = useState<string>('')
 
    const {
       register,
@@ -98,7 +100,7 @@ export default function SubmitNewPaperPage() {
          field: data.field,
          price: Number(data.price),
          title: data.title,
-         abstractChart: 'dsdsdsdsdsdds',
+         abstractChart: abstractChart,
          keywords: data.keywords.map((item) => item.name)
       }
 
@@ -171,6 +173,30 @@ export default function SubmitNewPaperPage() {
       toast.success('Abstract generated successfully.')
    }
 
+   const handleGenerateChart = async () => {
+      const toastId = toast.loading('Generating chart with AI...')
+      if (!abstractText) {
+         toast.dismiss(toastId)
+         toast.error('Abstract is required.')
+         return
+      }
+      const response = await generateChartAbstractService({
+         abstract: abstractText
+      })
+
+      toast.dismiss(toastId)
+
+      if (!response.success) {
+         toast.error(response.message)
+         return
+      }
+
+      //setValue('abstractChart', response.chart)
+      setAbstractChart(response.chart)
+
+      toast.success('Chart generated successfully.')
+   }
+
    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.keyCode === 13) {
          e.preventDefault()
@@ -199,6 +225,23 @@ export default function SubmitNewPaperPage() {
          setAbstractLength(splittedAbstract.length)
       }
    }, [abstractText])
+
+   useEffect(() => {
+      mermaid.initialize({ startOnLoad: false })
+   }, [])
+
+   useEffect(() => {
+      const runMermaid = async () => {
+         mermaid.initialize({ startOnLoad: false })
+         await mermaid.run({
+            querySelector: '.mermaid'
+         })
+      }
+      console.log(abstractChart)
+      if (abstractChart) {
+         runMermaid()
+      }
+   }, [abstractChart])
 
    return (
       <React.Fragment>
@@ -414,12 +457,14 @@ export default function SubmitNewPaperPage() {
                      document, with a illustration.
                   </p>
                   <div className="flex flex-col md:flex-row md:items-center gap-4">
-                     <Button.Button className="px-4 py-3 md:w-fit text-sm">
+                     <Button.Button className="px-4 py-3 md:w-fit text-sm" onClick={handleGenerateChart}>
                         Generate Visual Abstract
                         <PlusCircleDotted size={18} className="fill-neutral-white" />
                      </Button.Button>
                      <p className="text-sm text-neutral-gray">Careful! You can only generate the visual abstract once per file.</p>
                   </div>
+
+                  <div className="mermaid">{abstractChart}</div>
                </div>
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>

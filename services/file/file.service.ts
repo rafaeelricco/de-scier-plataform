@@ -45,10 +45,11 @@ export const uploadAvatarService = async (body: UploadFileProps): Promise<string
 
 export const uploadDocumentFileService = async (body: UploadFileProps) => {
    const session = await getSession()
+   console.log('body', body)
    const file = await localUrlToFile(body.fileLocalUrl, body.filename)
    const formData = new FormData()
    formData.append('file', file)
-   formData.append('mimetype', body.mimetype)
+   formData.append('type', body.mimetype)
 
    const request = await fetch(`${API_URL}/documents/upload/${body.documentId}`, {
       method: 'POST',
