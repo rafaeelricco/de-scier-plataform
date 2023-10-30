@@ -9,7 +9,7 @@ type UploadFileProps = {
    mimetype: string
 }
 
-const localUrlToFile = async (localUrl: string, filename: string): Promise<File> => {
+export const localUrlToFile = async (localUrl: string, filename: string): Promise<File> => {
    const request = await fetch(localUrl, {
       method: 'GET'
    })

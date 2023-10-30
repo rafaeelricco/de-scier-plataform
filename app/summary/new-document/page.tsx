@@ -9,6 +9,7 @@ import { access_type_options } from '@/mock/access_type'
 import { document_types } from '@/mock/document_types'
 import { Author, Authorship, authors_headers, authorship_headers } from '@/mock/submit_new_document'
 import { AuthorProps, CreateDocumentProps, CreateDocumentSchema } from '@/schemas/create_document'
+import { generateAbstractService } from '@/services/document/generateAbstract.service'
 import { submitNewDocumentService } from '@/services/document/submit.service'
 import { uploadDocumentFileService } from '@/services/file/file.service'
 import * as Button from '@components/common/Button/Button'
@@ -41,6 +42,8 @@ export default function SubmitNewPaperPage() {
    const [keywords_temp, setKeywordsTemp] = useState<string | undefined>()
    const [documentFile, setDocumentFile] = useState<StoredFile | null>()
    const [cover, setCover] = useState<StoredFile | null>()
+   const [abstractLength, setAbstractLength] = useState<number>(0)
+   const [abstractText, setAbstractText] = useState<string>('')
 
    const {
       register,
@@ -144,6 +147,30 @@ export default function SubmitNewPaperPage() {
       toast.success(response.message)
    }
 
+   const handleGenerateAbstract = async () => {
+      const toastId = toast.loading('Generating abstract with AI...')
+      if (!documentFile) {
+         toast.dismiss(toastId)
+         toast.error('Document file is required.')
+         return
+      }
+      const response = await generateAbstractService({
+         fileLocalUrl: documentFile?.preview,
+         filename: documentFile?.name
+      })
+
+      toast.dismiss(toastId)
+
+      if (!response.success) {
+         toast.error(response.message)
+         return
+      }
+
+      setValue('abstract', response.abstract)
+      setAbstractText(response.abstract)
+      toast.success('Abstract generated successfully.')
+   }
+
    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.keyCode === 13) {
          e.preventDefault()
@@ -165,6 +192,13 @@ export default function SubmitNewPaperPage() {
          setAuthors([author])
       }
    }, [session?.user])
+
+   useEffect(() => {
+      if (abstractText) {
+         const splittedAbstract = abstractText.split(/\s+/)
+         setAbstractLength(splittedAbstract.length)
+      }
+   }, [abstractText])
 
    return (
       <React.Fragment>
@@ -354,17 +388,17 @@ export default function SubmitNewPaperPage() {
                <Input.Root>
                   <Input.Label className="flex gap-2 items-center">
                      <span className="text-sm font-semibold">Abstract</span>
-                     <span className="text-sm text-neutral-light_gray font-semibold">0/2000 words</span>
+                     <span className="text-sm text-neutral-light_gray font-semibold">{abstractLength}/2000 words</span>
                   </Input.Label>
-                  <Input.TextArea {...register('abstract')} rows={4} placeholder="Title of the field" />
+                  <Input.TextArea value={abstractText} onChange={(e) => setAbstractText(e.target.value)} rows={4} placeholder="Title of the field" />
                   <Input.Error>{errors.abstract?.message}</Input.Error>
                </Input.Root>
                <div className="flex flex-col md:flex-row md:items-center gap-4">
-                  <Button.Button variant="outline" className="px-4 py-3 md:w-fit text-sm">
+                  <Button.Button variant="outline" className="px-4 py-3 md:w-fit text-sm" onClick={handleGenerateAbstract}>
                      Generate abstract with AI
                      <PlusCircleDotted size={18} className="fill-primary-main" />
                   </Button.Button>
-                  <p className="text-sm text-neutral-gray">Careful! You can only generate the abstract once per file.</p>
+                  <p className="text-sm text-neutral-gray">You have {session?.user?.userInfo.aiUsageLimit} attempts left.</p>
                </div>
                <div className="grid gap-2">
                   <p className="text-sm font-semibold">Visual Abstract</p>

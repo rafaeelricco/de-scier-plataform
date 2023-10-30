@@ -6,6 +6,7 @@ export type User = {
    lattes: string | null
    avatar: string | null
    walletAddress: string | null
+   aiUsageLimit: number
 }
 
 export type UserSession = {
