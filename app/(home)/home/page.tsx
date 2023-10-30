@@ -18,9 +18,7 @@ import React from 'react'
 import { CaretRightFill, Eye, HandThumbsUpFill, Person, Search } from 'react-bootstrap-icons'
 
 export default function HomePage() {
-   const { sm, md, lg, xl, xxl } = useWindowDimension()
-   console.log(sm, md, lg, xl, xxl)
-
+   const { lg } = useWindowDimension()
    return (
       <React.Fragment>
          <IllustrationHero className="hidden lg:block lg:w-[45%] xl:w-1/2 absolute right-0 md:top-48 lg:top-50 xl:top-60 h-full lg:max-w-[600px] xl:max-w-[708px] max-h-[554px]" />

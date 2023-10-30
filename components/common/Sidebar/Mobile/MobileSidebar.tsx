@@ -28,18 +28,25 @@ export const MobileSidebarComponent: React.FC<SidesProps> = ({ onClose }: SidesP
                      />
                   </div>
                   <Button.Link href={home_routes.summary_routes.new_document}>
-                     <Button.Button variant="primary" className="mx-auto my-0 p-3 text-sm">
+                     <Button.Button variant="primary" className="mx-auto my-0 p-3 text-sm" onClick={() => onClose()}>
                         Submit new document
                         <PlusCircle size={20} />
                      </Button.Button>
                   </Button.Link>
                   <div>
                      {items.map((item) => (
-                        <Item key={item.id} text={item.text} icon={item.icon} href={item.path} active={currentPath.includes(item.path)} />
+                        <Item
+                           key={item.id}
+                           text={item.text}
+                           icon={item.icon}
+                           href={item.path}
+                           active={currentPath.includes(item.path)}
+                           onClick={() => onClose()}
+                        />
                      ))}
                   </div>
                </div>
-               <Logout onLogout={() => router.push('/login')} />
+               <Logout onLogout={() => router.push(home_routes.home.index)} />
             </div>
          </ScrollArea>
       </React.Fragment>

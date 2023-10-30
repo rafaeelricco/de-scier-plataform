@@ -32,7 +32,7 @@ const Sidebar: React.FC = () => {
                   ))}
                </div>
             </div>
-            <Logout onLogout={() => router.push('/login')} />
+            <Logout onLogout={() => router.push(home_routes.home.index)} />
          </aside>
       </React.Fragment>
    )

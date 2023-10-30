@@ -11,7 +11,7 @@ import { NextRequest, NextResponse } from 'next/server'
  * sensitive routes.
  */
 
-const publicRoutes = ['/home', '/login']
+const publicRoutes = ['/home']
 
 export function middleware(request: NextRequest) {
    /** @dev Extract the 'next-auth.session-token' cookie from the request. */
@@ -28,7 +28,7 @@ export function middleware(request: NextRequest) {
     */
    if (!isAuthenticated && !publicRoutes.includes(request.nextUrl.pathname)) {
       const url = request.nextUrl.clone()
-      url.pathname = '/login'
+      url.pathname = '/home'
 
       return NextResponse.redirect(url)
    }

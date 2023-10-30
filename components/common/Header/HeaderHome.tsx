@@ -1,8 +1,12 @@
 'use client'
 
+import ForgotPasswordModal from '@/components/modules/ForgotPassword/ForgotPassword'
+import LoginModal from '@/components/modules/Login/Login'
+import RegisterModal from '@/components/modules/Register/Register'
 import { links } from '@/mock/sidebar_home_items'
 import { home_routes } from '@/routes/home'
 import * as Button from '@components/common/Button/Button'
+import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Drawer from '@components/common/Drawer/Drawer'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -26,10 +30,44 @@ export function HeaderMobile() {
       }
    }
 
+   const login_component = 'login'
+   const register_component = 'register'
+   const forgot_password_component = 'forgot_password'
+
    const [openNav, setOpenNav] = React.useState<'sidebar' | 'profile' | false>(false)
+   const [component, setComponent] = React.useState(login_component)
+   const [open, setOpen] = React.useState(false)
 
    return (
       <React.Fragment>
+         <Dialog.Root open={open}>
+            <Dialog.Overlay />
+            <Dialog.Content className={twMerge('w-[80%] max-w-[1200px] p-0', component === forgot_password_component && 'max-w-[500px]')}>
+               {component === login_component && (
+                  <LoginModal
+                     onClose={() => setOpen(false)}
+                     onForgotPassword={() => setComponent(forgot_password_component)}
+                     onLogin={() => setComponent(login_component)}
+                     onRegister={() => setComponent(register_component)}
+                  />
+               )}
+               {component === register_component && (
+                  <RegisterModal
+                     onBack={() => setComponent(login_component)}
+                     onClose={() => {
+                        setOpen(false)
+                        setComponent(login_component)
+                     }}
+                     onLogin={() => setComponent(login_component)}
+                     onRegister={() => setComponent(register_component)}
+                     onReturnToLogin={() => setComponent(login_component)}
+                  />
+               )}
+               {component === forgot_password_component && (
+                  <ForgotPasswordModal onBack={() => setComponent(login_component)} onClose={() => setComponent(login_component)} />
+               )}
+            </Dialog.Content>
+         </Dialog.Root>
          <aside className="lg:hidden z-50">
             <div className="mx-auto max-w-screen-xl px-6 py-3 rounded-none bg-white shadow-ligh">
                <div className="flex items-center justify-between">
@@ -53,7 +91,9 @@ export function HeaderMobile() {
                   </div>
                   <button
                      className="w-fit h-fit bg-purple px-4 py-2 cursor-pointer ring-0 hover:ring-8 group-focus:ring-4 ring-opacity-60 ring-primary-main duration-200 rounded-full p-2 text-sm font-semibold text-white shadow-sm"
-                     onClick={() => {}}
+                     onClick={() => {
+                        setComponent(login_component), setOpen(true)
+                     }}
                   >
                      Join deScier
                   </button>
@@ -68,12 +108,36 @@ export function HeaderMobile() {
                      <LogoDeScier className="max-w-[56px] w-full h-full" />
                      <X
                         className="w-10 h-10 mb-2 cursor-pointer hover:text-status-error transition-all duration-500 ease-out md:hover:scale-110 md:hover:rotate-180 transform"
-                        onClick={() => setOpenNav(false)}
+                        onClick={() => {
+                           setOpenNav(false)
+                           setTimeout(() => {
+                              setOpen(false), setComponent('')
+                           }, 300)
+                        }}
                      />
                   </div>
                   <div className="grid gap-4">
-                     <Button.Button className="rounded-full px-4 w-full py-2">Register</Button.Button>
-                     <Button.Button variant="outline" className="rounded-full px-4 w-full py-2">
+                     <Button.Button
+                        className="rounded-full px-4 w-full py-2"
+                        onClick={() => {
+                           setOpenNav(false)
+                           setTimeout(() => {
+                              setComponent(register_component), setOpen(true)
+                           }, 300)
+                        }}
+                     >
+                        Register
+                     </Button.Button>
+                     <Button.Button
+                        variant="outline"
+                        className="rounded-full px-4 w-full py-2"
+                        onClick={() => {
+                           setOpenNav(false)
+                           setTimeout(() => {
+                              setComponent(login_component), setOpen(true)
+                           }, 300)
+                        }}
+                     >
                         Login
                      </Button.Button>
                   </div>

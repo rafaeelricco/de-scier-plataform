@@ -372,7 +372,14 @@ export default function SubmitNewPaperPage() {
                   </div>
                   <div className="block md:hidden">
                      <Input.Root>
-                        <Input.Select label={'Document type'} options={document_types} placeholder="Title of the field" />
+                        <Input.Select
+                           label={'Document type'}
+                           options={document_types}
+                           placeholder="Title of the field"
+                           onValueChange={(value) => {
+                              setValue('documentType', value), trigger('documentType')
+                           }}
+                        />
                         <Input.Error>{errors.documentType?.message}</Input.Error>
                      </Input.Root>
                   </div>
