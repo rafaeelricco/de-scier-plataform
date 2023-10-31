@@ -212,7 +212,8 @@ const Select = React.forwardRef<HTMLInputElement, SelectInputProps>(
          icon,
          start = icon ? true : false,
          end,
-         required
+         required,
+         name
       }: SelectInputProps,
       ref
    ) => {
@@ -244,7 +245,7 @@ const Select = React.forwardRef<HTMLInputElement, SelectInputProps>(
                      </div>
                   )}
                   <div ref={triggerRef} className="w-full">
-                     <S.Trigger variant={variant} aria-controls="select-trigger">
+                     <S.Trigger variant={variant} name={name}>
                         <S.Value placeholder={placeholder} />
                         <S.Icon>
                            {hasIcon ? (
