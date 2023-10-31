@@ -37,7 +37,7 @@ const Dropzone = dynamic(() => import('@/components/common/Dropzone/Dropzone'), 
 
 export default function SubmitNewPaperPage() {
    const router = useRouter()
-   const { data: session } = useSession()
+   const { data: session, update: updateSession } = useSession()
 
    const [loading, setLoading] = useState(false)
    const [dialog, setDialog] = useState({ author: false, share_split: false, edit_author: false })
@@ -177,6 +177,19 @@ export default function SubmitNewPaperPage() {
          return
       }
 
+      if (session?.user?.userInfo) {
+         updateSession({
+            ...session,
+            user: {
+               ...session?.user,
+               userInfo: {
+                  ...session?.user?.userInfo,
+                  aiUsageLimit: session?.user?.userInfo?.aiUsageLimit - 1
+               }
+            }
+         })
+      }
+
       setValue('abstract', response.abstract)
       toast.success('Abstract generated successfully.')
    }
@@ -193,6 +206,19 @@ export default function SubmitNewPaperPage() {
       if (!response.success) {
          toast.error(response.message)
          return
+      }
+
+      if (session?.user?.userInfo) {
+         updateSession({
+            ...session,
+            user: {
+               ...session?.user,
+               userInfo: {
+                  ...session?.user?.userInfo,
+                  aiUsageLimit: session?.user?.userInfo?.aiUsageLimit - 1
+               }
+            }
+         })
       }
 
       setValue('abstractChart', response.chart)
@@ -466,7 +492,7 @@ export default function SubmitNewPaperPage() {
                         Generate Visual Abstract
                         <PlusCircleDotted size={18} className="fill-neutral-white" />
                      </Button.Button>
-                     <p className="text-sm text-neutral-gray">Careful! You can only generate the visual abstract once per file.</p>
+                     <p className="text-sm text-neutral-gray">You have {session?.user?.userInfo.aiUsageLimit} attempts left.</p>
                   </div>
                   {watch('abstractChart') !== '' && (
                      <div className="mermaid flex w-full justify-center mt-4" key={watch('abstractChart')}>
