@@ -4,21 +4,47 @@ import { ArticleCard } from '@/components/modules/Home/Index/ArticleCard/Article
 import { BannerStartPublishing } from '@/components/modules/Home/Index/BannerStartPublishing/BannerStartPublishing'
 import useWindowDimension from '@/hooks/useWindowDimension'
 import { articles } from '@/mock/articles_published'
+import { ConfirmProfileRequestProps, confirmProfileService } from '@/services/user/confirmProfile.service'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import '@styles/home.css'
 import Image from 'next/image'
+import { useSearchParams } from 'next/navigation'
 import IllustrationHero from 'public/svgs/modules/home/illustration-home.svg'
 import ShapeMobile from 'public/svgs/modules/home/shape-mobile.svg'
 import CirclesHero from 'public/svgs/modules/home/shapes/circles.svg'
 import ShapeHero from 'public/svgs/modules/home/shapes/shape1.svg'
 import ShapeSecondary from 'public/svgs/modules/home/shapes/shape2.svg'
 import ShapeTertiary from 'public/svgs/modules/home/shapes/shape3.svg'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { CaretRightFill, Eye, HandThumbsUpFill, Person, Search } from 'react-bootstrap-icons'
+import { toast } from 'react-toastify'
 
 export default function HomePage() {
    const { lg } = useWindowDimension()
+   const queryParams = useSearchParams()
+
+   const [isProfileConfirmed, setIsProfileConfirmed] = useState(false)
+
+   useEffect(() => {
+      const encodedConfirmProfileData = queryParams.get('data')
+      if (encodedConfirmProfileData) {
+         const confirmProfile = async (confirmProfileData: ConfirmProfileRequestProps) => {
+            if (!isProfileConfirmed) {
+               const response = await confirmProfileService(confirmProfileData)
+               if (response.success) {
+                  toast.success(' Your registration is now confirmed')
+                  setIsProfileConfirmed(true)
+                  return
+               }
+            }
+         }
+         const decodedConfirmProfileData = JSON.parse(Buffer.from(encodedConfirmProfileData, 'base64').toString('ascii'))
+         confirmProfile(decodedConfirmProfileData)
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [])
+
    return (
       <React.Fragment>
          <IllustrationHero className="hidden lg:block lg:w-[45%] xl:w-1/2 absolute right-0 md:top-48 lg:top-50 xl:top-60 h-full lg:max-w-[600px] xl:max-w-[708px] max-h-[554px]" />
