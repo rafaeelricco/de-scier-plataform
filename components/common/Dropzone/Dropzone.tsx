@@ -1,8 +1,9 @@
+'use client'
 import * as Button from '@components/common/Button/Button'
 import Image from 'next/image'
 import React from 'react'
 import { FileEarmarkText, Upload } from 'react-bootstrap-icons'
-import { useDropzone } from 'react-dropzone'
+import { Accept, useDropzone } from 'react-dropzone'
 import { twMerge } from 'tailwind-merge'
 import { DropzoneProps, StoredFile } from './Typing'
 
@@ -41,14 +42,33 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
       //  }
       handleAcceptedFiles(acceptedFiles.map((file) => createFilePreview(file as unknown as StoredFile)))
    }
+   const allowedExtensions: Record<'images' | 'documents', string[]> = {
+      images: ['.jpeg', '.png', '.webp', '.jpg'],
+      documents: ['.docx']
+   }
+
+   const allowedTypes: Accept = {
+      images: ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'],
+      documents: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+   }
+
+   const getAcceptedMimeTypes = (acceptType: keyof typeof allowedExtensions): Accept => {
+      const type = acceptType || 'documents'
+      const mimeTypes = allowedTypes[type]
+      const extensions = allowedExtensions[type]
+      return mimeTypes.reduce<Accept>((acc, mimeType, index) => {
+         acc[mimeType] = [extensions[index]]
+         return acc
+      }, {})
+   }
 
    // get files from dropzone using useDropzone hook
    // see more about useDropzone here: https://react-dropzone.js.org/
    const { getRootProps, getInputProps, isDragAccept, isDragActive, isDragReject, isFocused } = useDropzone({
       onDrop,
-      multiple: false
+      multiple: false,
+      accept: getAcceptedMimeTypes(accept || 'documents')
    })
-
    return (
       <>
          <div>

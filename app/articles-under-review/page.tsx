@@ -102,7 +102,7 @@ export default function ArticlesUnderReviewPage() {
                   <Dropdown label="Status:" className="min-w-[180px]" items={filter_status} onSelect={(value) => setStatus(value)} />
                </div>
             </div>
-            <div className="min-h-[calc(100vh-50vh)] md:min-h-[calc(100vh-30vh)] relative">
+            <div className="flex flex-col gap-6 min-h-[calc(50vh)]">
                <div className="grid gap-8">
                   <div className="grid md:grid-cols-2 gap-4">
                      {loading ? (
@@ -134,7 +134,7 @@ export default function ArticlesUnderReviewPage() {
                      )}
                   </div>
                </div>
-               <div className="flex justify-center absolute bottom-0 left-0 w-full">
+               <div className="flex justify-center h-full w-full">
                   <PaginationComponent
                      key={totalPages}
                      current={page}

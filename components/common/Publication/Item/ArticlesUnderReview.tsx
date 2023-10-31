@@ -28,14 +28,16 @@ export const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
    return (
       <React.Fragment>
          <div className="grid md:grid-cols-max-min-auto md:justify-start items-center gap-4 bg-[#fff] py-3 px-4 rounded-lg">
-            <Image
-               src={image || 'https://random.imagecdn.app/150/150'}
-               width={400}
-               height={400}
-               alt={title}
-               style={{ objectFit: 'cover' }}
-               className="rounded-md h-20 w-full object-cover"
-            />
+            <div className="relative w-full md:w-20 h-20">
+               <Image
+                  fill
+                  src={image || 'https://random.imagecdn.app/150/150'}
+                  alt={title}
+                  quality={50}
+                  style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                  className="rounded-md object-cover"
+               />
+            </div>
             <hr className="hidden md:block divider-v" />
             <hr className="block md:hidden divider-h" />
             <div className="grid gap-2 mt-[-8px]">

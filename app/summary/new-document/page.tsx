@@ -2,16 +2,16 @@
 
 import Box from '@/components/common/Box/Box'
 import { Pills } from '@/components/common/Button/Pill/Pill'
-import Dropzone from '@/components/common/Dropzone/Dropzone'
-import { StoredFile } from '@/components/common/Dropzone/Typing'
 import { NewAuthor } from '@/components/modules/Summary/NewArticle/Authors/NewAuthor'
 import { access_type_options } from '@/mock/access_type'
 import { document_types } from '@/mock/document_types'
 import { Author, Authorship, authors_headers, authorship_headers } from '@/mock/submit_new_document'
+import { home_routes } from '@/routes/home'
 import { AuthorProps, CreateDocumentProps, CreateDocumentSchema } from '@/schemas/create_document'
 import { generateAbstractService, generateChartAbstractService } from '@/services/document/generateAbstract.service'
 import { submitNewDocumentService } from '@/services/document/submit.service'
 import { uploadDocumentFileService } from '@/services/file/file.service'
+import { ErrorMessage } from '@/utils/error_message'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
@@ -19,7 +19,10 @@ import * as Title from '@components/common/Title/Page'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Reorder } from 'framer-motion'
 import { uniqueId } from 'lodash'
+import mermaid from 'mermaid'
 import { useSession } from 'next-auth/react'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/navigation'
 import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React, { useEffect, useState } from 'react'
 import { Clipboard, Pencil, PlusCircle, PlusCircleDotted, Trash, X } from 'react-bootstrap-icons'
@@ -27,11 +30,16 @@ import { CurrencyInput } from 'react-currency-mask'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { twMerge } from 'tailwind-merge'
-import mermaid from 'mermaid'
+
+const Dropzone = dynamic(() => import('@/components/common/Dropzone/Dropzone'), {
+   ssr: false
+})
 
 export default function SubmitNewPaperPage() {
+   const router = useRouter()
    const { data: session } = useSession()
 
+   const [loading, setLoading] = useState(false)
    const [dialog, setDialog] = useState({ author: false, share_split: false, edit_author: false })
    const [access_type, setAccessType] = useState('open-access')
    const [share, setShare] = useState('')
@@ -41,10 +49,6 @@ export default function SubmitNewPaperPage() {
    const [authorship_settings, setAuthorshipSettings] = useState<Author>()
    const [author_to_edit, setAuthorToEdit] = useState<Author | undefined>(undefined)
    const [keywords_temp, setKeywordsTemp] = useState<string | undefined>()
-   const [documentFile, setDocumentFile] = useState<StoredFile | null>()
-   const [cover, setCover] = useState<StoredFile | null>()
-   const [abstractLength, setAbstractLength] = useState<number>(0)
-   const [abstractText, setAbstractText] = useState<string>('')
    const [abstractChart, setAbstractChart] = useState<string>('')
 
    const {
@@ -68,14 +72,25 @@ export default function SubmitNewPaperPage() {
          field: '',
          price: '0',
          title: '',
+         file: {
+            lastModified: 0,
+            lastModifiedDate: new Date(),
+            name: '',
+            path: '',
+            preview: '',
+            size: 0,
+            type: ''
+         },
+         authors: [{}],
          keywords: []
       }
    })
 
+   console.log(watch())
+   console.log(errors)
+
    const {
       append,
-      replace,
-      update,
       remove,
       fields: keywords
    } = useFieldArray({
@@ -88,11 +103,7 @@ export default function SubmitNewPaperPage() {
    }
 
    const handleSubmitDocument: SubmitHandler<CreateDocumentProps> = async (data) => {
-      if (!documentFile || !cover) {
-         toast.error('You need upload a document file.')
-         return
-      }
-
+      setLoading(true)
       const requestData = {
          abstract: data.abstract,
          accessType: access_type === 'open-access' ? 'FREE' : 'PAID',
@@ -122,43 +133,41 @@ export default function SubmitNewPaperPage() {
          return
       }
 
-      // Upload document file
       const uploadDocumentSuccess = await uploadDocumentFileService({
          documentId: response.documentId,
-         fileLocalUrl: documentFile.preview,
-         filename: documentFile.name,
-         mimetype: documentFile.type
+         fileLocalUrl: watch('file').preview,
+         filename: watch('file').name,
+         mimetype: watch('file').type
       })
 
       if (!uploadDocumentSuccess) {
          toast.warning('There was an error uploading your file. But you can upload later.')
       }
 
-      // Upload cover image
       const uploadCoverSuccess = await uploadDocumentFileService({
          documentId: response.documentId,
-         fileLocalUrl: cover.preview,
-         filename: cover.name,
-         mimetype: cover.type
+         fileLocalUrl: watch('cover').preview,
+         filename: watch('cover').name,
+         mimetype: watch('cover').type
       })
 
       if (!uploadCoverSuccess) {
          toast.warning('There was an error uploading your file. But you can upload later.')
       }
 
-      toast.success(response.message)
+      if (response.success) {
+         toast.success(response.message)
+         router.push(home_routes.articles_under_review)
+         setLoading(false)
+      }
    }
 
    const handleGenerateAbstract = async () => {
       const toastId = toast.loading('Generating abstract with AI...')
-      if (!documentFile) {
-         toast.dismiss(toastId)
-         toast.error('Document file is required.')
-         return
-      }
+
       const response = await generateAbstractService({
-         fileLocalUrl: documentFile?.preview,
-         filename: documentFile?.name
+         fileLocalUrl: getValues('file').preview,
+         filename: getValues('file').name
       })
 
       toast.dismiss(toastId)
@@ -169,19 +178,14 @@ export default function SubmitNewPaperPage() {
       }
 
       setValue('abstract', response.abstract)
-      setAbstractText(response.abstract)
       toast.success('Abstract generated successfully.')
    }
 
    const handleGenerateChart = async () => {
       const toastId = toast.loading('Generating chart with AI...')
-      if (!abstractText) {
-         toast.dismiss(toastId)
-         toast.error('Abstract is required.')
-         return
-      }
+
       const response = await generateChartAbstractService({
-         abstract: abstractText
+         abstract: getValues('abstract')
       })
 
       toast.dismiss(toastId)
@@ -191,9 +195,8 @@ export default function SubmitNewPaperPage() {
          return
       }
 
-      //setValue('abstractChart', response.chart)
+      setValue('abstractChart', response.chart)
       setAbstractChart(response.chart)
-
       toast.success('Chart generated successfully.')
    }
 
@@ -208,40 +211,30 @@ export default function SubmitNewPaperPage() {
    useEffect(() => {
       if (session?.user) {
          const author = {
-            id: '1',
+            id: uniqueId(`${session?.user?.userInfo.id}`),
             email: session?.user?.userInfo.email,
             name: session?.user?.userInfo.name,
-            revenuePercent: 0,
+            revenuePercent: '0',
             title: session?.user?.userInfo.title || '',
             walletAddress: session?.user?.userInfo.walletAddress || ''
          }
-         setAuthors([author])
+         setValue('authors', [author])
       }
-   }, [session?.user])
-
-   useEffect(() => {
-      if (abstractText) {
-         const splittedAbstract = abstractText.split(/\s+/)
-         setAbstractLength(splittedAbstract.length)
-      }
-   }, [abstractText])
-
-   useEffect(() => {
-      mermaid.initialize({ startOnLoad: false })
-   }, [])
+   }, [session?.user, setValue])
 
    useEffect(() => {
       const runMermaid = async () => {
          mermaid.initialize({ startOnLoad: false })
-         await mermaid.run({
-            querySelector: '.mermaid'
-         })
+         await mermaid.run({ querySelector: '.mermaid' })
       }
-      console.log(abstractChart)
-      if (abstractChart) {
+
+      if (watch('abstractChart')) {
          runMermaid()
+      } else {
+         console.log('no chart')
       }
-   }, [abstractChart])
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [abstractChart, watch('abstractChart')])
 
    return (
       <React.Fragment>
@@ -427,20 +420,32 @@ export default function SubmitNewPaperPage() {
                      </Input.Root>
                   </div>
                </div>
-               <Dropzone
-                  thumbnail={false}
-                  accept={{
-                     'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
-                     'application/pdf': ['.pdf']
-                  }}
-                  setSelectedFile={(file) => setDocumentFile(file)}
-               />
+               <div className="flex flex-col gap-2">
+                  <Dropzone
+                     accept="documents"
+                     thumbnail={false}
+                     setSelectedFile={(file) => {
+                        if (file) {
+                           setValue('file', file)
+                           trigger('file')
+                        }
+                     }}
+                  />
+                  <div className="flex w-full justify-center">
+                     <Input.Error>
+                        {ErrorMessage({
+                           error: errors.file?.name?.type,
+                           message: 'File is required.'
+                        })}
+                     </Input.Error>
+                  </div>
+               </div>
                <Input.Root>
                   <Input.Label className="flex gap-2 items-center">
                      <span className="text-sm font-semibold">Abstract</span>
-                     <span className="text-sm text-neutral-light_gray font-semibold">{abstractLength}/2000 words</span>
+                     <span className="text-sm text-neutral-light_gray font-semibold">0/2000 words</span>
                   </Input.Label>
-                  <Input.TextArea value={abstractText} onChange={(e) => setAbstractText(e.target.value)} rows={4} placeholder="Title of the field" />
+                  <Input.TextArea {...register('abstract')} rows={4} placeholder="Title of the field" />
                   <Input.Error>{errors.abstract?.message}</Input.Error>
                </Input.Root>
                <div className="flex flex-col md:flex-row md:items-center gap-4">
@@ -463,16 +468,32 @@ export default function SubmitNewPaperPage() {
                      </Button.Button>
                      <p className="text-sm text-neutral-gray">Careful! You can only generate the visual abstract once per file.</p>
                   </div>
-
-                  <div className="mermaid">{abstractChart}</div>
+                  {watch('abstractChart') !== '' && (
+                     <div className="mermaid flex w-full justify-center mt-4" key={watch('abstractChart')}>
+                        {watch('abstractChart')}
+                     </div>
+                  )}
                </div>
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
                   <Dropzone
-                     //  accept={{ 'image/*': ['.jpeg', '.png'] }}
+                     accept="images"
                      placeholder="Upload cover picture (.png, .jpg)"
-                     setSelectedFile={(file) => setCover(file)}
+                     setSelectedFile={(file) => {
+                        if (file) {
+                           setValue('cover', file)
+                           trigger('cover')
+                        }
+                     }}
                   />
+                  <div className="flex justify-center w-full">
+                     <Input.Error>
+                        {ErrorMessage({
+                           error: errors.cover?.type,
+                           message: 'Cover is required.'
+                        })}
+                     </Input.Error>
+                  </div>
                </div>
             </Box>
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
@@ -662,7 +683,7 @@ export default function SubmitNewPaperPage() {
                   </React.Fragment>
                )}
             </Box>
-            <Button.Button type="submit" variant="primary">
+            <Button.Button type="submit" variant="primary" loading={loading}>
                Submit paper for review
                <Clipboard className="w-5" />
             </Button.Button>

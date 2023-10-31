@@ -26,6 +26,7 @@ import { twMerge } from 'tailwind-merge'
 
 export default function ArticleInReviewPage({ params }: { params: { slug: string } }) {
    const router = useRouter()
+
    const { fetch_article } = useArticles()
 
    const [items, setItems] = React.useState(authors_mock)
