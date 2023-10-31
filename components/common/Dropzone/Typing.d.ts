@@ -9,7 +9,7 @@ interface DropzoneProps {
    placeholder?: string
    message?: string
    thumbnail?: boolean
-   accept?: { [fileType: string]: string[] } | undefined
+   accept?: 'images' | 'documents'
 }
 
 interface FileWithPreview {
