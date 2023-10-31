@@ -5,7 +5,7 @@ import { Pills } from '@/components/common/Button/Pill/Pill'
 import { NewAuthor } from '@/components/modules/Summary/NewArticle/Authors/NewAuthor'
 import { access_type_options } from '@/mock/access_type'
 import { document_types } from '@/mock/document_types'
-import { Author, Authorship, authors_headers, authorship_headers } from '@/mock/submit_new_document'
+import { Author, authors_headers, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
 import { AuthorProps, CreateDocumentProps, CreateDocumentSchema } from '@/schemas/create_document'
 import { generateAbstractService, generateChartAbstractService } from '@/services/document/generateAbstract.service'
@@ -31,9 +31,7 @@ import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { twMerge } from 'tailwind-merge'
 
-const Dropzone = dynamic(() => import('@/components/common/Dropzone/Dropzone'), {
-   ssr: false
-})
+const Dropzone = dynamic(() => import('@/components/common/Dropzone/Dropzone'), { ssr: false })
 
 export default function SubmitNewPaperPage() {
    const router = useRouter()
@@ -45,8 +43,9 @@ export default function SubmitNewPaperPage() {
    const [share, setShare] = useState('')
    const [wallet, setWallet] = useState('')
    const [authors, setAuthors] = useState<Author[]>([])
-   const [authorship, setAuthorship] = useState<Authorship[]>([])
+   console.log('authors', authors)
    const [authorship_settings, setAuthorshipSettings] = useState<Author>()
+   console.log('authorship_settings', authorship_settings)
    const [author_to_edit, setAuthorToEdit] = useState<Author | undefined>(undefined)
    const [keywords_temp, setKeywordsTemp] = useState<string | undefined>()
    const [abstractChart, setAbstractChart] = useState<string>('')
@@ -55,7 +54,7 @@ export default function SubmitNewPaperPage() {
       register,
       handleSubmit,
       watch,
-      formState: { errors, isValid },
+      formState: { errors },
       setValue,
       trigger,
       getValues,
@@ -86,17 +85,7 @@ export default function SubmitNewPaperPage() {
       }
    })
 
-   console.log(watch())
-   console.log(errors)
-
-   const {
-      append,
-      remove,
-      fields: keywords
-   } = useFieldArray({
-      name: 'keywords',
-      control: control
-   })
+   const { append, remove, fields: keywords } = useFieldArray({ name: 'keywords', control: control })
 
    const onReorder = (newOrder: typeof authors) => {
       setAuthors((prevItems) => [...newOrder])
@@ -130,6 +119,7 @@ export default function SubmitNewPaperPage() {
 
       if (!response.success) {
          toast.error(response.message)
+         setLoading(false)
          return
       }
 
@@ -228,9 +218,16 @@ export default function SubmitNewPaperPage() {
 
    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.keyCode === 13) {
-         e.preventDefault()
-         append({ id: uniqueId('key'), name: keywords_temp as string })
-         setKeywordsTemp('')
+         if (keywords_temp && keywords_temp.trim() !== '') {
+            e.preventDefault()
+            append({ id: uniqueId('key'), name: keywords_temp as string })
+            setKeywordsTemp('')
+         } else {
+            setError('keywords', {
+               type: 'manual',
+               message: 'Keyword is required.'
+            })
+         }
       }
    }
 
@@ -629,7 +626,16 @@ export default function SubmitNewPaperPage() {
                      <Input.Select
                         label={'Type of access'}
                         placeholder="Select the type of access"
-                        onValueChange={(value) => setAccessType(value)}
+                        onValueChange={(value) => {
+                           const value_access = value as unknown as CreateDocumentProps['accessType']
+
+                           if (value_access === 'FREE') {
+                              setAccessType(value)
+                              setAuthorshipSettings(undefined)
+                           } else {
+                              setAccessType(value)
+                           }
+                        }}
                         value={access_type}
                         options={access_type_options}
                      />

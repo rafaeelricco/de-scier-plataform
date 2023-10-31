@@ -25,3 +25,17 @@ export function truncate(name: string, max: number): string {
 
    return `${startPart}...${endPart}.${fileExtension}`
 }
+
+export function formatName(fullName: string) {
+   const names = fullName.split(' ')
+
+   if (names.length < 3) {
+      return fullName
+   }
+
+   const firstName = names[0]
+   const middleInitial = names[1].charAt(0) + '.'
+   const lastName = names[names.length - 1]
+
+   return `${firstName} ${middleInitial} ${lastName}`
+}
