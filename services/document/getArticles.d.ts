@@ -5,6 +5,10 @@ export type DocumentPaginationProps = {
    }
 }
 
+export type DocumentGetProps = {
+   document: DocumentProps
+}
+
 export type DocumentProps = {
    id: string
    title: string

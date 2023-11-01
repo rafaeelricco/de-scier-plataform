@@ -3,20 +3,17 @@ import { formatName } from '@/utils/format_texts'
 import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import PlaceholderImage from 'public/images/profile_dk08wk.png'
 import LogoutIcon from 'public/svgs/common/sidebar/Icons/logout.svg'
 import React from 'react'
 
 const Logout: React.FC<{ onLogout: () => void }> = ({ onLogout }: { onLogout: () => void }) => {
    const router = useRouter()
    const { data } = useSession()
-   console.log(data)
 
    const handleLogout = async () => {
       await signOut()
       router.push(home_routes.home.index)
    }
-
    return (
       <React.Fragment>
          <div className="grid grid-flow-col items-center justify-start gap-4">
@@ -26,7 +23,7 @@ const Logout: React.FC<{ onLogout: () => void }> = ({ onLogout }: { onLogout: ()
                   height={200}
                   alt="avatar"
                   priority={true}
-                  src={data?.user?.userInfo.avatar || PlaceholderImage}
+                  src={data?.user?.userInfo.avatar || '/images/profile_dk08wk.png'}
                   style={{
                      objectFit: 'cover',
                      width: '100%',

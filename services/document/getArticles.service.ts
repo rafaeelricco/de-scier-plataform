@@ -2,7 +2,7 @@ import { ArticleUnderReviewProps } from '@/components/common/Publication/Item/Ar
 import { format } from 'date-fns'
 import { getSession, useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
-import { DocumentPaginationProps, DocumentProps } from './getArticles'
+import { DocumentGetProps, DocumentPaginationProps, DocumentProps } from './getArticles'
 
 /**
  * @title useArticles
@@ -85,7 +85,7 @@ export const useArticles = () => {
                }
             })
 
-            const response: DocumentProps = await request.json().then((res) => {
+            const response: DocumentGetProps = await request.json().then((res) => {
                return res
             })
 

@@ -8,19 +8,23 @@ import { File } from '@/components/common/File/File'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Skeleton } from '@/components/ui/skeleton'
 import { comments, files, header_editor_reviewer } from '@/mock/article_under_review'
 import { document_types } from '@/mock/document_types'
 import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
+import { DocumentGetProps } from '@/services/document/getArticles'
 import { useArticles } from '@/services/document/getArticles.service'
 import { truncate } from '@/utils/format_texts'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
 import { Reorder } from 'framer-motion'
+import { isEqual } from 'lodash'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React from 'react'
-import { ArrowLeft, Check, FileEarmarkText, Pencil, Person, PlusCircle, PlusCircleDotted, Trash, X } from 'react-bootstrap-icons'
+import { ArrowLeft, CardText, Check, FileEarmarkText, Pencil, Person, PlusCircle, PlusCircleDotted, Trash, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { twMerge } from 'tailwind-merge'
 
@@ -29,6 +33,8 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
 
    const { fetch_article } = useArticles()
 
+   const [article, setArticle] = React.useState<DocumentGetProps | null>(null)
+   console.log('article', article)
    const [items, setItems] = React.useState(authors_mock)
    const [share, setShare] = React.useState('')
    const [authors, setAuthors] = React.useState<Author[]>(authors_mock)
@@ -38,17 +44,44 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
    const [popover, setPopover] = React.useState({ copy_link: false })
    const [dialog, setDialog] = React.useState({ author: false, share_split: false, edit_author: false, reasoning: false })
 
+   const fetchSingleArticle = async (documentId: string) => {
+      const fetchedArticle = await fetch_article(documentId).then((res) => {
+         setArticle(res as DocumentGetProps)
+      })
+   }
+
    React.useEffect(() => {
-      const fetchArticle = async (documentId: string) => {
-         const article = await fetch_article(params.slug)
-         console.log('Article', article)
-      }
-      fetchArticle(params.slug)
-   }, [params.slug, fetch_article])
+      fetchSingleArticle(params.slug)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [params.slug])
 
    const onReorder = (newOrder: typeof items) => {
       setItems((prevItems) => [...newOrder])
    }
+
+   const { data } = useSession()
+
+   const [loading, setLoading] = React.useState(false)
+   const [is_author, setIsAuthor] = React.useState(false)
+
+   React.useEffect(() => {
+      setLoading(true)
+      const isAuthor = () => {
+         const author_id = typeof data?.user?.userInfo?.id === 'string' ? data.user.userInfo.id.trim() : ''
+         const document_author_id = typeof article?.document.userId === 'string' ? article.document.userId.trim() : ''
+
+         if (isEqual(author_id, document_author_id)) {
+            setIsAuthor(true)
+         } else {
+            setIsAuthor(false)
+         }
+         setLoading(false)
+      }
+
+      if (article?.document?.userId && data?.user?.userInfo?.id) {
+         isAuthor()
+      }
+   }, [article?.document?.userId, data?.user?.userInfo?.id])
 
    return (
       <React.Fragment>
@@ -68,10 +101,8 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                <h1 className="text-1xl font-semibold">Article in review</h1>
             </div>
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
-               <div className="flex items-center gap-2 border border-neutral-stroke_light w-fit py-1 px-3 rounded-md">
-                  <Person className="text-primary-light" />
-                  <p className="text-xs md:text-sm text-primary-light font-semibold select-none">You are the Author of the document</p>
-               </div>
+               {loading && <Skeleton className="flex items-center gap-2 w-72 py-1 px-3 rounded-md h-7" />}
+               {is_author ? <YouAreAuthor /> : <YouAreReviwer />}
                <div className="grid gap-x-6 gap-y-4">
                   <div className="grid md:grid-cols-2 gap-6">
                      <Input.Root>
@@ -494,6 +525,28 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   Publish document
                </Button.Button>
             </Box>
+         </div>
+      </React.Fragment>
+   )
+}
+
+const YouAreAuthor = () => {
+   return (
+      <React.Fragment>
+         <div className="flex items-center gap-2 border border-neutral-stroke_light w-fit py-1 px-3 rounded-md">
+            <Person className="text-primary-light" />
+            <p className="text-xs md:text-sm text-primary-light font-semibold select-none">You are the Author of the document</p>
+         </div>
+      </React.Fragment>
+   )
+}
+
+const YouAreReviwer = () => {
+   return (
+      <React.Fragment>
+         <div className="flex items-center gap-2 border border-neutral-stroke_light w-fit py-1 px-3 rounded-md">
+            <CardText className="text-[#B48E2B]" />
+            <p className="text-xs md:text-sm text-[#B48E2B] font-semibold select-none">You are added as a Reviewer for this article</p>
          </div>
       </React.Fragment>
    )
