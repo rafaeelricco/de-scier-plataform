@@ -26,7 +26,6 @@ const Logout: React.FC<{ onLogout: () => void }> = ({ onLogout }: { onLogout: ()
                   height={200}
                   alt="avatar"
                   priority={true}
-                  placeholder="blur"
                   src={data?.user?.userInfo.avatar || PlaceholderImage}
                   style={{
                      objectFit: 'cover',

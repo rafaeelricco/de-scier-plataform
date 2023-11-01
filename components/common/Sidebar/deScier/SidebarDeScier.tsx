@@ -48,7 +48,6 @@ const Logout: React.FC<{ onLogout: () => void }> = ({ onLogout }: { onLogout: ()
                   height={42}
                   alt="avatar"
                   priority={true}
-                  placeholder="blur"
                   src={deScierLogo}
                   style={{ objectFit: 'contain' }}
                   className="hover:scale-110 transition-all duration-300"

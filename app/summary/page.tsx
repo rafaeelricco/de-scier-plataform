@@ -7,12 +7,52 @@ import Statistics from '@/components/modules/Summary/Statistics/Statistics'
 import Submission from '@/components/modules/Summary/Submission/Submission'
 import TopPapers from '@/components/modules/Summary/TopPapers/TopPapers'
 import * as Title from '@components/common/Title/Page'
+import * as Dialog from '@components/common/Dialog/Digalog'
 import '@styles/summary.css'
-import React from 'react'
+import { useSearchParams } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
+import WithLink from '@/components/modules/Login/Modals/WithLink/WithLink'
 
 export default function HomePage() {
+   const queryParams = useSearchParams()
+
+   const [open, setOpen] = useState(false)
+   const [inviteData, setInviteData] = useState({
+      article: '',
+      author: '',
+      inviteCode: ''
+   })
+
+   useEffect(() => {
+      const encodedInviteData = queryParams.get('invite')
+      if (encodedInviteData) {
+         console.log('inviteData', encodedInviteData)
+         const decodedInviteData = JSON.parse(Buffer.from(encodedInviteData, 'base64').toString('ascii'))
+         console.log('inviteData', decodedInviteData)
+         setInviteData({
+            article: decodedInviteData.documentTitle,
+            author: decodedInviteData.user,
+            inviteCode: decodedInviteData.inviteCode
+         })
+         setOpen(true)
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [])
+
    return (
       <React.Fragment>
+         <Dialog.Root open={open}>
+            <Dialog.Overlay />
+            <Dialog.Content className="w-[80%]">
+               <WithLink
+                  onDecline={() => setOpen(false)}
+                  article_name={inviteData.article}
+                  invited_by={inviteData.author}
+                  inviteCode={inviteData.inviteCode}
+                  onWantToReview={() => {}}
+               />
+            </Dialog.Content>
+         </Dialog.Root>
          <div>
             <Title.Root>
                <Title.Title>My performance</Title.Title>

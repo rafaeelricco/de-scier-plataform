@@ -2,7 +2,11 @@ import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import React from 'react'
 
-const WithLink: React.FC<WithLinkProps> = ({ article_name, invited_by, onDecline, onWantToReview }: WithLinkProps) => {
+const WithLink: React.FC<WithLinkProps> = ({ article_name, invited_by, inviteCode, onDecline, onWantToReview }: WithLinkProps) => {
+   const handleSubmitReview = async () => {
+      console.log('code', inviteCode)
+   }
+
    return (
       <React.Fragment>
          <div className="grid gap-6">
@@ -12,7 +16,7 @@ const WithLink: React.FC<WithLinkProps> = ({ article_name, invited_by, onDecline
                   {invited_by} invited you to be a reviewer/editor for {article_name}, are you interested?
                </p>
             </div>
-            <div>
+            <div className="grid grid-cols-2 gap-6">
                <Input.Root>
                   <Input.Label>Your title</Input.Label>
                   <Input.Input placeholder="Ex: Biologist" />
@@ -23,7 +27,7 @@ const WithLink: React.FC<WithLinkProps> = ({ article_name, invited_by, onDecline
                </Input.Root>
             </div>
             <div className="grid gap-4">
-               <Button.Button className="py-3 px-8" onClick={onWantToReview}>
+               <Button.Button className="py-3 px-8" onClick={handleSubmitReview}>
                   I want to review/edit!
                </Button.Button>
                <Button.Button variant="outline" className="py-3 px-8" onClick={onDecline}>
@@ -38,6 +42,7 @@ const WithLink: React.FC<WithLinkProps> = ({ article_name, invited_by, onDecline
 interface WithLinkProps {
    invited_by: string
    article_name: string
+   inviteCode: string
    onWantToReview: () => void
    onDecline: () => void
 }
