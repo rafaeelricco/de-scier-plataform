@@ -24,7 +24,8 @@ export default function HomePage() {
    })
 
    useEffect(() => {
-      const encodedInviteData = queryParams.get('invite')
+      const encodedInviteData = queryParams.get('invite') || localStorage.getItem('invite')
+
       if (encodedInviteData) {
          const decodedInviteData = JSON.parse(Buffer.from(encodedInviteData, 'base64').toString('ascii'))
          setInviteData({

@@ -25,10 +25,16 @@ const WithLink: React.FC<WithLinkProps> = ({ article_name, invited_by, inviteCod
    const handleSubmitReview: SubmitHandler<UpdateInviteStatusProps> = async (data) => {
       setLoading(true)
       const response = await updateInviteStatusService(data)
+      setLoading(false)
+
+      const hasInviteOnLocalStorage = localStorage.getItem('invite')
+      if (hasInviteOnLocalStorage) {
+         localStorage.removeItem('invite')
+      }
 
       if (response.success) {
          toast.success(`Invite ${data.inviteStatus} successfully.`)
-         setLoading(false)
+
          onClose()
          router.push(home_routes.as_reviewer)
          return

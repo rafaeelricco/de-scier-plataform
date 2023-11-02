@@ -28,6 +28,7 @@ export default function HomePage() {
 
    useEffect(() => {
       const encodedConfirmProfileData = queryParams.get('data')
+
       if (encodedConfirmProfileData) {
          const confirmProfile = async (confirmProfileData: ConfirmProfileRequestProps) => {
             if (!isProfileConfirmed) {
@@ -41,6 +42,11 @@ export default function HomePage() {
          }
          const decodedConfirmProfileData = JSON.parse(Buffer.from(encodedConfirmProfileData, 'base64').toString('ascii'))
          confirmProfile(decodedConfirmProfileData)
+      }
+
+      const encodedReviewerInviteData = queryParams.get('invite')
+      if (encodedReviewerInviteData) {
+         localStorage.setItem('invite', encodedReviewerInviteData)
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [])
