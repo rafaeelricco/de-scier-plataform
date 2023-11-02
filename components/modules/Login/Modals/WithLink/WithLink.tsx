@@ -43,6 +43,14 @@ const WithLink: React.FC<WithLinkProps> = ({ article_name, invited_by, inviteCod
       toast.error(response.message)
    }
 
+   const handleDecline = () => {
+      const hasInviteOnLocalStorage = localStorage.getItem('invite')
+      if (hasInviteOnLocalStorage) {
+         localStorage.removeItem('invite')
+      }
+      onClose()
+   }
+
    return (
       <React.Fragment>
          <form className="grid gap-6" onSubmit={handleSubmit(handleSubmitReview)}>
@@ -72,7 +80,7 @@ const WithLink: React.FC<WithLinkProps> = ({ article_name, invited_by, inviteCod
                <Button.Button className="py-3 px-8" type="submit" loading={loading}>
                   I want to review/edit!
                </Button.Button>
-               <Button.Button variant="outline" className="py-3 px-8" onClick={onClose}>
+               <Button.Button variant="outline" className="py-3 px-8" onClick={handleDecline}>
                   No, thanks
                </Button.Button>
             </div>
