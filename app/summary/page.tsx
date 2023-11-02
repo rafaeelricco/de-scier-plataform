@@ -26,9 +26,7 @@ export default function HomePage() {
    useEffect(() => {
       const encodedInviteData = queryParams.get('invite')
       if (encodedInviteData) {
-         console.log('inviteData', encodedInviteData)
          const decodedInviteData = JSON.parse(Buffer.from(encodedInviteData, 'base64').toString('ascii'))
-         console.log('inviteData', decodedInviteData)
          setInviteData({
             article: decodedInviteData.documentTitle,
             author: decodedInviteData.user,
@@ -45,11 +43,10 @@ export default function HomePage() {
             <Dialog.Overlay />
             <Dialog.Content className="w-[80%]">
                <WithLink
-                  onDecline={() => setOpen(false)}
+                  onClose={() => setOpen(false)}
                   article_name={inviteData.article}
                   invited_by={inviteData.author}
                   inviteCode={inviteData.inviteCode}
-                  onWantToReview={() => {}}
                />
             </Dialog.Content>
          </Dialog.Root>
