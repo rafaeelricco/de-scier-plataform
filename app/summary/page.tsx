@@ -42,7 +42,7 @@ export default function HomePage() {
       <React.Fragment>
          <Dialog.Root open={open}>
             <Dialog.Overlay />
-            <Dialog.Content className="w-[80%]">
+            <Dialog.Content className="w-[50%] min-w-[750px]">
                <WithLink
                   onClose={() => setOpen(false)}
                   article_name={inviteData.article}
