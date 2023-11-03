@@ -1,8 +1,5 @@
 export type DocumentPaginationProps = {
-   documents: {
-      pagination: PaginationProps
-      data: DocumentProps[]
-   }
+   documents: DocumentProps[]
 }
 
 export type DocumentGetProps = {

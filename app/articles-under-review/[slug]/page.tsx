@@ -27,6 +27,7 @@ import React from 'react'
 import { ArrowLeft, CardText, Check, FileEarmarkText, Pencil, Person, PlusCircle, PlusCircleDotted, Trash, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { twMerge } from 'tailwind-merge'
+import mermaid from 'mermaid'
 
 export default function ArticleInReviewPage({ params }: { params: { slug: string } }) {
    const router = useRouter()
@@ -47,6 +48,8 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
    const fetchSingleArticle = async (documentId: string) => {
       const fetchedArticle = await fetch_article(documentId).then((res) => {
          setArticle(res as DocumentGetProps)
+         const access = res?.document.accessType === 'FREE' ? 'open-access' : 'paid-access'
+         setAccessType(access)
       })
    }
 
@@ -83,6 +86,20 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
       }
    }, [article?.document?.userId, data?.user?.userInfo?.id])
 
+   React.useEffect(() => {
+      const runMermaid = async () => {
+         mermaid.initialize({ startOnLoad: false, fontSize: 25 })
+         await mermaid.run({ querySelector: '.mermaid' })
+      }
+
+      if (article?.document.abstractChart) {
+         runMermaid()
+      } else {
+         console.log('no chart')
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [article?.document.abstractChart])
+
    return (
       <React.Fragment>
          <Dialog.Root open={dialog.reasoning}>
@@ -110,7 +127,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                            <span className="text-sm font-semibold">Title</span>
                            <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
                         </Input.Label>
-                        <Input.Input placeholder="Title of the article" />
+                        <Input.Input placeholder="Title of the article" defaultValue={article?.document.title} />
                      </Input.Root>
                      <Input.Root>
                         <Input.Label>Add keywords (Max 5)</Input.Label>
@@ -137,7 +154,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                            <span className="text-sm font-semibold">Field</span>
                            <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
                         </Input.Label>
-                        <Input.Input placeholder="Title of the field" />
+                        <Input.Input placeholder="Title of the field" defaultValue={article?.document.field} />
                      </Input.Root>
                   </div>
                </div>
@@ -158,13 +175,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                      <span className="text-sm font-semibold">Abstract</span>
                      <span className="text-sm text-neutral-light_gray font-semibold">0/2000 words</span>
                   </Input.Label>
-                  <Input.TextArea
-                     defaultValue={
-                        'Microplastic pollution has emerged as a critical environmental concern, posing significant threats to coastal ecosystems worldwide. This comprehensive study investigates the origins, ecological impacts, and innovative mitigation approaches for microplastic contamination. Through extensive field surveys and laboratory analyses, we identify key sources of microplastics, including plastic debris breakdown and wastewater discharge. Furthermore, our research elucidates the detrimental effects of microplastics on marine organisms, emphasizing disruptions in food chains and potential health risks to humans through seafood consumption. In response to these challenges, we evaluate various mitigation strategies, such as advanced filtration technologies, biodegradable polymers, and public awareness campaigns. Our findings underscore the urgent need for interdisciplinary efforts to curb microplastic pollution and protect the integrity of coastal ecosystems.'
-                     }
-                     rows={4}
-                     placeholder="Title of the field"
-                  />
+                  <Input.TextArea defaultValue={article?.document.abstract} rows={4} placeholder="Title of the field" />
                </Input.Root>
                <div className="flex flex-col md:flex-row md:items-center gap-4">
                   <Button.Button variant="outline" className="px-4 py-3 md:w-fit text-sm">
@@ -186,6 +197,9 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                      </Button.Button>
                      <p className="text-sm text-neutral-gray">Careful! You can only generate the visual abstract once per file.</p>
                   </div>
+                  {article?.document.abstractChart && (
+                     <div className="mermaid flex w-full zoom-in-125 justify-center mt-4">{article?.document.abstractChart}</div>
+                  )}
                </div>
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
@@ -199,15 +213,19 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                      <Dropzone setSelectedFile={(file) => console.log(file)} />
                      <ScrollArea className="h-[200px] pr-2">
                         <div className="grid gap-4">
-                           {files.map((file) => (
-                              <File
-                                 key={file.file_name + file.uploaded_at}
-                                 file_name={file.file_name}
-                                 link="www.google.com"
-                                 uploaded_at={file.uploaded_at}
-                                 uploaded_by={file.uploaded_by}
-                              />
-                           ))}
+                           {article?.document?.documentVersions && article?.document?.documentVersions?.length > 0 ? (
+                              article?.document?.documentVersions?.map((file) => (
+                                 <File
+                                    key={file.id}
+                                    file_name={file.fileName || 'file.docx'}
+                                    link={file.link}
+                                    uploaded_at={new Date(file.createdAt).toLocaleDateString('pt-BR')}
+                                    uploaded_by={data?.user?.userInfo.name || ''}
+                                 />
+                              ))
+                           ) : (
+                              <p className="text-center col-span-2 text-gray-500 mt-8">There are no files inserted into this document.</p>
+                           )}
                         </div>
                      </ScrollArea>
                   </div>
@@ -221,18 +239,22 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                <div className="border rounded-md p-4">
                   <ScrollArea className="lg:h-[300px] 2xl:h-[400px] pr-2">
                      <div className="grid gap-4">
-                        {comments.map((comment) => (
-                           <React.Fragment key={comment.id}>
-                              <CommentItem
-                                 comment_author={comment.comment_author}
-                                 comment_content={comment.comment_content}
-                                 status={comment.status as 'proposal_accepted' | 'proposal_rejected' | 'proposal_pending'}
-                                 onApprove={() => console.log('approved', comment)}
-                                 onReject={() => console.log('rejected', comment)}
-                                 onSeeReasoning={() => setDialog({ ...dialog, reasoning: true })}
-                              />
-                           </React.Fragment>
-                        ))}
+                        {article?.document.documentComments && article?.document.documentComments?.length > 0 ? (
+                           article?.document.documentComments?.map((comment) => (
+                              <React.Fragment key={comment.id}>
+                                 <CommentItem
+                                    comment_author={comment.user.name}
+                                    comment_content={comment.comment}
+                                    status={comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED'}
+                                    onApprove={() => console.log('approved', comment)}
+                                    onReject={() => console.log('rejected', comment)}
+                                    onSeeReasoning={() => setDialog({ ...dialog, reasoning: true })}
+                                 />
+                              </React.Fragment>
+                           ))
+                        ) : (
+                           <p className="text-center col-span-2 text-gray-500 mt-8">There are no comments on this document.</p>
+                        )}
                      </div>
                   </ScrollArea>
                </div>
@@ -260,7 +282,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                      </div>
                      <Reorder.Group axis="y" values={authors} onReorder={onReorder}>
                         <div className="grid gap-2">
-                           {authors.map((item, index) => (
+                           {article?.document.authorsOnDocuments?.map((item, index) => (
                               <Reorder.Item key={item.id} value={item} id={item.id}>
                                  <div className="grid md:grid-cols-3 items-center px-0 py-3 rounded-md cursor-grab">
                                     <div className="flex items-center gap-4">
@@ -269,20 +291,20 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                                           <p className="text-sm text-blue-gray">{index + 1}º</p>
                                        </div>
                                        <div>
-                                          <p className="text-sm text-secundary_blue-main font-semibold md:font-regular">{item.name}</p>
+                                          <p className="text-sm text-secundary_blue-main font-semibold md:font-regular">{item.author?.name}</p>
                                           <div className="block md:hidden">
-                                             <p className="text-sm text-secundary_blue-main">{item.title}</p>
+                                             <p className="text-sm text-secundary_blue-main">{item.author?.title}</p>
                                           </div>
                                           <div className="block md:hidden">
-                                             <p className="text-sm text-secundary_blue-main">{item.email}</p>
+                                             <p className="text-sm text-secundary_blue-main">{item.author?.email}</p>
                                           </div>
                                        </div>
                                     </div>
                                     <div className="hidden md:block">
-                                       <p className="text-sm text-secundary_blue-main">{item.title}</p>
+                                       <p className="text-sm text-secundary_blue-main">{item.author?.title}</p>
                                     </div>
                                     <div className="hidden md:flex items-center justify-between">
-                                       <p className="text-sm text-secundary_blue-main">{item.email}</p>
+                                       <p className="text-sm text-secundary_blue-main">{item.author?.email}</p>
                                        {index !== 0 && (
                                           <React.Fragment>
                                              <div className="flex items-center gap-2">
@@ -324,8 +346,8 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   <div>
                      <p className="text-sm font-semibold">Invite Link</p>
                      <div className="flex flex-col md:flex-row md:items-center gap-4">
-                        <p className="text-sm font-semibold text-blue-500 underline" id="link-to-copy">
-                           https://descier.com/948902riopwskf
+                        <p className="text-sm font-semibold text-blue-500 w-1/2 underline truncate ..." id="link-to-copy">
+                           {article?.document.reviewerInviteLink}
                         </p>
                         <HoverCard open={popover.copy_link}>
                            <HoverCardTrigger>
@@ -367,19 +389,19 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                      ))}
                   </div>
                   <div>
-                     {authors_mock.map((item, index) => (
+                     {article?.document.reviewersOnDocuments?.map((item, index) => (
                         <div key={item.id}>
                            <div className="grid md:grid-cols-5  items-center px-0 py-3 rounded-md">
                               <div className="flex items-center gap-4">
                                  <div>
-                                    <p className="text-sm text-secundary_blue-main font-regular">{item.name}</p>
+                                    <p className="text-sm text-secundary_blue-main font-regular">{item.reviewer.name}</p>
                                  </div>
                               </div>
                               <div>
-                                 <p className="text-sm text-secundary_blue-main">{item.title}</p>
+                                 <p className="text-sm text-secundary_blue-main">{item.reviewer.title}</p>
                               </div>
                               <div>
-                                 <p className="text-sm text-secundary_blue-main">{truncate(item.email, 16)}</p>
+                                 <p className="text-sm text-secundary_blue-main">{truncate(item.reviewer.email, 16)}</p>
                               </div>
                               <div>
                                  <p
@@ -396,11 +418,11 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                                  <p
                                     className={twMerge(
                                        'text-sm text-secundary_blue-main first-letter:uppercase font-semibold border py-[2px] px-1 text-center rounded-md md:border-none md:py-0 md:px-0 md:rounded-none md:text-start',
-                                       `${item.status == 'pending' && 'text-status-pending'}`,
-                                       `${item.status == 'approved' && 'text-status-green'}`
+                                       `${item.inviteStatus == 'PENDING' && 'text-status-pending'}`,
+                                       `${item.inviteStatus == 'ACCEPTED' && 'text-status-green'}`
                                     )}
                                  >
-                                    {item.status}
+                                    {item.inviteStatus}
                                  </p>
                               </div>
                            </div>
@@ -448,6 +470,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                            <Input.Label>Price</Input.Label>
                            <CurrencyInput
                               currency="USD"
+                              defaultValue={article?.document.price}
                               onChangeValue={(event, originalValue, maskedValue) => console.log(maskedValue)}
                               InputElement={<Input.Input placeholder="USD" />}
                            />
@@ -471,16 +494,16 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                         </div>
                         <div>
                            <div>
-                              {authors.map((author, index) => (
+                              {article?.document.authorsOnDocuments?.map((author, index) => (
                                  <React.Fragment key={index}>
                                     <div className="grid gap-2 md:grid-cols-3 items-center py-3">
                                        <div>
-                                          <p className="text-sm font-semibold text-secundary_blue-main">{author.name}</p>
+                                          <p className="text-sm font-semibold text-secundary_blue-main">{author.author?.name}</p>
                                        </div>
                                        <div>
-                                          {author.share ? (
+                                          {author.revenuePercent ? (
                                              <div className="flex gap-2 px-4 py-1 border rounded-md border-terciary-main w-fit">
-                                                <p className="text-sm text-center text-terciary-main w-8">{author.share}</p>
+                                                <p className="text-sm text-center text-terciary-main w-8">{author.revenuePercent}%</p>
                                                 <p className="text-sm text-terciary-main">Authorship</p>
                                              </div>
                                           ) : (
@@ -489,13 +512,22 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                                                 className="px-4 py-2 w-fit text-sm"
                                                 onClick={() => {
                                                    setDialog({ ...dialog, share_split: true })
-                                                   setAuthorshipSettings(author)
+                                                   setAuthorshipSettings({
+                                                      email: author.authorEmail || '',
+                                                      id: author.id,
+                                                      name: author.author?.name || '',
+                                                      title: author.author?.title || '',
+                                                      share: `${author.revenuePercent}`
+                                                   })
                                                 }}
                                              >
                                                 Add authorship settings
                                                 <PlusCircleDotted size={18} className="fill-primary-main" />
                                              </Button.Button>
                                           )}
+                                       </div>
+                                       <div className="w-fit">
+                                          <p className="text-sm text-center text-black w-8">{author.author?.walletAddress}</p>
                                        </div>
                                     </div>
                                     <hr className="divider-h" />

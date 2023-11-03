@@ -46,7 +46,7 @@ export const useArticles = () => {
 
                const response: DocumentPaginationProps = await request.json()
 
-               const formatted_response: ArticleUnderReviewProps[] = response?.documents.data?.map((article) => {
+               const formatted_response: ArticleUnderReviewProps[] = response?.documents?.map((article) => {
                   return {
                      id: article.id,
                      status_editor: article.editorsApprovals === 0 ? 'pending' : ('approved' as ArticleUnderReviewProps['status_editor']),

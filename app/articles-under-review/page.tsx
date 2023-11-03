@@ -87,6 +87,8 @@ export default function ArticlesUnderReviewPage() {
       setTotalPages(Math.ceil(results.length / per_page))
    }, [results, per_page])
 
+   console.log(results)
+
    return (
       <React.Fragment>
          <Title.Root>

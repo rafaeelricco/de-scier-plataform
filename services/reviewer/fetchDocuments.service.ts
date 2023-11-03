@@ -49,7 +49,7 @@ export const useArticleToReview = () => {
 
                console.log('response', response)
 
-               const formatted_response: ReviewerItemProps[] = response?.documents.data?.map((article) => {
+               const formatted_response: ReviewerItemProps[] = response?.documents?.map((article) => {
                   return {
                      id: article.id,
                      status: article.reviewersOnDocuments?.find((item) => item.reviewerEmail === data.user?.email)
