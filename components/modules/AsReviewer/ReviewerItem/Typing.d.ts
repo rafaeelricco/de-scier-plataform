@@ -1,6 +1,6 @@
 interface ReviewerItemProps {
    id?: string
-   status: 'pending' | 'approved' | 'final_approved' | 'rejected' | 'published' | null
+   status: 'PENDING' | 'APPROVED' | 'REJECTED'
    added_as: 'reviewer' | 'editor'
    published?: boolean
    published_date?: string | null

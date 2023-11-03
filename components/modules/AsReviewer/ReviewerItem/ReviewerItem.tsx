@@ -62,12 +62,9 @@ const ReviewerItem: React.FC<ReviewerItemProps> = ({
                      <div className="border-[1px] rounded-md px-2 border-neutral-stroke_light w-full md:w-fit">
                         <div className="grid grid-flow-col items-center md:justify-start justify-center">
                            <div className="grid grid-flow-col gap-1 items-center">
-                              {status == 'approved' && <p className="text-sm lg:text-sm font-semibold  text-status-green">You approved</p>}
-                              {status == 'pending' && <p className="text-sm lg:text-sm font-semibold  text-status-pending">Approval pending</p>}
-                              {status == 'final_approved' && (
-                                 <p className="text-sm lg:text-sm font-semibold text-status-pending">Final approval pending</p>
-                              )}
-                              {status == 'rejected' && <p className="text-sm lg:text-sm font-semibold  text-status-error">Rejected</p>}
+                              {status == 'APPROVED' && <p className="text-sm lg:text-sm font-semibold  text-status-green">You approved</p>}
+                              {status == 'PENDING' && <p className="text-sm lg:text-sm font-semibold  text-status-pending">Approval pending</p>}
+                              {status == 'REJECTED' && <p className="text-sm lg:text-sm font-semibold  text-status-error">Rejected</p>}
                            </div>
                         </div>
                      </div>

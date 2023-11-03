@@ -1,6 +1,6 @@
 import { home_routes } from '@/routes/home'
 import { UpdateInviteStatusProps } from '@/schemas/update_invite_status'
-import { updateInviteStatusService } from '@/services/reviewer/update_invite.service'
+import { updateInviteStatusService } from '@/services/reviewer/updateInvite.service'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import { useRouter } from 'next/navigation'
