@@ -1,6 +1,7 @@
 import useDimension from '@/hooks/useWindowDimension'
 import { truncate } from 'lodash'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 import { CardText, Eye, HandThumbsUpFill, Pencil } from 'react-bootstrap-icons'
 import { ReviewerItemProps } from './Typing'
@@ -40,12 +41,16 @@ const ReviewerItem: React.FC<ReviewerItemProps> = ({
             <hr className="divider-h" />
          </div>
          <div className="grid md:grid-cols-max-min-auto md:justify-start items-center gap-2 md:gap-4">
-            <Image src={image} width={400} height={400} alt={title} style={{ objectFit: 'cover' }} className="rounded-md w-full h-20" />
+            <Image src={image} width={400} height={400} alt={title} style={{ objectFit: 'cover' }} className="rounded-md w-20 h-20" />
             <hr className="divider-v hidden md:block" />
             <hr className="divider-h mt-1 md:hidden" />
             <div className="grid gap-2">
                <div>
-                  <h6 className="text-sm font-semibold text-secundary_blue-main lg:text-base cursor-pointer">{truncate(title, { length: 40 })}</h6>
+                  <Link href={link}>
+                     <h6 className="text-sm font-semibold text-secundary_blue-main lg:text-base cursor-pointer hover:text-primary-main hover:underline transition-all duration-200">
+                        {truncate(title, { length: 40 })}
+                     </h6>
+                  </Link>
                   {access_type != 'open' && access_type != 'paid' && (
                      <div className="flex items-center gap-2">
                         <p className="text-sm text-neutral-gray lg:text-sm 2xl:text-base">Under review since</p>

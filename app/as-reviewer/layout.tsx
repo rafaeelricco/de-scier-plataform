@@ -5,7 +5,7 @@ import Sidebar from '@/components/common/Sidebar/Sidebar'
 import '@styles/layout.css'
 import React from 'react'
 
-export default function AsReviewerLayout({ children }: { children: React.ReactNode }) {
+export default function SummaryLayout({ children }: { children: React.ReactNode }) {
    return (
       <React.Fragment>
          <section className="home scrollbar-hidden md:grid-cols-1">
