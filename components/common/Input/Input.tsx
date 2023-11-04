@@ -232,9 +232,17 @@ const Select = React.forwardRef<HTMLInputElement, SelectInputProps>(
       }, [triggerWidth])
 
       return (
-         <S.Root value={value} defaultValue={defaultValue} required={required} onValueChange={(value: string) => onValueChange?.(value)}>
+         <S.Root
+            value={value}
+            defaultValue={defaultValue}
+            required={required}
+            name="select"
+            onValueChange={(value: string) => {
+               onValueChange?.(value)
+            }}
+         >
             <div className="grid gap-2">
-               {label && <label className="text-sm font-semibold">{label}</label>}
+               {label && <label className="text-base font-semibold">{label}</label>}
                <div className="relative h-fit">
                   {hasIcon && (
                      <div
@@ -245,7 +253,7 @@ const Select = React.forwardRef<HTMLInputElement, SelectInputProps>(
                      </div>
                   )}
                   <div ref={triggerRef} className="w-full">
-                     <S.Trigger variant={variant} name={name}>
+                     <S.Trigger variant={variant} aria-controls="select-trigger" name={name}>
                         <S.Value placeholder={placeholder} />
                         <S.Icon>
                            {hasIcon ? (
