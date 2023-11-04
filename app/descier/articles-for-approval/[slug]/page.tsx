@@ -5,6 +5,7 @@ import Box from '@/components/common/Box/Box'
 import CommentItem from '@/components/common/Comment/Comment'
 import { EditorsAndReviewers } from '@/components/common/EditorsAndReviwers/EditorAndReviwer'
 import { File } from '@/components/common/File/File'
+import { RenderMermaidChart } from '@/components/common/RenderMermaidChart/RenderMermaidChart'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -41,6 +42,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
    const [popover, setPopover] = React.useState({ copy_link: false })
    const [dialog, setDialog] = React.useState({ author: false, share_split: false, edit_author: false, reasoning: false })
    const [loading, setLoading] = React.useState(false)
+   const [chartError, setChartError] = React.useState<boolean>(false)
 
    const onReorder = (newOrder: typeof items) => setItems((prevItems) => [...newOrder])
 
@@ -92,14 +94,20 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
 
    React.useEffect(() => {
       const runMermaid = async () => {
-         mermaid.initialize({ startOnLoad: false })
-         await mermaid.run({ querySelector: '.mermaid' })
+         try {
+            mermaid.initialize({ startOnLoad: false })
+            await mermaid.run({ querySelector: '.mermaid' }).catch((error) => {
+               console.log('Erro ao renderizar o Mermaid: ', error)
+               setChartError(true)
+            })
+         } catch (error) {
+            console.error('Erro ao renderizar o Mermaid: ', error)
+            setChartError(true)
+         }
       }
 
       if (article?.document.abstractChart) {
          runMermaid()
-      } else {
-         console.log('no chart')
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [article?.document.abstractChart])
@@ -122,7 +130,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                <h1 className="text-1xl font-semibold">Article in review</h1>
             </div>
             <Box className="grid gap-8 h-fit py-6 px-8">
-               <ArticleStatus />
+               <ArticleStatus status={article?.document.status || 'PENDING'} />
                <div className="grid grid-cols-2 gap-6">
                   <div className="grid grid-cols-1">
                      <span className="text-sm font-semibold">Title</span>
@@ -166,15 +174,9 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
 
                <div className="grid gap-4">
                   <div className="grid gap-2">
-                     <p className="text-sm font-semibold">Visual Abstract</p>
+                     <p className="text-sm font-semibold">Visual abstract</p>
                   </div>
-                  <div className="flex items-center gap-4 w-full h-36 relative overflow-hidden py-2">
-                     {article?.document.abstractChart !== '' && (
-                        <div className="mermaid flex w-full justify-center mt-4" key={article?.document.id}>
-                           {article?.document.abstractChart}
-                        </div>
-                     )}
-                  </div>
+                  <RenderMermaidChart article={article} chartError={chartError} />
                </div>
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
@@ -250,7 +252,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                <div className="grid gap-6">
                   <div className="grid gap-2">
                      <h3 className="text-xl text-terciary-main font-semibold lg:text-lg 2xl:text-xl">Authors</h3>
-                     <p className="text-sm">Drag the Authors to reorder the list.</p>
+                     <p className="text-sm">Drag the authors to reorder the list.</p>
                   </div>
                   <div className="grid gap-2">
                      <div className="grid grid-cols-3">
@@ -411,7 +413,10 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                )}
             </Box>
             <Box className="grid gap-4 h-fit py-6 px-8">
-               <h3 className="text-lg font-semibold text-status-pending flex justify-center">Your approval is still pending</h3>
+               {article?.document.adminApproval === 0 && (
+                  <h3 className="text-lg font-semibold text-status-pending flex justify-center">Your approval is still pending</h3>
+               )}
+
                <div className="flex items-center justify-center gap-12">
                   <div className="flex items-center">
                      <h2 className="text-status-yellow font-semibold text-lg">Reviewer</h2>
@@ -438,26 +443,38 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                         )}
                   </div>
                </div>
-               <Button.Button variant="primary" className="flex items-center" onClick={() => handleApproveDocument(true)} loading={loading}>
-                  <Check className="w-5 h-5" />
-                  Approve document
-               </Button.Button>
-               <Button.Button variant="outline" className="flex items-center" onClick={() => handleApproveDocument(false)} loading={loading}>
-                  Reject document
-               </Button.Button>
+               {article?.document.status === 'PENDING' && (
+                  <>
+                     <Button.Button variant="primary" className="flex items-center" onClick={() => handleApproveDocument(true)} loading={loading}>
+                        <Check className="w-5 h-5" />
+                        Approve document
+                     </Button.Button>
+                     <Button.Button variant="outline" className="flex items-center" onClick={() => handleApproveDocument(false)} loading={loading}>
+                        Reject document
+                     </Button.Button>
+                  </>
+               )}
+
+               {article?.document.status === 'REJECTED' && (
+                  <p className="text-lg text-center text-status-pending font-semibold select-none">Article rejected</p>
+               )}
+               {article?.document.status === 'APPROVED' && (
+                  <p className="text-lg text-center text-status-pending font-semibold select-none">Article approved</p>
+               )}
             </Box>
          </div>
       </React.Fragment>
    )
 }
 
-const ArticleStatus: React.FC<string> = (status: string) => {
+const ArticleStatus: React.FC<{ status: string }> = ({ status }: { status: string }) => {
    return (
       <React.Fragment>
          <div className="flex items-center gap-2 border border-neutral-stroke_light w-fit py-1 px-4 rounded-md">
             {status === 'PENDING' && <p className="text-sm text-status-pending font-semibold select-none">Final approve pending</p>}
             {status === 'REJECTED' && <p className="text-sm text-status-pending font-semibold select-none">Rejected</p>}
-            {status === 'APPROVED' && <p className="text-sm text-status-pending font-semibold select-none">Published</p>}
+            {status === 'APPROVED' && <p className="text-sm text-status-pending font-semibold select-none">Approved</p>}
+            {status === 'SUBMITTED' && <p className="text-sm text-status-pending font-semibold select-none">Published</p>}
          </div>
       </React.Fragment>
    )
