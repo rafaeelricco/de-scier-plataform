@@ -418,7 +418,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                               <div>
                                  <p
                                     className={twMerge(
-                                       'text-sm text-secundary_blue-main first-letter:uppercase font-semibold',
+                                       'text-sm text-secundary_blue-main first-letter:uppercase font-semibold lowercase',
                                        `${item.role == 'reviewer' && 'text-[#EFB521]'}`,
                                        `${item.role == 'editor' && 'text-terciary-main'}`
                                     )}
@@ -429,7 +429,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                               <div>
                                  <p
                                     className={twMerge(
-                                       'text-sm text-secundary_blue-main first-letter:uppercase font-semibold border py-[2px] px-1 text-center rounded-md md:border-none md:py-0 md:px-0 md:rounded-none md:text-start',
+                                       'text-sm text-secundary_blue-main first-letter:uppercase font-semibold border py-[2px] px-1 text-center rounded-md md:border-none md:py-0 md:px-0 md:rounded-none md:text-start lowercase',
                                        `${item.inviteStatus == 'PENDING' && 'text-status-pending'}`,
                                        `${item.inviteStatus == 'ACCEPTED' && 'text-status-green'}`
                                     )}
