@@ -36,6 +36,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
    const [items, setItems] = React.useState(authors_mock)
    const [share, setShare] = React.useState('')
    const [authors, setAuthors] = React.useState<Author[]>([])
+   const [reviewers, setReviewers] = React.useState<Author[]>([])
    const [authorship, setAuthorship] = React.useState<Authorship[]>([])
    const [access_type, setAccessType] = React.useState('open-access')
    const [authorship_settings, setAuthorshipSettings] = React.useState<Author>()
