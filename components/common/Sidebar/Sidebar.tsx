@@ -9,9 +9,12 @@ import React from 'react'
 import { PlusCircle } from 'react-bootstrap-icons'
 import Item from './Item/Item'
 import Logout from './Logout/Logout'
+import { useSession } from 'next-auth/react'
 
 const Sidebar: React.FC = () => {
    // See more about in https://nextjs.org/docs/app/api-reference/functions/use-pathname
+   const { data: session } = useSession()
+
    const router = useRouter()
    const currentPath = usePathname()
 
@@ -27,9 +30,11 @@ const Sidebar: React.FC = () => {
                   </Button.Button>
                </Button.Link>
                <div>
-                  {items.map((item) => (
-                     <Item key={item.id} text={item.text} icon={item.icon} href={item.path} active={currentPath.includes(item.path)} />
-                  ))}
+                  {items.map((item) =>
+                     session?.user?.userInfo.role !== 'ADMIN' && item.text === 'Admin' ? null : (
+                        <Item key={item.id} text={item.text} icon={item.icon} href={item.path} active={currentPath.includes(item.path)} />
+                     )
+                  )}
                </div>
             </div>
             <Logout onLogout={() => router.push(home_routes.home.index)} />
