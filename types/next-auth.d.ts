@@ -7,6 +7,7 @@ export type User = {
    avatar: string | null
    walletAddress: string | null
    aiUsageLimit: number
+   role: string
 }
 
 export type UserSession = {
@@ -16,6 +17,7 @@ export type UserSession = {
    userInfo: User
    redirectToRegister?: boolean
    googleId?: string
+   role: string
 }
 
 // format useSession interface to include user info

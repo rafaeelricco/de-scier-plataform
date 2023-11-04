@@ -6,6 +6,7 @@ import HomeIcon from 'public/svgs/common/sidebar/Icons/home.svg'
 import MyIPIcon from 'public/svgs/common/sidebar/Icons/my-ip.svg'
 import ProfileIcon from 'public/svgs/common/sidebar/Icons/profile.svg'
 import SummaryIcon from 'public/svgs/common/sidebar/Icons/summary.svg'
+import AdminIcon from 'public/svgs/common/sidebar/Icons/admin.svg'
 
 export const items = [
    {
@@ -49,5 +50,11 @@ export const items = [
       text: 'My IP',
       icon: <MyIPIcon className="w-6 fill-neutral-light_gray md:w-5 lg:w-6" />,
       path: home_routes.my_ip
+   },
+   {
+      id: 7,
+      text: 'Admin',
+      icon: <AdminIcon className="w-6 fill-neutral-light_gray md:w-5 lg:w-6" />,
+      path: home_routes.descier.index
    }
 ]

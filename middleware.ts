@@ -1,3 +1,5 @@
+import { getToken } from 'next-auth/jwt'
+import { getSession } from 'next-auth/react'
 import { NextRequest, NextResponse } from 'next/server'
 /**
  * @title Authentication Middleware
@@ -13,13 +15,17 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const publicRoutes = ['/home']
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
    /** @dev Extract the 'next-auth.session-token' cookie from the request. */
    const standard = request.cookies.get('next-auth.session-token') ?? request.cookies.get('next-auth.session-token.0')
    const secure = request.cookies.get('__Secure-next-auth.session-token')
 
    /** @dev Determine if the user is authenticated. */
    const isAuthenticated = standard || secure
+
+   const session = (await getToken({
+      req: request
+   })) as any
 
    /**
     * @notice Check for the absence of the authentication cookie.
@@ -33,15 +39,21 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(url)
    }
 
-   /**
-    * @notice Check for the presence of the authentication cookie.
-    * @dev If the user is authenticated and is on the `/login` page,
-    * redirect them to the home page.
-    */
+   if (session && session.userInfo.role !== 'ADMIN' && request.nextUrl.pathname === '/descier/articles-for-approval') {
+      const url = request.nextUrl.clone()
+      url.pathname = '/summary'
+
+      return NextResponse.redirect(url)
+   }
+
    if (isAuthenticated && request.nextUrl.pathname === '/login') {
+      /**
+       * @notice Check for the presence of the authentication cookie.
+       * @dev If the user is authenticated and is on the `/login` page,
+       * redirect them to the home page.
+       */
       const url = request.nextUrl.clone()
       url.pathname = '/'
-
       return NextResponse.redirect(url)
    }
 
