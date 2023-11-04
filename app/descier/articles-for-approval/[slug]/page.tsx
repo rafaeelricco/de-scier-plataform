@@ -1,29 +1,28 @@
 'use client'
 
+import { AuthorsListDragabble } from '@/components/common/AuthorsListDraggable/AuthorsListDraggable'
 import Box from '@/components/common/Box/Box'
 import CommentItem from '@/components/common/Comment/Comment'
+import { EditorsAndReviewers } from '@/components/common/EditorsAndReviwers/EditorAndReviwer'
 import { File } from '@/components/common/File/File'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { access_type_options } from '@/mock/access_type'
 import { header_editor_reviewer } from '@/mock/article_under_review'
 import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { useFetchAdminArticles } from '@/services/admin/fetchDocuments.service'
-import { AuthorsOnDocuments, DocumentComment, DocumentGetProps } from '@/services/document/getArticles'
-import { truncate } from '@/utils/format_texts'
+import { DocumentComment, DocumentGetProps } from '@/services/document/getArticles'
 import { keywordsArray } from '@/utils/keywords_format'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
 import { format } from 'date-fns'
-import { Reorder } from 'framer-motion'
 import mermaid from 'mermaid'
 import { useRouter } from 'next/navigation'
-import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React from 'react'
 import { ArrowLeft, Check, Person, PlusCircleDotted, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
-import { twMerge } from 'tailwind-merge'
 
 export default function ArticleForApprovalPage({ params }: { params: { slug: string } }) {
    const router = useRouter()
@@ -33,7 +32,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
    const [article, setArticle] = React.useState<DocumentGetProps | null>(null)
    const [items, setItems] = React.useState(authors_mock)
    const [share, setShare] = React.useState('')
-   const [authors, setAuthors] = React.useState<Author[]>(authors_mock)
+   const [authors, setAuthors] = React.useState<Author[]>([])
    const [authorship, setAuthorship] = React.useState<Authorship[]>([])
    const [access_type, setAccessType] = React.useState('open-access')
    const [authorship_settings, setAuthorshipSettings] = React.useState<Author>()
@@ -232,7 +231,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                <div className="grid gap-6">
                   <div className="grid gap-2">
                      <h3 className="text-xl text-terciary-main font-semibold lg:text-lg 2xl:text-xl">Authors</h3>
-                     <p className="text-sm">Drag the authors_mock to reorder the list.</p>
+                     <p className="text-sm">Drag the Authors to reorder the list.</p>
                   </div>
                   <div className="grid gap-2">
                      <div className="grid grid-cols-3">
@@ -242,37 +241,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                            </React.Fragment>
                         ))}
                      </div>
-                     <Reorder.Group axis="y" values={items} onReorder={onReorder}>
-                        <div className="grid gap-2">
-                           {article?.document.authorsOnDocuments && article?.document.authorsOnDocuments?.length > 0 ? (
-                              <>
-                                 {article?.document.authorsOnDocuments.map((item: AuthorsOnDocuments, index) => (
-                                    <Reorder.Item key={item.id} value={item}>
-                                       <div className="grid grid-cols-3 gap-4 items-center px-0 py-3 rounded-md cursor-grab hover:bg-[#F1FFFF]">
-                                          <div className="flex items-center gap-4">
-                                             <div className="flex items-center gap-0">
-                                                <CircleIcon className="w-8 cursor-grab" />
-                                                <p className="text-sm text-blue-gray">{index + 1}º</p>
-                                             </div>
-                                             <div>
-                                                <p className="text-sm text-secundary_blue-main">{item.author?.name}</p>
-                                             </div>
-                                          </div>
-                                          <div>
-                                             <p className="text-sm text-secundary_blue-main">{item.author?.title == '' ? '-' : item.author?.title}</p>
-                                          </div>
-                                          <div>
-                                             <p className="text-sm text-secundary_blue-main">{item.authorEmail}</p>
-                                          </div>
-                                       </div>
-                                    </Reorder.Item>
-                                 ))}
-                              </>
-                           ) : (
-                              <></>
-                           )}
-                        </div>
-                     </Reorder.Group>
+                     <AuthorsListDragabble authors={[]} article={article} onReorder={onReorder} onDelete={(item) => {}} onEdit={(item) => {}} />
                   </div>
                </div>
             </Box>
@@ -330,47 +299,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                         </React.Fragment>
                      ))}
                   </div>
-                  <div>
-                     {article?.document.reviewersOnDocuments?.map((item) => (
-                        <React.Fragment key={item.id}>
-                           <div className="grid md:grid-cols-5  items-center px-0 py-3 rounded-md">
-                              <div className="flex items-center gap-4">
-                                 <div>
-                                    <p className="text-sm text-secundary_blue-main font-regular">{item.reviewer.name}</p>
-                                 </div>
-                              </div>
-                              <div>
-                                 <p className="text-sm text-secundary_blue-main">{item.reviewer.title}</p>
-                              </div>
-                              <div>
-                                 <p className="text-sm text-secundary_blue-main">{truncate(item.reviewer.email, 16)}</p>
-                              </div>
-                              <div>
-                                 <p
-                                    className={twMerge(
-                                       'text-sm text-secundary_blue-main first-letter:uppercase font-semibold lowercase',
-                                       `${item.role == 'reviewer' && 'text-[#EFB521]'}`,
-                                       `${item.role == 'editor' && 'text-terciary-main'}`
-                                    )}
-                                 >
-                                    {item.role}
-                                 </p>
-                              </div>
-                              <div>
-                                 <p
-                                    className={twMerge(
-                                       'text-sm text-secundary_blue-main first-letter:uppercase font-semibold border py-[2px] px-1 text-center rounded-md md:border-none md:py-0 md:px-0 md:rounded-none md:text-start lowercase',
-                                       `${item.inviteStatus == 'PENDING' && 'text-status-pending'}`,
-                                       `${item.inviteStatus == 'ACCEPTED' && 'text-status-green'}`
-                                    )}
-                                 >
-                                    {item.inviteStatus}
-                                 </p>
-                              </div>
-                           </div>
-                        </React.Fragment>
-                     ))}
-                  </div>
+                  <EditorsAndReviewers article={article} />
                </div>
             </Box>
             <Box className="grid gap-8 h-fit py-6 px-8">
@@ -388,16 +317,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                         placeholder="Select the type of access"
                         onValueChange={(value) => setAccessType(value)}
                         value={access_type}
-                        options={[
-                           {
-                              label: 'Open Access',
-                              value: 'open-access'
-                           },
-                           {
-                              label: 'Paid Access',
-                              value: 'paid-access'
-                           }
-                        ]}
+                        options={access_type_options}
                      />
                   </Input.Root>
                   {access_type == 'open-access' && (
