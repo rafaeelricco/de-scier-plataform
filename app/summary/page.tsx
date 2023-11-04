@@ -1,17 +1,17 @@
 'use client'
 
 import Box from '@/components/common/Box/Box'
+import WithLink from '@/components/modules/Login/Modals/WithLink/WithLink'
 import Earnings from '@/components/modules/Summary/Earnings/Earnings'
 import Publications from '@/components/modules/Summary/Publications/Publications'
 import Statistics from '@/components/modules/Summary/Statistics/Statistics'
 import Submission from '@/components/modules/Summary/Submission/Submission'
 import TopPapers from '@/components/modules/Summary/TopPapers/TopPapers'
-import * as Title from '@components/common/Title/Page'
 import * as Dialog from '@components/common/Dialog/Digalog'
+import * as Title from '@components/common/Title/Page'
 import '@styles/summary.css'
 import { useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import WithLink from '@/components/modules/Login/Modals/WithLink/WithLink'
 
 export default function HomePage() {
    const queryParams = useSearchParams()
@@ -42,7 +42,7 @@ export default function HomePage() {
       <React.Fragment>
          <Dialog.Root open={open}>
             <Dialog.Overlay />
-            <Dialog.Content className="w-[50%] min-w-[750px]">
+            <Dialog.Content className="max-w-[750px]">
                <WithLink
                   onClose={() => setOpen(false)}
                   article_name={inviteData.article}

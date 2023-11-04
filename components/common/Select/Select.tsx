@@ -91,7 +91,7 @@ const Item: React.FC<Select.SelectItemProps> = ({ children, className, ...props 
    return (
       <Select.Item
          className={twMerge(
-            'text-black-primary select-none font-regular hover:bg-white-hover hover:text-neutral-white px-4 py-1 rounded-sm hover:outline-none focus:outline-none text-sm w-full relative data-[highlighted]:bg-primary-main cursor-pointer',
+            'text-black-primary select-none font-regular hover:text-white px-4 py-1 rounded-sm hover:outline-none focus:outline-none text-sm w-full relative cursor-pointer hover:bg-primary-main',
             className
          )}
          {...props}
@@ -108,10 +108,7 @@ const Item: React.FC<Select.SelectItemProps> = ({ children, className, ...props 
  */
 const ItemText: React.FC<Select.SelectItemTextProps> = ({ children, className, ...props }: Select.SelectItemTextProps) => {
    return (
-      <Select.ItemText
-         {...props}
-         className={twMerge('text-sm text-black-primary select-none font-regular hover:bg-white-hover', className)}
-      >
+      <Select.ItemText {...props} className={twMerge('text-sm text-black-primary select-none font-regular hover:bg-white-hover', className)}>
          {children}
       </Select.ItemText>
    )
