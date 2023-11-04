@@ -11,6 +11,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { access_type_options } from '@/mock/access_type'
 import { header_editor_reviewer } from '@/mock/article_under_review'
 import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
+import { approveByAdminService } from '@/services/admin/approve.service'
 import { useFetchAdminArticles } from '@/services/admin/fetchDocuments.service'
 import { DocumentComment, DocumentGetProps } from '@/services/document/getArticles'
 import { keywordsArray } from '@/utils/keywords_format'
@@ -23,6 +24,7 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 import { ArrowLeft, Check, Person, PlusCircleDotted, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
+import { toast } from 'react-toastify'
 
 export default function ArticleForApprovalPage({ params }: { params: { slug: string } }) {
    const router = useRouter()
@@ -38,6 +40,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
    const [authorship_settings, setAuthorshipSettings] = React.useState<Author>()
    const [popover, setPopover] = React.useState({ copy_link: false })
    const [dialog, setDialog] = React.useState({ author: false, share_split: false, edit_author: false, reasoning: false })
+   const [loading, setLoading] = React.useState(false)
 
    const onReorder = (newOrder: typeof items) => setItems((prevItems) => [...newOrder])
 
@@ -64,6 +67,22 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
          setAccessType(access)
          console.log(res)
       })
+   }
+
+   const handleApproveDocument = async (approve: boolean) => {
+      setLoading(true)
+      const response = await approveByAdminService({
+         documentId: article?.document.id!,
+         approve
+      })
+
+      setLoading(false)
+      if (!response.success) {
+         toast.error(response.message)
+         return
+      }
+      const status = approve ? 'approved' : 'rejected'
+      toast.success(`Document ${status} successgully`)
    }
 
    React.useEffect(() => {
@@ -396,20 +415,34 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                <div className="flex items-center justify-center gap-12">
                   <div className="flex items-center">
                      <h2 className="text-status-yellow font-semibold text-lg">Reviewer</h2>
-                     <Check className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
-                     <Check className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
+                     {article?.document.reviewersOnDocuments
+                        ?.filter((item) => item.role === 'reviewer')
+                        ?.map((item) =>
+                           item.approvedStatus === 'APPROVED' ? (
+                              <Check key={item.id} className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
+                           ) : (
+                              <X key={item.id} className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer" />
+                           )
+                        )}
                   </div>
                   <div className="flex items-center">
                      <h2 className="text-terciary-main font-semibold text-lg">Editor</h2>
-                     <Check className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
-                     <X className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer" />
+                     {article?.document.reviewersOnDocuments
+                        ?.filter((item) => item.role === 'editor')
+                        ?.map((item) =>
+                           item.approvedStatus === 'APPROVED' ? (
+                              <Check key={item.id} className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
+                           ) : (
+                              <X key={item.id} className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer" />
+                           )
+                        )}
                   </div>
                </div>
-               <Button.Button variant="primary" className="flex items-center">
+               <Button.Button variant="primary" className="flex items-center" onClick={() => handleApproveDocument(true)} loading={loading}>
                   <Check className="w-5 h-5" />
                   Approve document
                </Button.Button>
-               <Button.Button variant="outline" className="flex items-center">
+               <Button.Button variant="outline" className="flex items-center" onClick={() => handleApproveDocument(false)} loading={loading}>
                   Reject document
                </Button.Button>
             </Box>
@@ -418,12 +451,13 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
    )
 }
 
-const ArticleStatus: React.FC = () => {
+const ArticleStatus: React.FC<string> = (status: string) => {
    return (
       <React.Fragment>
          <div className="flex items-center gap-2 border border-neutral-stroke_light w-fit py-1 px-4 rounded-md">
-            <Person className="text-primary-light" />
-            <p className="text-sm text-primary-light font-semibold select-none">Final approve pending</p>
+            {status === 'PENDING' && <p className="text-sm text-status-pending font-semibold select-none">Final approve pending</p>}
+            {status === 'REJECTED' && <p className="text-sm text-status-pending font-semibold select-none">Rejected</p>}
+            {status === 'APPROVED' && <p className="text-sm text-status-pending font-semibold select-none">Published</p>}
          </div>
       </React.Fragment>
    )
