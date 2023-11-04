@@ -9,7 +9,7 @@ import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
-import { comments, files, header_editor_reviewer } from '@/mock/article_under_review'
+import { header_editor_reviewer } from '@/mock/article_under_review'
 import { document_types } from '@/mock/document_types'
 import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { DocumentGetProps } from '@/services/document/getArticles'
@@ -20,6 +20,7 @@ import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
 import { Reorder } from 'framer-motion'
 import { isEqual } from 'lodash'
+import mermaid from 'mermaid'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
@@ -27,7 +28,6 @@ import React from 'react'
 import { ArrowLeft, CardText, Check, FileEarmarkText, Pencil, Person, PlusCircle, PlusCircleDotted, Trash, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { twMerge } from 'tailwind-merge'
-import mermaid from 'mermaid'
 
 export default function ArticleInReviewPage({ params }: { params: { slug: string } }) {
    const router = useRouter()
@@ -35,13 +35,13 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
    const { fetch_article } = useArticles()
 
    const [article, setArticle] = React.useState<DocumentGetProps | null>(null)
-   console.log('article', article)
    const [items, setItems] = React.useState(authors_mock)
    const [share, setShare] = React.useState('')
    const [authors, setAuthors] = React.useState<Author[]>(authors_mock)
    const [authorship, setAuthorship] = React.useState<Authorship[]>([])
    const [access_type, setAccessType] = React.useState('open-access')
    const [authorship_settings, setAuthorshipSettings] = React.useState<Author>()
+   const [mermaid_error, setMermaidError] = React.useState('' as string | null)
    const [popover, setPopover] = React.useState({ copy_link: false })
    const [dialog, setDialog] = React.useState({ author: false, share_split: false, edit_author: false, reasoning: false })
 
@@ -89,7 +89,9 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
    React.useEffect(() => {
       const runMermaid = async () => {
          mermaid.initialize({ startOnLoad: false, fontSize: 25 })
-         await mermaid.run({ querySelector: '.mermaid' })
+         await mermaid.run({ querySelector: '.mermaid' }).catch((err) => {
+            setMermaidError(err.message)
+         })
       }
 
       if (article?.document.abstractChart) {
@@ -197,8 +199,14 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                      </Button.Button>
                      <p className="text-sm text-neutral-gray">Careful! You can only generate the visual abstract once per file.</p>
                   </div>
-                  {article?.document.abstractChart && (
-                     <div className="mermaid flex w-full zoom-in-125 justify-center mt-4">{article?.document.abstractChart}</div>
+                  {mermaid_error ? null : (
+                     <React.Fragment>
+                        {article?.document.abstractChart && (
+                           <div className="mermaid flex w-full zoom-in-125 justify-center mt-4" key={article?.document.abstractChart}>
+                              {article?.document.abstractChart}
+                           </div>
+                        )}
+                     </React.Fragment>
                   )}
                </div>
                <div className="grid gap-4">
