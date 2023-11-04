@@ -2,7 +2,7 @@
 
 import { Dropdown } from '@/components/common/Dropdown/Dropdown'
 import PaginationComponent from '@/components/common/Pagination/Pagination'
-import { ArticleUnderReview, ArticleUnderReviewProps } from '@/components/common/Publication/Item/ArticlesUnderReview'
+import { ArticleUnderReview, ArticleUnderReviewProps, ArticleUnderReviewSkeleton } from '@/components/common/Publication/Item/ArticlesUnderReview'
 import { filter_order_by, filter_status } from '@/mock/dropdow_filter_options'
 import { home_routes } from '@/routes/home'
 import { useFetchAdminArticles } from '@/services/admin/fetchDocuments.service'
@@ -48,18 +48,29 @@ export default function ArticlesForApprovalPage() {
             </div>
             <div className="grid gap-8">
                <div className="grid grid-cols-2 gap-4">
-                  {results.slice((page - 1) * per_page, page * per_page).map((article) => (
-                     <React.Fragment key={article.id}>
-                        <ArticleUnderReview
-                           title={article.title}
-                           since={article.since}
-                           image={article.image}
-                           link={home_routes.descier.articles_for_approval + '/' + slug(article.id!)}
-                           status_editor={article.status_editor as 'pending' | 'approved'}
-                           status_reviewer={article.status_reviewer as 'pending' | 'approved'}
-                        />
+                  {loading ? (
+                     <React.Fragment>
+                        <ArticleUnderReviewSkeleton />
+                        <ArticleUnderReviewSkeleton />
+                        <ArticleUnderReviewSkeleton />
+                        <ArticleUnderReviewSkeleton />
                      </React.Fragment>
-                  ))}
+                  ) : (
+                     <React.Fragment>
+                        {results.slice((page - 1) * per_page, page * per_page).map((article) => (
+                           <React.Fragment key={article.id}>
+                              <ArticleUnderReview
+                                 title={article.title}
+                                 since={article.since}
+                                 image={article.image}
+                                 link={home_routes.descier.articles_for_approval + '/' + slug(article.id!)}
+                                 status_editor={article.status_editor as 'pending' | 'approved'}
+                                 status_reviewer={article.status_reviewer as 'pending' | 'approved'}
+                              />
+                           </React.Fragment>
+                        ))}
+                     </React.Fragment>
+                  )}
                </div>
             </div>
             <div className="flex justify-center">
