@@ -196,7 +196,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                               <CommentItem
                                  comment_author={comment.comment_author}
                                  comment_content={comment.comment_content}
-                                 status={comment.status as 'proposal_accepted' | 'proposal_rejected' | 'proposal_pending'}
+                                 status={comment.status as 'APPROVED' | 'REJECTED' | 'PENDING'}
                                  onApprove={() => console.log('approved', comment)}
                                  onReject={() => console.log('rejected', comment)}
                                  onSeeReasoning={() => setDialog({ ...dialog, reasoning: true })}
