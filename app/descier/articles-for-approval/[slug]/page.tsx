@@ -9,6 +9,8 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { comments, files, header_editor_reviewer } from '@/mock/article_under_review'
 import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
+import { useFetchAdminArticles } from '@/services/admin/fetchDocuments.service'
+import { DocumentGetProps } from '@/services/document/getArticles'
 import { truncate } from '@/utils/format_texts'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
@@ -24,6 +26,9 @@ import { twMerge } from 'tailwind-merge'
 export default function ArticleForApprovalPage({ params }: { params: { slug: string } }) {
    const router = useRouter()
 
+   const { fetch_article } = useFetchAdminArticles()
+
+   const [article, setArticle] = React.useState<DocumentGetProps | null>(null)
    const [items, setItems] = React.useState(authors_mock)
    const [share, setShare] = React.useState('')
    const [authors, setAuthors] = React.useState<Author[]>(authors_mock)
@@ -53,6 +58,19 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
          })
    }
 
+   const fetchSingleArticle = async (documentId: string) => {
+      await fetch_article(documentId).then((res) => {
+         setArticle(res as DocumentGetProps)
+         const access = res?.document.accessType === 'FREE' ? 'open-access' : 'paid-access'
+         setAccessType(access)
+      })
+   }
+
+   React.useEffect(() => {
+      fetchSingleArticle(params.slug)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [params.slug])
+
    return (
       <React.Fragment>
          <Dialog.Root open={dialog.reasoning}>
@@ -73,21 +91,14 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
             <Box className="grid gap-8 h-fit py-6 px-8">
                <div className="flex items-center gap-2 border border-neutral-stroke_light w-fit py-1 px-4 rounded-md">
                   <Person className="text-primary-light" />
-                  <p className="text-sm text-primary-light font-semibold select-none">You are the Author of the document</p>
+                  <p className="text-sm text-primary-light font-semibold select-none">Final approve pending</p>
                </div>
                <div className="grid grid-cols-2 gap-6">
-                  <Input.Root>
-                     <Input.Label className="flex gap-2 items-center">
-                        <span className="text-sm font-semibold">Title</span>
-                        <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
-                     </Input.Label>
-                     <Input.Input
-                        defaultValue={
-                           'Assessing the Ecological Impact of Microplastic Pollution: A Comprehensive Study on Contamination, Distribution, and Remediation Strategies'
-                        }
-                        placeholder="Title of the article"
-                     />
-                  </Input.Root>
+                  <div className="grid grid-cols-1">
+                     <span className="text-sm font-semibold">Title</span>
+                     <span className="text-sm">{article?.document?.title}</span>
+                  </div>
+
                   <Input.Root>
                      <Input.Label>Add keywords (Max 5)</Input.Label>
                      <Input.Input
@@ -108,46 +119,24 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                   </Input.Root>
                </div>
                <div className="grid grid-cols-2 gap-6">
-                  <Input.Root>
-                     <Input.Label className="flex gap-2 items-center">
-                        <span className="text-sm font-semibold">Field</span>
-                        <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
-                     </Input.Label>
-                     <Input.Input defaultValue={'Ecology, Biology'} placeholder="Title of the field" />
-                  </Input.Root>
+                  <div className="grid grid-cols-1">
+                     <span className="text-sm font-semibold">Field</span>
+                     <span className="text-sm">{article?.document?.field}</span>
+                  </div>
                </div>
                <div className="grid gap-2">
                   <h3 className="text-sm font-semibold">Document type</h3>
-                  <p className="text-sm font-regular">Manuscript</p>
+                  <p className="text-sm font-regular">{article?.document.documentType}</p>
                </div>
-               <Dropzone setSelectedFile={(file) => console.log(file)} />
-               <Input.Root>
-                  <Input.Label className="flex gap-2 items-center">
-                     <span className="text-sm font-semibold">Abstract</span>
-                     <span className="text-sm text-neutral-light_gray font-semibold">0/2000 words</span>
-                  </Input.Label>
-                  <Input.TextArea
-                     defaultValue={
-                        'Microplastic pollution has emerged as a critical environmental concern, posing significant threats to coastal ecosystems worldwide. This comprehensive study investigates the origins, ecological impacts, and innovative mitigation approaches for microplastic contamination. Through extensive field surveys and laboratory analyses, we identify key sources of microplastics, including plastic debris breakdown and wastewater discharge. Furthermore, our research elucidates the detrimental effects of microplastics on marine organisms, emphasizing disruptions in food chains and potential health risks to humans through seafood consumption. In response to these challenges, we evaluate various mitigation strategies, such as advanced filtration technologies, biodegradable polymers, and public awareness campaigns. Our findings underscore the urgent need for interdisciplinary efforts to curb microplastic pollution and protect the integrity of coastal ecosystems.'
-                     }
-                     rows={4}
-                     placeholder="Title of the field"
-                  />
-               </Input.Root>
-               <div className="flex items-center gap-4">
-                  <Button.Button variant="outline" className="px-4 py-3 w-fit text-sm">
-                     Generate abstract with AI
-                     <PlusCircleDotted size={18} className="fill-primary-main" />
-                  </Button.Button>
-                  <p className="text-sm">Careful! You can only generate the abstract once per file.</p>
+
+               <div className="grid gap-2">
+                  <h3 className="text-sm font-semibold">Abstract</h3>
+                  <p className="text-sm font-regular">{article?.document.abstract}</p>
                </div>
+
                <div className="grid gap-4">
                   <div className="grid gap-2">
                      <p className="text-sm font-semibold">Visual Abstract</p>
-                     <p className="text-sm font-regular">
-                        With the information from the abstract, a summary diagram (Visual Abstract) can be generated to describe the main points inside
-                        this document, with a illustration.
-                     </p>
                   </div>
                   <div className="flex items-center gap-4 w-full h-36 relative overflow-hidden py-2">
                      {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -158,7 +147,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                   <p className="text-sm font-semibold">Cover</p>
                   <div className="w-44 h-4w-44 rounded-md overflow-hidden">
                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                     <img src="/images/4fa38f086cfa1a2289fabfdd7337c09d.jpeg" alt="cover-preview" />
+                     <img src={article?.document.cover || '/images/4fa38f086cfa1a2289fabfdd7337c09d.jpeg'} alt="cover-preview" />
                   </div>
                   <p className="text-sm font-semibold">Last updated on 29/09/2023 - 14:34</p>
                </div>
@@ -169,15 +158,19 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                   <div>
                      <ScrollArea className="h-[200px] w-full pr-2">
                         <div className="grid gap-4">
-                           {files.map((file) => (
-                              <File
-                                 key={file.file_name + file.uploaded_at}
-                                 file_name={file.file_name}
-                                 link="www.google.com"
-                                 uploaded_at={file.uploaded_at}
-                                 uploaded_by={file.uploaded_by}
-                              />
-                           ))}
+                           {article?.document.documentVersions && article.document.documentVersions.length > 0 ? (
+                              article?.document.documentVersions?.map((file) => (
+                                 <File
+                                    key={file.id}
+                                    file_name={file.fileName || 'file.docx'}
+                                    link={file.link || ''}
+                                    uploaded_at={new Date(file.createdAt).toLocaleDateString('pt-BR')}
+                                    uploaded_by={article.document.user?.name || ''}
+                                 />
+                              ))
+                           ) : (
+                              <p className="text-center col-span-2 text-gray-500 mt-8">There are no files inserted into this document.</p>
+                           )}
                         </div>
                      </ScrollArea>
                   </div>
