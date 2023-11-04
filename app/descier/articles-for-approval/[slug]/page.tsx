@@ -5,6 +5,7 @@ import Box from '@/components/common/Box/Box'
 import CommentItem from '@/components/common/Comment/Comment'
 import { EditorsAndReviewers } from '@/components/common/EditorsAndReviwers/EditorAndReviwer'
 import { File } from '@/components/common/File/File'
+import { RenderMermaidChart } from '@/components/common/RenderMermaidChart/RenderMermaidChart'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -38,6 +39,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
    const [authorship_settings, setAuthorshipSettings] = React.useState<Author>()
    const [popover, setPopover] = React.useState({ copy_link: false })
    const [dialog, setDialog] = React.useState({ author: false, share_split: false, edit_author: false, reasoning: false })
+   const [chartError, setChartError] = React.useState<boolean>(false)
 
    const onReorder = (newOrder: typeof items) => setItems((prevItems) => [...newOrder])
 
@@ -73,14 +75,20 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
 
    React.useEffect(() => {
       const runMermaid = async () => {
-         mermaid.initialize({ startOnLoad: false })
-         await mermaid.run({ querySelector: '.mermaid' })
+         try {
+            mermaid.initialize({ startOnLoad: false })
+            await mermaid.run({ querySelector: '.mermaid' }).catch((error) => {
+               console.log('Erro ao renderizar o Mermaid: ', error)
+               setChartError(true)
+            })
+         } catch (error) {
+            console.error('Erro ao renderizar o Mermaid: ', error)
+            setChartError(true)
+         }
       }
 
       if (article?.document.abstractChart) {
          runMermaid()
-      } else {
-         console.log('no chart')
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [article?.document.abstractChart])
@@ -147,15 +155,9 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
 
                <div className="grid gap-4">
                   <div className="grid gap-2">
-                     <p className="text-sm font-semibold">Visual Abstract</p>
+                     <p className="text-sm font-semibold">Visual abstract</p>
                   </div>
-                  <div className="flex items-center gap-4 w-full h-36 relative overflow-hidden py-2">
-                     {article?.document.abstractChart !== '' && (
-                        <div className="mermaid flex w-full justify-center mt-4" key={article?.document.id}>
-                           {article?.document.abstractChart}
-                        </div>
-                     )}
-                  </div>
+                  <RenderMermaidChart article={article} chartError={chartError} />
                </div>
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
@@ -231,7 +233,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                <div className="grid gap-6">
                   <div className="grid gap-2">
                      <h3 className="text-xl text-terciary-main font-semibold lg:text-lg 2xl:text-xl">Authors</h3>
-                     <p className="text-sm">Drag the Authors to reorder the list.</p>
+                     <p className="text-sm">Drag the authors to reorder the list.</p>
                   </div>
                   <div className="grid gap-2">
                      <div className="grid grid-cols-3">

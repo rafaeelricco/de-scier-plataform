@@ -191,14 +191,14 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   <p className="text-sm text-neutral-gray">Careful! You can only generate the abstract once per file.</p>
                </div>
                <div className="grid gap-2">
-                  <p className="text-sm font-semibold">Visual Abstract</p>
+                  <p className="text-sm font-semibold">Visual abstract</p>
                   <p className="text-sm font-regular">
-                     With the information from the abstract, a summary diagram (Visual Abstract) can be generated to describe the main points inside this
+                     With the information from the abstract, a summary diagram (Visual abstract) can be generated to describe the main points inside this
                      document, with a illustration.
                   </p>
                   <div className="flex flex-col md:flex-row md:items-center gap-4">
                      <Button.Button className="px-4 py-3 md:w-fit text-sm">
-                        Generate Visual Abstract
+                        Generate Visual abstract
                         <PlusCircleDotted size={18} className="fill-neutral-white" />
                      </Button.Button>
                      <p className="text-sm text-neutral-gray">Careful! You can only generate the visual abstract once per file.</p>

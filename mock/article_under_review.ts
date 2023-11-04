@@ -3,7 +3,7 @@ import { ArticleUnderReviewProps } from '@/components/common/Publication/Item/Ar
 export const visual_abstract_options = [
    {
       id: 1,
-      label: 'Use Visual Abstract on publication',
+      label: 'Use Visual abstract on publication',
       value: 'use_visual_abstract'
    },
    {

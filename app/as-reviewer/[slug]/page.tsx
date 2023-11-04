@@ -201,7 +201,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
 
                <div className="grid gap-4">
                   <div className="grid gap-2">
-                     <p className="text-sm font-semibold">Visual Abstract</p>
+                     <p className="text-sm font-semibold">Visual abstract</p>
                   </div>
                   <div className="flex items-center gap-4 w-full h-36 relative overflow-hidden py-2">
                      {/* eslint-disable-next-line @next/next/no-img-element */}
