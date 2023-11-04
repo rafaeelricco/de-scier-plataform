@@ -5,7 +5,7 @@ import PaginationComponent from '@/components/common/Pagination/Pagination'
 import { ArticleUnderReviewSkeleton } from '@/components/common/Publication/Item/ArticlesUnderReview'
 import ReviewerItem from '@/components/modules/AsReviewer/ReviewerItem/ReviewerItem'
 import { ReviewerItemProps } from '@/components/modules/AsReviewer/ReviewerItem/Typing'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import useDebounce from '@/hooks/useDebounce'
 import { filter_order_by, filter_status } from '@/mock/dropdow_filter_options'
 import { useArticleToReview } from '@/services/reviewer/fetchDocuments.service'
@@ -101,7 +101,11 @@ export default function AsReviewerPage() {
                            ) : (
                               results.slice((page - 1) * per_page, page * per_page).map((article) => (
                                  <React.Fragment key={article.id}>
-                                    <ReviewerItem {...article} />
+                                    <ReviewerItem
+                                       {...article}
+                                       link={`
+                                    /as-reviewer/${article.id}`}
+                                    />
                                  </React.Fragment>
                               ))
                            )}

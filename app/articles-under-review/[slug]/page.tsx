@@ -5,6 +5,7 @@ import { Pills } from '@/components/common/Button/Pill/Pill'
 import CommentItem from '@/components/common/Comment/Comment'
 import Dropzone from '@/components/common/Dropzone/Dropzone'
 import { File } from '@/components/common/File/File'
+import { YouAreAuthor, YouAreReviwer } from '@/components/common/Flags/Author/AuthorFlags'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -25,7 +26,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React from 'react'
-import { ArrowLeft, CardText, Check, FileEarmarkText, Pencil, Person, PlusCircle, PlusCircleDotted, Trash, X } from 'react-bootstrap-icons'
+import { ArrowLeft, Check, FileEarmarkText, Pencil, PlusCircle, PlusCircleDotted, Trash, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { twMerge } from 'tailwind-merge'
 
@@ -120,8 +121,11 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                <h1 className="text-1xl font-semibold">Article in review</h1>
             </div>
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
-               {loading && <Skeleton className="flex items-center gap-2 w-72 py-1 px-3 rounded-md h-7" />}
-               {is_author ? <YouAreAuthor /> : <YouAreReviwer />}
+               {loading ? (
+                  <Skeleton className="flex items-center gap-2 w-72 py-1 px-3 rounded-md h-7" />
+               ) : (
+                  <React.Fragment>{is_author ? <YouAreAuthor /> : <YouAreReviwer />}</React.Fragment>
+               )}
                <div className="grid gap-x-6 gap-y-4">
                   <div className="grid md:grid-cols-2 gap-6">
                      <Input.Root>
@@ -354,7 +358,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   <div>
                      <p className="text-sm font-semibold">Invite Link</p>
                      <div className="flex flex-col md:flex-row md:items-center gap-4">
-                        <p className="text-sm font-semibold text-blue-500 w-1/2 underline truncate ..." id="link-to-copy">
+                        <p className="text-sm font-semibold text-blue-500 max-w-[50ch] underline truncate ..." id="link-to-copy">
                            {article?.document.reviewerInviteLink}
                         </p>
                         <HoverCard open={popover.copy_link}>
@@ -565,28 +569,6 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   Publish document
                </Button.Button>
             </Box>
-         </div>
-      </React.Fragment>
-   )
-}
-
-const YouAreAuthor = () => {
-   return (
-      <React.Fragment>
-         <div className="flex items-center gap-2 border border-neutral-stroke_light w-fit py-1 px-3 rounded-md">
-            <Person className="text-primary-light" />
-            <p className="text-xs md:text-sm text-primary-light font-semibold select-none">You are the Author of the document</p>
-         </div>
-      </React.Fragment>
-   )
-}
-
-const YouAreReviwer = () => {
-   return (
-      <React.Fragment>
-         <div className="flex items-center gap-2 border border-neutral-stroke_light w-fit py-1 px-3 rounded-md">
-            <CardText className="text-[#B48E2B]" />
-            <p className="text-xs md:text-sm text-[#B48E2B] font-semibold select-none">You are added as a Reviewer for this article</p>
          </div>
       </React.Fragment>
    )

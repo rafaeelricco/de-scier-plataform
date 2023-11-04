@@ -3,13 +3,13 @@
 import { items } from '@/mock/sidebar_items'
 import { home_routes } from '@/routes/home'
 import * as Button from '@components/common/Button/Button'
+import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import LogoDeScier from 'public/svgs/common/logo/deScier - Logo.svg'
 import React from 'react'
 import { PlusCircle } from 'react-bootstrap-icons'
 import Item from './Item/Item'
 import Logout from './Logout/Logout'
-import { useSession } from 'next-auth/react'
 
 const Sidebar: React.FC = () => {
    // See more about in https://nextjs.org/docs/app/api-reference/functions/use-pathname
