@@ -5,6 +5,7 @@ import PaginationComponent from '@/components/common/Pagination/Pagination'
 import { ArticleUnderReview, ArticleUnderReviewProps } from '@/components/common/Publication/Item/ArticlesUnderReview'
 import { filter_order_by, filter_status } from '@/mock/dropdow_filter_options'
 import { home_routes } from '@/routes/home'
+import { useFetchAdminArticles } from '@/services/admin/fetchDocuments.service'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
@@ -13,10 +14,18 @@ import { Search } from 'react-bootstrap-icons'
 import slug from 'slug'
 
 export default function ArticlesForApprovalPage() {
+   const { articles, loading } = useFetchAdminArticles()
    const per_page = 8
    const [page, setPage] = React.useState(1)
-   const [results, setResults] = React.useState(articles_under_review)
+   const [results, setResults] = React.useState<ArticleUnderReviewProps[]>([])
    const [totalPages, setTotalPages] = React.useState(Math.ceil(results.length / per_page))
+
+   React.useEffect(() => {
+      if (articles) {
+         setResults(articles)
+         setTotalPages(articles.length)
+      }
+   }, [articles])
 
    return (
       <React.Fragment>
@@ -58,7 +67,7 @@ export default function ArticlesForApprovalPage() {
                   key={totalPages}
                   current={page}
                   perPage={per_page}
-                  total={results.length}
+                  total={results.length || 1}
                   handleFirstPage={() => setPage(1)}
                   handleNextPage={() => setPage(page + 1)}
                   handlePreviousPage={() => setPage(page - 1)}
