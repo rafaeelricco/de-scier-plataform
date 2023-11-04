@@ -1,8 +1,11 @@
 'use client'
 
 import * as Button from '@components/common/Button/Button'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
+import deScierLogo from 'public/svgs/common/logo/deScier - Logo.png'
 import LogoDeScier from 'public/svgs/common/logo/deScier - Logo.svg'
+import LogoutIcon from 'public/svgs/common/sidebar/Icons/logout.svg'
 import React from 'react'
 import Item from '../Item/Item'
 
@@ -34,11 +37,13 @@ const SidebarDeScier: React.FC = () => {
    )
 }
 
-import Image from 'next/image'
-import deScierLogo from 'public/svgs/common/logo/deScier - Logo.png'
-import LogoutIcon from 'public/svgs/common/sidebar/Icons/logout.svg'
-
 const Logout: React.FC<{ onLogout: () => void }> = ({ onLogout }: { onLogout: () => void }) => {
+   const router = useRouter()
+
+   const handleLogout = async () => {
+      await signOut()
+      router.push(home_routes.home.index)
+   }
    return (
       <React.Fragment>
          <div className="grid grid-flow-col items-center justify-start gap-4">
@@ -58,6 +63,7 @@ const Logout: React.FC<{ onLogout: () => void }> = ({ onLogout }: { onLogout: ()
                <LogoutIcon
                   width={18}
                   className="fill-neutral-light_gray cursor-pointer hover:fill-primary-main transition-all duration-300 hover:scale-110 mt-[2px]"
+                  onClick={handleLogout}
                />
             </div>
          </div>
@@ -66,6 +72,7 @@ const Logout: React.FC<{ onLogout: () => void }> = ({ onLogout }: { onLogout: ()
 }
 
 import { home_routes } from '@/routes/home'
+import { signOut } from 'next-auth/react'
 import CheckIcon from 'public/svgs/common/sidebar/Icons/check.svg'
 import { PlusCircle } from 'react-bootstrap-icons'
 

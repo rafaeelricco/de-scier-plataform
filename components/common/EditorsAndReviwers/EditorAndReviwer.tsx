@@ -48,7 +48,7 @@ export const EditorsAndReviewers: React.FC<EditorAndReviewerProps> = ({ article 
                   </div>
                ))
             ) : (
-               <p className="text-sm w-full text-center mt-8 text-neutral-gray">There is no editor or reviewer for this article.</p>
+               <p className="text-sm w-full text-center mt-4 text-neutral-gray">There is no editor or reviewer for this article.</p>
             )}
          </div>
       </React.Fragment>
