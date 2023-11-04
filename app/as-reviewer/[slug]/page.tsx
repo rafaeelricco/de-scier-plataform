@@ -31,6 +31,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
 import { keywordsArray } from '@/utils/keywords_format'
+import { RenderMermaidChart } from '@/components/common/RenderMermaidChart/RenderMermaidChart'
 
 export default function AsReviwerPageDetails({ params }: { params: { slug: string } }) {
    const router = useRouter()
@@ -46,6 +47,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
    const [mermaid_error, setMermaidError] = React.useState('' as string | null)
    const [popover, setPopover] = React.useState({ copy_link: false })
    const [dialog, setDialog] = React.useState({ author: false, share_split: false, edit_author: false, reasoning: false })
+   const [chartError, setChartError] = React.useState<boolean>(false)
 
    const fetchSingleArticle = async (documentId: string) => {
       const fetchedArticle = await fetch_article(documentId).then((res) => {
@@ -101,6 +103,11 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
       toast.success(`Document ${status} successgully`)
    }
 
+   const getReviewStatus = () => {
+      const review = article?.document.reviewersOnDocuments?.find((item) => item.reviewerEmail === data?.user?.email)
+      return review?.approvedStatus || 'PENDING'
+   }
+
    React.useEffect(() => {
       setLoading(true)
       const isAuthor = () => {
@@ -122,16 +129,20 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
 
    React.useEffect(() => {
       const runMermaid = async () => {
-         mermaid.initialize({ startOnLoad: false, fontSize: 25 })
-         await mermaid.run({ querySelector: '.mermaid' }).catch((err) => {
-            setMermaidError(err.message)
-         })
+         try {
+            mermaid.initialize({ startOnLoad: false })
+            await mermaid.run({ querySelector: '.mermaid' }).catch((error) => {
+               console.log('Erro ao renderizar o Mermaid: ', error)
+               setChartError(true)
+            })
+         } catch (error) {
+            console.error('Erro ao renderizar o Mermaid: ', error)
+            setChartError(true)
+         }
       }
 
       if (article?.document.abstractChart) {
          runMermaid()
-      } else {
-         console.log('no chart')
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [article?.document.abstractChart])
@@ -205,20 +216,18 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                   <div className="grid gap-2">
                      <p className="text-sm font-semibold">Visual abstract</p>
                   </div>
-                  <div className="flex items-center gap-4 w-full h-36 relative overflow-hidden py-2">
-                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                     {article?.document.abstractChart !== '' && (
-                        <div className="mermaid flex w-full justify-center mt-4" key={article?.document.id}>
-                           {article?.document.abstractChart}
-                        </div>
-                     )}
-                  </div>
+                  <RenderMermaidChart article={article} chartError={chartError} />
                </div>
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
-                  <div className="w-44 h-4w-44 rounded-md overflow-hidden">
+                  <div className="w-full h-56 rounded-md overflow-hidden relative">
                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                     <img src={article?.document.cover || '/images/4fa38f086cfa1a2289fabfdd7337c09d.jpeg'} alt="cover-preview" />
+                     <img
+                        loading="lazy"
+                        src={article?.document.cover || '/images/4fa38f086cfa1a2289fabfdd7337c09d.jpeg'}
+                        alt="cover-preview"
+                        className="absolute w-full h-full object-cover"
+                     />
                   </div>
                   <p className="text-sm font-semibold">Last updated on 29/09/2023 - 14:34</p>
                </div>
@@ -490,7 +499,16 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                )}
             </Box>
             <Box className="grid gap-4 h-fit py-6 px-8">
-               <h3 className="text-lg font-semibold text-status-pending flex justify-center">Your approval is still pending</h3>
+               {getReviewStatus() === 'PENDING' && (
+                  <h3 className="text-lg font-semibold text-status-pending flex justify-center">Your approval is still pending</h3>
+               )}
+               {getReviewStatus() === 'REJECTED' && (
+                  <h3 className="text-lg font-semibold text-status-error flex justify-center">Your rejected the document</h3>
+               )}
+               {getReviewStatus() === 'APPROVED' && (
+                  <h3 className="text-lg font-semibold text-status-green flex justify-center">Your approved the document</h3>
+               )}
+
                <div className="flex items-center justify-center gap-12">
                   <div className="flex items-center">
                      <h2 className="text-status-yellow font-semibold text-lg">Reviewer</h2>
@@ -517,13 +535,28 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                         )}
                   </div>
                </div>
-               <Button.Button variant="primary" className="flex items-center" onClick={() => handleApproveDocument(true)} loading={loading}>
-                  <Check className="w-5 h-5" />
-                  Approve document
-               </Button.Button>
-               <Button.Button variant="outline" className="flex items-center" onClick={() => handleApproveDocument(false)} loading={loading}>
-                  Reject document
-               </Button.Button>
+               {getReviewStatus() !== 'APPROVED' && (
+                  <>
+                     <Button.Button variant="primary" className="flex items-center" onClick={() => handleApproveDocument(true)} loading={loading}>
+                        <Check className="w-5 h-5" />
+                        Approve document
+                     </Button.Button>
+                  </>
+               )}
+               {getReviewStatus() === 'APPROVED' && (
+                  <>
+                     <Button.Button
+                        variant="primary"
+                        disabled
+                        className="flex items-center bg-status-disable_bg text-status-disable_text"
+                        onClick={() => handleApproveDocument(true)}
+                        loading={loading}
+                     >
+                        <Check className="w-5 h-5" />
+                        Approve document
+                     </Button.Button>
+                  </>
+               )}
             </Box>
          </div>
       </React.Fragment>
