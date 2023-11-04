@@ -22,7 +22,7 @@ import * as Input from '@components/common/Input/Input'
 import { Reorder } from 'framer-motion'
 import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React from 'react'
-import { ArrowLeft, Check, FileEarmarkText, Pencil, PlusCircle, PlusCircleDotted, Trash, X } from 'react-bootstrap-icons'
+import { ArrowLeft, Check, FileEarmarkText, Pencil, Person, PlusCircle, PlusCircleDotted, Trash, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { twMerge } from 'tailwind-merge'
 
@@ -64,10 +64,31 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
       setItems((prevItems) => [...newOrder])
    }
 
+   function copyToClipboard() {
+      const textToCopy = document.getElementById('link-to-copy')!.innerText
+
+      navigator.clipboard
+         .writeText(textToCopy)
+         .then(() => {
+            setPopover({ ...popover, copy_link: true })
+            setTimeout(() => {
+               setPopover({ ...popover, copy_link: false })
+            }, 3000)
+         })
+         .catch((err) => {
+            console.error('Erro ao copiar texto: ', err)
+         })
+   }
+
    const { data } = useSession()
 
    const [loading, setLoading] = React.useState(false)
    const [is_author, setIsAuthor] = React.useState(false)
+
+   const handleApproveDocument = (approve: boolean) => {
+      const status = approve ? 'APPROVED' : 'REJECTED'
+      alert(status)
+   }
 
    React.useEffect(() => {
       setLoading(true)
@@ -103,6 +124,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [article?.document.abstractChart])
+
    return (
       <React.Fragment>
          <Dialog.Root open={dialog.reasoning}>
@@ -120,119 +142,85 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                <ArrowLeft size={32} className="hover:scale-110 transition-all cursor-pointer" onClick={() => router.back()} />
                <h1 className="text-1xl font-semibold">Article in review</h1>
             </div>
-            <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
+            <Box className="grid gap-8 h-fit py-6 px-8">
                {loading ? (
                   <Skeleton className="flex items-center gap-2 w-72 py-1 px-3 rounded-md h-7" />
                ) : (
                   <React.Fragment>{is_author ? <YouAreAuthor /> : <YouAreReviwer />}</React.Fragment>
                )}
-               <div className="grid gap-x-6 gap-y-4">
-                  <div className="grid md:grid-cols-2 gap-6">
-                     <Input.Root>
-                        <Input.Label className="flex gap-2 items-center">
-                           <span className="text-sm font-semibold">Title</span>
-                           <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
-                        </Input.Label>
-                        <Input.Input placeholder="Title of the article" defaultValue={article?.document.title} />
-                     </Input.Root>
-                     <Input.Root>
-                        <Input.Label>Add keywords (Max 5)</Input.Label>
-                        <Input.Input
-                           placeholder="Title of the article"
-                           end
-                           icon={
-                              <React.Fragment>
-                                 <Button.Button
-                                    variant="outline"
-                                    className="px-2 py-0 border-neutral-light_gray hover:bg-neutral-light_gray hover:bg-opacity-10 flex items-center gap-1 rounded-sm"
-                                 >
-                                    <PlusCircle className="w-3 fill-neutral-light_gray" />
-                                    <span className="font-semibold text-xs text-neutral-light_gray">Add keyword</span>
-                                 </Button.Button>
-                              </React.Fragment>
-                           }
-                        />
-                     </Input.Root>
+               <div className="grid grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1">
+                     <span className="text-sm font-semibold">Title</span>
+                     <span className="text-sm">{article?.document?.title}</span>
                   </div>
-                  <div className="grid md:grid-cols-2 gap-6">
-                     <Input.Root>
-                        <Input.Label className="flex gap-2 items-center">
-                           <span className="text-sm font-semibold">Field</span>
-                           <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
-                        </Input.Label>
-                        <Input.Input placeholder="Title of the field" defaultValue={article?.document.field} />
-                     </Input.Root>
-                  </div>
+
+                  <Input.Root>
+                     <Input.Label>Add keywords (Max 5)</Input.Label>
+                     <Input.Input
+                        placeholder="Title of the article"
+                        end
+                        icon={
+                           <React.Fragment>
+                              <Button.Button
+                                 variant="outline"
+                                 className="px-2 py-0 border-neutral-light_gray hover:bg-neutral-light_gray hover:bg-opacity-10 flex items-center gap-1 rounded-sm"
+                              >
+                                 <PlusCircle className="w-3 fill-neutral-light_gray" />
+                                 <span className="font-semibold text-xs text-neutral-light_gray">Add keyword</span>
+                              </Button.Button>
+                           </React.Fragment>
+                        }
+                     />
+                  </Input.Root>
                </div>
-               <div>
-                  <div className="hidden lg:grid lg:gap-2">
-                     <h3 className="text-sm font-semibold">Document type</h3>
-                     <Pills items={document_types} />
+               <div className="grid grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1">
+                     <span className="text-sm font-semibold">Field</span>
+                     <span className="text-sm">{article?.document?.field}</span>
                   </div>
-                  <div className="block md:hidden">
-                     <Input.Root>
-                        <Input.Select label={'Document type'} options={document_types} placeholder="Title of the field" />
-                     </Input.Root>
-                  </div>
-               </div>
-               <Dropzone setSelectedFile={(file) => console.log(file)} />
-               <Input.Root>
-                  <Input.Label className="flex gap-2 items-center">
-                     <span className="text-sm font-semibold">Abstract</span>
-                     <span className="text-sm text-neutral-light_gray font-semibold">0/2000 words</span>
-                  </Input.Label>
-                  <Input.TextArea defaultValue={article?.document.abstract} rows={4} placeholder="Title of the field" />
-               </Input.Root>
-               <div className="flex flex-col md:flex-row md:items-center gap-4">
-                  <Button.Button variant="outline" className="px-4 py-3 md:w-fit text-sm">
-                     Generate abstract with AI
-                     <PlusCircleDotted size={18} className="fill-primary-main" />
-                  </Button.Button>
-                  <p className="text-sm text-neutral-gray">Careful! You can only generate the abstract once per file.</p>
                </div>
                <div className="grid gap-2">
-                  <p className="text-sm font-semibold">Visual Abstract</p>
-                  <p className="text-sm font-regular">
-                     With the information from the abstract, a summary diagram (Visual Abstract) can be generated to describe the main points inside this
-                     document, with a illustration.
-                  </p>
-                  <div className="flex flex-col md:flex-row md:items-center gap-4">
-                     <Button.Button className="px-4 py-3 md:w-fit text-sm">
-                        Generate Visual Abstract
-                        <PlusCircleDotted size={18} className="fill-neutral-white" />
-                     </Button.Button>
-                     <p className="text-sm text-neutral-gray">Careful! You can only generate the visual abstract once per file.</p>
+                  <h3 className="text-sm font-semibold">Document type</h3>
+                  <p className="text-sm font-regular">{article?.document.documentType}</p>
+               </div>
+
+               <div className="grid gap-2">
+                  <h3 className="text-sm font-semibold">Abstract</h3>
+                  <p className="text-sm font-regular">{article?.document.abstract}</p>
+               </div>
+
+               <div className="grid gap-4">
+                  <div className="grid gap-2">
+                     <p className="text-sm font-semibold">Visual Abstract</p>
                   </div>
-                  {mermaid_error ? null : (
-                     <React.Fragment>
-                        {article?.document.abstractChart && (
-                           <div className="mermaid flex w-full zoom-in-125 justify-center mt-4" key={article?.document.abstractChart}>
-                              {article?.document.abstractChart}
-                           </div>
-                        )}
-                     </React.Fragment>
-                  )}
+                  <div className="flex items-center gap-4 w-full h-36 relative overflow-hidden py-2">
+                     {/* eslint-disable-next-line @next/next/no-img-element */}
+                     <img src="/images/visual-abstract.png" alt="placeholder" className="absolute object-cover w-fit h-36" />
+                  </div>
                </div>
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
-                  <Dropzone thumbnail placeholder="Upload cover picture (.png, .jpg)" setSelectedFile={(file) => console.log(file)} />
+                  <div className="w-44 h-4w-44 rounded-md overflow-hidden">
+                     {/* eslint-disable-next-line @next/next/no-img-element */}
+                     <img src={article?.document.cover || '/images/4fa38f086cfa1a2289fabfdd7337c09d.jpeg'} alt="cover-preview" />
+                  </div>
+                  <p className="text-sm font-semibold">Last updated on 29/09/2023 - 14:34</p>
                </div>
             </Box>
-            <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
+            <Box className="grid gap-8 h-fit py-6 px-8">
                <div className="grid gap-6">
-                  <h3 className="text-lg md:text-xl text-primary-main font-semibold">Document file</h3>
-                  <div className="grid md:grid-cols-2 gap-6">
-                     <Dropzone setSelectedFile={(file) => console.log(file)} />
-                     <ScrollArea className="h-[200px] pr-2">
+                  <h3 className="text-xl text-primary-main font-semibold lg:text-lg 2xl:text-xl">Document file</h3>
+                  <div>
+                     <ScrollArea className="h-[200px] w-full pr-2">
                         <div className="grid gap-4">
-                           {article?.document?.documentVersions && article?.document?.documentVersions?.length > 0 ? (
-                              article?.document?.documentVersions?.map((file) => (
+                           {article?.document.documentVersions && article.document.documentVersions.length > 0 ? (
+                              article?.document.documentVersions?.map((file) => (
                                  <File
                                     key={file.id}
                                     file_name={file.fileName || 'file.docx'}
-                                    link={file.link}
+                                    link={file.link || ''}
                                     uploaded_at={new Date(file.createdAt).toLocaleDateString('pt-BR')}
-                                    uploaded_by={data?.user?.userInfo.name || ''}
+                                    uploaded_by={article.document.user?.name || ''}
                                  />
                               ))
                            ) : (
@@ -243,100 +231,62 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                   </div>
                </div>
             </Box>
-            <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
+            <Box className="grid gap-8 h-fit py-6 px-8">
                <div className="grid gap-2">
-                  <h3 className="text-lg md:text-xl text-primary-main font-semibold">Comments</h3>
+                  <h3 className="text-xl text-primary-main font-semibold lg:text-lg 2xl:text-xl">Comments</h3>
                   <p className="text-sm">The reviewing team can publish comments, suggesting updates on your document.</p>
                </div>
                <div className="border rounded-md p-4">
                   <ScrollArea className="lg:h-[300px] 2xl:h-[400px] pr-2">
                      <div className="grid gap-4">
-                        {article?.document.documentComments && article?.document.documentComments?.length > 0 ? (
-                           article?.document.documentComments?.map((comment) => (
-                              <React.Fragment key={comment.id}>
-                                 <CommentItem
-                                    comment_author={comment.user.name}
-                                    comment_content={comment.comment}
-                                    status={comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED'}
-                                    onApprove={() => console.log('approved', comment)}
-                                    onReject={() => console.log('rejected', comment)}
-                                    onSeeReasoning={() => setDialog({ ...dialog, reasoning: true })}
-                                 />
-                              </React.Fragment>
-                           ))
-                        ) : (
-                           <p className="text-center col-span-2 text-gray-500 mt-8">There are no comments on this document.</p>
-                        )}
+                        {article?.document.documentComments?.map((comment) => (
+                           <React.Fragment key={comment.id}>
+                              <CommentItem
+                                 comment_author={comment.user.name}
+                                 comment_content={comment.comment}
+                                 status={comment.approvedByAuthor as 'APPROVED' | 'REJECTED' | 'PENDING'}
+                                 onApprove={() => console.log('approved', comment)}
+                                 onReject={() => console.log('rejected', comment)}
+                                 onSeeReasoning={() => setDialog({ ...dialog, reasoning: true })}
+                              />
+                           </React.Fragment>
+                        ))}
                      </div>
                   </ScrollArea>
                </div>
             </Box>
-            <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
+            <Box className="grid gap-8 h-fit py-6 px-8">
                <div className="grid ">
-                  <h3 className="text-lg md:text-xl text-terciary-main font-semibold">Authors</h3>
+                  <h3 className="text-xl text-terciary-main font-semibold lg:text-lg 2xl:text-xl">Authors</h3>
                </div>
                <div className="grid gap-6">
-                  <Button.Button variant="outline" className="px-4 py-3 w-full text-sm">
-                     Select Authors for the paper
-                     <PlusCircle
-                        className="w-4 fill-primary-main 
-                "
-                     />
-                  </Button.Button>
-                  <p className="text-sm">Drag the authors to reorder the list.</p>
                   <div className="grid gap-2">
-                     <div className="hidden md:grid grid-cols-3">
+                     <div className="grid grid-cols-3">
                         {authors_headers.map((header, index) => (
                            <React.Fragment key={index}>
                               <p className="text-sm font-semibold">{header.label}</p>
                            </React.Fragment>
                         ))}
                      </div>
-                     <Reorder.Group axis="y" values={authors} onReorder={onReorder}>
+                     <Reorder.Group axis="y" values={items} onReorder={onReorder}>
                         <div className="grid gap-2">
                            {article?.document.authorsOnDocuments?.map((item, index) => (
-                              <Reorder.Item key={item.id} value={item} id={item.id}>
-                                 <div className="grid md:grid-cols-3 items-center px-0 py-3 rounded-md cursor-grab">
+                              <Reorder.Item key={item.id} value={item}>
+                                 <div className="grid grid-cols-3 gap-4 items-center px-0 py-3 rounded-md cursor-grab hover:bg-[#F1FFFF]">
                                     <div className="flex items-center gap-4">
-                                       <div className="flex gap-0 items-center">
-                                          <CircleIcon className="w-8" />
+                                       <div className="flex items-center gap-0">
+                                          <CircleIcon className="w-8 cursor-grab" />
                                           <p className="text-sm text-blue-gray">{index + 1}º</p>
                                        </div>
                                        <div>
-                                          <p className="text-sm text-secundary_blue-main font-semibold md:font-regular">{item.author?.name}</p>
-                                          <div className="block md:hidden">
-                                             <p className="text-sm text-secundary_blue-main">{item.author?.title}</p>
-                                          </div>
-                                          <div className="block md:hidden">
-                                             <p className="text-sm text-secundary_blue-main">{item.author?.email}</p>
-                                          </div>
+                                          <p className="text-sm text-secundary_blue-main">{item.author?.name}</p>
                                        </div>
                                     </div>
-                                    <div className="hidden md:block">
+                                    <div>
                                        <p className="text-sm text-secundary_blue-main">{item.author?.title}</p>
                                     </div>
-                                    <div className="hidden md:flex items-center justify-between">
-                                       <p className="text-sm text-secundary_blue-main">{item.author?.email}</p>
-                                       {index !== 0 && (
-                                          <React.Fragment>
-                                             <div className="flex items-center gap-2">
-                                                <Trash
-                                                   className="fill-status-error w-5 h-full cursor-pointer hover:scale-110 transition-all duration-200"
-                                                   onClick={() => {
-                                                      //  const new_list = authors.filter((author) => author.id !== item.id)
-                                                      //  setAuthors(new_list)
-                                                   }}
-                                                />
-                                                <Pencil
-                                                   className="fill-primary-main w-5 h-full cursor-pointer hover:scale-110 transition-all duration-200"
-                                                   onClick={() => {
-                                                      //  setAuthorToEdit(item as unknown as AuthorProps)
-                                                      //  setDialog({ ...dialog, edit_author: true })
-                                                   }}
-                                                />
-                                             </div>
-                                          </React.Fragment>
-                                       )}
+                                    <div>
+                                       <p className="text-sm text-secundary_blue-main">{item.authorEmail}</p>
                                     </div>
                                  </div>
                               </Reorder.Item>
@@ -346,10 +296,10 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                   </div>
                </div>
             </Box>
-            <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
+            <Box className="grid gap-8 h-fit py-6 px-8">
                <div className="grid gap-4">
                   <div className="grid gap-2">
-                     <h3 className="text-lg md:text-xl text-primary-main font-semibold">Editors / Reviewers</h3>
+                     <h3 className="text-xl text-primary-main font-semibold lg:text-lg 2xl:text-xl">Editors / Reviewers</h3>
                      <p className="text-sm">
                         At least 1 editor and 2 reviewers’ approval are required to publish the paper. The editors and reviewers cannot be authors in the
                         project. Invite them to the platform through the link:
@@ -357,31 +307,13 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                   </div>
                   <div>
                      <p className="text-sm font-semibold">Invite Link</p>
-                     <div className="flex flex-col md:flex-row md:items-center gap-4">
-                        <p className="text-sm font-semibold text-blue-500 max-w-[50ch] underline truncate ..." id="link-to-copy">
+                     <div className="flex items-center gap-4">
+                        <p className="text-sm font-semibold w-1/2 text-blue-500 underline truncate ..." id="link-to-copy">
                            {article?.document.reviewerInviteLink}
                         </p>
                         <HoverCard open={popover.copy_link}>
                            <HoverCardTrigger>
-                              <Button.Button
-                                 variant="outline"
-                                 className="px-4 py-1 text-sm"
-                                 onClick={() => {
-                                    const textToCopy = document.getElementById('link-to-copy')!.innerText
-
-                                    navigator.clipboard
-                                       .writeText(textToCopy)
-                                       .then(() => {
-                                          setPopover({ ...popover, copy_link: true })
-                                          setTimeout(() => {
-                                             setPopover({ ...popover, copy_link: false })
-                                          }, 3000)
-                                       })
-                                       .catch((err) => {
-                                          console.error('Erro ao copiar texto: ', err)
-                                       })
-                                 }}
-                              >
+                              <Button.Button variant="outline" className="px-4 py-1 text-sm" onClick={copyToClipboard}>
                                  Copy Link
                               </Button.Button>
                            </HoverCardTrigger>
@@ -393,7 +325,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                   </div>
                </div>
                <div>
-                  <div className="hidden md:grid grid-cols-5">
+                  <div className="grid grid-cols-5">
                      {header_editor_reviewer.map((header, index) => (
                         <React.Fragment key={index}>
                            <p className="text-sm font-semibold">{header.label}</p>
@@ -403,17 +335,17 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                   <div>
                      {article?.document.reviewersOnDocuments?.map((item, index) => (
                         <div key={item.id}>
-                           <div className="grid md:grid-cols-5  items-center px-0 py-3 rounded-md">
+                           <div className="grid grid-cols-5  items-center px-0 py-3 rounded-md">
                               <div className="flex items-center gap-4">
                                  <div>
-                                    <p className="text-sm text-secundary_blue-main font-regular">{item.reviewer.name}</p>
+                                    <p className="text-sm text-secundary_blue-main">{item.reviewer.name}</p>
                                  </div>
                               </div>
                               <div>
                                  <p className="text-sm text-secundary_blue-main">{item.reviewer.title}</p>
                               </div>
                               <div>
-                                 <p className="text-sm text-secundary_blue-main">{truncate(item.reviewer.email, 16)}</p>
+                                 <p className="text-sm text-secundary_blue-main">{truncate(item.reviewerEmail, 16)}</p>
                               </div>
                               <div>
                                  <p
@@ -429,9 +361,9 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                               <div>
                                  <p
                                     className={twMerge(
-                                       'text-sm text-secundary_blue-main first-letter:uppercase font-semibold border py-[2px] px-1 text-center rounded-md md:border-none md:py-0 md:px-0 md:rounded-none md:text-start',
+                                       'text-sm text-secundary_blue-main first-letter:uppercase font-semibold',
                                        `${item.inviteStatus == 'PENDING' && 'text-status-pending'}`,
-                                       `${item.inviteStatus == 'ACCEPTED' && 'text-status-green'}`
+                                       `${item.inviteStatus == 'APPROVED' && 'text-status-green'}`
                                     )}
                                  >
                                     {item.inviteStatus}
@@ -443,15 +375,15 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                   </div>
                </div>
             </Box>
-            <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
+            <Box className="grid gap-8 h-fit py-6 px-8">
                <div className="grid gap-2">
-                  <h3 className="text-lg md:text-xl text-status-green font-semibold">Authorship</h3>
+                  <h3 className="text-xl text-status-green font-semibold lg:text-lg 2xl:text-xl">Authorship</h3>
                   <p className="text-sm">
                      Decide if the project is <span className="text-terciary-main font-semibold">Open Access</span>,{' '}
                      <span className="text-[#EFB521] font-semibold">Paid Access</span>
                   </p>
                </div>
-               <div className="grid md:grid-cols-2 items-start gap-6">
+               <div className="grid grid-cols-2 items-start gap-6">
                   <Input.Root>
                      <Input.Select
                         label={'Type of access'}
@@ -482,7 +414,6 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                            <Input.Label>Price</Input.Label>
                            <CurrencyInput
                               currency="USD"
-                              defaultValue={article?.document.price}
                               onChangeValue={(event, originalValue, maskedValue) => console.log(maskedValue)}
                               InputElement={<Input.Input placeholder="USD" />}
                            />
@@ -506,16 +437,16 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                         </div>
                         <div>
                            <div>
-                              {article?.document.authorsOnDocuments?.map((author, index) => (
+                              {authors.map((author, index) => (
                                  <React.Fragment key={index}>
-                                    <div className="grid gap-2 md:grid-cols-3 items-center py-3">
+                                    <div className="grid grid-cols-3 items-center py-3">
                                        <div>
-                                          <p className="text-sm font-semibold text-secundary_blue-main">{author.author?.name}</p>
+                                          <p className="text-sm text-secundary_blue-main">{author.name}</p>
                                        </div>
                                        <div>
-                                          {author.revenuePercent ? (
+                                          {author.share ? (
                                              <div className="flex gap-2 px-4 py-1 border rounded-md border-terciary-main w-fit">
-                                                <p className="text-sm text-center text-terciary-main w-8">{author.revenuePercent}%</p>
+                                                <p className="text-sm text-center text-terciary-main w-8">{author.share}</p>
                                                 <p className="text-sm text-terciary-main">Authorship</p>
                                              </div>
                                           ) : (
@@ -524,22 +455,13 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                                                 className="px-4 py-2 w-fit text-sm"
                                                 onClick={() => {
                                                    setDialog({ ...dialog, share_split: true })
-                                                   setAuthorshipSettings({
-                                                      email: author.authorEmail || '',
-                                                      id: author.id,
-                                                      name: author.author?.name || '',
-                                                      title: author.author?.title || '',
-                                                      share: `${author.revenuePercent}`
-                                                   })
+                                                   setAuthorshipSettings(author)
                                                 }}
                                              >
                                                 Add authorship settings
                                                 <PlusCircleDotted size={18} className="fill-primary-main" />
                                              </Button.Button>
                                           )}
-                                       </div>
-                                       <div className="w-fit">
-                                          <p className="text-sm text-center text-black w-8">{author.author?.walletAddress}</p>
                                        </div>
                                     </div>
                                     <hr className="divider-h" />
@@ -551,22 +473,40 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                   </React.Fragment>
                )}
             </Box>
-            <Box className="grid gap-4 h-fit px-4 py-6 md:px-8">
-               <div className="flex items-center justify-between md:gap-12 md:justify-center">
+            <Box className="grid gap-4 h-fit py-6 px-8">
+               <h3 className="text-lg font-semibold text-status-pending flex justify-center">Your approval is still pending</h3>
+               <div className="flex items-center justify-center gap-12">
                   <div className="flex items-center">
-                     <h2 className="text-status-yellow font-semibold text-base md:text-lg">Reviewer</h2>
-                     <Check className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
-                     <Check className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
+                     <h2 className="text-status-yellow font-semibold text-lg">Reviewer</h2>
+                     {article?.document.reviewersOnDocuments
+                        ?.filter((item) => item.role === 'reviewer')
+                        ?.map((item) =>
+                           item.approvedStatus === 'APPROVED' ? (
+                              <Check key={item.id} className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
+                           ) : (
+                              <X key={item.id} className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer" />
+                           )
+                        )}
                   </div>
                   <div className="flex items-center">
-                     <h2 className="text-terciary-main font-semibold text-base md:text-lg">Editor</h2>
-                     <Check className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
-                     <X className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer" />
+                     <h2 className="text-terciary-main font-semibold text-lg">Editor</h2>
+                     {article?.document.reviewersOnDocuments
+                        ?.filter((item) => item.role === 'editor')
+                        ?.map((item) =>
+                           item.approvedStatus === 'APPROVED' ? (
+                              <Check key={item.id} className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
+                           ) : (
+                              <X key={item.id} className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer" />
+                           )
+                        )}
                   </div>
                </div>
-               <Button.Button variant="primary" className="flex items-center">
-                  <FileEarmarkText className="w-5 h-5" />
-                  Publish document
+               <Button.Button variant="primary" className="flex items-center" onClick={() => handleApproveDocument(true)}>
+                  <Check className="w-5 h-5" />
+                  Approve document
+               </Button.Button>
+               <Button.Button variant="outline" className="flex items-center" onClick={() => handleApproveDocument(false)}>
+                  Reject document
                </Button.Button>
             </Box>
          </div>
