@@ -1,5 +1,6 @@
 'use client'
 
+import { AuthorsListDragabble } from '@/components/common/AuthorsListDraggable/AuthorsListDraggable'
 import Box from '@/components/common/Box/Box'
 import { Pills } from '@/components/common/Button/Pill/Pill'
 import { NewAuthor } from '@/components/modules/Summary/NewArticle/Authors/NewAuthor'
@@ -17,15 +18,13 @@ import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Reorder } from 'framer-motion'
 import { uniqueId } from 'lodash'
 import mermaid from 'mermaid'
 import { useSession } from 'next-auth/react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
-import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React, { useEffect, useState } from 'react'
-import { Clipboard, Pencil, PlusCircle, PlusCircleDotted, Trash, X } from 'react-bootstrap-icons'
+import { Clipboard, PlusCircle, PlusCircleDotted, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -541,57 +540,19 @@ export default function SubmitNewPaperPage() {
                               </React.Fragment>
                            ))}
                         </div>
-                        <Reorder.Group axis="y" values={authors} onReorder={onReorder}>
-                           <div className="grid gap-2">
-                              {authors.map((item, index) => (
-                                 <Reorder.Item key={item.id} value={item} id={item.id}>
-                                    <div className="grid md:grid-cols-3 items-center px-0 py-3 rounded-md cursor-grab">
-                                       <div className="flex items-center gap-4">
-                                          <div className="flex gap-0 items-center">
-                                             <CircleIcon className="w-8" />
-                                             <p className="text-sm text-blue-gray">{index + 1}º</p>
-                                          </div>
-                                          <div>
-                                             <p className="text-sm text-secundary_blue-main font-semibold md:font-regular">{item.name}</p>
-                                             <div className="block md:hidden">
-                                                <p className="text-sm text-secundary_blue-main">{item.title}</p>
-                                             </div>
-                                             <div className="block md:hidden">
-                                                <p className="text-sm text-secundary_blue-main">{item.email}</p>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div className="hidden md:block">
-                                          <p className="text-sm text-secundary_blue-main">{item.title}</p>
-                                       </div>
-                                       <div className="hidden md:flex items-center justify-between">
-                                          <p className="text-sm text-secundary_blue-main">{item.email}</p>
-                                          {index !== 0 && (
-                                             <React.Fragment>
-                                                <div className="flex items-center gap-2">
-                                                   <Trash
-                                                      className="fill-status-error w-5 h-full cursor-pointer hover:scale-110 transition-all duration-200"
-                                                      onClick={() => {
-                                                         const new_list = authors.filter((author) => author.id !== item.id)
-                                                         setAuthors(new_list)
-                                                      }}
-                                                   />
-                                                   <Pencil
-                                                      className="fill-primary-main w-5 h-full cursor-pointer hover:scale-110 transition-all duration-200"
-                                                      onClick={() => {
-                                                         setAuthorToEdit(item as unknown as AuthorProps)
-                                                         setDialog({ ...dialog, edit_author: true })
-                                                      }}
-                                                   />
-                                                </div>
-                                             </React.Fragment>
-                                          )}
-                                       </div>
-                                    </div>
-                                 </Reorder.Item>
-                              ))}
-                           </div>
-                        </Reorder.Group>
+                        <AuthorsListDragabble
+                           article={null}
+                           authors={authors}
+                           onReorder={onReorder}
+                           onDelete={(item) => {
+                              const new_list = authors.filter((author) => author.id !== item.id)
+                              setAuthors(new_list)
+                           }}
+                           onEdit={(item) => {
+                              setAuthorToEdit(item as AuthorProps)
+                              setDialog({ ...dialog, edit_author: true })
+                           }}
+                        />
                      </div>
                   </div>
                </div>

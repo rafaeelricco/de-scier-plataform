@@ -43,7 +43,9 @@ export const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
             <div className="grid gap-2 mt-[-8px]">
                <div>
                   <Link href={link}>
-                     <h6 className="text-base font-semibold text-secundary_blue-main">{truncate(title, { length: 40 })}</h6>
+                     <h6 className="text-sm font-semibold text-secundary_blue-main lg:text-base cursor-pointer hover:text-primary-main hover:underline transition-all duration-200">
+                        {truncate(title, { length: 40 })}
+                     </h6>
                   </Link>
                   <div className="flex items-center gap-2">
                      <p className="text-sm text-neutral-gray lg:text-sm">Under review since</p>
