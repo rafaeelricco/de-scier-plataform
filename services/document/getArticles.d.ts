@@ -47,6 +47,7 @@ export type UserProps = {
 }
 
 export type DocumentComment = {
+   comment_author: string
    id: string
    comment: string
    approvedByAuthor: string
