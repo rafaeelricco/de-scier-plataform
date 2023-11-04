@@ -30,6 +30,7 @@ import mermaid from 'mermaid'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
+import { keywordsArray } from '@/utils/keywords_format'
 
 export default function AsReviwerPageDetails({ params }: { params: { slug: string } }) {
    const router = useRouter()
@@ -164,24 +165,25 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                      <span className="text-sm">{article?.document?.title}</span>
                   </div>
 
-                  <Input.Root>
-                     <Input.Label>Add keywords (Max 5)</Input.Label>
-                     <Input.Input
-                        placeholder="Title of the article"
-                        end
-                        icon={
+                  <div className="grid gap-2">
+                     <p className="text-sm font-semibold">Add keywords (Max 5)</p>
+                     <div className="flex flex-wrap gap-1 sm:gap-2">
+                        {keywordsArray(article?.document.keywords as string)?.length > 0 ? (
                            <React.Fragment>
-                              <Button.Button
-                                 variant="outline"
-                                 className="px-2 py-0 border-neutral-light_gray hover:bg-neutral-light_gray hover:bg-opacity-10 flex items-center gap-1 rounded-sm"
-                              >
-                                 <PlusCircle className="w-3 fill-neutral-light_gray" />
-                                 <span className="font-semibold text-xs text-neutral-light_gray">Add keyword</span>
-                              </Button.Button>
+                              {keywordsArray(article?.document.keywords as string).map((tag, index) => (
+                                 <div
+                                    className="border rounded-md border-neutral-stroke_light flex items-center px-1 sm:px-2 py-[2px] bg-white"
+                                    key={index}
+                                 >
+                                    <span className="text-xxs sm:text-xs text-primary-main">{tag}</span>
+                                 </div>
+                              ))}
                            </React.Fragment>
-                        }
-                     />
-                  </Input.Root>
+                        ) : (
+                           <p className="text-sm text-gray-500 mt-8">There are no keywords inserted into this document.</p>
+                        )}
+                     </div>
+                  </div>
                </div>
                <div className="grid grid-cols-2 gap-6">
                   <div className="grid grid-cols-1">
@@ -205,7 +207,11 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                   </div>
                   <div className="flex items-center gap-4 w-full h-36 relative overflow-hidden py-2">
                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                     <img src="/images/visual-abstract.png" alt="placeholder" className="absolute object-cover w-fit h-36" />
+                     {article?.document.abstractChart !== '' && (
+                        <div className="mermaid flex w-full justify-center mt-4" key={article?.document.id}>
+                           {article?.document.abstractChart}
+                        </div>
+                     )}
                   </div>
                </div>
                <div className="grid gap-4">
