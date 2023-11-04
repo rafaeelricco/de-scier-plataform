@@ -1,4 +1,6 @@
 import { useLoading } from '@/hooks/useLoading'
+import { RegisterProps } from '@/schemas/register'
+import { registerUserService } from '@/services/user/register.service'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import '@styles/login.css'
@@ -6,12 +8,10 @@ import GoogleIcon from 'public/svgs/modules/login/google_icon.svg'
 import SuccessIllustration from 'public/svgs/modules/login/register-success.svg'
 import React from 'react'
 import { ArrowLeft, BoxArrowRight, X } from 'react-bootstrap-icons'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import LoginAnimation from '../Login/Animation/Animation'
 import { RegisterModalProps } from './Typing'
-import { RegisterProps } from '@/schemas/register'
-import { registerUserService } from '@/services/user/register.service'
-import { toast } from 'react-toastify'
 
 const RegisterModal: React.FC<RegisterModalProps> = ({ onClose, onRegister, onBack, onLogin, onReturnToLogin }: RegisterModalProps) => {
    const {
@@ -58,7 +58,7 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ onClose, onRegister, onBa
             <LoginAnimation />
             <X
                size={32}
-               className="md:hidden absolute z-20 bg-white rounded-md right-4 top-4 cursor-pointer hover:scale-110 transition-all duration-200"
+               className="absolute z-20 bg-white rounded-md right-4 top-4 cursor-pointer hover:scale-110 transition-all duration-200"
                onClick={onClose}
             />
             <div className="w-ful grid gap-6 md:p-16 relative p-6 pb-12">

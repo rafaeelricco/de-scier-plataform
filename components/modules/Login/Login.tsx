@@ -1,17 +1,17 @@
+import { home_routes } from '@/routes/home'
+import { LoginProps } from '@/schemas/login'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import '@styles/login.css'
+import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import GoogleIcon from 'public/svgs/modules/login/google_icon.svg'
 import React, { useState } from 'react'
-import { signIn } from 'next-auth/react'
 import { X } from 'react-bootstrap-icons'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import LoginAnimation from './Animation/Animation'
 import { LoginModalProps } from './Typing'
-import { useForm, SubmitHandler } from 'react-hook-form'
-import { LoginProps } from '@/schemas/login'
-import { toast } from 'react-toastify'
-import { home_routes } from '@/routes/home'
-import { useRouter } from 'next/navigation'
 
 const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onForgotPassword, onLogin, onRegister }: LoginModalProps) => {
    const router = useRouter()
@@ -24,10 +24,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onFo
       watch,
       formState: { errors }
    } = useForm<LoginProps>({
-      defaultValues: {
-         email: '',
-         password: ''
-      }
+      defaultValues: { email: '', password: '' }
    })
 
    const onSubmit: SubmitHandler<LoginProps> = async (data) => {
@@ -45,15 +42,13 @@ const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onFo
          return
       }
 
-      toast.success('Successful login')
+      toast.success('Successful login. Redirecting...')
       router.push(home_routes.summary)
    }
 
    const loginWithGoogle = async (e: React.MouseEvent<HTMLElement>) => {
       e.preventDefault()
-      await signIn('google', {
-         callbackUrl: '/summary'
-      })
+      await signIn('google', { callbackUrl: home_routes.summary })
    }
 
    return (
