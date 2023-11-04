@@ -37,5 +37,8 @@ export function formatName(fullName: string) {
    const middleInitial = names[1].charAt(0) + '.'
    const lastName = names[names.length - 1]
 
-   return `${firstName} ${middleInitial} ${lastName}`
+   const name = `${firstName} ${middleInitial} ${lastName}`
+   console.log(name)
+
+   return name
 }
