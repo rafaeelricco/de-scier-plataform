@@ -276,13 +276,13 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   <h3 className="text-lg md:text-xl text-terciary-main font-semibold">Authors</h3>
                </div>
                <div className="grid gap-6">
-                  <Button.Button variant="outline" className="px-4 py-3 w-full text-sm">
+                  {/* <Button.Button variant="outline" className="px-4 py-3 w-full text-sm">
                      Select Authors for the paper
                      <PlusCircle
                         className="w-4 fill-primary-main 
                      "
                      />
-                  </Button.Button>
+                  </Button.Button> */}
                   <p className="text-sm">Drag the authors to reorder the list.</p>
                   <div className="grid gap-2">
                      <div className="hidden md:grid grid-cols-3">
