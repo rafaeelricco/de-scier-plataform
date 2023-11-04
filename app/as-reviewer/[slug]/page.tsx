@@ -31,6 +31,8 @@ import { isEqual } from 'lodash'
 import mermaid from 'mermaid'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { updateDocumentApproveStatusService } from '@/services/reviewer/approve.service'
+import { toast } from 'react-toastify'
 
 export default function AsReviwerPageDetails({ params }: { params: { slug: string } }) {
    const router = useRouter()
@@ -85,9 +87,20 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
    const [loading, setLoading] = React.useState(false)
    const [is_author, setIsAuthor] = React.useState(false)
 
-   const handleApproveDocument = (approve: boolean) => {
-      const status = approve ? 'APPROVED' : 'REJECTED'
-      alert(status)
+   const handleApproveDocument = async (approve: boolean) => {
+      setLoading(true)
+      const response = await updateDocumentApproveStatusService({
+         documentId: article?.document.id!,
+         approve
+      })
+
+      setLoading(false)
+      if (!response.success) {
+         toast.error(response.message)
+         return
+      }
+      const status = approve ? 'approved' : 'rejected'
+      toast.success(`Document ${status} successgully`)
    }
 
    React.useEffect(() => {
@@ -501,11 +514,11 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                         )}
                   </div>
                </div>
-               <Button.Button variant="primary" className="flex items-center" onClick={() => handleApproveDocument(true)}>
+               <Button.Button variant="primary" className="flex items-center" onClick={() => handleApproveDocument(true)} loading={loading}>
                   <Check className="w-5 h-5" />
                   Approve document
                </Button.Button>
-               <Button.Button variant="outline" className="flex items-center" onClick={() => handleApproveDocument(false)}>
+               <Button.Button variant="outline" className="flex items-center" onClick={() => handleApproveDocument(false)} loading={loading}>
                   Reject document
                </Button.Button>
             </Box>
