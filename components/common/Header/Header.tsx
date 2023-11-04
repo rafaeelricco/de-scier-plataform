@@ -84,10 +84,24 @@ const Header: React.FC = () => {
                </div>
             </div>
             <div className="flex items-center gap-4">
-               <Button.Button variant="outline" className="rounded-full py-2 px-8 text-sm" onClick={() => setOpen(true)}>
+               <Button.Button
+                  variant="outline"
+                  className="rounded-full py-2 px-8 text-sm"
+                  onClick={() => {
+                     setOpen(true)
+                     setComponent(login_component)
+                  }}
+               >
                   Login
                </Button.Button>
-               <Button.Button variant="primary" className="rounded-full py-2 px-8 text-sm">
+               <Button.Button
+                  variant="primary"
+                  className="rounded-full py-2 px-8 text-sm"
+                  onClick={() => {
+                     setOpen(true)
+                     setComponent(register_component)
+                  }}
+               >
                   Register
                </Button.Button>
             </div>

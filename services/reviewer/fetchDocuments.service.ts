@@ -1,9 +1,7 @@
-import { ArticleUnderReviewProps } from '@/components/common/Publication/Item/ArticlesUnderReview'
-import { format } from 'date-fns'
+import { ReviewerItemProps } from '@/components/modules/AsReviewer/ReviewerItem/Typing'
 import { getSession, useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { DocumentGetProps, DocumentPaginationProps, DocumentProps } from '../document/getArticles'
-import { ReviewerItemProps } from '@/components/modules/AsReviewer/ReviewerItem/Typing'
 
 /**
  * @title useArticlesToReview
