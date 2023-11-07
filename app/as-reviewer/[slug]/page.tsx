@@ -4,7 +4,6 @@ import Box from '@/components/common/Box/Box'
 import CommentItem from '@/components/common/Comment/Comment'
 import { File } from '@/components/common/File/File'
 import { YouAreAuthor, YouAreReviwer } from '@/components/common/Flags/Author/AuthorFlags'
-import { RenderMermaidChart } from '@/components/common/RenderMermaidChart/RenderMermaidChart'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -33,6 +32,7 @@ import { twMerge } from 'tailwind-merge'
 
 export default function AsReviwerPageDetails({ params }: { params: { slug: string } }) {
    const router = useRouter()
+   const { data } = useSession()
    const { fetch_article } = useArticleToReview()
 
    const [article, setArticle] = React.useState<DocumentGetProps | null>(null)
@@ -77,8 +77,6 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
          })
    }
 
-   const { data } = useSession()
-
    const [loading, setLoading] = React.useState(false)
    const [is_author, setIsAuthor] = React.useState(false)
 
@@ -94,6 +92,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
          toast.error(response.message)
          return
       }
+
       const status = approve ? 'approved' : 'rejected'
       toast.success(`Document ${status} successgully`)
    }
@@ -141,7 +140,6 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [article?.document.abstractChart])
-
    return (
       <React.Fragment>
          <Dialog.Root open={dialog.reasoning}>
@@ -205,13 +203,6 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                <div className="grid gap-2">
                   <h3 className="text-sm font-semibold">Abstract</h3>
                   <p className="text-sm font-regular">{article?.document.abstract}</p>
-               </div>
-
-               <div className="grid gap-4">
-                  <div className="grid gap-2">
-                     <p className="text-sm font-semibold">Visual abstract</p>
-                  </div>
-                  <RenderMermaidChart article={article} chartError={chartError} />
                </div>
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
