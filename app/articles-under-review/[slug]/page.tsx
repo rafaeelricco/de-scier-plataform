@@ -586,14 +586,28 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
             <Box className="grid gap-4 h-fit px-4 py-6 md:px-8">
                <div className="flex items-center justify-between md:gap-12 md:justify-center">
                   <div className="flex items-center">
-                     <h2 className="text-status-yellow font-semibold text-base md:text-lg">Reviewer</h2>
-                     <Check className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
-                     <Check className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
+                     <h2 className="text-status-yellow font-semibold text-lg">Reviewer</h2>
+                     {article?.document.reviewersOnDocuments
+                        ?.filter((item) => item.role === 'reviewer')
+                        ?.map((item) =>
+                           item.approvedStatus === 'APPROVED' ? (
+                              <Check key={item.id} className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
+                           ) : (
+                              <X key={item.id} className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer" />
+                           )
+                        )}
                   </div>
                   <div className="flex items-center">
-                     <h2 className="text-terciary-main font-semibold text-base md:text-lg">Editor</h2>
-                     <Check className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
-                     <X className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer" />
+                     <h2 className="text-terciary-main font-semibold text-lg">Editor</h2>
+                     {article?.document.reviewersOnDocuments
+                        ?.filter((item) => item.role === 'editor')
+                        ?.map((item) =>
+                           item.approvedStatus === 'APPROVED' ? (
+                              <Check key={item.id} className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
+                           ) : (
+                              <X key={item.id} className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer" />
+                           )
+                        )}
                   </div>
                </div>
 

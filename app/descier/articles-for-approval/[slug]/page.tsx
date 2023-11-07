@@ -12,6 +12,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { access_type_options } from '@/mock/access_type'
 import { header_editor_reviewer } from '@/mock/article_under_review'
 import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
+import { home_routes } from '@/routes/home'
 import { approveByAdminService } from '@/services/admin/approve.service'
 import { useFetchAdminArticles } from '@/services/admin/fetchDocuments.service'
 import { DocumentComment, DocumentGetProps } from '@/services/document/getArticles'
@@ -86,6 +87,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
       }
       const status = approve ? 'approved' : 'rejected'
       toast.success(`Document ${status} successgully`)
+      router.push(home_routes.descier.index)
    }
 
    React.useEffect(() => {
@@ -444,7 +446,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                         )}
                   </div>
                </div>
-               {article?.document.status === 'PENDING' && (
+               {article?.document.status === 'ADMIN_APPROVE' && (
                   <>
                      <Button.Button variant="primary" className="flex items-center" onClick={() => handleApproveDocument(true)} loading={loading}>
                         <Check className="w-5 h-5" />
@@ -472,7 +474,7 @@ const ArticleStatus: React.FC<{ status: string }> = ({ status }: { status: strin
    return (
       <React.Fragment>
          <div className="flex items-center gap-2 border border-neutral-stroke_light w-fit py-1 px-4 rounded-md">
-            {status === 'PENDING' && <p className="text-sm text-status-pending font-semibold select-none">Final approve pending</p>}
+            {status === 'ADMIN_APPROVE' && <p className="text-sm text-status-pending font-semibold select-none">Final approve pending</p>}
             {status === 'REJECTED' && <p className="text-sm text-status-pending font-semibold select-none">Rejected</p>}
             {status === 'APPROVED' && <p className="text-sm text-status-pending font-semibold select-none">Approved</p>}
             {status === 'SUBMITTED' && <p className="text-sm text-status-pending font-semibold select-none">Published</p>}

@@ -37,7 +37,7 @@ export type DocumentProps = {
    documentComments?: DocumentComment[]
 }
 
-export type ApprovalStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'SUBMITTED'
+export type ApprovalStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'SUBMITTED' | 'ADMIN_APPROVE'
 
 export type UserProps = {
    id: string
