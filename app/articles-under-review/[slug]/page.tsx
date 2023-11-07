@@ -166,6 +166,8 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [article?.document.abstractChart])
 
+   console.log(article)
+
    return (
       <React.Fragment>
          <Dialog.Root open={dialog.reasoning}>
@@ -230,11 +232,16 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                <div>
                   <div className="hidden lg:grid lg:gap-2">
                      <h3 className="text-sm font-semibold">Document type</h3>
-                     <Pills items={document_types} />
+                     <Pills items={document_types} selected={article?.document.documentType?.toLowerCase() || 'manuscript'} />
                   </div>
                   <div className="block md:hidden">
                      <Input.Root>
-                        <Input.Select label={'Document type'} options={document_types} placeholder="Title of the field" />
+                        <Input.Select
+                           label={'Document type'}
+                           defaultValue={article?.document.documentType}
+                           options={document_types}
+                           placeholder="Title of the field"
+                        />
                      </Input.Root>
                   </div>
                </div>
