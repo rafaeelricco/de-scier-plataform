@@ -356,7 +356,7 @@ export default function SubmitNewPaperPage() {
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
                            <span className="text-sm font-semibold">Title</span>
-                           <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
+                           <span className="text-sm text-neutral-light_gray">up to 15 words</span>
                         </Input.Label>
                         <Input.Input placeholder="Title of the article" {...register('title')} />
                         <Input.Error>{errors.title?.message}</Input.Error>
@@ -412,7 +412,7 @@ export default function SubmitNewPaperPage() {
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
                            <span className="text-sm font-semibold">Field</span>
-                           <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
+                           <span className="text-sm text-neutral-light_gray">0/300 characters</span>
                         </Input.Label>
                         <Input.Input placeholder="Title of the field" {...register('field')} />
                         <Input.Error>{errors.field?.message}</Input.Error>
@@ -467,7 +467,7 @@ export default function SubmitNewPaperPage() {
                <Input.Root>
                   <Input.Label className="flex gap-2 items-center">
                      <span className="text-sm font-semibold">Abstract</span>
-                     <span className="text-sm text-neutral-light_gray font-semibold">0/2000 words</span>
+                     <span className="text-sm text-neutral-light_gray">0/2000 words</span>
                   </Input.Label>
                   <Input.TextArea {...register('abstract')} rows={4} placeholder="Title of the field" />
                   <Input.Error>{errors.abstract?.message}</Input.Error>
