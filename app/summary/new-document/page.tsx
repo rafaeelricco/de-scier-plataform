@@ -362,8 +362,11 @@ export default function SubmitNewPaperPage() {
                         <Input.Error>{errors.title?.message}</Input.Error>
                      </Input.Root>
                      <Input.Root>
-                        <Input.Label tooltip_message="Add up to 5 keywords that best describe the content and focus of your document. This helps others discover your work.">
-                           Add keywords (Max 5)
+                        <Input.Label
+                           className="text-sm font-semibold"
+                           tooltip_message="Add up to 5 keywords that best describe the content and focus of your document. This helps others discover your work."
+                        >
+                           Add keywords
                         </Input.Label>
                         <Input.Input
                            placeholder="Title of the article"

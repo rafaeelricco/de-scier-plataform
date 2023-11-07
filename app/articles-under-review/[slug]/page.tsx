@@ -136,7 +136,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                         <Input.Input placeholder="Title of the article" defaultValue={article?.document.title} />
                      </Input.Root>
                      <Input.Root>
-                        <Input.Label>Add keywords (Max 5)</Input.Label>
+                        <Input.Label>Add keywords</Input.Label>
                         <Input.Input
                            placeholder="Title of the article"
                            end

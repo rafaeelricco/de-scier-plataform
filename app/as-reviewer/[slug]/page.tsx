@@ -19,19 +19,19 @@ import * as Input from '@components/common/Input/Input'
 import { Reorder } from 'framer-motion'
 import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React from 'react'
-import { ArrowLeft, Check, PlusCircle, PlusCircleDotted, X } from 'react-bootstrap-icons'
+import { ArrowLeft, Check, PlusCircleDotted, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { twMerge } from 'tailwind-merge'
 
+import { RenderMermaidChart } from '@/components/common/RenderMermaidChart/RenderMermaidChart'
 import { Author, Authorship, authors_mock } from '@/mock/submit_new_document'
 import { updateDocumentApproveStatusService } from '@/services/reviewer/approve.service'
+import { keywordsArray } from '@/utils/keywords_format'
 import { isEqual } from 'lodash'
 import mermaid from 'mermaid'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
-import { keywordsArray } from '@/utils/keywords_format'
-import { RenderMermaidChart } from '@/components/common/RenderMermaidChart/RenderMermaidChart'
 
 export default function AsReviwerPageDetails({ params }: { params: { slug: string } }) {
    const router = useRouter()
@@ -177,7 +177,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                   </div>
 
                   <div className="grid gap-2">
-                     <p className="text-sm font-semibold">Add keywords (Max 5)</p>
+                     <p className="text-sm font-semibold">Add keywords</p>
                      <div className="flex flex-wrap gap-1 sm:gap-2">
                         {keywordsArray(article?.document.keywords as string)?.length > 0 ? (
                            <React.Fragment>

@@ -76,7 +76,7 @@ const Information: React.FC<TooltipInformationProps> = ({ content }) => {
       <React.Fragment>
          <Root delayDuration={50}>
             <Trigger>
-               <HelpIcon className="fill-neutral-gray w-5 cursor-pointer mt-[2px]" />
+               <HelpIcon className="fill-neutral-gray w-5 cursor-pointer" />
             </Trigger>
             <Portal>
                <Content>{content}</Content>
