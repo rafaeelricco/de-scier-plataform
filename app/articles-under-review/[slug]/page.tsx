@@ -280,37 +280,27 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   <h3 className="text-lg md:text-xl text-primary-main font-semibold">Comments</h3>
                   <p className="text-sm">The reviewing team can publish comments, suggesting updates on your document.</p>
                </div>
-               <div className="grid gap-6">
-                  <div className="border rounded-md p-4">
-                     <ScrollArea className="lg:max-h-[300px] 2xl:max-h-[400px] pr-2">
-                        <div className="grid gap-4">
-                           {article?.document.documentComments && article?.document.documentComments?.length > 0 ? (
-                              article?.document.documentComments?.map((comment) => (
-                                 <React.Fragment key={comment.id}>
-                                    <CommentItem
-                                       comment_author={comment.user.name}
-                                       comment_content={comment.comment}
-                                       status={comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED'}
-                                       onApprove={() => console.log('approved', comment)}
-                                       onReject={() => console.log('rejected', comment)}
-                                       onSeeReasoning={() => setDialog({ ...dialog, reasoning: true })}
-                                    />
-                                 </React.Fragment>
-                              ))
-                           ) : (
-                              <p className="text-center col-span-2 text-gray-500">There are no comments on this document.</p>
-                           )}
-                        </div>
-                     </ScrollArea>
-                  </div>
-                  <div className="flex items-center gap-4">
-                     <div className="flex-grow">
-                        <Input.Root>
-                           <Input.Input className="border p-2 rounded-md focus:border-primary-main" placeholder="Type your comment" />
-                        </Input.Root>
+               <div className="border rounded-md p-4">
+                  <ScrollArea className="lg:max-h-[300px] 2xl:max-h-[400px] pr-2">
+                     <div className="grid gap-4">
+                        {article?.document.documentComments && article?.document.documentComments?.length > 0 ? (
+                           article?.document.documentComments?.map((comment) => (
+                              <React.Fragment key={comment.id}>
+                                 <CommentItem
+                                    comment_author={comment.user.name}
+                                    comment_content={comment.comment}
+                                    status={comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED'}
+                                    onApprove={() => console.log('approved', comment)}
+                                    onReject={() => console.log('rejected', comment)}
+                                    onSeeReasoning={() => setDialog({ ...dialog, reasoning: true })}
+                                 />
+                              </React.Fragment>
+                           ))
+                        ) : (
+                           <p className="text-center col-span-2 text-gray-500">There are no comments on this document.</p>
+                        )}
                      </div>
-                     <Button.Button className="px-4 py-2 h-[43px]">Add comment</Button.Button>
-                  </div>
+                  </ScrollArea>
                </div>
             </Box>
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
