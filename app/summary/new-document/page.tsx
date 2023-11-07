@@ -249,8 +249,6 @@ export default function SubmitNewPaperPage() {
 
       if (watch('abstractChart')) {
          runMermaid()
-      } else {
-         console.log('no chart')
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [abstractChart, watch('abstractChart')])
@@ -472,32 +470,6 @@ export default function SubmitNewPaperPage() {
                   <Input.TextArea {...register('abstract')} rows={4} placeholder="Title of the field" />
                   <Input.Error>{errors.abstract?.message}</Input.Error>
                </Input.Root>
-               <div className="flex flex-col md:flex-row md:items-center gap-4">
-                  <Button.Button variant="outline" className="px-4 py-3 md:w-fit text-sm" onClick={handleGenerateAbstract}>
-                     Generate abstract with AI
-                     <PlusCircleDotted size={18} className="fill-primary-main" />
-                  </Button.Button>
-                  <p className="text-sm text-neutral-gray">You have {session?.user?.userInfo.aiUsageLimit} attempts left.</p>
-               </div>
-               <div className="grid gap-2">
-                  <p className="text-sm font-semibold">Visual abstract</p>
-                  <p className="text-sm font-regular">
-                     With the information from the abstract, a summary diagram (Visual abstract) can be generated to describe the main points inside this
-                     document, with a illustration.
-                  </p>
-                  <div className="flex flex-col md:flex-row md:items-center gap-4">
-                     <Button.Button className="px-4 py-3 md:w-fit text-sm" onClick={handleGenerateChart}>
-                        Generate Visual abstract
-                        <PlusCircleDotted size={18} className="fill-neutral-white" />
-                     </Button.Button>
-                     <p className="text-sm text-neutral-gray">You have {session?.user?.userInfo.aiUsageLimit} attempts left.</p>
-                  </div>
-                  {watch('abstractChart') !== '' && (
-                     <div className="mermaid flex w-full justify-center mt-4" key={watch('abstractChart')}>
-                        {watch('abstractChart')}
-                     </div>
-                  )}
-               </div>
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
                   <Dropzone

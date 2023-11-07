@@ -12,7 +12,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { header_editor_reviewer } from '@/mock/article_under_review'
 import { document_types } from '@/mock/document_types'
-import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
+import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { DocumentGetProps } from '@/services/document/getArticles'
 import { useArticles } from '@/services/document/getArticles.service'
 import { truncate } from '@/utils/format_texts'
@@ -33,13 +33,12 @@ import { twMerge } from 'tailwind-merge'
 export default function ArticleInReviewPage({ params }: { params: { slug: string } }) {
    const router = useRouter()
 
+   const { data } = useSession()
    const { fetch_article } = useArticles()
 
    const [article, setArticle] = React.useState<DocumentGetProps | null>(null)
    const [items, setItems] = React.useState(authors_mock)
-   const [share, setShare] = React.useState('')
    const [authors, setAuthors] = React.useState<Author[]>(authors_mock)
-   const [authorship, setAuthorship] = React.useState<Authorship[]>([])
    const [access_type, setAccessType] = React.useState('open-access')
    const [authorship_settings, setAuthorshipSettings] = React.useState<Author>()
    const [mermaid_error, setMermaidError] = React.useState('' as string | null)
@@ -59,11 +58,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [params.slug])
 
-   const onReorder = (newOrder: typeof items) => {
-      setItems((prevItems) => [...newOrder])
-   }
-
-   const { data } = useSession()
+   const onReorder = (newOrder: typeof items) => setItems((prevItems) => [...newOrder])
 
    const [loading, setLoading] = React.useState(false)
    const [is_author, setIsAuthor] = React.useState(false)
@@ -97,8 +92,6 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
 
       if (article?.document.abstractChart) {
          runMermaid()
-      } else {
-         console.log('no chart')
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [article?.document.abstractChart])
@@ -183,36 +176,6 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   </Input.Label>
                   <Input.TextArea defaultValue={article?.document.abstract} rows={4} placeholder="Title of the field" />
                </Input.Root>
-               <div className="flex flex-col md:flex-row md:items-center gap-4">
-                  <Button.Button variant="outline" className="px-4 py-3 md:w-fit text-sm">
-                     Generate abstract with AI
-                     <PlusCircleDotted size={18} className="fill-primary-main" />
-                  </Button.Button>
-                  <p className="text-sm text-neutral-gray">Careful! You can only generate the abstract once per file.</p>
-               </div>
-               <div className="grid gap-2">
-                  <p className="text-sm font-semibold">Visual abstract</p>
-                  <p className="text-sm font-regular">
-                     With the information from the abstract, a summary diagram (Visual abstract) can be generated to describe the main points inside this
-                     document, with a illustration.
-                  </p>
-                  <div className="flex flex-col md:flex-row md:items-center gap-4">
-                     <Button.Button className="px-4 py-3 md:w-fit text-sm">
-                        Generate Visual abstract
-                        <PlusCircleDotted size={18} className="fill-neutral-white" />
-                     </Button.Button>
-                     <p className="text-sm text-neutral-gray">Careful! You can only generate the visual abstract once per file.</p>
-                  </div>
-                  {mermaid_error ? null : (
-                     <React.Fragment>
-                        {article?.document.abstractChart && (
-                           <div className="mermaid flex w-full zoom-in-125 justify-center mt-4" key={article?.document.abstractChart}>
-                              {article?.document.abstractChart}
-                           </div>
-                        )}
-                     </React.Fragment>
-                  )}
-               </div>
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
                   <Dropzone thumbnail placeholder="Upload cover picture (.png, .jpg)" setSelectedFile={(file) => console.log(file)} />
