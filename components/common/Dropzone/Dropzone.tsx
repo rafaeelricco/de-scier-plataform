@@ -44,12 +44,12 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
    }
    const allowedExtensions: Record<'images' | 'documents', string[]> = {
       images: ['.jpeg', '.png', '.webp', '.jpg'],
-      documents: ['.docx']
+      documents: ['.docx', '.pdf']
    }
 
    const allowedTypes: Accept = {
       images: ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'],
-      documents: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+      documents: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/pdf']
    }
 
    const getAcceptedMimeTypes = (acceptType: keyof typeof allowedExtensions): Accept => {
