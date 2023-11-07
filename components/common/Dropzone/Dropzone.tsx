@@ -44,12 +44,12 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
    }
    const allowedExtensions: Record<'images' | 'documents', string[]> = {
       images: ['.jpeg', '.png', '.webp', '.jpg'],
-      documents: ['.docx']
+      documents: ['.docx', '.pdf']
    }
 
    const allowedTypes: Accept = {
       images: ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'],
-      documents: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+      documents: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/pdf']
    }
 
    const getAcceptedMimeTypes = (acceptType: keyof typeof allowedExtensions): Accept => {
@@ -85,7 +85,7 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
                         <div className="grid justify-items-center gap-4">
                            <div className="grid gap-2">
                               <div>
-                                 <p className="text-sm font-semibold text-center">{placeholder || 'Upload paper file (.docx)'}</p>
+                                 <p className="text-sm font-semibold text-center">{placeholder || 'Upload paper file (.docx, .pdf)'}</p>
                                  <p className="text-sm font-regular text-center">{message || 'Drop your file here or'}</p>
                               </div>
                               <Button.Button variant="outline" className="py-2 px-6 text-xs sm:text-sm w-fit mx-auto my-0">

@@ -84,9 +84,7 @@ export default function SubmitNewPaperPage() {
 
    const { append, remove, fields: keywords } = useFieldArray({ name: 'keywords', control: control })
 
-   const onReorder = (newOrder: typeof authors) => {
-      setAuthors((prevItems) => [...newOrder])
-   }
+   const onReorder = (newOrder: typeof authors) => setAuthors((prevItems) => [...newOrder])
 
    const handleSubmitDocument: SubmitHandler<CreateDocumentProps> = async (data) => {
       setLoading(true)
@@ -111,6 +109,7 @@ export default function SubmitNewPaperPage() {
 
       const response = await submitNewDocumentService({
          ...requestData,
+         abstract: data.abstract || '',
          authors: documentAuthors
       })
 
@@ -185,7 +184,7 @@ export default function SubmitNewPaperPage() {
       const toastId = toast.loading('Generating chart with AI...')
 
       const response = await generateChartAbstractService({
-         abstract: getValues('abstract')
+         abstract: getValues('abstract') || ''
       })
 
       toast.dismiss(toastId)
@@ -363,7 +362,9 @@ export default function SubmitNewPaperPage() {
                         <Input.Error>{errors.title?.message}</Input.Error>
                      </Input.Root>
                      <Input.Root>
-                        <Input.Label>Add keywords (Max 5)</Input.Label>
+                        <Input.Label tooltip_message="Add up to 5 keywords that best describe the content and focus of your document. This helps others discover your work.">
+                           Add keywords (Max 5)
+                        </Input.Label>
                         <Input.Input
                            placeholder="Title of the article"
                            value={keywords_temp}

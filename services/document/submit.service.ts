@@ -31,7 +31,7 @@ export const submitNewDocumentService = async (data: SubmitDocumentProps) => {
 
 type SubmitDocumentProps = {
    title: string
-   abstract: string
+   abstract: string | null
    abstractChart?: string | null
    keywords: string[]
    field: string
