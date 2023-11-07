@@ -51,6 +51,6 @@ export const filter_status = [
    {
       id: 5,
       label: 'Published',
-      value: 'published'
+      value: 'submitted'
    }
 ]

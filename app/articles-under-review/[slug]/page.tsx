@@ -4,6 +4,7 @@ import Box from '@/components/common/Box/Box'
 import { Pills } from '@/components/common/Button/Pill/Pill'
 import CommentItem from '@/components/common/Comment/Comment'
 import Dropzone from '@/components/common/Dropzone/Dropzone'
+import { StoredFile } from '@/components/common/Dropzone/Typing'
 import { File } from '@/components/common/File/File'
 import { YouAreAuthor, YouAreReviwer } from '@/components/common/Flags/Author/AuthorFlags'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
@@ -12,9 +13,12 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { header_editor_reviewer } from '@/mock/article_under_review'
 import { document_types } from '@/mock/document_types'
-import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
+import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
+import { home_routes } from '@/routes/home'
+import { finalSubmitDocumentService } from '@/services/document/finalSubmit.service'
 import { DocumentGetProps } from '@/services/document/getArticles'
 import { useArticles } from '@/services/document/getArticles.service'
+import { uploadDocumentFileService } from '@/services/file/file.service'
 import { truncate } from '@/utils/format_texts'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
@@ -28,12 +32,14 @@ import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React from 'react'
 import { ArrowLeft, Check, FileEarmarkText, Pencil, PlusCircle, PlusCircleDotted, Trash, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
+import { toast } from 'react-toastify'
 import { twMerge } from 'tailwind-merge'
 
 export default function ArticleInReviewPage({ params }: { params: { slug: string } }) {
+   const { data } = useSession()
+
    const router = useRouter()
 
-   const { data } = useSession()
    const { fetch_article } = useArticles()
 
    const [article, setArticle] = React.useState<DocumentGetProps | null>(null)
@@ -44,6 +50,13 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
    const [mermaid_error, setMermaidError] = React.useState('' as string | null)
    const [popover, setPopover] = React.useState({ copy_link: false })
    const [dialog, setDialog] = React.useState({ author: false, share_split: false, edit_author: false, reasoning: false })
+   const [loading, setLoading] = React.useState(false)
+   const [submitLoading, setSubmitLoading] = React.useState(false)
+   const [saveLoading, setSaveLoading] = React.useState(false)
+   const [is_author, setIsAuthor] = React.useState(false)
+   const [documentSaved, setDocumentSaved] = React.useState(false)
+
+   const [file, setFile] = React.useState<StoredFile | null>()
 
    const fetchSingleArticle = async (documentId: string) => {
       const fetchedArticle = await fetch_article(documentId).then((res) => {
@@ -58,10 +71,67 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [params.slug])
 
-   const onReorder = (newOrder: typeof items) => setItems((prevItems) => [...newOrder])
+   const onReorder = (newOrder: typeof items) => {
+      setItems((prevItems) => [...newOrder])
+   }
 
-   const [loading, setLoading] = React.useState(false)
-   const [is_author, setIsAuthor] = React.useState(false)
+   const handleSubmitDocument = async () => {
+      if (!article || !article.document) {
+         toast.error('Article not found.')
+         return
+      }
+
+      if (!article.document.documentVersions) {
+         toast.error('Upload a pdf file to final submit.')
+         return
+      }
+
+      const isLastDocumentPdf = article.document.documentVersions[0]?.fileName?.includes('pdf')
+
+      if (!isLastDocumentPdf) {
+         toast.error('Upload a pdf file to final submit.')
+         return
+      }
+
+      setSubmitLoading(true)
+
+      const response = await finalSubmitDocumentService({
+         documentId: article.document.id
+      })
+      setSubmitLoading(false)
+
+      if (!response.success) {
+         toast.error(response.message)
+         return
+      }
+
+      toast.success(response.message)
+      router.push(home_routes.articles_under_review)
+   }
+
+   const handleSaveDocument = async () => {
+      if (!article) return
+      setSaveLoading(true)
+      if (file) {
+         const response = await uploadDocumentFileService({
+            fileLocalUrl: file.preview,
+            filename: file.name,
+            mimetype: file.type,
+            documentId: article.document.id
+         })
+
+         if (!response) {
+            setSaveLoading(false)
+            toast.error('Error in upload file.')
+            return
+         }
+      }
+
+      toast.success('Document updated successfully')
+      setDocumentSaved(true)
+
+      setSaveLoading(false)
+   }
 
    React.useEffect(() => {
       setLoading(true)
@@ -168,7 +238,6 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                      </Input.Root>
                   </div>
                </div>
-               <Dropzone setSelectedFile={(file) => console.log(file)} />
                <Input.Root>
                   <Input.Label className="flex gap-2 items-center">
                      <span className="text-sm font-semibold">Abstract</span>
@@ -185,7 +254,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                <div className="grid gap-6">
                   <h3 className="text-lg md:text-xl text-primary-main font-semibold">Document file</h3>
                   <div className="grid md:grid-cols-2 gap-6">
-                     <Dropzone setSelectedFile={(file) => console.log(file)} />
+                     <Dropzone setSelectedFile={(file) => setFile(file)} thumbnail placeholder="Upload a new document version (.docx, .pdf)" />
                      <ScrollArea className="h-[200px] pr-2">
                         <div className="grid gap-4">
                            {article?.document?.documentVersions && article?.document?.documentVersions?.length > 0 ? (
@@ -527,10 +596,16 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                      <X className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer" />
                   </div>
                </div>
-               <Button.Button variant="primary" className="flex items-center">
+
+               <Button.Button variant="primary" className="flex items-center" onClick={handleSubmitDocument} loading={submitLoading}>
                   <FileEarmarkText className="w-5 h-5" />
                   Publish document
                </Button.Button>
+
+               <Button.Button variant="outline" className="flex items-center" onClick={handleSaveDocument} loading={saveLoading}>
+                  Save
+               </Button.Button>
+               {documentSaved && <p className="text-lg text-center text-status-green"> Changes saved successfully </p>}
             </Box>
          </div>
       </React.Fragment>
