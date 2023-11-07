@@ -44,9 +44,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
 
    const [article, setArticle] = React.useState<DocumentGetProps | null>(null)
    const [items, setItems] = React.useState(authors_mock)
-   const [share, setShare] = React.useState('')
    const [authors, setAuthors] = React.useState<Author[]>(authors_mock)
-   const [authorship, setAuthorship] = React.useState<Authorship[]>([])
    const [access_type, setAccessType] = React.useState('open-access')
    const [authorship_settings, setAuthorshipSettings] = React.useState<Author>()
    const [mermaid_error, setMermaidError] = React.useState('' as string | null)
@@ -164,8 +162,6 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
 
       if (article?.document.abstractChart) {
          runMermaid()
-      } else {
-         console.log('no chart')
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [article?.document.abstractChart])
@@ -198,12 +194,12 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
                            <span className="text-sm font-semibold">Title</span>
-                           <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
+                           <span className="text-sm text-neutral-light_gray">0/300 characters</span>
                         </Input.Label>
                         <Input.Input placeholder="Title of the article" defaultValue={article?.document.title} />
                      </Input.Root>
                      <Input.Root>
-                        <Input.Label>Add keywords (Max 5)</Input.Label>
+                        <Input.Label>Add keywords</Input.Label>
                         <Input.Input
                            placeholder="Title of the article"
                            end
@@ -225,7 +221,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
                            <span className="text-sm font-semibold">Field</span>
-                           <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
+                           <span className="text-sm text-neutral-light_gray">0/300 characters</span>
                         </Input.Label>
                         <Input.Input placeholder="Title of the field" defaultValue={article?.document.field} />
                      </Input.Root>
@@ -245,40 +241,10 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                <Input.Root>
                   <Input.Label className="flex gap-2 items-center">
                      <span className="text-sm font-semibold">Abstract</span>
-                     <span className="text-sm text-neutral-light_gray font-semibold">0/2000 words</span>
+                     <span className="text-sm text-neutral-light_gray">0/2000 words</span>
                   </Input.Label>
                   <Input.TextArea defaultValue={article?.document.abstract} rows={4} placeholder="Title of the field" />
                </Input.Root>
-               {/* <div className="flex flex-col md:flex-row md:items-center gap-4">
-                  <Button.Button variant="outline" className="px-4 py-3 md:w-fit text-sm">
-                     Generate abstract with AI
-                     <PlusCircleDotted size={18} className="fill-primary-main" />
-                  </Button.Button>
-                  <p className="text-sm text-neutral-gray">Careful! You can only generate the abstract once per file.</p>
-               </div>
-               <div className="grid gap-2">
-                  <p className="text-sm font-semibold">Visual abstract</p>
-                  <p className="text-sm font-regular">
-                     With the information from the abstract, a summary diagram (Visual abstract) can be generated to describe the main points inside this
-                     document, with a illustration.
-                  </p>
-                  <div className="flex flex-col md:flex-row md:items-center gap-4">
-                     <Button.Button className="px-4 py-3 md:w-fit text-sm">
-                        Generate Visual abstract
-                        <PlusCircleDotted size={18} className="fill-neutral-white" />
-                     </Button.Button>
-                     <p className="text-sm text-neutral-gray">Careful! You can only generate the visual abstract once per file.</p>
-                  </div>
-                  {mermaid_error ? null : (
-                     <React.Fragment>
-                        {article?.document.abstractChart && (
-                           <div className="mermaid flex w-full zoom-in-125 justify-center mt-4" key={article?.document.abstractChart}>
-                              {article?.document.abstractChart}
-                           </div>
-                        )}
-                     </React.Fragment>
-                  )}
-               </div> */}
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
                   <Dropzone thumbnail placeholder="Upload cover picture (.png, .jpg)" setSelectedFile={(file) => console.log(file)} />

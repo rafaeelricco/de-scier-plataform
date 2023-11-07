@@ -23,7 +23,7 @@ import { format } from 'date-fns'
 import mermaid from 'mermaid'
 import { useRouter } from 'next/navigation'
 import React from 'react'
-import { ArrowLeft, Check, Person, PlusCircleDotted, X } from 'react-bootstrap-icons'
+import { ArrowLeft, Check, PlusCircleDotted, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { toast } from 'react-toastify'
 
@@ -138,7 +138,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                      <span className="text-sm">{article?.document?.title}</span>
                   </div>
                   <div className="grid gap-2">
-                     <p className="text-sm font-semibold">Add keywords (Max 5)</p>
+                     <p className="text-sm font-semibold">Add keywords</p>
                      <div className="flex flex-wrap gap-1 sm:gap-2">
                         {keywordsArray(article?.document.keywords as string)?.length > 0 ? (
                            <React.Fragment>

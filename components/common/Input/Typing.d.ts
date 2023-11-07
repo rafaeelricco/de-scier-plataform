@@ -6,6 +6,8 @@ interface WrapperInputProps {
 }
 interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
    optional?: boolean
+   icon?: React.ReactNode
+   tooltip_message?: string | React.ReactNode
 }
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
    start?: React.ReactNode
@@ -55,14 +57,4 @@ interface ComboboxProps {
    className?: string
 }
 
-export {
-   ComboboxProps,
-   ErrorProps,
-   InputProps,
-   LabelProps,
-   LabelWithTrashIconProps,
-   Option,
-   SelectInputProps,
-   TextAreaProps,
-   WrapperInputProps
-}
+export { ComboboxProps, ErrorProps, InputProps, LabelProps, LabelWithTrashIconProps, Option, SelectInputProps, TextAreaProps, WrapperInputProps }

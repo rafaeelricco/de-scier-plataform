@@ -84,9 +84,7 @@ export default function SubmitNewPaperPage() {
 
    const { append, remove, fields: keywords } = useFieldArray({ name: 'keywords', control: control })
 
-   const onReorder = (newOrder: typeof authors) => {
-      setAuthors((prevItems) => [...newOrder])
-   }
+   const onReorder = (newOrder: typeof authors) => setAuthors((prevItems) => [...newOrder])
 
    const handleSubmitDocument: SubmitHandler<CreateDocumentProps> = async (data) => {
       setLoading(true)
@@ -111,6 +109,7 @@ export default function SubmitNewPaperPage() {
 
       const response = await submitNewDocumentService({
          ...requestData,
+         abstract: data.abstract || '',
          authors: documentAuthors
       })
 
@@ -185,7 +184,7 @@ export default function SubmitNewPaperPage() {
       const toastId = toast.loading('Generating chart with AI...')
 
       const response = await generateChartAbstractService({
-         abstract: getValues('abstract')
+         abstract: getValues('abstract') || ''
       })
 
       toast.dismiss(toastId)
@@ -250,8 +249,6 @@ export default function SubmitNewPaperPage() {
 
       if (watch('abstractChart')) {
          runMermaid()
-      } else {
-         console.log('no chart')
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [abstractChart, watch('abstractChart')])
@@ -357,13 +354,18 @@ export default function SubmitNewPaperPage() {
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
                            <span className="text-sm font-semibold">Title</span>
-                           <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
+                           <span className="text-sm text-neutral-light_gray">up to 15 words</span>
                         </Input.Label>
                         <Input.Input placeholder="Title of the article" {...register('title')} />
                         <Input.Error>{errors.title?.message}</Input.Error>
                      </Input.Root>
                      <Input.Root>
-                        <Input.Label>Add keywords (Max 5)</Input.Label>
+                        <Input.Label
+                           className="text-sm font-semibold"
+                           tooltip_message="Add up to 5 keywords that best describe the content and focus of your document. This helps others discover your work."
+                        >
+                           Add keywords
+                        </Input.Label>
                         <Input.Input
                            placeholder="Title of the article"
                            value={keywords_temp}
@@ -408,7 +410,7 @@ export default function SubmitNewPaperPage() {
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
                            <span className="text-sm font-semibold">Field</span>
-                           <span className="text-sm text-neutral-light_gray font-semibold">0/300 characters</span>
+                           <span className="text-sm text-neutral-light_gray">0/300 characters</span>
                         </Input.Label>
                         <Input.Input placeholder="Title of the field" {...register('field')} />
                         <Input.Error>{errors.field?.message}</Input.Error>
@@ -463,37 +465,11 @@ export default function SubmitNewPaperPage() {
                <Input.Root>
                   <Input.Label className="flex gap-2 items-center">
                      <span className="text-sm font-semibold">Abstract</span>
-                     <span className="text-sm text-neutral-light_gray font-semibold">0/2000 words</span>
+                     <span className="text-sm text-neutral-light_gray">0/2000 words</span>
                   </Input.Label>
                   <Input.TextArea {...register('abstract')} rows={4} placeholder="Title of the field" />
                   <Input.Error>{errors.abstract?.message}</Input.Error>
                </Input.Root>
-               <div className="flex flex-col md:flex-row md:items-center gap-4">
-                  <Button.Button variant="outline" className="px-4 py-3 md:w-fit text-sm" onClick={handleGenerateAbstract}>
-                     Generate abstract with AI
-                     <PlusCircleDotted size={18} className="fill-primary-main" />
-                  </Button.Button>
-                  <p className="text-sm text-neutral-gray">You have {session?.user?.userInfo.aiUsageLimit} attempts left.</p>
-               </div>
-               <div className="grid gap-2">
-                  <p className="text-sm font-semibold">Visual abstract</p>
-                  <p className="text-sm font-regular">
-                     With the information from the abstract, a summary diagram (Visual abstract) can be generated to describe the main points inside this
-                     document, with a illustration.
-                  </p>
-                  <div className="flex flex-col md:flex-row md:items-center gap-4">
-                     <Button.Button className="px-4 py-3 md:w-fit text-sm" onClick={handleGenerateChart}>
-                        Generate Visual abstract
-                        <PlusCircleDotted size={18} className="fill-neutral-white" />
-                     </Button.Button>
-                     <p className="text-sm text-neutral-gray">You have {session?.user?.userInfo.aiUsageLimit} attempts left.</p>
-                  </div>
-                  {watch('abstractChart') !== '' && (
-                     <div className="mermaid flex w-full justify-center mt-4" key={watch('abstractChart')}>
-                        {watch('abstractChart')}
-                     </div>
-                  )}
-               </div>
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
                   <Dropzone

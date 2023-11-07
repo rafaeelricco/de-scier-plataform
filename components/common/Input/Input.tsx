@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils'
 import { ComboboxProps, ErrorProps, InputProps, LabelProps, SelectInputProps, TextAreaProps, WrapperInputProps } from '@components/common/Input/Typing'
 import * as S from '@components/common/Select/Select'
+import * as Tooltip from '@components/common/Tooltip/Tooltip'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@components/ui/popover'
 import { Check } from 'lucide-react'
@@ -55,11 +56,27 @@ const Root: React.FC<WrapperInputProps> = ({ children }: WrapperInputProps) => {
  * @param {ReactNode} props.children The text of the label
  * @param {boolean} [props.optional] If set to true, an optional tag will be displayed
  */
-const Label: React.FC<LabelProps> = ({ children, optional, ...props }: LabelProps) => {
+/**
+ * @title Label Component
+ * @notice A label component with optional icon and styling.
+ * @param {ReactNode} children - The label content.
+ * @param {boolean} optional - Indicates if the label represents an optional field.
+ * @param {JSX.Element} icon - Icon element to be shown next to the label.
+ * @return {JSX.Element} - A styled label.
+ */
+const Label: React.FC<LabelProps> = ({ children, optional, icon, tooltip_message, ...props }: LabelProps) => {
    return (
-      <label className={twMerge('text-sm text-black-primary font-semibold pl-2', props.className)} {...props}>
-         {children} {optional && <span className="text-gray-main font-regular">(Opcional)</span>}
-      </label>
+      <div className="flex items-center gap-2">
+         <label className="text-base text-black-primary font-semibold" {...props}>
+            {icon && (
+               <span className={twMerge('material-symbols-outlined !text-2xl !font-regular !text-black-primary select-none text-center rounded-md')}>
+                  {icon}
+               </span>
+            )}
+            {children} {optional && <span className="text-gray-main font-regular">(Opcional)</span>}
+         </label>
+         {tooltip_message && <Tooltip.Information content={tooltip_message} />}
+      </div>
    )
 }
 

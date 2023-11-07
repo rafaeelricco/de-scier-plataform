@@ -4,34 +4,32 @@ import Box from '@/components/common/Box/Box'
 import CommentItem from '@/components/common/Comment/Comment'
 import { File } from '@/components/common/File/File'
 import { YouAreAuthor, YouAreReviwer } from '@/components/common/Flags/Author/AuthorFlags'
+import { RenderMermaidChart } from '@/components/common/RenderMermaidChart/RenderMermaidChart'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { header_editor_reviewer } from '@/mock/article_under_review'
-import { authors_headers, authorship_headers } from '@/mock/submit_new_document'
+import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { DocumentGetProps } from '@/services/document/getArticles'
+import { updateDocumentApproveStatusService } from '@/services/reviewer/approve.service'
 import { useArticleToReview } from '@/services/reviewer/fetchDocuments.service'
 import { truncate } from '@/utils/format_texts'
+import { keywordsArray } from '@/utils/keywords_format'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
 import { Reorder } from 'framer-motion'
-import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
-import React from 'react'
-import { ArrowLeft, Check, PlusCircle, PlusCircleDotted, X } from 'react-bootstrap-icons'
-import { CurrencyInput } from 'react-currency-mask'
-import { twMerge } from 'tailwind-merge'
-
-import { Author, Authorship, authors_mock } from '@/mock/submit_new_document'
-import { updateDocumentApproveStatusService } from '@/services/reviewer/approve.service'
 import { isEqual } from 'lodash'
 import mermaid from 'mermaid'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
+import React from 'react'
+import { ArrowLeft, Check, PlusCircleDotted, X } from 'react-bootstrap-icons'
+import { CurrencyInput } from 'react-currency-mask'
 import { toast } from 'react-toastify'
-import { keywordsArray } from '@/utils/keywords_format'
-import { RenderMermaidChart } from '@/components/common/RenderMermaidChart/RenderMermaidChart'
+import { twMerge } from 'tailwind-merge'
 
 export default function AsReviwerPageDetails({ params }: { params: { slug: string } }) {
    const router = useRouter()
@@ -39,12 +37,9 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
 
    const [article, setArticle] = React.useState<DocumentGetProps | null>(null)
    const [items, setItems] = React.useState(authors_mock)
-   const [share, setShare] = React.useState('')
    const [authors, setAuthors] = React.useState<Author[]>(authors_mock)
-   const [authorship, setAuthorship] = React.useState<Authorship[]>([])
    const [access_type, setAccessType] = React.useState('open-access')
    const [authorship_settings, setAuthorshipSettings] = React.useState<Author>()
-   const [mermaid_error, setMermaidError] = React.useState('' as string | null)
    const [popover, setPopover] = React.useState({ copy_link: false })
    const [dialog, setDialog] = React.useState({ author: false, share_split: false, edit_author: false, reasoning: false })
    const [chartError, setChartError] = React.useState<boolean>(false)
@@ -177,7 +172,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                   </div>
 
                   <div className="grid gap-2">
-                     <p className="text-sm font-semibold">Add keywords (Max 5)</p>
+                     <p className="text-sm font-semibold">Add keywords</p>
                      <div className="flex flex-wrap gap-1 sm:gap-2">
                         {keywordsArray(article?.document.keywords as string)?.length > 0 ? (
                            <React.Fragment>

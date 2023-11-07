@@ -10,7 +10,6 @@ import { DropzoneProps, StoredFile } from './Typing'
 const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, message, thumbnail = true, accept }: DropzoneProps) => {
    const [files, setFiles] = React.useState<Array<StoredFile>>([])
 
-   // function to create file preview
    const createFilePreview = (file: StoredFile) => {
       const fileWithPreview = {
          path: file.name,
@@ -24,7 +23,6 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
       return fileWithPreview
    }
 
-   // function to handle accepted files
    const handleAcceptedFiles = (acceptedFiles: Array<StoredFile>) => {
       acceptedFiles.forEach((fileWithPreview: StoredFile) => {
          setFiles((prev) => [...prev, fileWithPreview])
@@ -34,12 +32,7 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
       setValue?.('file.name', acceptedFiles[0]?.name as string)
    }
 
-   // function to handle files dropped in dropzone
    const onDrop = (acceptedFiles: Array<File>) => {
-      //  if (files.length + acceptedFiles.length > 10) {
-      //alert('Você pode enviar no máximo 10 arquivos.')
-      //return
-      //  }
       handleAcceptedFiles(acceptedFiles.map((file) => createFilePreview(file as unknown as StoredFile)))
    }
    const allowedExtensions: Record<'images' | 'documents', string[]> = {

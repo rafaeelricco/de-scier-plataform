@@ -1,4 +1,5 @@
 import ProgressBar from '@/lib/nprogress'
+import { TooltipProvider } from '@/lib/tooltip'
 import '@styles/globals.css'
 import '@styles/utils.css'
 import type { Metadata } from 'next'
@@ -25,9 +26,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             />
          </head>
          <body>
-            <ProgressBar />
-            <AuthProvider>{children}</AuthProvider>
-            <ToastContainer />
+            <TooltipProvider>
+               <ProgressBar />
+               <AuthProvider>{children}</AuthProvider>
+               <ToastContainer />
+            </TooltipProvider>
          </body>
       </html>
    )
