@@ -4,7 +4,6 @@ import Box from '@/components/common/Box/Box'
 import CommentItem from '@/components/common/Comment/Comment'
 import { File } from '@/components/common/File/File'
 import { YouAreAuthor, YouAreReviwer } from '@/components/common/Flags/Author/AuthorFlags'
-import { RenderMermaidChart } from '@/components/common/RenderMermaidChart/RenderMermaidChart'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -33,6 +32,7 @@ import { twMerge } from 'tailwind-merge'
 
 export default function AsReviwerPageDetails({ params }: { params: { slug: string } }) {
    const router = useRouter()
+   const { data } = useSession()
    const { fetch_article } = useArticleToReview()
 
    const [article, setArticle] = React.useState<DocumentGetProps | null>(null)
@@ -77,8 +77,6 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
          })
    }
 
-   const { data } = useSession()
-
    const [loading, setLoading] = React.useState(false)
    const [is_author, setIsAuthor] = React.useState(false)
 
@@ -94,6 +92,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
          toast.error(response.message)
          return
       }
+
       const status = approve ? 'approved' : 'rejected'
       toast.success(`Document ${status} successgully`)
    }
@@ -141,7 +140,6 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [article?.document.abstractChart])
-
    return (
       <React.Fragment>
          <Dialog.Root open={dialog.reasoning}>
@@ -206,13 +204,6 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                   <h3 className="text-sm font-semibold">Abstract</h3>
                   <p className="text-sm font-regular">{article?.document.abstract}</p>
                </div>
-
-               <div className="grid gap-4">
-                  <div className="grid gap-2">
-                     <p className="text-sm font-semibold">Visual abstract</p>
-                  </div>
-                  <RenderMermaidChart article={article} chartError={chartError} />
-               </div>
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
                   <div className="w-full h-56 rounded-md overflow-hidden relative">
@@ -256,23 +247,37 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                   <h3 className="text-xl text-primary-main font-semibold lg:text-lg 2xl:text-xl">Comments</h3>
                   <p className="text-sm">The reviewing team can publish comments, suggesting updates on your document.</p>
                </div>
-               <div className="border rounded-md p-4">
-                  <ScrollArea className="lg:h-[300px] 2xl:h-[400px] pr-2">
-                     <div className="grid gap-4">
-                        {article?.document.documentComments?.map((comment) => (
-                           <React.Fragment key={comment.id}>
-                              <CommentItem
-                                 comment_author={comment.user.name}
-                                 comment_content={comment.comment}
-                                 status={comment.approvedByAuthor as 'APPROVED' | 'REJECTED' | 'PENDING'}
-                                 onApprove={() => console.log('approved', comment)}
-                                 onReject={() => console.log('rejected', comment)}
-                                 onSeeReasoning={() => setDialog({ ...dialog, reasoning: true })}
-                              />
-                           </React.Fragment>
-                        ))}
+               <div className="grid gap-6">
+                  <div className="border rounded-md p-4">
+                     <ScrollArea className="lg:max-h-[300px] 2xl:max-h-[400px] pr-2">
+                        <div className="grid gap-4">
+                           {article?.document.documentComments && article?.document.documentComments?.length > 0 ? (
+                              article?.document.documentComments?.map((comment) => (
+                                 <React.Fragment key={comment.id}>
+                                    <CommentItem
+                                       comment_author={comment.user.name}
+                                       comment_content={comment.comment}
+                                       status={comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED'}
+                                       onApprove={() => console.log('approved', comment)}
+                                       onReject={() => console.log('rejected', comment)}
+                                       onSeeReasoning={() => setDialog({ ...dialog, reasoning: true })}
+                                    />
+                                 </React.Fragment>
+                              ))
+                           ) : (
+                              <p className="text-center col-span-2 text-gray-500">There are no comments on this document.</p>
+                           )}
+                        </div>
+                     </ScrollArea>
+                  </div>
+                  <div className="flex items-center gap-4">
+                     <div className="flex-grow">
+                        <Input.Root>
+                           <Input.Input className="border p-2 rounded-md focus:border-primary-main" placeholder="Type your comment" />
+                        </Input.Root>
                      </div>
-                  </ScrollArea>
+                     <Button.Button className="px-4 py-2 h-[43px]">Add comment</Button.Button>
+                  </div>
                </div>
             </Box>
             <Box className="grid gap-8 h-fit py-6 px-8">
@@ -328,12 +333,14 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                   <div>
                      <p className="text-sm font-semibold">Invite Link</p>
                      <div className="flex items-center gap-4">
-                        <p className="text-sm font-semibold w-1/2 text-blue-500 underline truncate ..." id="link-to-copy">
-                           {article?.document.reviewerInviteLink}
-                        </p>
+                        <div className="max-w-[400px]">
+                           <p className="text-sm font-semibold text-blue-500 underline truncate ..." id="link-to-copy">
+                              {article?.document.reviewerInviteLink}
+                           </p>
+                        </div>
                         <HoverCard open={popover.copy_link}>
                            <HoverCardTrigger>
-                              <Button.Button variant="outline" className="px-4 py-1 text-sm" onClick={copyToClipboard}>
+                              <Button.Button variant="outline" className="px-4 py-1 text-sm w-fit" onClick={copyToClipboard}>
                                  Copy Link
                               </Button.Button>
                            </HoverCardTrigger>

@@ -13,7 +13,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { header_editor_reviewer } from '@/mock/article_under_review'
 import { document_types } from '@/mock/document_types'
-import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
+import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
 import { finalSubmitDocumentService } from '@/services/document/finalSubmit.service'
 import { DocumentGetProps } from '@/services/document/getArticles'
@@ -281,7 +281,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   <p className="text-sm">The reviewing team can publish comments, suggesting updates on your document.</p>
                </div>
                <div className="border rounded-md p-4">
-                  <ScrollArea className="lg:h-[300px] 2xl:h-[400px] pr-2">
+                  <ScrollArea className="lg:max-h-[300px] 2xl:max-h-[400px] pr-2">
                      <div className="grid gap-4">
                         {article?.document.documentComments && article?.document.documentComments?.length > 0 ? (
                            article?.document.documentComments?.map((comment) => (
@@ -297,7 +297,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                               </React.Fragment>
                            ))
                         ) : (
-                           <p className="text-center col-span-2 text-gray-500 mt-8">There are no comments on this document.</p>
+                           <p className="text-center col-span-2 text-gray-500">There are no comments on this document.</p>
                         )}
                      </div>
                   </ScrollArea>
