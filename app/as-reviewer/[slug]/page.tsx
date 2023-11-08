@@ -10,23 +10,27 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { header_editor_reviewer } from '@/mock/article_under_review'
 import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
+import { AddCommentProps, addCommentSchema } from '@/schemas/comments'
 import { DocumentGetProps } from '@/services/document/getArticles'
 import { updateDocumentApproveStatusService } from '@/services/reviewer/approve.service'
 import { useArticleToReview } from '@/services/reviewer/fetchDocuments.service'
+import { ActionComments, comments_initial_state, reducer_comments } from '@/states/reducer_comments'
 import { truncate } from '@/utils/format_texts'
 import { keywordsArray } from '@/utils/keywords_format'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Reorder } from 'framer-motion'
-import { isEqual } from 'lodash'
+import { isEqual, uniqueId } from 'lodash'
 import mermaid from 'mermaid'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
-import React from 'react'
+import React, { useReducer } from 'react'
 import { ArrowLeft, Check, PlusCircleDotted, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
+import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { twMerge } from 'tailwind-merge'
 
@@ -34,6 +38,8 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
    const router = useRouter()
    const { data } = useSession()
    const { fetch_article } = useArticleToReview()
+
+   const [state, dispatch] = useReducer(reducer_comments, comments_initial_state)
 
    const [article, setArticle] = React.useState<DocumentGetProps | null>(null)
    const [items, setItems] = React.useState(authors_mock)
@@ -49,6 +55,22 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
          setArticle(res as DocumentGetProps)
          const access = res?.document.accessType === 'FREE' ? 'open-access' : 'paid-access'
          setAccessType(access)
+
+         if (article?.document?.documentComments && article?.document?.documentComments?.length > 0) {
+            {
+               article?.document.documentComments?.map((comment) => {
+                  dispatch({
+                     type: 'store_comments_from_api',
+                     payload: {
+                        id: comment.id,
+                        comment_author: comment.user.name,
+                        comment_content: comment.comment,
+                        status: comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED'
+                     }
+                  } as ActionComments)
+               })
+            }
+         }
       })
    }
 
@@ -140,6 +162,25 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [article?.document.abstractChart])
+
+   const {
+      register,
+      handleSubmit,
+      watch,
+      formState: { errors },
+      setValue,
+      trigger,
+      getValues,
+      control,
+      clearErrors,
+      setError
+   } = useForm<AddCommentProps>({
+      resolver: zodResolver(addCommentSchema),
+      values: {
+         comment: '',
+         documentId: article?.document.id || ''
+      }
+   })
    return (
       <React.Fragment>
          <Dialog.Root open={dialog.reasoning}>
@@ -251,17 +292,38 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                   <div className="border rounded-md p-4">
                      <ScrollArea className="lg:max-h-[300px] 2xl:max-h-[400px] pr-2">
                         <div className="grid gap-4">
-                           {article?.document.documentComments && article?.document.documentComments?.length > 0 ? (
-                              article?.document.documentComments?.map((comment) => (
+                           {state.comments && state.comments.length > 0 ? (
+                              state.comments?.map((comment) => (
                                  <React.Fragment key={comment.id}>
                                     <CommentItem
-                                       comment_author={comment.user.name}
-                                       comment_content={comment.comment}
-                                       status={comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED'}
-                                       onApprove={() => console.log('approved', comment)}
-                                       onReject={() => console.log('rejected', comment)}
+                                       comment_author={comment.comment_author}
+                                       comment_content={comment.comment_content}
+                                       status={comment.status as 'PENDING' | 'APPROVED' | 'REJECTED'}
+                                       onApprove={() => {
+                                          dispatch({
+                                             type: 'approve_comment',
+                                             payload: {
+                                                id: comment.id,
+                                                comment_author: comment.comment_author,
+                                                comment_content: comment.comment_content,
+                                                status: 'APPROVED'
+                                             }
+                                          } as ActionComments)
+                                       }}
+                                       onReject={() =>
+                                          dispatch({
+                                             type: 'reject_comment',
+                                             payload: {
+                                                id: comment.id,
+                                                comment_author: comment.comment_author,
+                                                comment_content: comment.comment_content,
+                                                status: 'REJECTED'
+                                             }
+                                          } as ActionComments)
+                                       }
                                        onSeeReasoning={() => setDialog({ ...dialog, reasoning: true })}
                                     />
+                                    <hr className="divider-h mt-1" />
                                  </React.Fragment>
                               ))
                            ) : (
@@ -273,10 +335,29 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                   <div className="flex items-center gap-4">
                      <div className="flex-grow">
                         <Input.Root>
-                           <Input.Input className="border p-2 rounded-md focus:border-primary-main" placeholder="Type your comment" />
+                           <Input.Input
+                              className="border p-2 rounded-md focus:border-primary-main"
+                              placeholder="Type your comment"
+                              {...register('comment')}
+                           />
                         </Input.Root>
                      </div>
-                     <Button.Button className="px-4 py-2 h-[43px]">Add comment</Button.Button>
+                     <Button.Button
+                        className="px-4 py-2 h-[43px]"
+                        onClick={() => {
+                           dispatch({
+                              type: 'add_new_comment',
+                              payload: {
+                                 id: uniqueId(watch('comment') + '_'),
+                                 comment_author: data?.user?.name,
+                                 comment_content: watch('comment'),
+                                 status: 'PENDING'
+                              }
+                           } as ActionComments)
+                        }}
+                     >
+                        Add comment
+                     </Button.Button>
                   </div>
                </div>
             </Box>
