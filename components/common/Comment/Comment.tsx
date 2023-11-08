@@ -1,15 +1,6 @@
 import React from 'react'
 import { Check, X } from 'react-bootstrap-icons'
-
-interface CommentItemProps {
-   id?: string
-   comment_author: string
-   comment_content: string
-   status?: 'PENDING' | 'APPROVED' | 'REJECTED'
-   onApprove?: () => void
-   onReject?: () => void
-   onSeeReasoning?: () => void
-}
+import { CommentItemProps } from './Typing'
 
 const CommentItem: React.FC<CommentItemProps> = ({
    comment_author,
@@ -52,7 +43,6 @@ const CommentItem: React.FC<CommentItemProps> = ({
             <div>
                <p className="text-sm">{comment_content}</p>
             </div>
-            <hr className="divider-h mt-1" />
          </div>
       </React.Fragment>
    )
