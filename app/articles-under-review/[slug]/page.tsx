@@ -16,6 +16,7 @@ import { document_types } from '@/mock/document_types'
 import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
 import { CreateDocumentProps, CreateDocumentSchema } from '@/schemas/create_document'
+import { UpdateDocumentProps, UpdateDocumentSchema } from '@/schemas/update_document'
 import { finalSubmitDocumentService } from '@/services/document/finalSubmit.service'
 import { DocumentGetProps } from '@/services/document/getArticles'
 import { useArticles } from '@/services/document/getArticles.service'
@@ -61,6 +62,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
    const [keywords_temp, setKeywordsTemp] = React.useState<string | undefined>()
 
    const [file, setFile] = React.useState<StoredFile | null>()
+   const [files, setFiles] = React.useState<StoredFile[]>([])
 
    const {
       register,
@@ -73,8 +75,8 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
       control,
       clearErrors,
       setError
-   } = useForm<CreateDocumentProps>({
-      resolver: zodResolver(CreateDocumentSchema),
+   } = useForm<UpdateDocumentProps>({
+      resolver: zodResolver(UpdateDocumentSchema),
       defaultValues: {
          abstract: article?.document.abstract || '',
          abstractChart: '',
@@ -83,15 +85,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
          field: article?.document.field,
          price: String(article?.document.price) || '0',
          title: article?.document.title,
-         file: {
-            lastModified: 0,
-            lastModifiedDate: new Date(),
-            name: '',
-            path: '',
-            preview: '',
-            size: 0,
-            type: ''
-         },
+         file: [],
          authors: [{}],
          keywords: article?.document.keywords?.split(';').map((item) => ({ id: uniqueId('keyword'), name: item })) || []
       }
@@ -112,6 +106,21 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
             )
             trigger('keywords')
          }
+         if (res?.document.documentVersions) {
+         }
+         if (article?.document.documentVersions) {
+            const documentFiles: StoredFile[] = article.document.documentVersions?.map((item) => ({
+               lastModified: 0,
+               lastModifiedDate: new Date(item.createdAt),
+               name: item.fileName || '',
+               path: item.link,
+               preview: '',
+               size: 0,
+               type: item.fileName?.split('.')[1] || ''
+            }))
+            setValue('file', documentFiles)
+            trigger('file')
+         }
       })
    }
 
@@ -131,13 +140,6 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
       }
 
       if (!article.document.documentVersions) {
-         toast.error('Upload a pdf file to final submit.')
-         return
-      }
-
-      const isLastDocumentPdf = article.document.documentVersions[0]?.fileName?.includes('pdf')
-
-      if (!isLastDocumentPdf) {
          toast.error('Upload a pdf file to final submit.')
          return
       }
@@ -180,6 +182,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
       setDocumentSaved(true)
 
       setSaveLoading(false)
+      fetchSingleArticle(article.document.id)
    }
 
    React.useEffect(() => {
@@ -254,7 +257,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   <React.Fragment>{is_author ? <YouAreAuthor /> : <YouAreReviwer />}</React.Fragment>
                )}
                <div className="grid gap-x-6 gap-y-4">
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid md:grid-cols-2 items-start gap-6">
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
                            <span className="text-sm font-semibold">Title</span>
@@ -263,7 +266,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                         <Input.Input placeholder="Title of the article" defaultValue={article?.document.title} {...register('title')} />
                      </Input.Root>
                      <Input.Root>
-                        <Input.Label>Add keywords</Input.Label>
+                        <Input.Label className="text-sm font-semibold">Add keywords</Input.Label>
                         <Input.Input
                            placeholder="Title of the article"
                            value={keywords_temp}
@@ -286,6 +289,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                               </React.Fragment>
                            }
                         />
+                        <Input.Error>{errors.keywords?.message}</Input.Error>
                         <div className="flex flex-wrap gap-1">
                            {watch('keywords')?.map((keyword, index) => (
                               <div
@@ -353,7 +357,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                                     key={file.id}
                                     file_name={file.fileName || 'file.docx'}
                                     link={file.link}
-                                    uploaded_at={new Date(file.createdAt).toLocaleDateString('pt-BR')}
+                                    uploaded_at={new Date(file.createdAt)?.toLocaleDateString('pt-BR')}
                                     uploaded_by={data?.user?.userInfo.name || ''}
                                  />
                               ))
