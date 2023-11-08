@@ -15,6 +15,7 @@ import { header_editor_reviewer } from '@/mock/article_under_review'
 import { document_types } from '@/mock/document_types'
 import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
+import { CreateDocumentProps, CreateDocumentSchema } from '@/schemas/create_document'
 import { finalSubmitDocumentService } from '@/services/document/finalSubmit.service'
 import { DocumentGetProps } from '@/services/document/getArticles'
 import { useArticles } from '@/services/document/getArticles.service'
@@ -23,8 +24,9 @@ import { truncate } from '@/utils/format_texts'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Reorder } from 'framer-motion'
-import { isEqual } from 'lodash'
+import { isEqual, uniqueId } from 'lodash'
 import mermaid from 'mermaid'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -32,6 +34,7 @@ import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React from 'react'
 import { ArrowLeft, Check, FileEarmarkText, Pencil, PlusCircle, PlusCircleDotted, Trash, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
+import { useFieldArray, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { twMerge } from 'tailwind-merge'
 
@@ -55,14 +58,60 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
    const [saveLoading, setSaveLoading] = React.useState(false)
    const [is_author, setIsAuthor] = React.useState(false)
    const [documentSaved, setDocumentSaved] = React.useState(false)
+   const [keywords_temp, setKeywordsTemp] = React.useState<string | undefined>()
 
    const [file, setFile] = React.useState<StoredFile | null>()
+
+   const {
+      register,
+      handleSubmit,
+      watch,
+      formState: { errors },
+      setValue,
+      trigger,
+      getValues,
+      control,
+      clearErrors,
+      setError
+   } = useForm<CreateDocumentProps>({
+      resolver: zodResolver(CreateDocumentSchema),
+      defaultValues: {
+         abstract: article?.document.abstract || '',
+         abstractChart: '',
+         accessType: (article?.document.accessType as 'FREE' | 'PAID') || 'FREE',
+         documentType: article?.document.documentType,
+         field: article?.document.field,
+         price: String(article?.document.price) || '0',
+         title: article?.document.title,
+         file: {
+            lastModified: 0,
+            lastModifiedDate: new Date(),
+            name: '',
+            path: '',
+            preview: '',
+            size: 0,
+            type: ''
+         },
+         authors: [{}],
+         keywords: article?.document.keywords?.split(';').map((item) => ({ id: uniqueId('keyword'), name: item })) || []
+      }
+   })
+
+   const { append, remove, fields: keywords } = useFieldArray({ name: 'keywords', control: control })
 
    const fetchSingleArticle = async (documentId: string) => {
       const fetchedArticle = await fetch_article(documentId).then((res) => {
          setArticle(res as DocumentGetProps)
          const access = res?.document.accessType === 'FREE' ? 'open-access' : 'paid-access'
          setAccessType(access)
+         const keywords = res?.document.keywords?.split(';')
+         if (keywords) {
+            setValue(
+               'keywords',
+               keywords.map((item) => ({ id: uniqueId('keywords'), name: item }))
+            )
+            trigger('keywords')
+         }
       })
    }
 
@@ -166,7 +215,20 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [article?.document.abstractChart])
 
-   console.log(article)
+   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.keyCode === 13) {
+         if (keywords_temp && keywords_temp.trim() !== '') {
+            e.preventDefault()
+            append({ id: uniqueId('key'), name: keywords_temp as string })
+            setKeywordsTemp('')
+         } else {
+            setError('keywords', {
+               type: 'manual',
+               message: 'Keyword is required.'
+            })
+         }
+      }
+   }
 
    return (
       <React.Fragment>
@@ -198,18 +260,25 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                            <span className="text-sm font-semibold">Title</span>
                            <span className="text-sm text-neutral-light_gray">0/300 characters</span>
                         </Input.Label>
-                        <Input.Input placeholder="Title of the article" defaultValue={article?.document.title} />
+                        <Input.Input placeholder="Title of the article" defaultValue={article?.document.title} {...register('title')} />
                      </Input.Root>
                      <Input.Root>
                         <Input.Label>Add keywords</Input.Label>
                         <Input.Input
                            placeholder="Title of the article"
+                           value={keywords_temp}
+                           onKeyDown={(e) => handleKeyDown(e)}
+                           onInput={(e) => setKeywordsTemp(e.currentTarget.value)}
                            end
                            icon={
                               <React.Fragment>
                                  <Button.Button
                                     variant="outline"
                                     className="px-2 py-0 border-neutral-light_gray hover:bg-neutral-light_gray hover:bg-opacity-10 flex items-center gap-1 rounded-sm"
+                                    onClick={() => {
+                                       append({ id: uniqueId('key'), name: keywords_temp as string })
+                                       setKeywordsTemp('')
+                                    }}
                                  >
                                     <PlusCircle className="w-3 fill-neutral-light_gray" />
                                     <span className="font-semibold text-xs text-neutral-light_gray">Add keyword</span>
@@ -217,6 +286,20 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                               </React.Fragment>
                            }
                         />
+                        <div className="flex flex-wrap gap-1">
+                           {watch('keywords')?.map((keyword, index) => (
+                              <div
+                                 className="border rounded-md border-neutral-stroke_light flex items-center px-1 sm:px-2 py-[2px] bg-white w-fit"
+                                 key={keyword.id}
+                              >
+                                 <X
+                                    className="w-5 h-fit fill-neutral-stroke_light hover:fill-status-error cursor-pointer transition-all duration-200 hover:scale-110"
+                                    onClick={() => remove(index)}
+                                 />
+                                 <span className="text-xxs sm:text-xs text-primary-main">{keyword.name}</span>
+                              </div>
+                           ))}
+                        </div>
                      </Input.Root>
                   </div>
                   <div className="grid md:grid-cols-2 gap-6">
