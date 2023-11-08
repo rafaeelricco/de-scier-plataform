@@ -11,9 +11,15 @@ import IllustrationHandBook from 'public/svgs/modules/sidebar/emojione-v1_docume
 import React from 'react'
 import { CaretRight, PlusCircle } from 'react-bootstrap-icons'
 import SubmitedItem from './SubmitedItem/SubmitedItem'
+import { useSession } from 'next-auth/react'
+import Link from 'next/link'
+import { home_routes } from '@/routes/home'
 
 const Profile: React.FC = () => {
    // See more about in https://nextjs.org/docs/app/api-reference/functions/use-pathname
+
+   const { data: session } = useSession()
+
    const router = useRouter()
    const { md } = useDimension()
    const currentPath = usePathname()
@@ -25,11 +31,16 @@ const Profile: React.FC = () => {
                <div className="flex flex-col gap-6">
                   <div className="flex justify-between items-center">
                      <h3 className="text-xl font-semibold">My profile</h3>
-                     <p className="text-base text-secundary_purple-main font-regular hover:underline select-none cursor-pointer">Edit profile</p>
+                     <Link
+                        href={home_routes.profile}
+                        className="text-base text-secundary_purple-main font-regular hover:underline select-none cursor-pointer"
+                     >
+                        Edit profile
+                     </Link>
                   </div>
                   <div className="grid gap-4">
                      <Image
-                        src="/svgs/common/sidebar/placeholder-image.jpeg"
+                        src={session?.user?.userInfo.avatar || ''}
                         quality={50}
                         width={144}
                         height={144}
@@ -37,7 +48,9 @@ const Profile: React.FC = () => {
                         className="w-36 h-36 bg-status-pending rounded-full mx-auto my-0 lg:w-24 lg:h-24 2xl:w-36 2xl:h-36"
                      />
                      <div className="grid gap-2 lg:gap-3 2xl:gap-2">
-                        <h1 className="text-xl text-secundary_blue-main font-semibold flex justify-center lg:text-lg 2xl:text-xl">Caroline Nunes</h1>
+                        <h1 className="text-xl text-secundary_blue-main font-semibold flex justify-center lg:text-lg 2xl:text-xl">
+                           {session?.user?.userInfo.name}
+                        </h1>
                         <Button.Button variant="outline" className="mx-auto px-2 py-3 my-0 text-sm">
                            Connect a wallet
                            <PlusCircle className="w-4" />
