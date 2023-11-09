@@ -3,7 +3,9 @@ import * as Input from '@components/common/Input/Input'
 import React from 'react'
 import { X } from 'react-bootstrap-icons'
 
-const Reasoning: React.FC<ArticleUnderReviewProps> = ({ onClose, onConfirm, reason }: ArticleUnderReviewProps) => {
+const Reasoning: React.FC<ArticleUnderReviewProps> = ({ onClose, onConfirm, message, documentAuthor }: ArticleUnderReviewProps) => {
+   const [reason, setReason] = React.useState(message || '')
+
    return (
       <React.Fragment>
          <X
@@ -13,28 +15,44 @@ const Reasoning: React.FC<ArticleUnderReviewProps> = ({ onClose, onConfirm, reas
          <div className="grid gap-6">
             <div className="grid gap-2">
                <h3 className="text-xl font-semibold">Reasoning</h3>
-               <p className="text-sm">Explain a bit of the reasoning for the reject, to justify your version.</p>
+               {message === '' && <p className="text-sm">Explain a bit of the reasoning for the reject, to justify your version.</p>}
             </div>
-            <Input.Root>
-               <Input.Label>Reasoning</Input.Label>
-               <Input.TextArea defaultValue={reason} placeholder="Explain your reasoning" />
-            </Input.Root>
-            <div className="grid gap-4">
-               <Button.Button className="py-3 px-8" onClick={onConfirm}>
-                  Confirm rejection
-               </Button.Button>
-               <Button.Button variant="outline" className="py-3 px-8" onClick={onClose}>
-                  Cancel
-               </Button.Button>
-            </div>
+            {message ? (
+               <>
+                  <div className="grid gap-2">
+                     <p className="text-lg font-semibold"> {documentAuthor} </p>
+                     <p className="text-md"> {message} </p>
+                  </div>
+
+                  <Button.Button variant="outline" className="py-3 px-8" onClick={onClose}>
+                     Return
+                  </Button.Button>
+               </>
+            ) : (
+               <>
+                  <Input.Root>
+                     <Input.Label>Reasoning</Input.Label>
+                     <Input.TextArea defaultValue={reason} placeholder="Explain your reasoning" onInput={(e) => setReason(e.currentTarget.value)} />
+                  </Input.Root>
+                  <div className="grid gap-4">
+                     <Button.Button className="py-3 px-8" onClick={() => onConfirm(reason)}>
+                        Confirm rejection
+                     </Button.Button>
+                     <Button.Button variant="outline" className="py-3 px-8" onClick={onClose}>
+                        Cancel
+                     </Button.Button>
+                  </div>
+               </>
+            )}
          </div>
       </React.Fragment>
    )
 }
 
 interface ArticleUnderReviewProps {
-   reason: string
-   onConfirm: () => void
+   message: string
+   documentAuthor?: string
+   onConfirm: (value: string) => void
    onClose: () => void
 }
 

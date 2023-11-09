@@ -20,6 +20,7 @@ import { finalSubmitDocumentService } from '@/services/document/finalSubmit.serv
 import { DocumentGetProps } from '@/services/document/getArticles'
 import { useArticles } from '@/services/document/getArticles.service'
 import { uploadDocumentFileService } from '@/services/file/file.service'
+import { ApproveStatus, approveCommentService } from '@/services/reviewer/approveComment.service'
 import { ActionComments, comments_initial_state, reducer_comments } from '@/states/reducer_comments'
 import { truncate } from '@/utils/format_texts'
 import * as Button from '@components/common/Button/Button'
@@ -128,6 +129,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                id: comment.id,
                comment_author: comment.user.name,
                comment_content: comment.comment,
+               reason: comment.authorComment || '',
                status: comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED'
             }))
 
@@ -143,9 +145,12 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
    console.log('article', article)
 
    React.useEffect(() => {
-      fetchSingleArticle(params.slug)
+      if (!article) {
+         fetchSingleArticle(params.slug)
+      }
+
       // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [params.slug])
+   }, [])
 
    const onReorder = (newOrder: typeof items) => {
       setItems((prevItems) => [...newOrder])
@@ -203,6 +208,19 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
       fetchSingleArticle(article.document.id)
    }
 
+   const handleApproveDocument = async (status: ApproveStatus, commentId: string, answer?: string) => {
+      const response = await approveCommentService({
+         approvedStatus: status,
+         commentId: commentId,
+         answer: answer || ''
+      })
+
+      if (!response.success) {
+         toast.error(response.message)
+         return
+      }
+   }
+
    React.useEffect(() => {
       setLoading(true)
       const isAuthor = () => {
@@ -257,9 +275,23 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
             <Dialog.Overlay />
             <Dialog.Content className="py-14 px-16 max-w-[600px]">
                <Reasoning
-                  reason=""
+                  message={state.comment_to_edit?.reason || ''}
+                  documentAuthor={data?.user?.userInfo.name}
                   onClose={() => setDialog({ ...dialog, reasoning: false })}
-                  onConfirm={() => setDialog({ ...dialog, reasoning: false })}
+                  onConfirm={(value) => {
+                     handleApproveDocument('REJECTED', state.comment_to_edit?.id!, value)
+                     dispatch({
+                        type: 'reject_comment',
+                        payload: {
+                           id: state.comment_to_edit?.id!,
+                           comment_content: state.comment_to_edit?.comment_content,
+                           comment_author: state.comment_to_edit?.comment_author,
+                           reason: value,
+                           status: 'REJECTED'
+                        }
+                     } as ActionComments)
+                     setDialog({ ...dialog, reasoning: false })
+                  }}
                />
             </Dialog.Content>
          </Dialog.Root>
@@ -403,14 +435,46 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                                     comment_content={comment.comment_content}
                                     status={comment.status as 'PENDING' | 'APPROVED' | 'REJECTED'}
                                     onApprove={() => {
-                                       /* use this dispatch to approve on state */
-                                       /*  dispatch({ type: 'approve_comment', payload: { id: comment.id } } as ActionComments) */
+                                       handleApproveDocument('APPROVED', comment.id!)
+                                       dispatch({
+                                          type: 'approve_comment',
+                                          payload: {
+                                             id: comment.id,
+                                             comment_content: comment.comment_content,
+                                             comment_author: comment.comment_author,
+                                             status: 'APPROVED'
+                                          }
+                                       } as ActionComments)
                                     }}
                                     onReject={() => {
-                                       /* use this dispatch to reject on state */
-                                       /* dispatch({ type: 'reject_comment', payload: { id: comment.id } } as ActionComments) */
+                                       dispatch({
+                                          type: 'comment_to_edit',
+                                          payload: {
+                                             id: comment.id,
+                                             comment_author: comment.comment_author,
+                                             comment_content: comment.comment_content,
+                                             reason: comment.reason,
+                                             status: 'PENDING'
+                                          }
+                                       } as ActionComments)
+                                       setDialog({
+                                          ...dialog,
+                                          reasoning: true
+                                       })
                                     }}
-                                    onSeeReasoning={() => setDialog({ ...dialog, reasoning: true })}
+                                    onSeeReasoning={() => {
+                                       dispatch({
+                                          type: 'comment_to_edit',
+                                          payload: {
+                                             id: comment.id,
+                                             comment_author: comment.comment_author,
+                                             comment_content: comment.comment_content,
+                                             reason: comment.reason,
+                                             status: 'PENDING'
+                                          }
+                                       } as ActionComments)
+                                       setDialog({ ...dialog, reasoning: true })
+                                    }}
                                  />
                                  <hr className="divider-h mt-1" />
                               </React.Fragment>

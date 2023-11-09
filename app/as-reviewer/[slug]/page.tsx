@@ -66,6 +66,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                id: comment.id,
                comment_author: comment.user.name,
                comment_content: comment.comment,
+               reason: comment.authorComment,
                status: comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED'
             }))
 
@@ -258,7 +259,8 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
             <Dialog.Content className="py-14 px-16 max-w-[600px]">
                {dialog.reasoning && (
                   <Reasoning
-                     reason=""
+                     message={state.comment_to_edit?.reason || ''}
+                     documentAuthor={article?.document.user?.name}
                      onClose={() => setDialog({ ...dialog, reasoning: false })}
                      onConfirm={() => setDialog({ ...dialog, reasoning: false })}
                   />
@@ -395,7 +397,19 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                                           } as ActionComments)
                                           setDialog({ ...dialog, edit_comment: true })
                                        }}
-                                       onSeeReasoning={() => setDialog({ ...dialog, reasoning: true })}
+                                       onSeeReasoning={() => {
+                                          dispatch({
+                                             type: 'comment_to_edit',
+                                             payload: {
+                                                id: comment.id,
+                                                comment_author: comment.comment_author,
+                                                comment_content: comment.comment_content,
+                                                reason: comment.reason,
+                                                status: 'REJECTED'
+                                             }
+                                          } as ActionComments)
+                                          setDialog({ ...dialog, reasoning: true })
+                                       }}
                                     />
                                     <hr className="divider-h mt-1" />
                                  </React.Fragment>

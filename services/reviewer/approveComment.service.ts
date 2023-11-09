@@ -29,9 +29,9 @@ export const approveCommentService = async (data: ApproveCommentProps) => {
 }
 
 type ApproveCommentProps = {
-   commnetId: string
-   approveStatus: ApproveStatus
+   commentId: string
+   approvedStatus: ApproveStatus
    answer?: string
 }
 
-type ApproveStatus = 'APPROVED' | 'REJECTED'
+export type ApproveStatus = 'APPROVED' | 'REJECTED'
