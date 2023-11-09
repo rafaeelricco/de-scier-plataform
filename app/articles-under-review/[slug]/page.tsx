@@ -15,12 +15,12 @@ import { header_editor_reviewer } from '@/mock/article_under_review'
 import { document_types } from '@/mock/document_types'
 import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
-import { CreateDocumentProps, CreateDocumentSchema } from '@/schemas/create_document'
 import { UpdateDocumentProps, UpdateDocumentSchema } from '@/schemas/update_document'
 import { finalSubmitDocumentService } from '@/services/document/finalSubmit.service'
 import { DocumentGetProps } from '@/services/document/getArticles'
 import { useArticles } from '@/services/document/getArticles.service'
 import { uploadDocumentFileService } from '@/services/file/file.service'
+import { ActionComments, comments_initial_state, reducer_comments } from '@/states/reducer_comments'
 import { truncate } from '@/utils/format_texts'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
@@ -32,7 +32,7 @@ import mermaid from 'mermaid'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
-import React from 'react'
+import React, { useReducer } from 'react'
 import { ArrowLeft, Check, FileEarmarkText, Pencil, PlusCircle, PlusCircleDotted, Trash, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { useFieldArray, useForm } from 'react-hook-form'
@@ -45,6 +45,8 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
    const router = useRouter()
 
    const { fetch_article } = useArticles()
+   const [state, dispatch] = useReducer(reducer_comments, comments_initial_state)
+   console.log('State comments', state)
 
    const [article, setArticle] = React.useState<DocumentGetProps | null>(null)
    const [items, setItems] = React.useState(authors_mock)
@@ -94,7 +96,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
    const { append, remove, fields: keywords } = useFieldArray({ name: 'keywords', control: control })
 
    const fetchSingleArticle = async (documentId: string) => {
-      const fetchedArticle = await fetch_article(documentId).then((res) => {
+      await fetch_article(documentId).then((res) => {
          setArticle(res as DocumentGetProps)
          const access = res?.document.accessType === 'FREE' ? 'open-access' : 'paid-access'
          setAccessType(access)
@@ -120,6 +122,21 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
             }))
             setValue('file', documentFiles)
             trigger('file')
+         }
+         if (article?.document?.documentComments && article?.document?.documentComments?.length > 0) {
+            {
+               article?.document.documentComments?.map((comment) => {
+                  dispatch({
+                     type: 'store_comments_from_api',
+                     payload: {
+                        id: comment.id,
+                        comment_author: comment.user.name,
+                        comment_content: comment.comment,
+                        status: comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED'
+                     }
+                  } as ActionComments)
+               })
+            }
          }
       })
    }
@@ -377,17 +394,24 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                <div className="border rounded-md p-4">
                   <ScrollArea className="lg:max-h-[300px] 2xl:max-h-[400px] pr-2">
                      <div className="grid gap-4">
-                        {article?.document.documentComments && article?.document.documentComments?.length > 0 ? (
-                           article?.document.documentComments?.map((comment) => (
+                        {state.comments && state.comments.length > 0 ? (
+                           state.comments?.map((comment) => (
                               <React.Fragment key={comment.id}>
                                  <CommentItem
-                                    comment_author={comment.user.name}
-                                    comment_content={comment.comment}
-                                    status={comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED'}
-                                    onApprove={() => console.log('approved', comment)}
-                                    onReject={() => console.log('rejected', comment)}
+                                    comment_author={comment.comment_author}
+                                    comment_content={comment.comment_content}
+                                    status={comment.status as 'PENDING' | 'APPROVED' | 'REJECTED'}
+                                    onApprove={() => {
+                                       /* use this dispatch to approve on state */
+                                       /*  dispatch({ type: 'approve_comment', payload: { id: comment.id } } as ActionComments) */
+                                    }}
+                                    onReject={() => {
+                                       /* use this dispatch to reject on state */
+                                       /* dispatch({ type: 'reject_comment', payload: { id: comment.id } } as ActionComments) */
+                                    }}
                                     onSeeReasoning={() => setDialog({ ...dialog, reasoning: true })}
                                  />
+                                 <hr className="divider-h mt-1" />
                               </React.Fragment>
                            ))
                         ) : (
@@ -398,77 +422,79 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                </div>
             </Box>
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
-               <div className="grid ">
-                  <h3 className="text-lg md:text-xl text-terciary-main font-semibold">Authors</h3>
-               </div>
-               <div className="grid gap-6">
-                  {/* <Button.Button variant="outline" className="px-4 py-3 w-full text-sm">
+               <div className="grid gap-2">
+                  <div className="grid ">
+                     <h3 className="text-lg md:text-xl text-terciary-main font-semibold">Authors</h3>
+                  </div>
+                  <div className="grid gap-6">
+                     {/* <Button.Button variant="outline" className="px-4 py-3 w-full text-sm">
                      Select Authors for the paper
                      <PlusCircle
                         className="w-4 fill-primary-main 
                      "
                      />
                   </Button.Button> */}
-                  <p className="text-sm">Drag the authors to reorder the list.</p>
-                  <div className="grid gap-2">
-                     <div className="hidden md:grid grid-cols-3">
-                        {authors_headers.map((header, index) => (
-                           <React.Fragment key={index}>
-                              <p className="text-sm font-semibold">{header.label}</p>
-                           </React.Fragment>
-                        ))}
-                     </div>
-                     <Reorder.Group axis="y" values={authors} onReorder={onReorder}>
-                        <div className="grid gap-2">
-                           {article?.document.authorsOnDocuments?.map((item, index) => (
-                              <Reorder.Item key={item.id} value={item} id={item.id}>
-                                 <div className="grid md:grid-cols-3 items-center px-0 py-3 rounded-md cursor-grab">
-                                    <div className="flex items-center gap-4">
-                                       <div className="flex gap-0 items-center">
-                                          <CircleIcon className="w-8" />
-                                          <p className="text-sm text-blue-gray">{index + 1}º</p>
-                                       </div>
-                                       <div>
-                                          <p className="text-sm text-secundary_blue-main font-semibold md:font-regular">{item.author?.name}</p>
-                                          <div className="block md:hidden">
-                                             <p className="text-sm text-secundary_blue-main">{item.author?.title}</p>
-                                          </div>
-                                          <div className="block md:hidden">
-                                             <p className="text-sm text-secundary_blue-main">{item.author?.email}</p>
-                                          </div>
-                                       </div>
-                                    </div>
-                                    <div className="hidden md:block">
-                                       <p className="text-sm text-secundary_blue-main">{item.author?.title}</p>
-                                    </div>
-                                    <div className="hidden md:flex items-center justify-between">
-                                       <p className="text-sm text-secundary_blue-main">{item.author?.email}</p>
-                                       {index !== 0 && (
-                                          <React.Fragment>
-                                             <div className="flex items-center gap-2">
-                                                <Trash
-                                                   className="fill-status-error w-5 h-full cursor-pointer hover:scale-110 transition-all duration-200"
-                                                   onClick={() => {
-                                                      //  const new_list = authors.filter((author) => author.id !== item.id)
-                                                      //  setAuthors(new_list)
-                                                   }}
-                                                />
-                                                <Pencil
-                                                   className="fill-primary-main w-5 h-full cursor-pointer hover:scale-110 transition-all duration-200"
-                                                   onClick={() => {
-                                                      //  setAuthorToEdit(item as unknown as AuthorProps)
-                                                      //  setDialog({ ...dialog, edit_author: true })
-                                                   }}
-                                                />
-                                             </div>
-                                          </React.Fragment>
-                                       )}
-                                    </div>
-                                 </div>
-                              </Reorder.Item>
+                     <p className="text-sm">Drag the authors to reorder the list.</p>
+                     <div className="grid gap-2">
+                        <div className="hidden md:grid grid-cols-3">
+                           {authors_headers.map((header, index) => (
+                              <React.Fragment key={index}>
+                                 <p className="text-sm font-semibold">{header.label}</p>
+                              </React.Fragment>
                            ))}
                         </div>
-                     </Reorder.Group>
+                        <Reorder.Group axis="y" values={authors} onReorder={onReorder}>
+                           <div className="grid gap-2">
+                              {article?.document.authorsOnDocuments?.map((item, index) => (
+                                 <Reorder.Item key={item.id} value={item} id={item.id}>
+                                    <div className="grid md:grid-cols-3 items-center px-0 py-3 rounded-md cursor-grab">
+                                       <div className="flex items-center gap-4">
+                                          <div className="flex gap-0 items-center">
+                                             <CircleIcon className="w-8" />
+                                             <p className="text-sm text-blue-gray">{index + 1}º</p>
+                                          </div>
+                                          <div>
+                                             <p className="text-sm text-secundary_blue-main font-semibold md:font-regular">{item.author?.name}</p>
+                                             <div className="block md:hidden">
+                                                <p className="text-sm text-secundary_blue-main">{item.author?.title}</p>
+                                             </div>
+                                             <div className="block md:hidden">
+                                                <p className="text-sm text-secundary_blue-main">{item.author?.email}</p>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div className="hidden md:block">
+                                          <p className="text-sm text-secundary_blue-main">{item.author?.title}</p>
+                                       </div>
+                                       <div className="hidden md:flex items-center justify-between">
+                                          <p className="text-sm text-secundary_blue-main">{item.author?.email}</p>
+                                          {index !== 0 && (
+                                             <React.Fragment>
+                                                <div className="flex items-center gap-2">
+                                                   <Trash
+                                                      className="fill-status-error w-5 h-full cursor-pointer hover:scale-110 transition-all duration-200"
+                                                      onClick={() => {
+                                                         //  const new_list = authors.filter((author) => author.id !== item.id)
+                                                         //  setAuthors(new_list)
+                                                      }}
+                                                   />
+                                                   <Pencil
+                                                      className="fill-primary-main w-5 h-full cursor-pointer hover:scale-110 transition-all duration-200"
+                                                      onClick={() => {
+                                                         //  setAuthorToEdit(item as unknown as AuthorProps)
+                                                         //  setDialog({ ...dialog, edit_author: true })
+                                                      }}
+                                                   />
+                                                </div>
+                                             </React.Fragment>
+                                          )}
+                                       </div>
+                                    </div>
+                                 </Reorder.Item>
+                              ))}
+                           </div>
+                        </Reorder.Group>
+                     </div>
                   </div>
                </div>
             </Box>

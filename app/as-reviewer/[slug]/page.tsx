@@ -43,7 +43,6 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
    const { fetch_article } = useArticleToReview()
 
    const [state, dispatch] = useReducer(reducer_comments, comments_initial_state)
-   console.log(state)
 
    const [article, setArticle] = React.useState<DocumentGetProps | null>(null)
    const [items, setItems] = React.useState(authors_mock)
@@ -58,7 +57,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
    })
 
    const fetchSingleArticle = async (documentId: string) => {
-      const fetchedArticle = await fetch_article(documentId).then((res) => {
+      await fetch_article(documentId).then((res) => {
          setArticle(res as DocumentGetProps)
          const access = res?.document.accessType === 'FREE' ? 'open-access' : 'paid-access'
          setAccessType(access)

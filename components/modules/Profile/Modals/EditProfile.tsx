@@ -86,17 +86,18 @@ const UpdateProfile: React.FC<UpdateProfileProps> = ({
                         height={160}
                         alt="profile-image"
                         src={avatarPreview}
-                        className="w-40 h-40 bg-status-pending rounded-full mx-auto my-0 lg:w-28 lg:h-28 2xl:w-36 2xl:h-36"
+                        className="flex-shrink-0 w-40 h-40 bg-status-pending rounded-full mx-auto my-0 lg:w-28 lg:h-28 2xl:w-36 2xl:h-36"
                      />
                   ) : (
-                     <div className="flex justify-center items-center w-40 h-40 bg-status-pending rounded-full mx-auto my-0 lg:w-28 lg:h-28 2xl:w-48 2xl:h-36">
+                     <div className="flex-shrink-0 flex justify-center items-center w-40 h-40 bg-status-pending rounded-full mx-auto my-0 lg:w-28 lg:h-28 2xl:w-48 2xl:h-36">
                         <p className="text-5xl w-full px-6 text-center">{name.charAt(0).toUpperCase()}</p>
                      </div>
                   )}
 
                   <div className="w-full">
                      <Dropzone
-                        placeholder="Upload profile picture"
+                        accept="images"
+                        placeholder="Upload profile picture (.jpg, .jpeg, .png)"
                         setSelectedFile={(file) => {
                            setFile(file)
                            setAvatarPreview(file?.preview ?? image)
