@@ -13,6 +13,7 @@ import { header_editor_reviewer } from '@/mock/article_under_review'
 import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { AddCommentProps, addCommentSchema } from '@/schemas/comments'
 import { DocumentGetProps } from '@/services/document/getArticles'
+import { addCommentService } from '@/services/reviewer/addComment.service'
 import { updateDocumentApproveStatusService } from '@/services/reviewer/approve.service'
 import { useArticleToReview } from '@/services/reviewer/fetchDocuments.service'
 import { ActionComments, comments_initial_state, reducer_comments } from '@/states/reducer_comments'
@@ -27,6 +28,7 @@ import { isEqual, uniqueId } from 'lodash'
 import mermaid from 'mermaid'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { resolve } from 'node:path/posix'
 import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React, { useReducer } from 'react'
 import { ArrowLeft, Check, PlusCircleDotted, X } from 'react-bootstrap-icons'
@@ -51,6 +53,9 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
    const [popover, setPopover] = React.useState({ copy_link: false })
    const [dialog, setDialog] = React.useState({ author: false, share_split: false, edit_author: false, reasoning: false, edit_comment: false })
    const [chartError, setChartError] = React.useState<boolean>(false)
+   const [buttonLoading, setButtonLoading] = React.useState({
+      comment: false
+   })
 
    const fetchSingleArticle = async (documentId: string) => {
       const fetchedArticle = await fetch_article(documentId).then((res) => {
@@ -58,20 +63,18 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
          const access = res?.document.accessType === 'FREE' ? 'open-access' : 'paid-access'
          setAccessType(access)
 
-         if (article?.document?.documentComments && article?.document?.documentComments?.length > 0) {
-            {
-               article?.document.documentComments?.map((comment) => {
-                  dispatch({
-                     type: 'store_comments_from_api',
-                     payload: {
-                        id: comment.id,
-                        comment_author: comment.user.name,
-                        comment_content: comment.comment,
-                        status: comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED'
-                     }
-                  } as ActionComments)
-               })
-            }
+         if (res?.document?.documentComments && res?.document?.documentComments?.length > 0) {
+            res?.document.documentComments?.map((comment) => {
+               dispatch({
+                  type: 'store_comments_from_api',
+                  payload: {
+                     id: comment.id,
+                     comment_author: comment.user.name,
+                     comment_content: comment.comment,
+                     status: comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED'
+                  }
+               } as ActionComments)
+            })
          }
       })
    }
@@ -119,6 +122,39 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
 
       const status = approve ? 'approved' : 'rejected'
       toast.success(`Document ${status} successgully`)
+   }
+
+   const handleAddComment = async () => {
+      setButtonLoading({
+         comment: true
+      })
+      const response = await addCommentService({
+         documentId: article?.document.id!,
+         comment: getValues('comment')
+      })
+
+      setButtonLoading({
+         comment: false
+      })
+
+      if (!response.success) {
+         toast.error(response.message)
+         return
+      }
+
+      dispatch({
+         type: 'add_new_comment',
+         payload: {
+            id: uniqueId(watch('comment') + '_'),
+            comment_author: data?.user?.name,
+            comment_content: watch('comment'),
+            status: 'PENDING'
+         }
+      } as ActionComments)
+
+      setValue('comment', '')
+
+      toast.success('Added comment successfully')
    }
 
    const getReviewStatus = () => {
@@ -355,26 +391,8 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                            />
                         </Input.Root>
                      </div>
-                     <Button.Button
-                        className="px-4 py-2 h-[43px]"
-                        onClick={() => {
-                           if (!data?.user?.userInfo?.id) return
-                           if (watch('comment') !== '') {
-                              dispatch({
-                                 type: 'add_new_comment',
-                                 payload: {
-                                    id: uniqueId(watch('comment') + '_'),
-                                    comment_author: data?.user?.name,
-                                    comment_content: watch('comment'),
-                                    status: 'PENDING'
-                                 }
-                              } as ActionComments)
-
-                              setValue('comment', '')
-                           }
-                        }}
-                     >
-                        Add comment
+                     <Button.Button className="px-4 py-2 h-[43px]" onClick={handleAddComment} loading={buttonLoading.comment}>
+                        Add commentss
                      </Button.Button>
                   </div>
                </div>
