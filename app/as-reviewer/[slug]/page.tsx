@@ -388,7 +388,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                </div>
                <div className="grid gap-6">
                   <div className="border rounded-md p-4">
-                     <ScrollArea className="lg:max-h-[300px] 2xl:max-h-[400px] pr-2">
+                     <ScrollArea className="h-[342px]">
                         <div className="grid gap-4">
                            {state.comments && state.comments.length > 0 ? (
                               state.comments?.map((comment) => (
