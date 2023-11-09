@@ -108,8 +108,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
             )
             trigger('keywords')
          }
-         if (res?.document.documentVersions) {
-         }
+
          if (article?.document.documentVersions) {
             const documentFiles: StoredFile[] = article.document.documentVersions?.map((item) => ({
                lastModified: 0,
@@ -123,23 +122,25 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
             setValue('file', documentFiles)
             trigger('file')
          }
-         if (article?.document?.documentComments && article?.document?.documentComments?.length > 0) {
-            {
-               article?.document.documentComments?.map((comment) => {
-                  dispatch({
-                     type: 'store_comments_from_api',
-                     payload: {
-                        id: comment.id,
-                        comment_author: comment.user.name,
-                        comment_content: comment.comment,
-                        status: comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED'
-                     }
-                  } as ActionComments)
-               })
-            }
+         if (res?.document?.documentComments && res?.document?.documentComments.length > 0) {
+            // Crie um array com todos os comentários mapeados para o formato esperado pelo reducer
+            const commentsPayload = res.document.documentComments.map((comment) => ({
+               id: comment.id,
+               comment_author: comment.user.name,
+               comment_content: comment.comment,
+               status: comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED'
+            }))
+
+            // Despache uma única ação com todos os comentários
+            dispatch({
+               type: 'store_comments_from_api',
+               payload: commentsPayload
+            } as ActionComments)
          }
       })
    }
+
+   console.log('article', article)
 
    React.useEffect(() => {
       fetchSingleArticle(params.slug)

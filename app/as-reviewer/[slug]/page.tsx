@@ -79,20 +79,6 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
          setArticle(res as DocumentGetProps)
          const access = res?.document.accessType === 'FREE' ? 'open-access' : 'paid-access'
          setAccessType(access)
-
-         if (res?.document?.documentComments && res?.document?.documentComments?.length > 0) {
-            res?.document.documentComments?.map((comment) => {
-               dispatch({
-                  type: 'store_comments_from_api',
-                  payload: {
-                     id: comment.id,
-                     comment_author: comment.user.name,
-                     comment_content: comment.comment,
-                     status: comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED'
-                  }
-               } as ActionComments)
-            })
-         }
       })
    }
 
