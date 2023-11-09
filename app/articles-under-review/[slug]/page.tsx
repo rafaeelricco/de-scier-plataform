@@ -392,7 +392,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   <p className="text-sm">The reviewing team can publish comments, suggesting updates on your document.</p>
                </div>
                <div className="border rounded-md p-4">
-                  <ScrollArea className="lg:max-h-[300px] 2xl:max-h-[400px] pr-2">
+                  <ScrollArea className="h-[342px]">
                      <div className="grid gap-4">
                         {state.comments && state.comments.length > 0 ? (
                            state.comments?.map((comment) => (
