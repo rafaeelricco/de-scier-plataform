@@ -5,6 +5,7 @@ interface CommentItemProps {
    status?: 'PENDING' | 'APPROVED' | 'REJECTED'
    onApprove?: () => void
    onReject?: () => void
+   onEdit?: () => void
    onSeeReasoning?: () => void
 }
 

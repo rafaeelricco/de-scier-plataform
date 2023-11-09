@@ -1,5 +1,5 @@
 import React from 'react'
-import { Check, X } from 'react-bootstrap-icons'
+import { Check, Pencil, X } from 'react-bootstrap-icons'
 import { CommentItemProps } from './Typing'
 
 const CommentItem: React.FC<CommentItemProps> = ({
@@ -9,7 +9,8 @@ const CommentItem: React.FC<CommentItemProps> = ({
    onApprove,
    status = 'PENDING',
    onReject,
-   onSeeReasoning
+   onSeeReasoning,
+   onEdit
 }: CommentItemProps) => {
    return (
       <React.Fragment>
@@ -17,14 +18,25 @@ const CommentItem: React.FC<CommentItemProps> = ({
             <div className="flex justify-between items-center">
                <p className="text-base font-semibold">{comment_author}</p>
                {status === 'PENDING' && (
-                  <div className="flex items-center">
-                     <div onClick={onReject}>
-                        <X className="w-6 h-6 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer" />
+                  <React.Fragment>
+                     <div className="flex items-center gap-2">
+                        {onEdit && (
+                           <div onClick={onEdit}>
+                              <Pencil className="w-5 h-5 hover:scale-110 transition-all duration-200 fill-primary-main cursor-pointer" />
+                           </div>
+                        )}
+                        {onReject && (
+                           <div onClick={onReject}>
+                              <X className="w-8 h-8 hover:scale-110 transition-all duration-200 fill-status-error cursor-pointer" />
+                           </div>
+                        )}
+                        {onApprove && (
+                           <div onClick={onApprove}>
+                              <Check className="w-8 h-8 hover:scale-110 transition-all duration-200 fill-status-green cursor-pointer" />
+                           </div>
+                        )}
                      </div>
-                     <div onClick={onApprove}>
-                        <Check className="w-6 h-6 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
-                     </div>
-                  </div>
+                  </React.Fragment>
                )}
                {status === 'REJECTED' && (
                   <div className="flex items-center gap-4">

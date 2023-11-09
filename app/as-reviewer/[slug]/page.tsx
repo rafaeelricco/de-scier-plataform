@@ -4,6 +4,7 @@ import Box from '@/components/common/Box/Box'
 import CommentItem from '@/components/common/Comment/Comment'
 import { File } from '@/components/common/File/File'
 import { YouAreAuthor, YouAreReviwer } from '@/components/common/Flags/Author/AuthorFlags'
+import EditComment from '@/components/modules/deScier/Article/EditComment'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -40,6 +41,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
    const { fetch_article } = useArticleToReview()
 
    const [state, dispatch] = useReducer(reducer_comments, comments_initial_state)
+   console.log(state)
 
    const [article, setArticle] = React.useState<DocumentGetProps | null>(null)
    const [items, setItems] = React.useState(authors_mock)
@@ -47,7 +49,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
    const [access_type, setAccessType] = React.useState('open-access')
    const [authorship_settings, setAuthorshipSettings] = React.useState<Author>()
    const [popover, setPopover] = React.useState({ copy_link: false })
-   const [dialog, setDialog] = React.useState({ author: false, share_split: false, edit_author: false, reasoning: false })
+   const [dialog, setDialog] = React.useState({ author: false, share_split: false, edit_author: false, reasoning: false, edit_comment: false })
    const [chartError, setChartError] = React.useState<boolean>(false)
 
    const fetchSingleArticle = async (documentId: string) => {
@@ -183,14 +185,35 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
    })
    return (
       <React.Fragment>
-         <Dialog.Root open={dialog.reasoning}>
+         <Dialog.Root open={dialog.reasoning || dialog.edit_comment}>
             <Dialog.Overlay />
             <Dialog.Content className="py-14 px-16 max-w-[600px]">
-               <Reasoning
-                  reason=""
-                  onClose={() => setDialog({ ...dialog, reasoning: false })}
-                  onConfirm={() => setDialog({ ...dialog, reasoning: false })}
-               />
+               {dialog.reasoning && (
+                  <Reasoning
+                     reason=""
+                     onClose={() => setDialog({ ...dialog, reasoning: false })}
+                     onConfirm={() => setDialog({ ...dialog, reasoning: false })}
+                  />
+               )}
+               {dialog.edit_comment && (
+                  <EditComment
+                     comment={state.comment_to_edit?.comment_content as string}
+                     onConfirm={(value) => {
+                        dispatch({
+                           type: 'update_comment',
+                           payload: {
+                              id: state.comment_to_edit?.id as string,
+                              comment_author: state.comment_to_edit?.comment_author as string,
+                              status: state.comment_to_edit?.status as 'PENDING' | 'APPROVED' | 'REJECTED',
+                              comment_content: value
+                           }
+                        } as ActionComments)
+                        setDialog({ ...dialog, edit_comment: false })
+                        dispatch({ type: 'comment_to_edit', payload: null })
+                     }}
+                     onClose={() => setDialog({ ...dialog, edit_comment: false })}
+                  />
+               )}
             </Dialog.Content>
          </Dialog.Root>
          <div className="grid gap-8">
@@ -299,28 +322,18 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                                        comment_author={comment.comment_author}
                                        comment_content={comment.comment_content}
                                        status={comment.status as 'PENDING' | 'APPROVED' | 'REJECTED'}
-                                       onApprove={() => {
+                                       onEdit={() => {
                                           dispatch({
-                                             type: 'approve_comment',
+                                             type: 'comment_to_edit',
                                              payload: {
                                                 id: comment.id,
                                                 comment_author: comment.comment_author,
                                                 comment_content: comment.comment_content,
-                                                status: 'APPROVED'
+                                                status: comment.status as 'PENDING' | 'APPROVED' | 'REJECTED'
                                              }
                                           } as ActionComments)
+                                          setDialog({ ...dialog, edit_comment: true })
                                        }}
-                                       onReject={() =>
-                                          dispatch({
-                                             type: 'reject_comment',
-                                             payload: {
-                                                id: comment.id,
-                                                comment_author: comment.comment_author,
-                                                comment_content: comment.comment_content,
-                                                status: 'REJECTED'
-                                             }
-                                          } as ActionComments)
-                                       }
                                        onSeeReasoning={() => setDialog({ ...dialog, reasoning: true })}
                                     />
                                     <hr className="divider-h mt-1" />
@@ -345,15 +358,20 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                      <Button.Button
                         className="px-4 py-2 h-[43px]"
                         onClick={() => {
-                           dispatch({
-                              type: 'add_new_comment',
-                              payload: {
-                                 id: uniqueId(watch('comment') + '_'),
-                                 comment_author: data?.user?.name,
-                                 comment_content: watch('comment'),
-                                 status: 'PENDING'
-                              }
-                           } as ActionComments)
+                           if (!data?.user?.userInfo?.id) return
+                           if (watch('comment') !== '') {
+                              dispatch({
+                                 type: 'add_new_comment',
+                                 payload: {
+                                    id: uniqueId(watch('comment') + '_'),
+                                    comment_author: data?.user?.name,
+                                    comment_content: watch('comment'),
+                                    status: 'PENDING'
+                                 }
+                              } as ActionComments)
+
+                              setValue('comment', '')
+                           }
                         }}
                      >
                         Add comment
