@@ -167,18 +167,18 @@ export default function ProfilePage() {
                      />
                   ) : (
                      <div className="flex justify-center items-center w-40 h-40 bg-status-pending rounded-full mx-auto my-0 lg:w-28 lg:h-28 2xl:w-36 2xl:h-36">
-                        <p className="text-5xl w-full px-6 text-center">{profileInfo?.name?.charAt(0).toUpperCase()}</p>
+                        <p className="text-5xl w-full px-6 text-center">{session?.user?.name?.charAt(0).toUpperCase()}</p>
                      </div>
                   )}
-
                   <div className="grid gap-2">
-                     <h1 className="text-xl text-secundary_blue-main font-semibold flex justify-center lg:text-lg 2xl:text-xl">{profileInfo?.name}</h1>
+                     <h1 className="text-xl text-secundary_blue-main font-semibold flex justify-center lg:text-lg 2xl:text-xl">{session?.user?.name}</h1>
                      <div className="grid md:grid-flow-col items-center justify-center gap-2 md:gap-4">
-                        <p className="text-sm text-primary-main font-regular select-none text-center">{profileInfo?.title}</p>
-                        <hr className="divider-h md:divider-v" />
+                        <p className="text-sm text-primary-main font-regular select-none text-center">{session?.user?.userInfo.title}</p>
+                        <div className="divider-h md:hidden bg-gray-300 h-px" />
+                        <div className="divider-v hidden md:block bg-gray-300 w-px" />
                         <div className="flex items-center gap-2">
                            <Envelope className="w-4 h-5 fill-neutral-gray" />
-                           <p className="text-sm text-neutral-gray select-none">{profileInfo?.email}</p>
+                           <p className="text-sm text-neutral-gray select-none">{session?.user?.email}</p>
                         </div>
                      </div>
                   </div>
