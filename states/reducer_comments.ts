@@ -3,11 +3,13 @@ import { CommentItemProps } from '@/components/common/Comment/Typing'
 export function reducer_comments(state: StateComments, action: ActionComments): StateComments {
    switch (action.type) {
       case 'store_comments_from_api':
-         const comments = action.payload as unknown as CommentItemProps[]
-         return {
-            ...state,
-            comments: comments
+         const comments = action.payload as CommentItemProps[]
+         const state_comments = state.comments || []
+         if (!Array.isArray(comments)) {
+            console.error('Payload is not an array:', action.payload)
+            return state
          }
+         return { ...state, comments: [...state_comments, ...comments] }
       case 'current_comment':
          const current_comment = action.payload as string
          return {
@@ -36,12 +38,11 @@ export function reducer_comments(state: StateComments, action: ActionComments): 
             comments: updated_update_comments
          }
       case 'add_new_comment':
-         const StateComments_comments = state.comments || []
+         const StateComments_comments = state.comments
          const new_comment = action.payload as CommentItemProps
 
          return {
-            ...state,
-            comments: [...StateComments_comments, new_comment]
+            ...state
          }
       case 'reject_comment':
          const StateComments_reject_comments = state.comments || []
@@ -75,9 +76,9 @@ export function reducer_comments(state: StateComments, action: ActionComments): 
 }
 
 export interface StateComments {
-   comments?: CommentItemProps[] | null
+   comments?: CommentItemProps[]
    current_comment?: string | null
-   comment_to_edit?: CommentItemProps | null
+   comment_to_edit?: CommentItemProps
 }
 
 export interface ActionComments {
@@ -85,4 +86,4 @@ export interface ActionComments {
    payload: CommentItemProps[] | CommentItemProps | StateComments['current_comment'] | StateComments['comment_to_edit'] | CommentItemProps
 }
 
-export const comments_initial_state: StateComments = { comments: null }
+export const comments_initial_state: StateComments = { comments: [] }
