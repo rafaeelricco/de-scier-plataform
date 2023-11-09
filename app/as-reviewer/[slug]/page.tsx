@@ -16,6 +16,7 @@ import { DocumentGetProps } from '@/services/document/getArticles'
 import { addCommentService } from '@/services/reviewer/addComment.service'
 import { updateDocumentApproveStatusService } from '@/services/reviewer/approve.service'
 import { useArticleToReview } from '@/services/reviewer/fetchDocuments.service'
+import { updateCommentService } from '@/services/reviewer/updateComment.service'
 import { ActionComments, comments_initial_state, reducer_comments } from '@/states/reducer_comments'
 import { truncate } from '@/utils/format_texts'
 import { keywordsArray } from '@/utils/keywords_format'
@@ -169,8 +170,37 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
       } as ActionComments)
 
       setValue('comment', '')
+   }
 
-      toast.success('Added comment successfully')
+   const handleEditComment = async (commentId: string, newComment: string) => {
+      setButtonLoading({
+         comment: true
+      })
+      const response = await updateCommentService({
+         commentId: commentId,
+         comment: newComment
+      })
+
+      setButtonLoading({
+         comment: false
+      })
+
+      if (!response.success) {
+         toast.error(response.message)
+         return
+      }
+
+      dispatch({
+         type: 'update_comment',
+         payload: {
+            id: commentId as string,
+            comment_author: data?.user?.userInfo.name as string,
+            status: 'PENDING' as 'PENDING' | 'APPROVED' | 'REJECTED',
+            comment_content: newComment
+         }
+      } as ActionComments)
+
+      setValue('comment', '')
    }
 
    const getReviewStatus = () => {
@@ -251,15 +281,8 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                   <EditComment
                      comment={state.comment_to_edit?.comment_content as string}
                      onConfirm={(value) => {
-                        dispatch({
-                           type: 'update_comment',
-                           payload: {
-                              id: state.comment_to_edit?.id as string,
-                              comment_author: state.comment_to_edit?.comment_author as string,
-                              status: state.comment_to_edit?.status as 'PENDING' | 'APPROVED' | 'REJECTED',
-                              comment_content: value
-                           }
-                        } as ActionComments)
+                        handleEditComment(state.comment_to_edit?.id!, value)
+
                         setDialog({ ...dialog, edit_comment: false })
                         dispatch({ type: 'comment_to_edit', payload: null })
                      }}
@@ -381,7 +404,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                                                 id: comment.id,
                                                 comment_author: comment.comment_author,
                                                 comment_content: comment.comment_content,
-                                                status: comment.status as 'PENDING' | 'APPROVED' | 'REJECTED'
+                                                status: 'PENDING'
                                              }
                                           } as ActionComments)
                                           setDialog({ ...dialog, edit_comment: true })
