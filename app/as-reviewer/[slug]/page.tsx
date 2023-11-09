@@ -28,7 +28,6 @@ import { isEqual, uniqueId } from 'lodash'
 import mermaid from 'mermaid'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { resolve } from 'node:path/posix'
 import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React, { useReducer } from 'react'
 import { ArrowLeft, Check, PlusCircleDotted, X } from 'react-bootstrap-icons'
@@ -43,8 +42,10 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
    const { fetch_article } = useArticleToReview()
 
    const [state, dispatch] = useReducer(reducer_comments, comments_initial_state)
+   console.log('state', state)
 
    const [article, setArticle] = React.useState<DocumentGetProps | null>(null)
+   console.log(article)
    const [items, setItems] = React.useState(authors_mock)
    const [authors, setAuthors] = React.useState<Author[]>(authors_mock)
    const [access_type, setAccessType] = React.useState('open-access')
@@ -58,6 +59,22 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
 
    const fetchSingleArticle = async (documentId: string) => {
       await fetch_article(documentId).then((res) => {
+         if (res?.document?.documentComments && res?.document?.documentComments.length > 0) {
+            // Crie um array com todos os comentários mapeados para o formato esperado pelo reducer
+            const commentsPayload = res.document.documentComments.map((comment) => ({
+               id: comment.id,
+               comment_author: comment.user.name,
+               comment_content: comment.comment,
+               status: comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED'
+            }))
+
+            // Despache uma única ação com todos os comentários
+            dispatch({
+               type: 'store_comments_from_api',
+               payload: commentsPayload
+            } as ActionComments)
+         }
+
          setArticle(res as DocumentGetProps)
          const access = res?.document.accessType === 'FREE' ? 'open-access' : 'paid-access'
          setAccessType(access)

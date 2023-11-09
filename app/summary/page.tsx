@@ -2,7 +2,6 @@
 
 import Box from '@/components/common/Box/Box'
 import WithLink from '@/components/modules/Login/Modals/WithLink/WithLink'
-import Earnings from '@/components/modules/Summary/Earnings/Earnings'
 import Publications from '@/components/modules/Summary/Publications/Publications'
 import Statistics from '@/components/modules/Summary/Statistics/Statistics'
 import Submission from '@/components/modules/Summary/Submission/Submission'
@@ -70,14 +69,17 @@ export default function HomePage() {
                      <h3 className="text-xl font-[500] lg:text-lg 2xl:text-xl">Statistics</h3>
                      <Statistics />
                   </Box>
-                  <Box className="h-fit px-4 py-6 md:py-6 md:px-8">
+                  <Box className="h-fit w-full px-4 py-6 md:py-6 md:px-8">
+                     <TopPapers />
+                  </Box>
+                  {/* <Box className="h-fit px-4 py-6 md:py-6 md:px-8">
                      <h3 className="text-xl font-[500] lg:text-lg 2xl:text-xl">Earnings</h3>
                      <Earnings />
-                  </Box>
+                  </Box> */}
                </div>
-               <Box className="h-fit w-full px-4 py-6 md:py-6 md:px-8">
+               {/* <Box className="h-fit w-full px-4 py-6 md:py-6 md:px-8">
                   <TopPapers />
-               </Box>
+               </Box> */}
             </div>
          </div>
       </React.Fragment>
