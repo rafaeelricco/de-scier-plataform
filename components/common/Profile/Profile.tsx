@@ -2,20 +2,21 @@
 
 import { ScrollArea } from '@/components/ui/scroll-area'
 import useDimension from '@/hooks/useWindowDimension'
+import { home_routes } from '@/routes/home'
 import * as Button from '@components/common/Button/Button'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import ShapeDeScierHandBookBottom from 'public/svgs/modules/sidebar/Ellipse 46.svg'
 import ShapeDeScierHandBookTop from 'public/svgs/modules/sidebar/Ellipse 48.svg'
 import IllustrationHandBook from 'public/svgs/modules/sidebar/emojione-v1_document.svg'
 import React from 'react'
-import { CaretRight, PlusCircle } from 'react-bootstrap-icons'
+import { CaretRight, PlusCircle, X } from 'react-bootstrap-icons'
+import { twMerge } from 'tailwind-merge'
 import SubmitedItem from './SubmitedItem/SubmitedItem'
-import { useSession } from 'next-auth/react'
-import Link from 'next/link'
-import { home_routes } from '@/routes/home'
 
-const Profile: React.FC = () => {
+const Profile: React.FC<ProfileProps> = ({ className, onClose }: ProfileProps) => {
    // See more about in https://nextjs.org/docs/app/api-reference/functions/use-pathname
 
    const { data: session } = useSession()
@@ -26,14 +27,18 @@ const Profile: React.FC = () => {
 
    return (
       <React.Fragment>
-         <div className="hidden md:relative md:block overflow-hidden h-fit">
-            <div className="flex flex-col gap-8 sticky h-[100vh] right-0 py-14 px-6 justify-between w-[17.5rem] bg-[#FEFEFE]">
+         <div className={twMerge('hidden md:relative md:block overflow-hidden h-fit', className)}>
+            <div className="flex flex-col gap-8 sticky h-[100vh] right-0 md:py-14 md:px-6 justify-between bg-[#FEFEFE]">
                <div className="flex flex-col gap-6">
                   <div className="flex justify-between items-center">
                      <h3 className="text-xl font-semibold">My profile</h3>
+                     <X
+                        className="w-10 h-10 mb-2 cursor-pointer hover:text-status-error transition-all duration-500 ease-out md:hover:scale-110 md:hover:rotate-180 transform md:hidden"
+                        onClick={onClose}
+                     />
                      <Link
                         href={home_routes.profile}
-                        className="text-base text-secundary_purple-main font-regular hover:underline select-none cursor-pointer"
+                        className="hidden md:block text-base text-secundary_purple-main font-regular hover:underline select-none cursor-pointer"
                      >
                         Edit profile
                      </Link>
@@ -45,7 +50,7 @@ const Profile: React.FC = () => {
                         width={144}
                         height={144}
                         alt="profile-image"
-                        className="w-36 h-36 bg-status-pending rounded-full mx-auto my-0 lg:w-24 lg:h-24 2xl:w-36 2xl:h-36"
+                        className="w-24 h-24 md:w-36 md:h-36 bg-status-pending rounded-full mx-auto my-0 lg:w-24 lg:h-24 2xl:w-36 2xl:h-36"
                      />
                      <div className="grid gap-2 lg:gap-3 2xl:gap-2">
                         <h1 className="text-xl text-secundary_blue-main font-semibold flex justify-center lg:text-lg 2xl:text-xl">
@@ -74,7 +79,7 @@ const Profile: React.FC = () => {
                   <hr className="divider-h" />
                   <div className="grid gap-4 pb-8">
                      <p className="text-base font-semibold text-[#3F3F44]">Last Submitted</p>
-                     <ScrollArea className="lg:h-[300px] 2xl:h-[400px] pr-2">
+                     <ScrollArea className="h-[164px] lg:h-[300px] 2xl:h-[400px] pr-2">
                         <div className="grid gap-4">
                            {submited_item_mock.map((item) => (
                               <SubmitedItem key={item.id} date={item.date} status={item.status as 'published' | 'in_review'} title={item.title} />
@@ -87,6 +92,11 @@ const Profile: React.FC = () => {
          </div>
       </React.Fragment>
    )
+}
+
+interface ProfileProps {
+   className?: string
+   onClose?: () => void
 }
 
 const submited_item_mock = [
