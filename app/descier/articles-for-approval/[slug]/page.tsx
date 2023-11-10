@@ -15,6 +15,7 @@ import { Author, Authorship, authors_headers, authors_mock, authorship_headers }
 import { home_routes } from '@/routes/home'
 import { approveByAdminService } from '@/services/admin/approve.service'
 import { useFetchAdminArticles } from '@/services/admin/fetchDocuments.service'
+import { downloadDocumentVersionService } from '@/services/document/download.service'
 import { DocumentComment, DocumentGetProps } from '@/services/document/getArticles'
 import { keywordsArray } from '@/utils/keywords_format'
 import * as Button from '@components/common/Button/Button'
@@ -22,6 +23,7 @@ import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
 import { format } from 'date-fns'
 import mermaid from 'mermaid'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { ArrowLeft, Check, PlusCircleDotted, X } from 'react-bootstrap-icons'
@@ -29,6 +31,7 @@ import { CurrencyInput } from 'react-currency-mask'
 import { toast } from 'react-toastify'
 
 export default function ArticleForApprovalPage({ params }: { params: { slug: string } }) {
+   const { data: session } = useSession()
    const router = useRouter()
 
    const { fetch_article } = useFetchAdminArticles()
@@ -90,6 +93,29 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
       router.push(home_routes.descier.index)
    }
 
+   const handleDownloadDocument = async (fileId: string, filename: string) => {
+      console.log('download...')
+      const response = await downloadDocumentVersionService({
+         documentId: article?.document.id!,
+         fileId,
+         userId: session?.user?.userInfo.id!
+      })
+
+      if (!response.success) {
+         toast.error(response.message)
+         return
+      }
+
+      const url = URL.createObjectURL(response.file!)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = filename
+      link.click()
+      URL.revokeObjectURL(url)
+
+      toast.success('Download will start...')
+   }
+
    React.useEffect(() => {
       fetchSingleArticle(params.slug)
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -117,7 +143,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
 
    return (
       <React.Fragment>
-         <Dialog.Root open={dialog.reasoning}>
+         {/* <Dialog.Root open={dialog.reasoning}>
             <Dialog.Overlay />
             <Dialog.Content className="py-14 px-16 max-w-[600px]">
                <Reasoning
@@ -126,7 +152,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                   onConfirm={() => setDialog({ ...dialog, reasoning: false })}
                />
             </Dialog.Content>
-         </Dialog.Root>
+         </Dialog.Root> */}
          <div className="grid gap-8">
             <div className="flex items-center gap-4">
                <ArrowLeft size={32} className="hover:scale-110 transition-all cursor-pointer" onClick={() => router.back()} />
@@ -210,7 +236,9 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                                  <File
                                     key={file.id}
                                     file_name={file.fileName || 'file.docx'}
-                                    link={file.link || ''}
+                                    onDownload={() => {
+                                       handleDownloadDocument(file.id, file.fileName!)
+                                    }}
                                     uploaded_at={new Date(file.createdAt).toLocaleDateString('pt-BR')}
                                     uploaded_by={article.document.user?.name || ''}
                                  />

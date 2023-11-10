@@ -337,7 +337,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                            <span className="text-sm font-semibold">Title</span>
                            <span className="text-sm text-neutral-light_gray">0/300 characters</span>
                         </Input.Label>
-                        <Input.Input placeholder="Title of the article" defaultValue={article?.document.title} {...register('title')} />
+                        <Input.Input placeholder="Title of the article" defaultValue={article?.document.title} />
                      </Input.Root>
                      <Input.Root>
                         <Input.Label className="text-sm font-semibold">Add keywords</Input.Label>

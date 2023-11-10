@@ -12,6 +12,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { header_editor_reviewer } from '@/mock/article_under_review'
 import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { AddCommentProps, addCommentSchema } from '@/schemas/comments'
+import { downloadDocumentVersionService } from '@/services/document/download.service'
 import { DocumentGetProps } from '@/services/document/getArticles'
 import { addCommentService } from '@/services/reviewer/addComment.service'
 import { updateDocumentApproveStatusService } from '@/services/reviewer/approve.service'
@@ -195,6 +196,29 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
       return review?.approvedStatus || 'PENDING'
    }
 
+   const handleDownloadDocument = async (fileId: string, filename: string) => {
+      console.log('download...')
+      const response = await downloadDocumentVersionService({
+         documentId: article?.document.id!,
+         fileId,
+         userId: data?.user?.userInfo.id!
+      })
+
+      if (!response.success) {
+         toast.error(response.message)
+         return
+      }
+
+      const url = URL.createObjectURL(response.file!)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = filename
+      link.click()
+      URL.revokeObjectURL(url)
+
+      toast.success('Download will start...')
+   }
+
    React.useEffect(() => {
       setLoading(true)
       const isAuthor = () => {
@@ -356,7 +380,9 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                                  <File
                                     key={file.id}
                                     file_name={file.fileName || 'file.docx'}
-                                    link={file.link || ''}
+                                    onDownload={() => {
+                                       handleDownloadDocument(file.id, file.fileName!)
+                                    }}
                                     uploaded_at={new Date(file.createdAt).toLocaleDateString('pt-BR')}
                                     uploaded_by={article.document.user?.name || ''}
                                  />
