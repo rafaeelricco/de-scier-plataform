@@ -123,3 +123,31 @@ export const filter_by_year = [
       value: 2023
    }
 ]
+
+export const filter_status = [
+   {
+      id: 1,
+      label: 'Pending',
+      value: 'pending'
+   },
+   {
+      id: 2,
+      label: 'Approved',
+      value: 'approved'
+   },
+   {
+      id: 3,
+      label: 'Final Approved',
+      value: 'final_approved'
+   },
+   {
+      id: 4,
+      label: 'Rejected',
+      value: 'rejected'
+   },
+   {
+      id: 5,
+      label: 'Published',
+      value: 'submitted'
+   }
+]

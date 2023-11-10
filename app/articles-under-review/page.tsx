@@ -5,7 +5,7 @@ import PaginationComponent from '@/components/common/Pagination/Pagination'
 import { ArticleUnderReview, ArticleUnderReviewProps, ArticleUnderReviewSkeleton } from '@/components/common/Publication/Item/ArticlesUnderReview'
 import useDebounce from '@/hooks/useDebounce'
 import { document_types } from '@/mock/document_types'
-import { filter_document_type } from '@/mock/dropdow_filter_options'
+import { filter_status } from '@/mock/dropdow_filter_options'
 import { home_routes } from '@/routes/home'
 import { useArticles } from '@/services/document/getArticles.service'
 import * as Input from '@components/common/Input/Input'
@@ -101,7 +101,7 @@ export default function ArticlesUnderReviewPage() {
                </div>
                <div className="flex flex-col md:flex-row md:items-center gap-2">
                   <Dropdown items={document_types} label="Article type:" onSelect={(value) => setDocumentType(value)} />
-                  <Dropdown label="Status:" className="min-w-[180px]" items={filter_document_type} onSelect={(value) => setStatus(value)} />
+                  <Dropdown label="Status:" className="min-w-[180px]" items={filter_status} onSelect={(value) => setStatus(value)} />
                </div>
             </div>
             <div className="flex flex-col gap-6 min-h-[calc(50vh)]">
