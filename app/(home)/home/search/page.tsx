@@ -4,7 +4,7 @@ import PaginationComponent from '@/components/common/Pagination/Pagination'
 import { BannerStartPublishing } from '@/components/modules/Home/Index/BannerStartPublishing/BannerStartPublishing'
 import ArticleItem from '@/components/modules/Home/Search/ArticleItem/ArticleItem'
 import useDebounce from '@/hooks/useDebounce'
-import { filter_order_by, filter_status } from '@/mock/dropdow_filter_options'
+import { filter_order_by, filter_access, filter_document_type, filter_field } from '@/mock/dropdow_filter_options'
 import { useArticles } from '@/services/document/fetchPublic.service'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
@@ -24,6 +24,9 @@ export default function SearchArticlesPage() {
    const [totalPages, setTotalPages] = React.useState(1)
    const [searchTerm, setSearchTerm] = React.useState('')
    const [searchAuthor, setSearchAuthor] = React.useState('')
+   const [accessType, setAccessType] = React.useState('')
+   const [DocumentType, setDocumentType] = React.useState('')
+   const [field, setField] = React.useState('')
    const debouncedSearchTerm = useDebounce(searchTerm, 500)
    const debouncedSearchAuthor = useDebounce(searchAuthor, 500)
 
@@ -80,15 +83,24 @@ export default function SearchArticlesPage() {
             </div>
             <div className="flex flex-wrap justify-center md:justify-start items-center gap-2">
                <Dropdown no_selected items={filter_order_by} label="Year of publication" onSelect={(value) => console.log(value)} />
-               <Dropdown no_selected label="Field" className="min-w-fit px-8" items={filter_status} onSelect={(value) => console.log(value)} />
-               <Dropdown no_selected label="Document type" className="min-w-fit px-8" items={filter_status} onSelect={(value) => console.log(value)} />
-               <Dropdown no_selected label="Access" className="min-w-fit px-8" items={filter_status} onSelect={(value) => console.log(value)} />
+               <Dropdown no_selected label="Field" className="min-w-fit px-8" items={filter_field} onSelect={(value) => setField(value)} />
+               <Dropdown
+                  no_selected
+                  label="Document type"
+                  className="min-w-fit px-8"
+                  items={filter_document_type}
+                  onSelect={(value) => setDocumentType(value)}
+               />
+               <Dropdown no_selected label="Access" className="min-w-fit px-8" items={filter_access} onSelect={(value) => setAccessType(value)} />
             </div>
             <div className="flex flex-col gap-6 mt-6">
                <div className="grid md:grid-cols-2 gap-6 md:gap-4">
                   {results
                      ?.filter((article) => article.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
                      .filter((article) => article.authors.some((author) => author.name.toLowerCase().includes(debouncedSearchAuthor.toLowerCase())))
+                     .filter((article) => article.documentType?.includes(DocumentType))
+                     .filter((article) => article.accessType?.includes(accessType))
+                     .filter((article) => article.field?.toLowerCase()?.includes(field))
                      .slice((page - 1) * per_page, page * per_page)
                      .map((article) => (
                         <React.Fragment key={article.id}>
@@ -102,6 +114,7 @@ export default function SearchArticlesPage() {
                               published_date={article.publishedAt!.toLocaleDateString('pt-BR')}
                               tags={article.tags || []}
                               views={article.views || 0}
+                              document_type={article.documentType}
                            />
                         </React.Fragment>
                      ))}

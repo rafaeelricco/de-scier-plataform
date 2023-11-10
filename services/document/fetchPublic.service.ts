@@ -64,7 +64,8 @@ export const useArticles = () => {
                      tags: article.keywords.split(';')?.map((item) => ({ id: uniqueId('keyword'), name: item })) || [],
                      publishedAt: new Date(article.updatedAt),
                      documentType: article.documentType,
-                     accessType: article.accessType === 'FREE' ? 'open' : 'paid'
+                     accessType: article.accessType === 'FREE' ? 'open' : 'paid',
+                     field: article.field
                   }
                })
 

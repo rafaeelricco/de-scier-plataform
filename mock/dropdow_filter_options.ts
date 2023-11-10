@@ -27,30 +27,71 @@ export const filter_order_by = [
    }
 ]
 
-export const filter_status = [
+export const filter_access = [
    {
       id: 1,
-      label: 'Pending',
-      value: 'pending'
+      label: 'Open',
+      value: 'open'
    },
    {
       id: 2,
-      label: 'Approved',
-      value: 'approved'
+      label: 'Paid',
+      value: 'paid'
+   }
+]
+
+export const filter_document_type = [
+   {
+      id: 1,
+      label: 'Manuscript',
+      value: 'manuscript'
+   },
+   {
+      id: 2,
+      label: 'Paper',
+      value: 'paper'
    },
    {
       id: 3,
-      label: 'Final approval pending',
-      value: 'final_approved'
+      label: 'Report',
+      value: 'report'
    },
    {
       id: 4,
-      label: 'Rejected',
-      value: 'rejected'
+      label: 'Review',
+      value: 'review'
    },
    {
       id: 5,
-      label: 'Published',
-      value: 'submitted'
+      label: 'Conference abstract',
+      value: 'conference abstract'
+   }
+]
+
+export const filter_field = [
+   {
+      id: 1,
+      label: 'Biology',
+      value: 'biology'
+   },
+   {
+      id: 2,
+      label: 'Technology',
+      value: 'technology'
+   },
+   {
+      id: 3,
+      label: 'Mathematics',
+      value: 'mathematics'
+   },
+   {
+      id: 4,
+      label: 'Physics',
+      value: 'physics'
+   },
+   {
+      id: 5,
+      label: 'Chemistry',
+      value: 'chemistry'
    }
 ]

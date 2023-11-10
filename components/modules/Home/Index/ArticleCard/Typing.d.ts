@@ -11,6 +11,7 @@ interface ArticleCardProps {
    publishedAt?: Date
    documentType?: string
    accessType?: 'open' | 'paid'
+   field?: string
 }
 
 export { ArticleCardProps }
