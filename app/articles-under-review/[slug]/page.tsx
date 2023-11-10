@@ -16,6 +16,7 @@ import { document_types } from '@/mock/document_types'
 import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
 import { UpdateDocumentProps, UpdateDocumentSchema } from '@/schemas/update_document'
+import { downloadDocumentVersionService } from '@/services/document/download.service'
 import { finalSubmitDocumentService } from '@/services/document/finalSubmit.service'
 import { DocumentGetProps } from '@/services/document/getArticles'
 import { useArticles } from '@/services/document/getArticles.service'
@@ -81,16 +82,16 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
    } = useForm<UpdateDocumentProps>({
       resolver: zodResolver(UpdateDocumentSchema),
       defaultValues: {
-         abstract: article?.document.abstract || '',
+         abstract: '',
          abstractChart: '',
-         accessType: (article?.document.accessType as 'FREE' | 'PAID') || 'FREE',
-         documentType: article?.document.documentType,
-         field: article?.document.field,
-         price: String(article?.document.price) || '0',
-         title: article?.document.title,
+         accessType: 'FREE',
+         documentType: '',
+         field: '',
+         price: '',
+         title: '',
          file: [],
          authors: [{}],
-         keywords: article?.document.keywords?.split(';').map((item) => ({ id: uniqueId('keyword'), name: item })) || []
+         keywords: []
       }
    })
 
@@ -219,6 +220,29 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
          toast.error(response.message)
          return
       }
+   }
+
+   const handleDownloadDocument = async (fileId: string, filename: string) => {
+      console.log('download...')
+      const response = await downloadDocumentVersionService({
+         documentId: article?.document.id!,
+         fileId,
+         userId: data?.user?.userInfo.id!
+      })
+
+      if (!response.success) {
+         toast.error(response.message)
+         return
+      }
+
+      const url = URL.createObjectURL(response.file!)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = filename
+      link.click()
+      URL.revokeObjectURL(url)
+
+      toast.success('Download will start...')
    }
 
    React.useEffect(() => {
@@ -406,7 +430,9 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                                  <File
                                     key={file.id}
                                     file_name={file.fileName || 'file.docx'}
-                                    link={file.link}
+                                    onDownload={() => {
+                                       handleDownloadDocument(file.id, file.fileName!)
+                                    }}
                                     uploaded_at={new Date(file.createdAt)?.toLocaleDateString('pt-BR')}
                                     uploaded_by={data?.user?.userInfo.name || ''}
                                  />

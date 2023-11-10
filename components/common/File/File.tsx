@@ -3,7 +3,7 @@ import Link from 'next/link'
 import React from 'react'
 import { Download, FileEarmarkText } from 'react-bootstrap-icons'
 
-const File: React.FC<FileProps> = ({ file_name, link, uploaded_at, uploaded_by }: FileProps) => {
+const File: React.FC<FileProps> = ({ file_name, onDownload, uploaded_at, uploaded_by }: FileProps) => {
    return (
       <React.Fragment>
          <div className="flex justify-between items-center">
@@ -16,9 +16,9 @@ const File: React.FC<FileProps> = ({ file_name, link, uploaded_at, uploaded_by }
                   </p>
                </div>
             </div>
-            <Link href={link} rel="noopener noreferrer" target="_blank">
+            <button onClick={onDownload}>
                <Download className="w-5 h-5 cursor-pointer hover:text-status-green transition-all duration-200 ease-out" />
-            </Link>
+            </button>
          </div>
       </React.Fragment>
    )
@@ -28,7 +28,7 @@ interface FileProps {
    file_name: string
    uploaded_at: string
    uploaded_by: string
-   link: string
+   onDownload: () => void
 }
 
 export { File }
