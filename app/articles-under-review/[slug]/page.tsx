@@ -821,11 +821,22 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                         )}
                   </div>
                </div>
-
-               <Button.Button variant="primary" className="flex items-center" onClick={handleSubmitDocument} loading={submitLoading}>
-                  <FileEarmarkText className="w-5 h-5" />
-                  Publish document
-               </Button.Button>
+               {article?.document.status !== 'ADMIN_APPROVE' ? (
+                  <Button.Button variant="primary" className="flex items-center" onClick={handleSubmitDocument} loading={submitLoading}>
+                     <FileEarmarkText className="w-5 h-5" />
+                     Publish document
+                  </Button.Button>
+               ) : (
+                  <Button.Button
+                     variant="disabled"
+                     className="flex items-center bg-status-disable_bg text-status-disable_text"
+                     onClick={handleSubmitDocument}
+                     loading={submitLoading}
+                  >
+                     <FileEarmarkText className="w-5 h-5" />
+                     Waiting admin approval
+                  </Button.Button>
+               )}
 
                <Button.Button variant="outline" className="flex items-center" onClick={handleSaveDocument} loading={saveLoading}>
                   Save
