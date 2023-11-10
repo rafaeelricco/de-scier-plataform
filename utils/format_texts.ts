@@ -42,3 +42,7 @@ export function formatName(fullName: string) {
 
    return name
 }
+
+export function capitalizeWord(word: string) {
+   return word.charAt(0).toLocaleUpperCase() + word.substring(1, word.length)
+}

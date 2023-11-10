@@ -9,6 +9,7 @@ interface ArticleCardProps {
    className?: string
    responsive?: boolean
    publishedAt?: Date
+   documentType?: string
 }
 
 export { ArticleCardProps }

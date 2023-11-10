@@ -8,6 +8,7 @@ import useWindowDimension from '@/hooks/useWindowDimension'
 import { useArticles } from '@/services/document/fetchPublic.service'
 import { ConfirmProfileRequestProps, confirmProfileService } from '@/services/user/confirmProfile.service'
 import { formatAuthors } from '@/utils/format_authors'
+import { capitalizeWord } from '@/utils/format_texts'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import '@styles/home.css'
@@ -130,7 +131,7 @@ export default function HomePage() {
                         <CardBig
                            key={topPapers[0].id}
                            title={topPapers[0].title}
-                           documentType={'Manuscript'}
+                           documentType={capitalizeWord(topPapers[0].documentType!)}
                            authors={topPapers[0].authors}
                            likes={topPapers[0].likes || 0}
                            views={topPapers[0].views || 0}
@@ -142,7 +143,7 @@ export default function HomePage() {
                         <CardSmall
                            key={topPapers[1].id}
                            title={topPapers[1].title}
-                           documentType={'Manuscript'}
+                           documentType={capitalizeWord(topPapers[1].documentType!)}
                            authors={topPapers[1].authors}
                            likes={topPapers[1].likes || 0}
                            views={topPapers[1].views || 0}
@@ -154,7 +155,7 @@ export default function HomePage() {
                         <CardSmall
                            key={topPapers[2].id}
                            title={topPapers[2].title}
-                           documentType={'Manuscript'}
+                           documentType={capitalizeWord(topPapers[2].documentType!)}
                            authors={topPapers[2].authors}
                            likes={topPapers[2].likes || 0}
                            views={topPapers[2].views || 0}
