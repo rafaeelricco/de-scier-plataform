@@ -7,10 +7,11 @@ import Dropzone from '@/components/common/Dropzone/Dropzone'
 import { StoredFile } from '@/components/common/Dropzone/Typing'
 import { File } from '@/components/common/File/File'
 import { YouAreAuthor, YouAreReviwer } from '@/components/common/Flags/Author/AuthorFlags'
+import { InviteLink } from '@/components/common/InviteLink/InviteLink'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
+import { access_type_options } from '@/mock/access_type'
 import { header_editor_reviewer } from '@/mock/article_under_review'
 import { document_types } from '@/mock/document_types'
 import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
@@ -518,13 +519,6 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                      <h3 className="text-lg md:text-xl text-terciary-main font-semibold">Authors</h3>
                   </div>
                   <div className="grid gap-6">
-                     {/* <Button.Button variant="outline" className="px-4 py-3 w-full text-sm">
-                     Select Authors for the paper
-                     <PlusCircle
-                        className="w-4 fill-primary-main 
-                     "
-                     />
-                  </Button.Button> */}
                      <p className="text-sm">Drag the authors to reorder the list.</p>
                      <div className="grid gap-2">
                         <div className="hidden md:grid grid-cols-3">
@@ -598,42 +592,16 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                         project. Invite them to the platform through the link:
                      </p>
                   </div>
-                  <div>
-                     <p className="text-sm font-semibold">Invite Link</p>
-                     <div className="flex flex-col md:flex-row md:items-center gap-4">
-                        <p className="text-sm font-semibold text-blue-500 max-w-[50ch] underline truncate ..." id="link-to-copy">
-                           {article?.document.reviewerInviteLink}
-                        </p>
-                        <HoverCard open={popover.copy_link}>
-                           <HoverCardTrigger>
-                              <Button.Button
-                                 variant="outline"
-                                 className="px-4 py-1 text-sm"
-                                 onClick={() => {
-                                    const textToCopy = document.getElementById('link-to-copy')!.innerText
-
-                                    navigator.clipboard
-                                       .writeText(textToCopy)
-                                       .then(() => {
-                                          setPopover({ ...popover, copy_link: true })
-                                          setTimeout(() => {
-                                             setPopover({ ...popover, copy_link: false })
-                                          }, 3000)
-                                       })
-                                       .catch((err) => {
-                                          console.error('Erro ao copiar texto: ', err)
-                                       })
-                                 }}
-                              >
-                                 Copy Link
-                              </Button.Button>
-                           </HoverCardTrigger>
-                           <HoverCardContent className="w-fit px-4 py-2">
-                              <h4 className="text-xs font-semibold text-status-green">O link foi copiado para a área de transferência!</h4>
-                           </HoverCardContent>
-                        </HoverCard>
-                     </div>
-                  </div>
+                  <InviteLink
+                     article={article}
+                     onClick={() => {
+                        setPopover({ ...popover, copy_link: true })
+                        setTimeout(() => {
+                           setPopover({ ...popover, copy_link: false })
+                        }, 2000)
+                     }}
+                     open_status={popover.copy_link}
+                  />
                </div>
                <div>
                   <div className="hidden md:grid grid-cols-5">
@@ -701,16 +669,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                         placeholder="Select the type of access"
                         onValueChange={(value) => setAccessType(value)}
                         value={access_type}
-                        options={[
-                           {
-                              label: 'Open Access',
-                              value: 'open-access'
-                           },
-                           {
-                              label: 'Paid Access',
-                              value: 'paid-access'
-                           }
-                        ]}
+                        options={access_type_options}
                      />
                   </Input.Root>
                   {access_type == 'open-access' && (
