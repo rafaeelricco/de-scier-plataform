@@ -6,7 +6,6 @@ import ArticleItem from '@/components/modules/Home/Search/ArticleItem/ArticleIte
 import useDebounce from '@/hooks/useDebounce'
 import { filter_order_by, filter_status } from '@/mock/dropdow_filter_options'
 import { useArticles } from '@/services/document/fetchPublic.service'
-import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
 import '@styles/home.css'
@@ -103,15 +102,11 @@ export default function SearchArticlesPage() {
                      }
                   />
                </div>
-               <Button.Button variant="primary" className="rounded-full py-3 px-6 text-sm w-full md:w-fit" onClick={handleSearchArticles}>
-                  Search
-                  <Search className="w-5 h-5" />
-               </Button.Button>
             </div>
             <div className="flex flex-wrap justify-center md:justify-start items-center gap-2">
                <Dropdown no_selected items={filter_order_by} label="Year of publication" onSelect={(value) => console.log(value)} />
                <Dropdown no_selected label="Field" className="min-w-fit px-8" items={filter_status} onSelect={(value) => console.log(value)} />
-               <Dropdown no_selected label="Language" className="min-w-fit px-8" items={filter_status} onSelect={(value) => console.log(value)} />
+               <Dropdown no_selected label="Document type" className="min-w-fit px-8" items={filter_status} onSelect={(value) => console.log(value)} />
                <Dropdown no_selected label="Access" className="min-w-fit px-8" items={filter_status} onSelect={(value) => console.log(value)} />
             </div>
             <div className="flex flex-col gap-6 mt-6">

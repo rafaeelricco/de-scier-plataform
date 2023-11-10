@@ -100,7 +100,7 @@ export default function ArticlesUnderReviewPage() {
                   <Input.Search placeholder="Find articles with this terms" onChange={(e) => setSearchTerm(e.target.value)} />
                </div>
                <div className="flex flex-col md:flex-row md:items-center gap-2">
-                  <Dropdown items={document_types} label="Order by:" onSelect={(value) => setDocumentType(value)} />
+                  <Dropdown items={document_types} label="Article type:" onSelect={(value) => setDocumentType(value)} />
                   <Dropdown label="Status:" className="min-w-[180px]" items={filter_status} onSelect={(value) => setStatus(value)} />
                </div>
             </div>

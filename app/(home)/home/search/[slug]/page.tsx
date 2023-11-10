@@ -6,6 +6,7 @@ import { PurchaseError } from '@/components/modules/Home/Search/Purchase/Error'
 import { PurchaseProcessing } from '@/components/modules/Home/Search/Purchase/Processing'
 import { PurchasedArticles } from '@/components/modules/Home/Search/Purchase/PurchasedArticles'
 import { PurchaseSuccess } from '@/components/modules/Home/Search/Purchase/Success'
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { authors_mock } from '@/mock/submit_new_document'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import { uniqueId } from 'lodash'
@@ -110,13 +111,23 @@ export default function Page({ params }: { params: { slug: string } }) {
                         <div className="w-3 h-3 bg-status-green rounded-full" />
                         <p className="text-sm select-none">Open access</p>
                      </div>
-                     <div className="grid grid-flow-col content-start justify-start gap-2 relative">
-                        <p className="text-base text-start font-semibold text-primary-main truncate w-full">
-                           <span className="text-black">Paper -</span> Computer Science, Software engineering
-                        </p>
-                     </div>
+                     <HoverCard>
+                        <div className="grid gap-0">
+                           <HoverCardTrigger className="flex flex-col md:flex-row md:items-center gap-4 flex-1 min-w-0">
+                              <p className="text-sm font-semibold text-primary-main max-w-full truncate">
+                                 <span className="text-black">Paper -</span> Computer Science, Software engineering
+                              </p>
+                           </HoverCardTrigger>
+                        </div>
+                        <HoverCardContent>
+                           <p className="text-base text-start font-semibold text-primary-main w-full">
+                              <span className="text-black">Paper -</span> Computer Science, Software engineering
+                           </p>
+                        </HoverCardContent>
+                     </HoverCard>
                      <hr className="divider-h w-full my-2" />
                   </div>
+
                   <h3 className="text-2xl md:text-3xl text-black font-bold">Hardware security and blockchain systems on the new digital era</h3>
                   <div className="flex flex-wrap gap-2">
                      {tags.map((tag) => (
