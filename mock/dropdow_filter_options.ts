@@ -95,3 +95,31 @@ export const filter_field = [
       value: 'chemistry'
    }
 ]
+
+export const filter_by_year = [
+   {
+      id: 1,
+      label: '2019',
+      value: 2019
+   },
+   {
+      id: 2,
+      label: '2020',
+      value: 2020
+   },
+   {
+      id: 3,
+      label: '2021',
+      value: 2021
+   },
+   {
+      id: 4,
+      label: '2022',
+      value: 2022
+   },
+   {
+      id: 5,
+      label: '2023',
+      value: 2023
+   }
+]

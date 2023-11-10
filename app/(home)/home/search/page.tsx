@@ -4,7 +4,7 @@ import PaginationComponent from '@/components/common/Pagination/Pagination'
 import { BannerStartPublishing } from '@/components/modules/Home/Index/BannerStartPublishing/BannerStartPublishing'
 import ArticleItem from '@/components/modules/Home/Search/ArticleItem/ArticleItem'
 import useDebounce from '@/hooks/useDebounce'
-import { filter_order_by, filter_access, filter_document_type, filter_field } from '@/mock/dropdow_filter_options'
+import { filter_by_year, filter_access, filter_document_type, filter_field } from '@/mock/dropdow_filter_options'
 import { useArticles } from '@/services/document/fetchPublic.service'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
@@ -25,7 +25,8 @@ export default function SearchArticlesPage() {
    const [searchTerm, setSearchTerm] = React.useState('')
    const [searchAuthor, setSearchAuthor] = React.useState('')
    const [accessType, setAccessType] = React.useState('')
-   const [DocumentType, setDocumentType] = React.useState('')
+   const [documentType, setDocumentType] = React.useState('')
+   const [publicationYear, setPublicationYear] = React.useState<number>()
    const [field, setField] = React.useState('')
    const debouncedSearchTerm = useDebounce(searchTerm, 500)
    const debouncedSearchAuthor = useDebounce(searchAuthor, 500)
@@ -82,7 +83,7 @@ export default function SearchArticlesPage() {
                </div>
             </div>
             <div className="flex flex-wrap justify-center md:justify-start items-center gap-2">
-               <Dropdown no_selected items={filter_order_by} label="Year of publication" onSelect={(value) => console.log(value)} />
+               <Dropdown no_selected items={filter_by_year} label="Year of publication" onSelect={(value) => setPublicationYear(Number(value))} />
                <Dropdown no_selected label="Field" className="min-w-fit px-8" items={filter_field} onSelect={(value) => setField(value)} />
                <Dropdown
                   no_selected
@@ -98,9 +99,16 @@ export default function SearchArticlesPage() {
                   {results
                      ?.filter((article) => article.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
                      .filter((article) => article.authors.some((author) => author.name.toLowerCase().includes(debouncedSearchAuthor.toLowerCase())))
-                     .filter((article) => article.documentType?.includes(DocumentType))
+                     .filter((article) => article.documentType?.includes(documentType))
                      .filter((article) => article.accessType?.includes(accessType))
                      .filter((article) => article.field?.toLowerCase()?.includes(field))
+                     .filter((article) => {
+                        if (!publicationYear) {
+                           return true
+                        } else {
+                           return article.publishedAt?.getFullYear() === publicationYear
+                        }
+                     })
                      .slice((page - 1) * per_page, page * per_page)
                      .map((article) => (
                         <React.Fragment key={article.id}>
