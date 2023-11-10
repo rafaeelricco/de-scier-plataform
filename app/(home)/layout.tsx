@@ -16,9 +16,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
             </div>
             <div className="z-10 px-4 sm:px-6 lg:px-0">{children}</div>
          </section>
-         <footer className="relative z-20">
-            <Footer />
-         </footer>
+         <Footer />
       </React.Fragment>
    )
 }
