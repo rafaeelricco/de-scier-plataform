@@ -10,6 +10,7 @@ interface ArticleCardProps {
    responsive?: boolean
    publishedAt?: Date
    documentType?: string
+   accessType?: 'open' | 'paid'
 }
 
 export { ArticleCardProps }

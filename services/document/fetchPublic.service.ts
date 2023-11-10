@@ -63,7 +63,8 @@ export const useArticles = () => {
                      views: article.views,
                      tags: article.keywords.split(';')?.map((item) => ({ id: uniqueId('keyword'), name: item })) || [],
                      publishedAt: new Date(article.updatedAt),
-                     documentType: article.documentType
+                     documentType: article.documentType,
+                     accessType: article.accessType === 'FREE' ? 'open' : 'paid'
                   }
                })
 

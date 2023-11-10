@@ -4,8 +4,8 @@ import PaginationComponent from '@/components/common/Pagination/Pagination'
 import { BannerStartPublishing } from '@/components/modules/Home/Index/BannerStartPublishing/BannerStartPublishing'
 import ArticleItem from '@/components/modules/Home/Search/ArticleItem/ArticleItem'
 import useDebounce from '@/hooks/useDebounce'
-import { articles } from '@/mock/articles_published'
 import { filter_order_by, filter_status } from '@/mock/dropdow_filter_options'
+import { useArticles } from '@/services/document/fetchPublic.service'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
@@ -14,12 +14,21 @@ import React from 'react'
 import { Person, Search } from 'react-bootstrap-icons'
 
 export default function SearchArticlesPage() {
+   const { articles, loading } = useArticles()
+
    const per_page = 10
    const [page, setPage] = React.useState(1)
    const [results, setResults] = React.useState(articles)
-   const [totalPages, setTotalPages] = React.useState(Math.ceil(results.length / per_page))
+   const [totalPages, setTotalPages] = React.useState(1)
    const [searchTerm, setSearchTerm] = React.useState('')
    const debouncedSearchTerm = useDebounce(searchTerm, 500)
+
+   React.useEffect(() => {
+      if (articles) {
+         setResults(articles)
+         setTotalPages(Math.ceil(articles.length / per_page))
+      }
+   }, [articles])
 
    return (
       <React.Fragment>
@@ -64,11 +73,21 @@ export default function SearchArticlesPage() {
             <div className="flex flex-col gap-6 mt-6">
                <div className="grid md:grid-cols-2 gap-6 md:gap-4">
                   {results
-                     .filter((article) => article.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
+                     ?.filter((article) => article.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
                      .slice((page - 1) * per_page, page * per_page)
                      .map((article) => (
                         <React.Fragment key={article.id}>
-                           <ArticleItem {...article} />
+                           <ArticleItem
+                              title={article.title}
+                              access_type={article.accessType!}
+                              authors={article.authors}
+                              id={article.id}
+                              image={article.image}
+                              likes={article.likes || 0}
+                              published_date={article.publishedAt!.toLocaleDateString('pt-BR')}
+                              tags={article.tags || []}
+                              views={article.views || 0}
+                           />
                         </React.Fragment>
                      ))}
                </div>
@@ -77,7 +96,7 @@ export default function SearchArticlesPage() {
                      key={totalPages}
                      current={page}
                      perPage={per_page}
-                     total={results.length}
+                     total={results?.length || 1}
                      handleFirstPage={() => setPage(1)}
                      handleNextPage={() => setPage(page + 1)}
                      handlePreviousPage={() => setPage(page - 1)}
