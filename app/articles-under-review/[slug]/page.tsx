@@ -188,6 +188,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
    const handleSaveDocument = async () => {
       if (!article) return
       setSaveLoading(true)
+
       if (file) {
          const response = await uploadDocumentFileService({
             fileLocalUrl: file.preview,
@@ -796,11 +797,10 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                      Waiting admin approval
                   </Button.Button>
                )}
-
                <Button.Button variant="outline" className="flex items-center" onClick={handleSaveDocument} loading={saveLoading}>
                   Save
                </Button.Button>
-               {documentSaved && <p className="text-lg text-center text-status-green"> Changes saved successfully </p>}
+               {documentSaved && <p className="text-base text-center text-status-green select-none"> Changes saved successfully! </p>}
             </Box>
          </div>
       </React.Fragment>
