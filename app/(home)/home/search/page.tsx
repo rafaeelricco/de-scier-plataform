@@ -25,16 +25,26 @@ export default function SearchArticlesPage() {
    const [searchAuthor, setSearchAuthor] = React.useState('')
 
    function handleSearchArticles() {
-      if (results && searchTerm) {
-         const filteredArticles = results.filter((article) => article.title.toLowerCase().includes(searchTerm.toLowerCase()))
+      if (articles && searchTerm && !searchAuthor) {
+         const filteredArticles = articles.filter((article) => article.title.toLowerCase().includes(searchTerm.toLowerCase()))
          setResults(filteredArticles)
          setTotalPages(Math.ceil(filteredArticles.length / per_page))
       }
 
-      if (results && searchAuthor) {
-         const filteredArticles = results.filter((article) => {
+      if (articles && searchAuthor && !searchTerm) {
+         const filteredArticles = articles.filter((article) => {
             return article.authors.some((author) => author.name.toLowerCase().includes(searchAuthor.toLowerCase()))
          })
+         setResults(filteredArticles)
+         setTotalPages(Math.ceil(filteredArticles.length / per_page))
+      }
+
+      if (articles && searchAuthor && searchTerm) {
+         const filteredArticles = articles
+            .filter((article) => article.title.toLowerCase().includes(searchTerm.toLowerCase()))
+            .filter((article) => {
+               return article.authors.some((author) => author.name.toLowerCase().includes(searchAuthor.toLowerCase()))
+            })
          setResults(filteredArticles)
          setTotalPages(Math.ceil(filteredArticles.length / per_page))
       }
