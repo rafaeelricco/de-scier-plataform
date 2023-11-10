@@ -21,6 +21,33 @@ export default function SearchArticlesPage() {
    const [totalPages, setTotalPages] = React.useState(1)
    const [searchTerm, setSearchTerm] = React.useState('')
    const debouncedSearchTerm = useDebounce(searchTerm, 500)
+   const [searchAuthor, setSearchAuthor] = React.useState('')
+
+   function handleSearchArticles() {
+      if (articles && searchTerm && !searchAuthor) {
+         const filteredArticles = articles.filter((article) => article.title.toLowerCase().includes(searchTerm.toLowerCase()))
+         setResults(filteredArticles)
+         setTotalPages(Math.ceil(filteredArticles.length / per_page))
+      }
+
+      if (articles && searchAuthor && !searchTerm) {
+         const filteredArticles = articles.filter((article) => {
+            return article.authors.some((author) => author.name.toLowerCase().includes(searchAuthor.toLowerCase()))
+         })
+         setResults(filteredArticles)
+         setTotalPages(Math.ceil(filteredArticles.length / per_page))
+      }
+
+      if (articles && searchAuthor && searchTerm) {
+         const filteredArticles = articles
+            .filter((article) => article.title.toLowerCase().includes(searchTerm.toLowerCase()))
+            .filter((article) => {
+               return article.authors.some((author) => author.name.toLowerCase().includes(searchAuthor.toLowerCase()))
+            })
+         setResults(filteredArticles)
+         setTotalPages(Math.ceil(filteredArticles.length / per_page))
+      }
+   }
 
    React.useEffect(() => {
       if (articles) {
@@ -38,6 +65,8 @@ export default function SearchArticlesPage() {
             <div className="flex flex-col md:flex-row w-full gap-6">
                <div className="w-full flex-grow">
                   <Input.Input
+                     value={searchTerm}
+                     onChange={(e) => setSearchTerm(e.target.value)}
                      className="rounded-full py-3 px-4 border-neutral-stroke_light bg-transparent shadow-none border focus:outline-none focus:border-neutral-stroke_light text-sm bg-white"
                      placeholder="Find articles with terms"
                      icon={
@@ -49,6 +78,8 @@ export default function SearchArticlesPage() {
                </div>
                <div className="w-full flex-grow">
                   <Input.Input
+                     value={searchAuthor}
+                     onChange={(e) => setSearchAuthor(e.target.value)}
                      className="rounded-full py-3 px-4 border-neutral-stroke_light bg-transparent shadow-none border focus:outline-none focus:border-neutral-stroke_light text-sm bg-white w-full flex-grow"
                      placeholder="Search for an author"
                      icon={
@@ -71,24 +102,21 @@ export default function SearchArticlesPage() {
             </div>
             <div className="flex flex-col gap-6 mt-6">
                <div className="grid md:grid-cols-2 gap-6 md:gap-4">
-                  {results
-                     ?.filter((article) => article.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
-                     .slice((page - 1) * per_page, page * per_page)
-                     .map((article) => (
-                        <React.Fragment key={article.id}>
-                           <ArticleItem
-                              title={article.title}
-                              access_type={article.accessType!}
-                              authors={article.authors}
-                              id={article.id}
-                              image={article.image}
-                              likes={article.likes || 0}
-                              published_date={article.publishedAt!.toLocaleDateString('pt-BR')}
-                              tags={article.tags || []}
-                              views={article.views || 0}
-                           />
-                        </React.Fragment>
-                     ))}
+                  {results?.slice((page - 1) * per_page, page * per_page).map((article) => (
+                     <React.Fragment key={article.id}>
+                        <ArticleItem
+                           title={article.title}
+                           access_type={article.accessType!}
+                           authors={article.authors}
+                           id={article.id}
+                           image={article.image}
+                           likes={article.likes || 0}
+                           published_date={article.publishedAt!.toLocaleDateString('pt-BR')}
+                           tags={article.tags || []}
+                           views={article.views || 0}
+                        />
+                     </React.Fragment>
+                  ))}
                </div>
                <div className="flex justify-center">
                   <PaginationComponent
