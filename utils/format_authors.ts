@@ -2,16 +2,15 @@ export function formatAuthors(authors: { id: string; name: string }[]): string {
    let totalChars = 0
    let displayedAuthors = []
 
-   for (let author of authors) {
-      totalChars += author.name.length
+   const authorsNames = authors.map((author) => author.name)
 
-      if (totalChars + displayedAuthors.length * 2 > 16) {
-         const remaining = authors.length - displayedAuthors.length
-         return `${displayedAuthors.join(', ')} and ${remaining} more authors`
-      }
-
-      displayedAuthors.push(author.name)
+   if (authors.length > 3) {
+      return `${authorsNames.slice(0, 3).join(', ')}, and ${authorsNames.length - 3} more authors`
    }
 
-   return displayedAuthors.join(', ')
+   if (authorsNames.length > 1 && authorsNames.length <= 3) {
+      return authorsNames.join(', ')
+   }
+
+   return authorsNames[0]
 }
