@@ -1,9 +1,10 @@
 'use client'
 
+import { ArticleUnderReviewSkeleton } from '@/components/common/Publication/Item/ArticlesUnderReview'
 import { ArticleCard } from '@/components/modules/Home/Index/ArticleCard/ArticleCard'
 import { BannerStartPublishing } from '@/components/modules/Home/Index/BannerStartPublishing/BannerStartPublishing'
 import useWindowDimension from '@/hooks/useWindowDimension'
-import { articles } from '@/mock/articles_published'
+import { useArticles } from '@/services/document/fetchPublic.service'
 import { ConfirmProfileRequestProps, confirmProfileService } from '@/services/user/confirmProfile.service'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
@@ -23,6 +24,8 @@ import { toast } from 'react-toastify'
 export default function HomePage() {
    const { lg } = useWindowDimension()
    const queryParams = useSearchParams()
+
+   const { articles, loading } = useArticles()
 
    const [isProfileConfirmed, setIsProfileConfirmed] = useState(false)
 
@@ -50,6 +53,8 @@ export default function HomePage() {
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [])
+
+   console.log(articles)
 
    return (
       <React.Fragment>
@@ -124,23 +129,39 @@ export default function HomePage() {
                      <div className="grid gap-4 sm:gap-6 lg:gap-10">
                         <div className="grid gap-3 sm:gap-4 md:gap-6 lg:gap-x-6 gap-y-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                            <h3 className="text-xl sm:text-2xl lg:text-3xl font-semibold col-span-full">Latest articles</h3>
-                           {articles.slice(0, lg ? 8 : 3).map((article, index) => (
-                              <React.Fragment key={article.id}>
-                                 <div className="grid gap-4 sm:gap-6 lg:grid-flow-col">
-                                    <ArticleCard
-                                       id={article.id}
-                                       authors={article.authors}
-                                       image={article.image}
-                                       likes={article.likes}
-                                       tags={article.tags}
-                                       title={article.title}
-                                       views={article.views}
-                                    />
-                                    {lg && index !== 3 && index !== 7 && <hr className="divider-article-v" />}
-                                 </div>
-                                 {lg && index === 3 && <hr className="divider-article-h" />}
+                           {loading ? (
+                              <React.Fragment>
+                                 <ArticleUnderReviewSkeleton />
+                                 <ArticleUnderReviewSkeleton />
+                                 <ArticleUnderReviewSkeleton />
+                                 <ArticleUnderReviewSkeleton />
                               </React.Fragment>
-                           ))}
+                           ) : (
+                              <React.Fragment>
+                                 {!articles || articles?.length === 0 ? (
+                                    <p className="text-center col-span-2 text-gray-500 mt-8">Não há artigos em revisão no momento.</p>
+                                 ) : (
+                                    articles.slice(0, lg ? 8 : 3).map((article, index) => (
+                                       <React.Fragment key={article.id}>
+                                          <div className="grid gap-4 sm:gap-6 lg:grid-flow-col">
+                                             <ArticleCard
+                                                id={article.id!}
+                                                authors={article.authors}
+                                                image={article.image}
+                                                likes={article.likes || 0}
+                                                tags={article.tags}
+                                                title={article.title!}
+                                                views={article.views || 0}
+                                             />
+                                             {lg && index !== 3 && index !== 7 && <hr className="divider-article-v" />}
+                                          </div>
+                                          {lg && index === 3 && <hr className="divider-article-h" />}
+                                       </React.Fragment>
+                                    ))
+                                 )}
+                              </React.Fragment>
+                           )}
+
                            <div className="flex items-end justify-start lg:justify-end gap-3 sm:gap-4 lg:gap-4 col-span-full">
                               <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-primary-main select-none cursor-pointer">
                                  View all articles

@@ -1,4 +1,4 @@
-export function formatAuthors(authors: { id: number; name: string }[]): string {
+export function formatAuthors(authors: { id: string; name: string }[]): string {
    let totalChars = 0
    let displayedAuthors = []
 

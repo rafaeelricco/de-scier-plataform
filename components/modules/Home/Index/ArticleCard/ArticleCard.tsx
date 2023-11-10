@@ -3,7 +3,7 @@ import { ArticleCardProps } from '@components/modules/Home/Index/ArticleCard/Typ
 import '@styles/home.css'
 import Image from 'next/image'
 import React from 'react'
-import { Eye, HandThumbsUpFill } from 'react-bootstrap-icons'
+import { Eye, HandThumbsUp, HandThumbsUpFill } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 
 export const ArticleCard: React.FC<ArticleCardProps> = ({ authors, id, likes, tags, title, views, image, className, responsive }: ArticleCardProps) => {
@@ -35,7 +35,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ authors, id, likes, ta
                {!likes && !views ? null : (
                   <div className="flex items-center gap-2 sm:gap-4">
                      <div className="flex items-center gap-1">
-                        <HandThumbsUpFill className="text-terciary-main w-4 sm:w-5 h-4 sm:h-5" />
+                        <HandThumbsUp className="text-terciary-main w-4 sm:w-5 h-4 sm:h-5" />
                         <p className="text-xs sm:text-sm text-neutral-gray">{likes}</p>
                      </div>
                      <div className="flex items-center gap-1">

@@ -1,11 +1,11 @@
 interface ArticleCardProps {
    id: string
    title: string
-   authors: { id: number; name: string }[]
+   authors: { id: string; name: string }[]
    image: string
    likes?: number | null
    views?: number | null
-   tags?: { id: number; name: string }[]
+   tags?: { id: string; name: string }[]
    className?: string
    responsive?: boolean
 }

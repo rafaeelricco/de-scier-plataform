@@ -6,8 +6,8 @@ interface ArticleItemProps {
    views: number | null
    image: string
    title: string
-   tags: { id: number; name: string }[]
-   authors: { id: number; name: string }[]
+   tags: { id: string; name: string }[]
+   authors: { id: string; name: string }[]
 }
 
 export { ArticleItemProps }

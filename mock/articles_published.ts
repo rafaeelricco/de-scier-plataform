@@ -3,11 +3,11 @@ import { uniqueId } from 'lodash'
 
 export const articles: ArticleItemProps[] = [
    {
-      id: uniqueId(),
+      id: uniqueId('article'),
       title: 'Understanding Blockchain Technology',
       authors: [
-         { id: 1, name: 'Alice Thompson' },
-         { id: 2, name: 'Bob Richards' }
+         { id: uniqueId('author'), name: 'Alice Thompson' },
+         { id: uniqueId('author'), name: 'Bob Richards' }
       ],
       image: 'https://source.unsplash.com/random/900×700/?technology',
       likes: 120,
@@ -15,17 +15,17 @@ export const articles: ArticleItemProps[] = [
       access_type: 'open',
       published_date: '2020-12-31T18:30:00.000Z',
       tags: [
-         { id: 1, name: 'Blockchain' },
-         { id: 2, name: 'Technology' }
+         { id: uniqueId('tag'), name: 'Blockchain' },
+         { id: uniqueId('tag'), name: 'Technology' }
       ]
    },
    {
-      id: uniqueId(),
+      id: uniqueId('article'),
       title: 'Basics of Quantum Physics',
       authors: [
-         { id: 3, name: 'Carol White' },
-         { id: 4, name: 'David Smith' },
-         { id: 5, name: 'Eva Green' }
+         { id: uniqueId('author'), name: 'Carol White' },
+         { id: uniqueId('author'), name: 'David Smith' },
+         { id: uniqueId('author'), name: 'Eva Green' }
       ],
       image: 'https://source.unsplash.com/random/900×700/?physics',
       likes: 240,
@@ -33,16 +33,16 @@ export const articles: ArticleItemProps[] = [
       access_type: 'open',
       published_date: '2020-12-31T18:30:00.000Z',
       tags: [
-         { id: 3, name: 'Quantum' },
-         { id: 4, name: 'Physics' }
+         { id: uniqueId('tag'), name: 'Quantum' },
+         { id: uniqueId('tag'), name: 'Physics' }
       ]
    },
    {
-      id: uniqueId(),
+      id: uniqueId('article'),
       title: 'The World of Computer Algorithms',
       authors: [
-         { id: 6, name: 'Frank Johnson' },
-         { id: 7, name: 'Grace Lee' }
+         { id: uniqueId('author'), name: 'Frank Johnson' },
+         { id: uniqueId('author'), name: 'Grace Lee' }
       ],
       image: 'https://source.unsplash.com/random/900×700/?computer',
       likes: 320,
@@ -50,18 +50,18 @@ export const articles: ArticleItemProps[] = [
       access_type: 'open',
       published_date: '2020-12-31T18:30:00.000Z',
       tags: [
-         { id: 5, name: 'Algorithms' },
-         { id: 6, name: 'Computer Science' }
+         { id: uniqueId('tag'), name: 'Algorithms' },
+         { id: uniqueId('tag'), name: 'Computer Science' }
       ]
    },
    {
-      id: uniqueId(),
+      id: uniqueId('article'),
       title: 'Machine Learning for Beginners',
       authors: [
-         { id: 8, name: 'Henry Wilson' },
-         { id: 9, name: 'Ivy Martin' },
-         { id: 10, name: 'Jack Brown' },
-         { id: 11, name: 'Katie Wilson' }
+         { id: uniqueId('author'), name: 'Henry Wilson' },
+         { id: uniqueId('author'), name: 'Ivy Martin' },
+         { id: uniqueId('author'), name: 'Jack Brown' },
+         { id: uniqueId('author'), name: 'Katie Wilson' }
       ],
       image: 'https://source.unsplash.com/random/900×700/?machine',
       likes: 200,
@@ -69,30 +69,30 @@ export const articles: ArticleItemProps[] = [
       access_type: 'open',
       published_date: '2020-12-31T18:30:00.000Z',
       tags: [
-         { id: 7, name: 'Machine Learning' },
-         { id: 8, name: 'AI' }
+         { id: uniqueId('tag'), name: 'Machine Learning' },
+         { id: uniqueId('tag'), name: 'AI' }
       ]
    },
    {
-      id: uniqueId(),
+      id: uniqueId('article'),
       title: 'Evolution of Modern Databases',
-      authors: [{ id: 12, name: 'Larry Fisher' }],
+      authors: [{ id: uniqueId('author'), name: 'Larry Fisher' }],
       image: 'https://source.unsplash.com/random/900×700/?database',
-      likes: 450,
+      likes: 45,
       views: 870,
       access_type: 'open',
       published_date: '2020-12-31T18:30:00.000Z',
       tags: [
-         { id: 9, name: 'Databases' },
-         { id: 10, name: 'Tech Evolution' }
+         { id: uniqueId('tag'), name: 'Databases' },
+         { id: uniqueId('tag'), name: 'Tech Evolution' }
       ]
    },
    {
-      id: uniqueId(),
+      id: uniqueId('article'),
       title: 'Introduction to Virtual Reality',
       authors: [
-         { id: 13, name: 'Martin King' },
-         { id: 14, name: 'Nancy Queen' }
+         { id: uniqueId('author'), name: 'Martin King' },
+         { id: uniqueId('author'), name: 'Nancy Queen' }
       ],
       image: 'https://source.unsplash.com/random/900×700/?virtual',
       likes: 380,
@@ -100,16 +100,16 @@ export const articles: ArticleItemProps[] = [
       access_type: 'open',
       published_date: '2020-12-31T18:30:00.000Z',
       tags: [
-         { id: 11, name: 'Virtual Reality' },
-         { id: 12, name: 'Innovation' }
+         { id: uniqueId('tag'), name: 'Virtual Reality' },
+         { id: uniqueId('tag'), name: 'Innovation' }
       ]
    },
    {
-      id: uniqueId(),
+      id: uniqueId('article'),
       title: 'Modern Web Development Trends',
       authors: [
-         { id: 15, name: 'Oscar Prince' },
-         { id: 16, name: 'Paula Ray' }
+         { id: uniqueId('author'), name: 'Oscar Prince' },
+         { id: uniqueId('author'), name: 'Paula Ray' }
       ],
       image: 'https://source.unsplash.com/random/900×700/?web',
       likes: 500,
@@ -117,30 +117,30 @@ export const articles: ArticleItemProps[] = [
       access_type: 'open',
       published_date: '2020-12-31T18:30:00.000Z',
       tags: [
-         { id: 13, name: 'Web Development' },
-         { id: 14, name: 'Trends' }
+         { id: uniqueId('tag'), name: 'Web Development' },
+         { id: uniqueId('tag'), name: 'Trends' }
       ]
    },
    {
-      id: uniqueId(),
+      id: uniqueId('article'),
       title: 'IoT and its Applications',
-      authors: [{ id: 17, name: 'Quincy Stevens' }],
+      authors: [{ id: uniqueId('author'), name: 'Quincy Stevens' }],
       image: 'https://source.unsplash.com/random/900×700/?iot',
-      likes: 650,
+      likes: 65,
       views: 1150,
       access_type: 'open',
       published_date: '2020-12-31T18:30:00.000Z',
       tags: [
-         { id: 15, name: 'IoT' },
-         { id: 16, name: 'Applications' }
+         { id: uniqueId('tag'), name: 'IoT' },
+         { id: uniqueId('tag'), name: 'Applications' }
       ]
    },
    {
-      id: uniqueId(),
+      id: uniqueId('article'),
       title: 'Digital Art and Design Principles',
       authors: [
-         { id: 18, name: 'Rachel Stone' },
-         { id: 19, name: 'Steve Turner' }
+         { id: uniqueId('author'), name: 'Rachel Stone' },
+         { id: uniqueId('author'), name: 'Steve Turner' }
       ],
       image: 'https://source.unsplash.com/random/900×700/?art',
       likes: 300,
@@ -148,17 +148,17 @@ export const articles: ArticleItemProps[] = [
       access_type: 'open',
       published_date: '2020-12-31T18:30:00.000Z',
       tags: [
-         { id: 17, name: 'Digital Art' },
-         { id: 18, name: 'Design' }
+         { id: uniqueId('tag'), name: 'Digital Art' },
+         { id: uniqueId('tag'), name: 'Design' }
       ]
    },
    {
-      id: uniqueId(),
+      id: uniqueId('article'),
       title: 'Augmented Reality in Today’s World',
       authors: [
-         { id: 20, name: 'Ursula Vance' },
-         { id: 21, name: 'Victor Whiskey' },
-         { id: 22, name: 'Wendy X-ray' }
+         { id: uniqueId('author'), name: 'Ursula Vance' },
+         { id: uniqueId('author'), name: 'Victor Whiskey' },
+         { id: uniqueId('author'), name: 'Wendy X-ray' }
       ],
       image: 'https://source.unsplash.com/random/900×700/?reality',
       likes: 720,
@@ -166,8 +166,8 @@ export const articles: ArticleItemProps[] = [
       access_type: 'open',
       published_date: '2020-12-31T18:30:00.000Z',
       tags: [
-         { id: 19, name: 'Augmented Reality' },
-         { id: 20, name: 'Technology' }
+         { id: uniqueId('tag'), name: 'Augmented Reality' },
+         { id: uniqueId('tag'), name: 'Technology' }
       ]
    }
 ]
