@@ -32,7 +32,7 @@ const LoginAnimation: React.FC = () => {
                id="animated-svg"
                type="image/svg+xml"
                data-autoplay={true}
-               data="/svgs/modules/login/descier_login_animation.svg"
+               data="/svgs/modules/login/deScier - Login animation (1).svg"
             />
             <BlobShape className="login-blob-shape" />
             <Image quality={100} width={184} height={184} src={deScierStamp} alt="deScier stamp" className="login-stamp" />

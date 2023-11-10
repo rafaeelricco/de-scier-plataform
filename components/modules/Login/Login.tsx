@@ -45,7 +45,6 @@ const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onFo
       }
 
       toast.success('Successful login. Redirecting...')
-
       router.refresh()
       router.push(home_routes.summary)
    }
