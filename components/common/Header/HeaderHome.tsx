@@ -158,11 +158,11 @@ export function HeaderMobile() {
                                           }, 300)
                                        }}
                                        className={twMerge(
-                                          'text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200 select-none cursor-pointer',
+                                          'flex items-center gap-2 text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200 select-none cursor-pointer',
                                           `${verifyPath(link.label.toLowerCase()) && 'font-semibold text-secundary_blue-main'}`
                                        )}
                                     >
-                                       {link.label}
+                                       {link.label} {link.icon !== null && link.icon}
                                     </div>
                                  </div>
                               ) : (
@@ -170,11 +170,11 @@ export function HeaderMobile() {
                                     <Link
                                        href={link.link}
                                        className={twMerge(
-                                          'text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200',
+                                          'flex items-center gap-2 text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200',
                                           `${verifyPath(link.label.toLowerCase()) && 'font-semibold text-secundary_blue-main'}`
                                        )}
                                     >
-                                       {link.label}
+                                       {link.label} {link.icon !== null && link.icon}
                                     </Link>
                                  </div>
                               )
@@ -183,11 +183,12 @@ export function HeaderMobile() {
                                  <Link
                                     href={link.link}
                                     className={twMerge(
-                                       'text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200',
+                                       'flex items-center gap-2 text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200',
                                        `${verifyPath(link.label.toLowerCase()) && 'font-semibold text-secundary_blue-main'}`
                                     )}
                                  >
                                     {link.label}
+                                    {link.icon !== null && link.icon}
                                  </Link>
                               </div>
                            )}
