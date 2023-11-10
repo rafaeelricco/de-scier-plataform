@@ -10,11 +10,14 @@ import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
 import '@styles/home.css'
+import { useSearchParams } from 'next/navigation'
 import React from 'react'
 import { Person, Search } from 'react-bootstrap-icons'
 
 export default function SearchArticlesPage() {
    const { articles, loading } = useArticles()
+
+   const searchQueries = useSearchParams()
 
    const per_page = 10
    const [page, setPage] = React.useState(1)
@@ -56,6 +59,16 @@ export default function SearchArticlesPage() {
          setTotalPages(Math.ceil(articles.length / per_page))
       }
    }, [articles])
+
+   React.useEffect(() => {
+      if (searchQueries) {
+         const term = searchQueries.get('term') || ''
+         const author = searchQueries.get('author') || ''
+
+         setSearchTerm(term)
+         setSearchAuthor(author)
+      }
+   }, [searchQueries])
 
    return (
       <React.Fragment>

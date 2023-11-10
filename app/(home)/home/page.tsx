@@ -35,12 +35,32 @@ export default function HomePage() {
    const [topPapers, setTopPapers] = useState<ArticleCardProps[]>([])
    const [isProfileConfirmed, setIsProfileConfirmed] = useState(false)
 
+   const [searchTerm, setSearchTerm] = useState('')
+   const [searchAuthor, setSearchAuthor] = useState('')
+
    const login_component = 'login'
    const register_component = 'register'
    const forgot_password_component = 'forgot_password'
 
    const [open, setOpen] = React.useState(false)
    const [component, setComponent] = React.useState(login_component)
+
+   const handleSearchArticle = () => {
+      let searchQuery = '?'
+      if (searchTerm && !searchAuthor) {
+         searchQuery += `term=${searchTerm}`
+      }
+
+      if (searchAuthor && !searchTerm) {
+         searchQuery += `author=${searchAuthor}`
+      }
+
+      if (searchAuthor && searchTerm) {
+         searchQuery += `term=${searchTerm}&author=${searchAuthor}`
+      }
+
+      router.push(home_routes.home.search + searchQuery)
+   }
 
    useEffect(() => {
       const encodedConfirmProfileData = queryParams.get('data')
@@ -94,6 +114,8 @@ export default function HomePage() {
                   <Input.Input
                      className="rounded-full py-2 md:py-3 px-3 md:px-4 border-neutral-stroke_light bg-transparent shadow-none border focus:outline-none focus:border-neutral-stroke_light text-xs md:text-sm w-full"
                      placeholder="Find articles with terms"
+                     value={searchTerm}
+                     onChange={(e) => setSearchTerm(e.target.value)}
                      icon={
                         <React.Fragment>
                            <Search className="w-4 md:w-5 h-4 md:h-5 ml-1 text-neutral-light_gray" />
@@ -103,6 +125,8 @@ export default function HomePage() {
                   <Input.Input
                      className="rounded-full py-2 md:py-3 px-3 md:px-4 border-neutral-stroke_light bg-transparent shadow-none border focus:outline-none focus:border-neutral-stroke_light text-xs md:text-sm w-full"
                      placeholder="Search for an author"
+                     value={searchAuthor}
+                     onChange={(e) => setSearchAuthor(e.target.value)}
                      icon={
                         <React.Fragment>
                            <Person className="w-4 md:w-5 h-4 md:h-5 ml-1 text-neutral-light_gray" />
@@ -111,7 +135,7 @@ export default function HomePage() {
                   />
                   <Button.Button variant="outline" className="rounded-full py-2 md:py-3 px-5 md:px-6 text-xs md:text-sm w-full">
                      Search
-                     <Search className="w-4 md:w-5 h-4 md:h-5 ml-1" />
+                     <Search className="w-4 md:w-5 h-4 md:h-5 ml-1" onClick={handleSearchArticle} />
                   </Button.Button>
                </div>
             </div>
