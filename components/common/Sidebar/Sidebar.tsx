@@ -32,7 +32,16 @@ const Sidebar: React.FC = () => {
                <div>
                   {items.map((item) =>
                      session?.user?.userInfo.role !== 'ADMIN' && item.text === 'Admin' ? null : (
-                        <Item key={item.id} text={item.text} icon={item.icon} href={item.path} active={currentPath.includes(item.path)} />
+                        <div className="flex items-center" key={item.id}>
+                           <Item
+                              key={item.id}
+                              text={item.text}
+                              icon={item.icon}
+                              href={item.path}
+                              active={currentPath.includes(item.path)}
+                              icon_end={item.icon_end}
+                           />
+                        </div>
                      )
                   )}
                </div>

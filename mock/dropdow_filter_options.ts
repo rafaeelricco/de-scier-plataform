@@ -40,7 +40,7 @@ export const filter_status = [
    },
    {
       id: 3,
-      label: 'Final Approved',
+      label: 'Final approval pending',
       value: 'final_approved'
    },
    {

@@ -89,10 +89,6 @@ export default function SearchArticlesPage() {
                      }
                   />
                </div>
-               {/* <Button.Button variant="primary" className="rounded-full py-3 px-6 text-sm w-full md:w-fit">
-                  Search
-                  <Search className="w-5 h-5" />
-               </Button.Button> */}
             </div>
             <div className="flex flex-wrap justify-center md:justify-start items-center gap-2">
                <Dropdown no_selected items={filter_order_by} label="Year of publication" onSelect={(value) => console.log(value)} />
