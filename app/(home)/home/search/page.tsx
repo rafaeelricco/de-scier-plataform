@@ -23,34 +23,9 @@ export default function SearchArticlesPage() {
    const [results, setResults] = React.useState(articles)
    const [totalPages, setTotalPages] = React.useState(1)
    const [searchTerm, setSearchTerm] = React.useState('')
-   const debouncedSearchTerm = useDebounce(searchTerm, 500)
    const [searchAuthor, setSearchAuthor] = React.useState('')
-
-   function handleSearchArticles() {
-      if (articles && searchTerm && !searchAuthor) {
-         const filteredArticles = articles.filter((article) => article.title.toLowerCase().includes(searchTerm.toLowerCase()))
-         setResults(filteredArticles)
-         setTotalPages(Math.ceil(filteredArticles.length / per_page))
-      }
-
-      if (articles && searchAuthor && !searchTerm) {
-         const filteredArticles = articles.filter((article) => {
-            return article.authors.some((author) => author.name.toLowerCase().includes(searchAuthor.toLowerCase()))
-         })
-         setResults(filteredArticles)
-         setTotalPages(Math.ceil(filteredArticles.length / per_page))
-      }
-
-      if (articles && searchAuthor && searchTerm) {
-         const filteredArticles = articles
-            .filter((article) => article.title.toLowerCase().includes(searchTerm.toLowerCase()))
-            .filter((article) => {
-               return article.authors.some((author) => author.name.toLowerCase().includes(searchAuthor.toLowerCase()))
-            })
-         setResults(filteredArticles)
-         setTotalPages(Math.ceil(filteredArticles.length / per_page))
-      }
-   }
+   const debouncedSearchTerm = useDebounce(searchTerm, 500)
+   const debouncedSearchAuthor = useDebounce(searchAuthor, 500)
 
    React.useEffect(() => {
       if (articles) {
@@ -111,21 +86,25 @@ export default function SearchArticlesPage() {
             </div>
             <div className="flex flex-col gap-6 mt-6">
                <div className="grid md:grid-cols-2 gap-6 md:gap-4">
-                  {results?.slice((page - 1) * per_page, page * per_page).map((article) => (
-                     <React.Fragment key={article.id}>
-                        <ArticleItem
-                           title={article.title}
-                           access_type={article.accessType!}
-                           authors={article.authors}
-                           id={article.id}
-                           image={article.image}
-                           likes={article.likes || 0}
-                           published_date={article.publishedAt!.toLocaleDateString('pt-BR')}
-                           tags={article.tags || []}
-                           views={article.views || 0}
-                        />
-                     </React.Fragment>
-                  ))}
+                  {results
+                     ?.filter((article) => article.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
+                     .filter((article) => article.authors.some((author) => author.name.toLowerCase().includes(debouncedSearchAuthor.toLowerCase())))
+                     .slice((page - 1) * per_page, page * per_page)
+                     .map((article) => (
+                        <React.Fragment key={article.id}>
+                           <ArticleItem
+                              title={article.title}
+                              access_type={article.accessType!}
+                              authors={article.authors}
+                              id={article.id}
+                              image={article.image}
+                              likes={article.likes || 0}
+                              published_date={article.publishedAt!.toLocaleDateString('pt-BR')}
+                              tags={article.tags || []}
+                              views={article.views || 0}
+                           />
+                        </React.Fragment>
+                     ))}
                </div>
                <div className="flex justify-center">
                   <PaginationComponent

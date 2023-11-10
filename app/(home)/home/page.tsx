@@ -59,6 +59,8 @@ export default function HomePage() {
          searchQuery += `term=${searchTerm}&author=${searchAuthor}`
       }
 
+      console.log(searchQuery)
+
       router.push(home_routes.home.search + searchQuery)
    }
 
@@ -133,9 +135,13 @@ export default function HomePage() {
                         </React.Fragment>
                      }
                   />
-                  <Button.Button variant="outline" className="rounded-full py-2 md:py-3 px-5 md:px-6 text-xs md:text-sm w-full">
+                  <Button.Button
+                     variant="outline"
+                     className="rounded-full py-2 md:py-3 px-5 md:px-6 text-xs md:text-sm w-full"
+                     onClick={handleSearchArticle}
+                  >
                      Search
-                     <Search className="w-4 md:w-5 h-4 md:h-5 ml-1" onClick={handleSearchArticle} />
+                     <Search className="w-4 md:w-5 h-4 md:h-5 ml-1" />
                   </Button.Button>
                </div>
             </div>
