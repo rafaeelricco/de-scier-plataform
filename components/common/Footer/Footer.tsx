@@ -18,27 +18,27 @@ const Footer: React.FC = () => {
             <div className="grid gap-4 w-full content-start">
                <p className="text-lg font-semibold text-neutral-white">Social media</p>
                {social_media.map((item) => (
-                  <React.Fragment key={item.id}>
+                  <Link href={item.link} target="_blank" rel="noopener noreferrer" key={item.id}>
                      <div className="flex items-center gap-6">
                         <span className="text-neutral-white">{item.icon}</span>
                         <p className="text-sm text-neutral-white font-semibold select-none hover:text-secundary-main cursor-pointer">{item.name}</p>
                      </div>
-                  </React.Fragment>
+                  </Link>
                ))}
             </div>
             <div className="grid gap-4 w-full ontent-start">
                <p className="text-lg font-semibold text-neutral-white">Links</p>
                {links.map((item) => (
-                  <React.Fragment key={item.id}>
+                  <Link href={item.link} target={item.link.includes(home_routes.home.index) ? '_self' : '_blank'} rel="noopener noreferrer" key={item.id}>
                      <div className="flex items-center gap-6">
                         <p className="text-sm text-neutral-white font-semibold select-none hover:text-secundary-main cursor-pointer">{item.name}</p>
                      </div>
-                  </React.Fragment>
+                  </Link>
                ))}
             </div>
             <div className="grid gap-4 w-full content-start">
                <p className="text-lg font-semibold text-neutral-white">Contact</p>
-               <div className="grid gap-1">
+               <Link href={'https://maps.app.goo.gl/AMeEcTxsWRsABCAC6'} target="_blank" rel="noopener noreferrer" className="grid gap-1">
                   <div className="flex items-center gap-3">
                      <LocationIcon className="w-4 h-4" />
                      <p className="text-sm text-neutral-white font-semibold select-none">Adress:</p>
@@ -46,8 +46,8 @@ const Footer: React.FC = () => {
                   <p className="text-sm text-neutral-white font-regular select-none hover:text-secundary-main cursor-pointer">
                      R. da Consolação, 2302 - Consolação, São Paulo - SP, 01301-000
                   </p>
-               </div>
-               <div className="grid gap-1">
+               </Link>
+               <Link href={'https://wa.me/5511983432131'} target="_blank" rel="noopener noreferrer" className="grid gap-1">
                   <div className="flex items-center gap-2">
                      <div className="flex items-center gap-3">
                         <PhoneIcon className="w-4 h-4" />
@@ -59,21 +59,24 @@ const Footer: React.FC = () => {
                         <p className="text-sm text-neutral-white font-semibold select-none">Whatsapp</p>
                      </div>
                   </div>
-                  <p className="text-sm text-neutral-white font-regular select-none hover:text-secundary-main cursor-pointer">+55 11 3129-5000</p>
-               </div>
-               <div className="grid gap-1">
+                  <p className="text-sm text-neutral-white font-regular select-none hover:text-secundary-main cursor-pointer">+55 11 98343-2131</p>
+               </Link>
+               <Link href={'mailto:contact@descier.science'} className="grid gap-1">
                   <div className="flex items-center gap-3">
                      <EmailIcon className="w-4 h-4" />
                      <p className="text-sm text-neutral-white font-semibold select-none">E-mail</p>
                   </div>
                   <p className="text-sm text-neutral-white font-regular select-none hover:text-secundary-main cursor-pointer">contact@descier.science</p>
-               </div>
+               </Link>
             </div>
          </footer>
       </React.Fragment>
    )
 }
 
+import { home_routes } from '@/routes/home'
+import { uniqueId } from 'lodash'
+import Link from 'next/link'
 import InstagramIcon from 'public/svgs/common/footer/icons-footer/instagram.svg'
 import LinkdlIcon from 'public/svgs/common/footer/icons-footer/linkdl.svg'
 import XIcon from 'public/svgs/common/footer/icons-footer/x.svg'
@@ -84,53 +87,58 @@ const social_media = [
       id: 1,
       name: '/desciers',
       icon: <XIcon className="w-5 h-5" />,
-      link: ''
+      link: 'https://twitter.com/desciers'
    },
    {
       id: 2,
       name: '/descier',
       icon: <LinkdlIcon className="w-5 h-5" />,
-      link: ''
+      link: 'https://www.linkedin.com/company/descier'
    },
    {
       id: 3,
       name: '/descier.science',
       icon: <InstagramIcon className="w-5 h-5" />,
-      link: ''
+      link: 'https://instagram.com/descier.science'
    },
    {
       id: 4,
       name: '/@desciers',
       icon: <YoutubeIcon className="w-5 h-5" />,
-      link: ''
+      link: 'https://www.youtube.com/@desciers'
    }
 ]
 
 const links = [
    {
-      id: 1,
+      id: uniqueId(),
       name: 'Home',
-      link: ''
+      link: home_routes.home.index
    },
    {
-      id: 2,
+      id: uniqueId(),
       name: 'Support',
       link: ''
    },
    {
-      id: 3,
+      id: uniqueId(),
       name: 'Onboard Discord',
       link: ''
    },
    {
-      id: 4,
-      name: 'Privacy Policy',
-      link: ''
+      id: uniqueId(),
+      name: 'Join the community',
+      link: 'https://app.gosh.sh/o/descier'
    },
    {
-      id: 5,
-      name: 'Join our DAO',
-      link: ''
+      id: uniqueId(),
+      name: 'Privacy Policy',
+      link: 'https://descier.science/policy/'
+   },
+   {
+      id: uniqueId(),
+      name: 'Terms',
+      link: 'https://descier.science/terms/'
    }
 ]
 
