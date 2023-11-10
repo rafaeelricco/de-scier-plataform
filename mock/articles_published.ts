@@ -9,6 +9,7 @@ export const articles: ArticleItemProps[] = [
          { id: uniqueId('author'), name: 'Alice Thompson' },
          { id: uniqueId('author'), name: 'Bob Richards' }
       ],
+      document_type: 'manuscript',
       image: 'https://source.unsplash.com/random/900×700/?technology',
       likes: 120,
       views: 345,
@@ -27,6 +28,7 @@ export const articles: ArticleItemProps[] = [
          { id: uniqueId('author'), name: 'David Smith' },
          { id: uniqueId('author'), name: 'Eva Green' }
       ],
+      document_type: 'paper',
       image: 'https://source.unsplash.com/random/900×700/?physics',
       likes: 240,
       views: 567,
@@ -44,6 +46,7 @@ export const articles: ArticleItemProps[] = [
          { id: uniqueId('author'), name: 'Frank Johnson' },
          { id: uniqueId('author'), name: 'Grace Lee' }
       ],
+      document_type: 'report',
       image: 'https://source.unsplash.com/random/900×700/?computer',
       likes: 320,
       views: 789,
@@ -63,6 +66,7 @@ export const articles: ArticleItemProps[] = [
          { id: uniqueId('author'), name: 'Jack Brown' },
          { id: uniqueId('author'), name: 'Katie Wilson' }
       ],
+      document_type: 'review',
       image: 'https://source.unsplash.com/random/900×700/?machine',
       likes: 200,
       views: 650,
@@ -78,6 +82,7 @@ export const articles: ArticleItemProps[] = [
       title: 'Evolution of Modern Databases',
       authors: [{ id: uniqueId('author'), name: 'Larry Fisher' }],
       image: 'https://source.unsplash.com/random/900×700/?database',
+      document_type: 'conference_abstract',
       likes: 45,
       views: 870,
       access_type: 'open',
@@ -94,6 +99,7 @@ export const articles: ArticleItemProps[] = [
          { id: uniqueId('author'), name: 'Martin King' },
          { id: uniqueId('author'), name: 'Nancy Queen' }
       ],
+      document_type: 'other',
       image: 'https://source.unsplash.com/random/900×700/?virtual',
       likes: 380,
       views: 920,
@@ -111,6 +117,7 @@ export const articles: ArticleItemProps[] = [
          { id: uniqueId('author'), name: 'Oscar Prince' },
          { id: uniqueId('author'), name: 'Paula Ray' }
       ],
+      document_type: 'manuscript',
       image: 'https://source.unsplash.com/random/900×700/?web',
       likes: 500,
       views: 1000,
@@ -126,6 +133,7 @@ export const articles: ArticleItemProps[] = [
       title: 'IoT and its Applications',
       authors: [{ id: uniqueId('author'), name: 'Quincy Stevens' }],
       image: 'https://source.unsplash.com/random/900×700/?iot',
+      document_type: 'paper',
       likes: 65,
       views: 1150,
       access_type: 'open',
@@ -142,6 +150,7 @@ export const articles: ArticleItemProps[] = [
          { id: uniqueId('author'), name: 'Rachel Stone' },
          { id: uniqueId('author'), name: 'Steve Turner' }
       ],
+      document_type: 'report',
       image: 'https://source.unsplash.com/random/900×700/?art',
       likes: 300,
       views: 620,
@@ -160,6 +169,7 @@ export const articles: ArticleItemProps[] = [
          { id: uniqueId('author'), name: 'Victor Whiskey' },
          { id: uniqueId('author'), name: 'Wendy X-ray' }
       ],
+      document_type: 'review',
       image: 'https://source.unsplash.com/random/900×700/?reality',
       likes: 720,
       views: 1280,

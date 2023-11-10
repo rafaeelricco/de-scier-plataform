@@ -7,6 +7,7 @@ interface ArticleItemProps {
    image: string
    title: string
    tags: { id: string; name: string }[]
+   document_type?: string
    authors: { id: string; name: string }[]
 }
 

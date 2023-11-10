@@ -1,3 +1,4 @@
+import { document_types } from '@/mock/document_types'
 import { formatDate } from '@/utils/date_format'
 import { truncate } from 'lodash'
 import Image from 'next/image'
@@ -5,10 +6,21 @@ import Link from 'next/link'
 import React from 'react'
 import { Eye, HandThumbsUpFill } from 'react-bootstrap-icons'
 import slug from 'slug'
+import { twMerge } from 'tailwind-merge'
 import './ArticleItem.css'
 import { ArticleItemProps } from './Typing'
 
-const ArticleItem: React.FC<ArticleItemProps> = ({ image, title, access_type, likes, published_date, views, tags, authors }: ArticleItemProps) => {
+const ArticleItem: React.FC<ArticleItemProps> = ({
+   image,
+   title,
+   access_type,
+   likes,
+   published_date,
+   views,
+   tags,
+   authors,
+   document_type
+}: ArticleItemProps) => {
    return (
       <div className="grid gap-2 bg-[#fff] py-3 px-4 rounded-lg">
          <div className="grid lg:grid-cols-max-1px-auto lg:justify-start items-center gap-2 md:gap-4">
@@ -24,8 +36,24 @@ const ArticleItem: React.FC<ArticleItemProps> = ({ image, title, access_type, li
             <div className="grid gap-2">
                <div className="grid gap-2">
                   <div className="grid gap-2">
-                     <Link href="/home/search/[slug]" as={`/home/search/${slug(title)}`} passHref>
-                        <h6 className="text-lg font-semibold text-secundary_blue-main lg:text-sm 2xl:text-lg select-none cursor-pointer transition-all duration-200 hover:text-secundary_purple-hover hover:underline">
+                     <Link
+                        href="/home/search/[slug]"
+                        as={`/home/search/${slug(title)}`}
+                        className={twMerge(`${document_type && 'flex items-center gap-1'}`)}
+                     >
+                        {document_type && (
+                           <React.Fragment>
+                              {document_types.find((document) => document.value === document_type)?.label && (
+                                 <React.Fragment>
+                                    <span className="text-base font-semibold text-[#AE66E6] hover:underline transition-all duration-200">
+                                       {document_types.find((document) => document.value === document_type)?.label}
+                                    </span>
+                                    <span className="text-base font-semibold hover:underline transition-all duration-200">•</span>
+                                 </React.Fragment>
+                              )}
+                           </React.Fragment>
+                        )}
+                        <h6 className="text-base font-semibold text-secundary_blue-main select-none cursor-pointer transition-all duration-200 hover:text-secundary_purple-hover hover:underline">
                            {truncate(title, { length: 40 })}
                         </h6>
                      </Link>
