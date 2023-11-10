@@ -5,6 +5,7 @@ import { ArticleCard } from '@/components/modules/Home/Index/ArticleCard/Article
 import { ArticleCardProps } from '@/components/modules/Home/Index/ArticleCard/Typing'
 import { BannerStartPublishing } from '@/components/modules/Home/Index/BannerStartPublishing/BannerStartPublishing'
 import useWindowDimension from '@/hooks/useWindowDimension'
+import { home_routes } from '@/routes/home'
 import { useArticles } from '@/services/document/fetchPublic.service'
 import { ConfirmProfileRequestProps, confirmProfileService } from '@/services/user/confirmProfile.service'
 import { formatAuthors } from '@/utils/format_authors'
@@ -13,7 +14,7 @@ import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import '@styles/home.css'
 import Image from 'next/image'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import IllustrationHero from 'public/svgs/modules/home/illustration-home.svg'
 import ShapeMobile from 'public/svgs/modules/home/shape-mobile.svg'
 import CirclesHero from 'public/svgs/modules/home/shapes/circles.svg'
@@ -25,6 +26,7 @@ import { CaretRightFill, Eye, HandThumbsUpFill, Person, Search } from 'react-boo
 import { toast } from 'react-toastify'
 
 export default function HomePage() {
+   const router = useRouter()
    const { lg } = useWindowDimension()
    const queryParams = useSearchParams()
 
@@ -205,9 +207,12 @@ export default function HomePage() {
                                  )}
                               </React.Fragment>
                            )}
-
-                           <div className="flex items-end justify-start lg:justify-end gap-3 sm:gap-4 lg:gap-4 col-span-full">
-                              <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-primary-main select-none cursor-pointer">
+                           <div className="flex items-center justify-start lg:justify-end gap-3 sm:gap-4 lg:gap-4 col-span-full">
+                              <h3
+                                 className="text-sm sm:text-base lg:text-lg font-semibold text-primary-main select-none cursor-pointer"
+                                 onMouseEnter={() => router.prefetch(home_routes.home.search)}
+                                 onClick={() => router.push(home_routes.home.search)}
+                              >
                                  View all articles
                               </h3>
                               <CaretRightFill className="w-4 sm:w-5 h-4 sm:h-5 text-primary-main" />

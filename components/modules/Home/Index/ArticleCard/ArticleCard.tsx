@@ -1,12 +1,24 @@
+import { document_types } from '@/mock/document_types'
 import { formatAuthors } from '@/utils/format_authors'
 import { ArticleCardProps } from '@components/modules/Home/Index/ArticleCard/Typing'
 import '@styles/home.css'
 import Image from 'next/image'
 import React from 'react'
-import { Eye, HandThumbsUp, HandThumbsUpFill } from 'react-bootstrap-icons'
+import { Eye, HandThumbsUp } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 
-export const ArticleCard: React.FC<ArticleCardProps> = ({ authors, id, likes, tags, title, views, image, className, responsive }: ArticleCardProps) => {
+export const ArticleCard: React.FC<ArticleCardProps> = ({
+   authors,
+   id,
+   likes,
+   tags,
+   title,
+   views,
+   image,
+   className,
+   responsive,
+   documentType
+}: ArticleCardProps) => {
    return (
       <div className="grid items-start">
          <div
@@ -31,6 +43,18 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ authors, id, likes, ta
                <div className="flex items-center gap-1 flex-wrap">
                   <p className="text-xs sm:text-sm text-[#5E6992]">{formatAuthors(authors)}</p>
                </div>
+               {documentType && (
+                  <React.Fragment>
+                     {document_types.find((document) => document.value === documentType)?.label && (
+                        <React.Fragment>
+                           <span className="text-sm font-semibold text-primary-main hover:underline transition-all duration-200">
+                              {document_types.find((document) => document.value === documentType)?.label}
+                           </span>
+                           <span className="text-sm font-semibold hover:underline transition-all duration-200">•</span>
+                        </React.Fragment>
+                     )}
+                  </React.Fragment>
+               )}
                <p className="text-sm sm:text-base text-secundary_blue-main font-semibold">{title}</p>
                {!likes && !views ? null : (
                   <div className="flex items-center gap-2 sm:gap-4">
