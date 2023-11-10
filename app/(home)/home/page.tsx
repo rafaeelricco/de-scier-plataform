@@ -35,6 +35,13 @@ export default function HomePage() {
    const [topPapers, setTopPapers] = useState<ArticleCardProps[]>([])
    const [isProfileConfirmed, setIsProfileConfirmed] = useState(false)
 
+   const login_component = 'login'
+   const register_component = 'register'
+   const forgot_password_component = 'forgot_password'
+
+   const [open, setOpen] = React.useState(false)
+   const [component, setComponent] = React.useState(login_component)
+
    useEffect(() => {
       const encodedConfirmProfileData = queryParams.get('data')
 
