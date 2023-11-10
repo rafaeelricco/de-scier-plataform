@@ -1,7 +1,8 @@
 import { home_routes } from '@/routes/home'
-import { LoginProps } from '@/schemas/login'
+import { LoginProps, LoginSchema } from '@/schemas/login'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
+import { zodResolver } from '@hookform/resolvers/zod'
 import '@styles/login.css'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -24,6 +25,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onFo
       watch,
       formState: { errors }
    } = useForm<LoginProps>({
+      resolver: zodResolver(LoginSchema),
       defaultValues: { email: '', password: '' }
    })
 
@@ -43,6 +45,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onFo
       }
 
       toast.success('Successful login. Redirecting...')
+      router.refresh()
       router.push(home_routes.summary)
    }
 
@@ -80,10 +83,12 @@ const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onFo
                      <Input.Root>
                         <Input.Label>E-mail</Input.Label>
                         <Input.Input type="email" placeholder="Type your best email" {...register('email')} />
+                        <Input.Error>{errors.email?.message}</Input.Error>
                      </Input.Root>
                      <Input.Root>
                         <Input.Label>Password</Input.Label>
                         <Input.Password placeholder="Type your password" {...register('password')} />
+                        <Input.Error>{errors.password?.message}</Input.Error>
                      </Input.Root>
                   </div>
                   <Button.Button type="submit" loading={loading}>

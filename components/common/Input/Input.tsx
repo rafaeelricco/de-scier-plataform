@@ -86,7 +86,7 @@ const Label: React.FC<LabelProps> = ({ children, optional, icon, tooltip_message
  * @param {ReactNode} props.children The error message to display
  */
 const Error: React.FC<ErrorProps> = ({ children }: ErrorProps) => {
-   return <React.Fragment>{children && <p className="text-red-500 text-sx">{children}</p>} </React.Fragment>
+   return <React.Fragment>{children && <p className="text-red-500 text-sm">{children}</p>} </React.Fragment>
 }
 
 /**

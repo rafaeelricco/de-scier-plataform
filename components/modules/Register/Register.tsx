@@ -1,8 +1,9 @@
 import { useLoading } from '@/hooks/useLoading'
-import { RegisterProps } from '@/schemas/register'
+import { RegisterProps, RegisterSchema } from '@/schemas/register'
 import { registerUserService } from '@/services/user/register.service'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
+import { zodResolver } from '@hookform/resolvers/zod'
 import '@styles/login.css'
 import GoogleIcon from 'public/svgs/modules/login/google_icon.svg'
 import SuccessIllustration from 'public/svgs/modules/login/register-success.svg'
@@ -20,6 +21,7 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ onClose, onRegister, onBa
       watch,
       formState: { errors }
    } = useForm<RegisterProps>({
+      resolver: zodResolver(RegisterSchema),
       defaultValues: {
          name: '',
          email: '',
@@ -98,18 +100,22 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ onClose, onRegister, onBa
                         <Input.Root>
                            <Input.Label>Name</Input.Label>
                            <Input.Input type="text" placeholder="Type your name" {...register('name')} />
+                           <Input.Error>{errors.name?.message}</Input.Error>
                         </Input.Root>
                         <Input.Root>
                            <Input.Label>E-mail</Input.Label>
                            <Input.Input type="email" placeholder="Type your best email" {...register('email')} />
+                           <Input.Error>{errors.email?.message}</Input.Error>
                         </Input.Root>
                         <Input.Root>
                            <Input.Label>Password</Input.Label>
                            <Input.Password placeholder="Type your password" {...register('password')} />
+                           <Input.Error>{errors.password?.message}</Input.Error>
                         </Input.Root>
                         <Input.Root>
                            <Input.Label>Password confirmation</Input.Label>
                            <Input.Password placeholder="Type your password again" {...register('confirmPassword')} />
+                           <Input.Error>{errors.confirmPassword?.message}</Input.Error>
                         </Input.Root>
                      </div>
                      <Button.Button loading={loading.loading} type="submit" onClick={onRegister}>
