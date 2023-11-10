@@ -3,9 +3,10 @@
 import ForgotPasswordModal from '@/components/modules/ForgotPassword/ForgotPassword'
 import LoginModal from '@/components/modules/Login/Login'
 import RegisterModal from '@/components/modules/Register/Register'
-import { links } from '@/mock/sidebar_home_items'
+import { dashboard_key, links } from '@/mock/sidebar_home_items'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import DeScierLogo from 'public/svgs/common/logo/deScier - Logo.svg'
@@ -13,6 +14,8 @@ import React from 'react'
 import { twMerge } from 'tailwind-merge'
 
 const Header: React.FC = () => {
+   const { data, status } = useSession()
+
    // See more about in https://nextjs.org/docs/app/api-reference/functions/use-pathname
    const currentPath = usePathname()
    const url_splited = currentPath.split('/')
@@ -32,8 +35,8 @@ const Header: React.FC = () => {
    const register_component = 'register'
    const forgot_password_component = 'forgot_password'
 
-   const [component, setComponent] = React.useState(login_component)
    const [open, setOpen] = React.useState(false)
+   const [component, setComponent] = React.useState(login_component)
    return (
       <React.Fragment>
          <Dialog.Root open={open}>
@@ -69,17 +72,50 @@ const Header: React.FC = () => {
                <DeScierLogo className="w-10 h-fit" />
                <div className="grid grid-cols-5 justify-items-center items-center">
                   {links.map((link) => (
-                     <div className="flex justify-center min-w-[149px] py-2 px-4" key={link.id}>
-                        <Link
-                           href={link.link}
-                           className={twMerge(
-                              'text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200',
-                              `${verifyPath(link.label.toLowerCase()) && 'font-semibold text-secundary_blue-main'}`
-                           )}
-                        >
-                           {link.label}
-                        </Link>
-                     </div>
+                     <React.Fragment key={link.id}>
+                        {link.id === dashboard_key ? (
+                           status !== 'authenticated' ? (
+                              <div className="flex justify-center min-w-[149px] py-2 px-4">
+                                 <div
+                                    onClick={() => {
+                                       setOpen(true)
+                                       setComponent(login_component)
+                                    }}
+                                    className={twMerge(
+                                       'text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200 select-none cursor-pointer',
+                                       `${verifyPath(link.label.toLowerCase()) && 'font-semibold text-secundary_blue-main'}`
+                                    )}
+                                 >
+                                    {link.label}
+                                 </div>
+                              </div>
+                           ) : (
+                              <div className="flex justify-center min-w-[149px] py-2 px-4">
+                                 <Link
+                                    href={link.link}
+                                    className={twMerge(
+                                       'text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200',
+                                       `${verifyPath(link.label.toLowerCase()) && 'font-semibold text-secundary_blue-main'}`
+                                    )}
+                                 >
+                                    {link.label}
+                                 </Link>
+                              </div>
+                           )
+                        ) : (
+                           <div className="flex justify-center min-w-[149px] py-2 px-4">
+                              <Link
+                                 href={link.link}
+                                 className={twMerge(
+                                    'text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200',
+                                    `${verifyPath(link.label.toLowerCase()) && 'font-semibold text-secundary_blue-main'}`
+                                 )}
+                              >
+                                 {link.label}
+                              </Link>
+                           </div>
+                        )}
+                     </React.Fragment>
                   ))}
                </div>
             </div>

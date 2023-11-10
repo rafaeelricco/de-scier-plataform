@@ -1,6 +1,8 @@
 import { home_routes } from '@/routes/home'
 import { uniqueId } from 'lodash'
 
+export const dashboard_key = uniqueId('dashboard_')
+
 export const links = [
    {
       id: uniqueId(),
@@ -18,7 +20,7 @@ export const links = [
       link: 'https://descier.science/'
    },
    {
-      id: uniqueId(),
+      id: dashboard_key,
       label: 'Dashboard',
       link: home_routes.summary
    },

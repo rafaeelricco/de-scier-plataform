@@ -3,11 +3,12 @@
 import ForgotPasswordModal from '@/components/modules/ForgotPassword/ForgotPassword'
 import LoginModal from '@/components/modules/Login/Login'
 import RegisterModal from '@/components/modules/Register/Register'
-import { links } from '@/mock/sidebar_home_items'
+import { dashboard_key, links } from '@/mock/sidebar_home_items'
 import { home_routes } from '@/routes/home'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Drawer from '@components/common/Drawer/Drawer'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import LogoDeScier from 'public/svgs/common/logo/deScier - Logo copy.svg'
@@ -16,6 +17,8 @@ import { X } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 
 export function HeaderMobile() {
+   const { data, status } = useSession()
+
    const currentPath = usePathname()
    const url_splited = currentPath.split('/')
    const array_path = url_splited.filter((item) => item !== 'home' && item !== '')
@@ -143,18 +146,52 @@ export function HeaderMobile() {
                   </div>
                   <div className="grid gap-2">
                      {links.map((link) => (
-                        <div className="flex" key={link.id}>
-                           <Link
-                              href={link.link}
-                              className={twMerge(
-                                 'text-base text-neutral-light_gray hover:text-primary-main transition-all duration-200 p-2',
-                                 `${verifyPath(link.label.toLowerCase()) && 'font-semibold text-primary-main'}`
-                              )}
-                              onClick={() => setOpenNav(false)}
-                           >
-                              {link.label}
-                           </Link>
-                        </div>
+                        <React.Fragment key={link.id}>
+                           {link.id === dashboard_key ? (
+                              status !== 'authenticated' ? (
+                                 <div className="flex min-w-[149px] py-2 px-4">
+                                    <div
+                                       onClick={() => {
+                                          setOpenNav(false)
+                                          setTimeout(() => {
+                                             setOpen(true), setComponent(login_component)
+                                          }, 300)
+                                       }}
+                                       className={twMerge(
+                                          'text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200 select-none cursor-pointer',
+                                          `${verifyPath(link.label.toLowerCase()) && 'font-semibold text-secundary_blue-main'}`
+                                       )}
+                                    >
+                                       {link.label}
+                                    </div>
+                                 </div>
+                              ) : (
+                                 <div className="flex min-w-[149px] py-2 px-4">
+                                    <Link
+                                       href={link.link}
+                                       className={twMerge(
+                                          'text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200',
+                                          `${verifyPath(link.label.toLowerCase()) && 'font-semibold text-secundary_blue-main'}`
+                                       )}
+                                    >
+                                       {link.label}
+                                    </Link>
+                                 </div>
+                              )
+                           ) : (
+                              <div className="flex min-w-[149px] py-2 px-4">
+                                 <Link
+                                    href={link.link}
+                                    className={twMerge(
+                                       'text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200',
+                                       `${verifyPath(link.label.toLowerCase()) && 'font-semibold text-secundary_blue-main'}`
+                                    )}
+                                 >
+                                    {link.label}
+                                 </Link>
+                              </div>
+                           )}
+                        </React.Fragment>
                      ))}
                   </div>
                </div>
