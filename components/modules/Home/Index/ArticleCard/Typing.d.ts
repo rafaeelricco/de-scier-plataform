@@ -8,6 +8,7 @@ interface ArticleCardProps {
    tags?: { id: string; name: string }[]
    className?: string
    responsive?: boolean
+   publishedAt?: Date
 }
 
 export { ArticleCardProps }

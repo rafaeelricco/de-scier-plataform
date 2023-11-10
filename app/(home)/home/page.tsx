@@ -2,10 +2,12 @@
 
 import { ArticleUnderReviewSkeleton } from '@/components/common/Publication/Item/ArticlesUnderReview'
 import { ArticleCard } from '@/components/modules/Home/Index/ArticleCard/ArticleCard'
+import { ArticleCardProps } from '@/components/modules/Home/Index/ArticleCard/Typing'
 import { BannerStartPublishing } from '@/components/modules/Home/Index/BannerStartPublishing/BannerStartPublishing'
 import useWindowDimension from '@/hooks/useWindowDimension'
 import { useArticles } from '@/services/document/fetchPublic.service'
 import { ConfirmProfileRequestProps, confirmProfileService } from '@/services/user/confirmProfile.service'
+import { formatAuthors } from '@/utils/format_authors'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import '@styles/home.css'
@@ -27,6 +29,7 @@ export default function HomePage() {
 
    const { articles, loading } = useArticles()
 
+   const [topPapers, setTopPapers] = useState<ArticleCardProps[]>([])
    const [isProfileConfirmed, setIsProfileConfirmed] = useState(false)
 
    useEffect(() => {
@@ -53,6 +56,13 @@ export default function HomePage() {
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [])
+
+   useEffect(() => {
+      if (articles) {
+         const papers = articles.slice(0, 3).sort((a, b) => b.likes! - a.likes!)
+         setTopPapers(papers)
+      }
+   }, [articles])
 
    console.log(articles)
 
@@ -116,9 +126,42 @@ export default function HomePage() {
                <div className="border-neutral-stroke_light rounded-3xl shadow-search backdrop-blur-md bg-white-home px-8 py-6 grid gap-4 relative z-10">
                   <h3 className="text-1xl lg:text-3xl font-semibold bg-purple bg-clip-text text-transparent">Top papers of the week</h3>
                   <div className="w-full min-h-[600px] grid md:grid-cols-2 md:grid-rows-2 gap-6 z-0">
-                     <CardBig />
-                     <CardSmall />
-                     <CardSmall />
+                     {topPapers[0] && (
+                        <CardBig
+                           key={topPapers[0].id}
+                           title={topPapers[0].title}
+                           documentType={'Manuscript'}
+                           authors={topPapers[0].authors}
+                           likes={topPapers[0].likes || 0}
+                           views={topPapers[0].views || 0}
+                           publishedAt={topPapers[0].publishedAt!}
+                           image={topPapers[0].image}
+                        />
+                     )}
+                     {topPapers[1] && (
+                        <CardSmall
+                           key={topPapers[1].id}
+                           title={topPapers[1].title}
+                           documentType={'Manuscript'}
+                           authors={topPapers[1].authors}
+                           likes={topPapers[1].likes || 0}
+                           views={topPapers[1].views || 0}
+                           publishedAt={topPapers[1].publishedAt!}
+                           image={topPapers[1].image}
+                        />
+                     )}
+                     {topPapers[2] && (
+                        <CardSmall
+                           key={topPapers[2].id}
+                           title={topPapers[2].title}
+                           documentType={'Manuscript'}
+                           authors={topPapers[2].authors}
+                           likes={topPapers[2].likes || 0}
+                           views={topPapers[2].views || 0}
+                           publishedAt={topPapers[2].publishedAt!}
+                           image={topPapers[2].image}
+                        />
+                     )}
                   </div>
                </div>
                <ShapeTertiary className="absolute right-[-13rem] z-0 bottom-[-18rem] max-w-[400px] max-h-[700px]" />
@@ -182,74 +225,80 @@ export default function HomePage() {
    )
 }
 
-const CardBig: React.FC = () => {
+interface TopPapersProps {
+   likes: number
+   views: number
+   title: string
+   image: string
+   documentType: string
+   authors: { id: string; name: string }[]
+   publishedAt: Date
+}
+
+const CardBig: React.FC<TopPapersProps> = (data: TopPapersProps) => {
    return (
       <div className="p-4 sm:p-6 rounded-md min-h-[300px] h-full row-span-2 relative">
          <div className="relative flex justify-between z-10">
-            <div className="bg-white px-3 py-1 text-primary-main rounded-md w-fit h-fit text-sm font-semibold">24/06/2023</div>
+            <div className="bg-white px-3 py-1 text-primary-main rounded-md w-fit h-fit text-sm font-semibold">
+               {data.publishedAt.toLocaleDateString('pt-BR')}{' '}
+            </div>
             <div className="bg-white px-3 py-1 text-primary-main rounded-md w-fit h-fit text-sm font-semibold flex gap-4 items-center">
                <div className="flex items-center gap-1">
                   <HandThumbsUpFill className="text-terciary-main w-4 h-4" />
-                  <p className="text-neutral-gray font-regular">10k</p>
+                  <p className="text-neutral-gray font-regular">{data.likes}</p>
                </div>
                <div className="flex items-center gap-1">
                   <Eye className="text-terciary-main w-4 h-4" />
-                  <p className="text-neutral-gray font-regular">10k</p>
+                  <p className="text-neutral-gray font-regular">{data.views}</p>
                </div>
             </div>
          </div>
-         <Image
-            fill
-            className="absolute inset-0 object-cover w-full rounded-md"
-            src="/images/placeholders/neom-OCKa0AkSyRc-unsplash.png"
-            alt="placeholder"
-         />
+         <Image fill className="absolute inset-0 object-cover w-full rounded-md" src={data.image} alt="placeholder" />
          <div className="absolute flex flex-col z-10 bottom-4 sm:bottom-8 left-4 sm:left-8 right-4 sm:right-8 gap-2 sm:gap-4">
             <div>
-               <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-t-md w-fit text-xs sm:text-sm font-semibold">• Paperdiv</div>
+               <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-t-md w-fit text-xs sm:text-sm font-semibold">
+                  • {data.documentType}
+               </div>
                <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-b-md rounded-tr-md font-semibold max-w-[24ch] text-lg sm:text-3xl">
-                  Hardware security and blockchain systems on the new digital era
+                  {data.title}
                </div>
             </div>
             <div className="bg-white w-fit px-2 sm:px-3 py-1 rounded-sm text-secundary_blue-main text-xs sm:text-base font-semibold">
-               by Silva, Carlos. Sampaio, Luana. and 5 more authors
+               by {formatAuthors(data.authors)}
             </div>
          </div>
       </div>
    )
 }
 
-const CardSmall: React.FC = () => {
+const CardSmall: React.FC<TopPapersProps> = (data: TopPapersProps) => {
    return (
       <div className="p-4 sm:p-6 rounded-md min-h-[300px] h-full relative">
          <div className="relative flex justify-between z-10">
-            <div className="bg-white px-3 py-1 text-primary-main rounded-md w-fit h-fit text-sm font-semibold">24/06/2023</div>
+            <div className="bg-white px-3 py-1 text-primary-main rounded-md w-fit h-fit text-sm font-semibold">
+               {data.publishedAt.toLocaleDateString('pt-Br')}
+            </div>
             <div className="bg-white px-3 py-1 text-primary-main rounded-md w-fit h-fit text-sm font-semibold flex gap-4 items-center">
                <div className="flex items-center gap-1">
                   <HandThumbsUpFill className="text-terciary-main w-4 h-4" />
-                  <p className="text-neutral-gray font-regular">10k</p>
+                  <p className="text-neutral-gray font-regular">{data.likes}</p>
                </div>
                <div className="flex items-center gap-1">
                   <Eye className="text-terciary-main w-4 h-4" />
-                  <p className="text-neutral-gray font-regular">10k</p>
+                  <p className="text-neutral-gray font-regular">{data.views}</p>
                </div>
             </div>
          </div>
-         <Image
-            fill
-            className="absolute inset-0 object-cover w-full rounded-md"
-            src="/images/placeholders/neom-OCKa0AkSyRc-unsplash.png"
-            alt="placeholder"
-         />
+         <Image fill className="absolute inset-0 object-cover w-full rounded-md" src={data.image} alt="placeholder" />
          <div className="absolute flex flex-col z-10 bottom-4 sm:bottom-8 left-4 sm:left-8 right-4 sm:right-8 gap-2 sm:gap-4">
             <div>
-               <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-t-md w-fit text-sm font-semibold">• Paperdiv</div>
+               <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-t-md w-fit text-sm font-semibold">{data.documentType}</div>
                <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-b-md rounded-tr-md font-semibold max-w-[24ch] text-base sm:text-lg">
-                  Hardware security and blockchain systems on the new digital era
+                  {data.title}
                </div>
             </div>
             <div className="bg-white w-fit px-2 sm:px-3 py-1 rounded-sm text-secundary_blue-main text-xs sm:text-base font-semibold">
-               by Silva, Carlos. Sampaio, Luana. and 5 more authors
+               by {formatAuthors(data.authors)}
             </div>
          </div>
       </div>

@@ -61,7 +61,8 @@ export const useArticles = () => {
                         })) || [],
                      likes: article.likes,
                      views: article.views,
-                     tags: article.keywords.split(';')?.map((item) => ({ id: uniqueId('keyword'), name: item })) || []
+                     tags: article.keywords.split(';')?.map((item) => ({ id: uniqueId('keyword'), name: item })) || [],
+                     publishedAt: new Date(article.updatedAt)
                   }
                })
 
