@@ -19,7 +19,8 @@ const ArticleItem: React.FC<ArticleItemProps> = ({
    views,
    tags,
    authors,
-   document_type
+   document_type,
+   id
 }: ArticleItemProps) => {
    return (
       <div className="grid gap-2 bg-[#fff] py-3 px-4 rounded-lg">
@@ -38,7 +39,7 @@ const ArticleItem: React.FC<ArticleItemProps> = ({
                   <div className="grid gap-2">
                      <Link
                         href="/home/search/[slug]"
-                        as={`/home/search/${slug(title)}`}
+                        as={`/home/search/${slug(id)}`}
                         className={twMerge(`${document_type && 'flex items-center gap-1'}`)}
                      >
                         {document_type && (

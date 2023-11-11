@@ -6,6 +6,36 @@ export type DocumentGetProps = {
    document: DocumentProps
 }
 
+export type GetDocumentPublicProps = {
+   document: DocumentPublicProps
+}
+
+export type DocumentPublicProps = {
+   id: string
+   title: string
+   cover: string
+   abstract: string
+   abstractChart: string | null
+   documentLink: string | null
+   keywords: string
+   field: string
+   documentType: string
+   accessType: string
+   price: number
+   likes: number
+   reviewerApprovals?: number
+   editorsApprovals?: number
+   downloads: number
+   views: number
+   authorName: string
+   createdAt: Date
+   updatedAt: Date
+
+   authors?: AuthorsPublicInfo[]
+   reviewers?: ReviewersPublicInfo[]
+   documentLikes: DocumentLikeProps[]
+}
+
 export type DocumentProps = {
    id: string
    title: string
@@ -110,6 +140,25 @@ export type ReviewerProps = {
    name: string
    email: string
    title: string
+   createdAt: Date
+   updatedAt: Date
+}
+
+export type AuthorsPublicInfo = {
+   name: string
+   title: string
+}
+
+export type ReviewersPublicInfo = {
+   name: string
+   title: string
+   role: string
+}
+
+type DocumentLikeProps = {
+   id: string
+   userId?: string
+   documentId: string
    createdAt: Date
    updatedAt: Date
 }

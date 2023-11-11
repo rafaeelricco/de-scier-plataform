@@ -2,7 +2,7 @@ import { ArticleUnderReviewProps } from '@/components/common/Publication/Item/Ar
 import { format } from 'date-fns'
 import { getSession, useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
-import { DocumentGetProps, DocumentPaginationProps, DocumentProps } from './getArticles'
+import { DocumentGetProps, DocumentPaginationProps, DocumentProps, GetDocumentPublicProps } from './getArticles'
 import { ArticleCardProps } from '@/components/modules/Home/Index/ArticleCard/Typing'
 import { uniqueId } from 'lodash'
 
@@ -28,7 +28,7 @@ export const useArticles = () => {
    const { data } = useSession()
 
    const [raw, setRawArticles] = useState<DocumentProps | null>(null)
-   const [article, setArticle] = useState<DocumentProps | null>(null)
+   const [article, setArticle] = useState<GetDocumentPublicProps | null>(null)
    const [articles, setArticles] = useState<ArticleCardProps[] | null>(null)
    const [loading, setLoading] = useState<boolean>(true)
 
@@ -84,9 +84,9 @@ export const useArticles = () => {
    const fetchArticle = async (documentId: string) => {
       if (data?.user?.token) {
          const session = await getSession()
-
-         if (session?.user?.token) {
-            const request = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/documents/private/${documentId}`, {
+         setLoading(true)
+         if (session?.user?.token && !article) {
+            const request = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/documents/${documentId}`, {
                method: 'GET',
                headers: {
                   'Content-Type': 'application/json',
@@ -94,10 +94,10 @@ export const useArticles = () => {
                }
             })
 
-            const response: DocumentGetProps = await request.json().then((res) => {
+            const response: GetDocumentPublicProps = await request.json().then((res) => {
                return res
             })
-
+            setArticle(response)
             return response
          }
       }
