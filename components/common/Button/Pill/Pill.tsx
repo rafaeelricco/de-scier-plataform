@@ -21,7 +21,8 @@ export const Pills: React.FC<PillsProps> = ({ items, onSelect, selected }: Pills
                      'text-sm text-neutral-gray px-4 py-2 border border-neutral-gray hover:text-status-green hover:border-status-green transition-all duration-200 ease-out',
                      `${index === 0 && 'rounded-l-full'}`,
                      `${index === items.length - 1 && 'rounded-r-full'}`,
-                     `${selected === item.value && 'text-status-green border-status-green'}`
+                     `${selected === item.value && 'text-status-green border-status-green'}`,
+                     `${active === index && 'text-status-green border-status-green'}`
                   )}
                   onClick={() => {
                      setActive(index)

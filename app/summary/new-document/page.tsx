@@ -77,6 +77,15 @@ export default function SubmitNewPaperPage() {
             size: 0,
             type: ''
          },
+         cover: {
+            lastModified: 0,
+            lastModifiedDate: new Date(),
+            name: '',
+            path: '',
+            preview: '',
+            size: 0,
+            type: ''
+         },
          authors: [{}],
          keywords: []
       }
@@ -86,14 +95,17 @@ export default function SubmitNewPaperPage() {
 
    const onReorder = (newOrder: typeof authors) => setAuthors((prevItems) => [...newOrder])
 
+   console.log(watch('documentType'))
+
    const handleSubmitDocument: SubmitHandler<CreateDocumentProps> = async (data) => {
       setLoading(true)
+      console.log(data)
       const requestData = {
          abstract: data.abstract,
          accessType: access_type === 'open-access' ? 'FREE' : 'PAID',
          documentType: data.documentType,
          field: data.field,
-         price: Number(data.price),
+         price: access_type === 'open-access' ? 0 : Number(data.price),
          title: data.title,
          abstractChart: abstractChart,
          keywords: data.keywords.map((item) => item.name)
@@ -102,7 +114,7 @@ export default function SubmitNewPaperPage() {
       const documentAuthors = authors.map((item) => ({
          email: item.email,
          name: item.name,
-         revenuePercent: Number(item.share?.substring(0, item.share.length - 1)) || 0,
+         revenuePercent: access_type === 'open-access' ? 0 : Number(item.share?.substring(0, item.share.length - 1)) || 0,
          title: item.title,
          walletAddress: item.wallet || ''
       }))
@@ -138,7 +150,7 @@ export default function SubmitNewPaperPage() {
       })
 
       if (!uploadCoverSuccess) {
-         toast.warning('There was an error uploading your file. But you can upload later.')
+         toast.warning('There was an error uploading your cover file. But you can upload later.')
       }
 
       if (response.success) {
@@ -147,6 +159,8 @@ export default function SubmitNewPaperPage() {
          setLoading(false)
       }
    }
+
+   console.log(watch('cover'))
 
    const handleGenerateAbstract = async () => {
       const toastId = toast.loading('Generating abstract with AI...')
@@ -231,7 +245,7 @@ export default function SubmitNewPaperPage() {
       if (session?.user) {
          const author = {
             id: uniqueId(`${session?.user?.userInfo.id}`),
-            email: session?.user?.userInfo.email,
+            email: session?.user?.email,
             name: session?.user?.userInfo.name,
             revenuePercent: '0',
             title: session?.user?.userInfo.title || '',
