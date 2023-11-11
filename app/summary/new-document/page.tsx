@@ -242,7 +242,7 @@ export default function SubmitNewPaperPage() {
       }
    }, [session?.user, setValue])
 
-   useEffect(() => {
+   /* useEffect(() => {
       const runMermaid = async () => {
          mermaid.initialize({ startOnLoad: false })
          await mermaid.run({ querySelector: '.mermaid' })
@@ -252,7 +252,7 @@ export default function SubmitNewPaperPage() {
          runMermaid()
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [abstractChart, watch('abstractChart')])
+   }, [abstractChart, watch('abstractChart')]) */
 
    return (
       <React.Fragment>
