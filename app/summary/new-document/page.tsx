@@ -238,6 +238,7 @@ export default function SubmitNewPaperPage() {
             walletAddress: session?.user?.userInfo.walletAddress || ''
          }
          setValue('authors', [author])
+         setAuthors([author])
       }
    }, [session?.user, setValue])
 
