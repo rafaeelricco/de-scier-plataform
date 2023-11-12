@@ -595,14 +595,14 @@ export default function SubmitNewPaperPage() {
                   </Input.Root>
                   {access_type == 'open-access' && (
                      <Input.Root>
-                        <Input.Label className="text-neutral-gray text-sm font-semibold pl-2">Valor total</Input.Label>
+                        <Input.Label className="text-neutral-gray text-sm font-semibold pl-2">Total value</Input.Label>
                         <Input.Input disabled placeholder="R$" />
                      </Input.Root>
                   )}
                   {access_type == 'paid-access' && (
                      <React.Fragment>
                         <Input.Root>
-                           <Input.Label>Price</Input.Label>
+                           <Input.Label className="text-sm font-semibold">Price</Input.Label>
                            <CurrencyInput
                               currency="USD"
                               onChangeValue={(event, originalValue, maskedValue) => setValue('price', originalValue.toString())}

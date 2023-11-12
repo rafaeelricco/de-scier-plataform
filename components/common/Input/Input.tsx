@@ -259,7 +259,7 @@ const Select = React.forwardRef<HTMLInputElement, SelectInputProps>(
             }}
          >
             <div className="grid gap-2">
-               {label && <label className="text-base font-semibold">{label}</label>}
+               {label && <label className="text-sm font-semibold">{label}</label>}
                <div className="relative h-fit">
                   {hasIcon && (
                      <div
