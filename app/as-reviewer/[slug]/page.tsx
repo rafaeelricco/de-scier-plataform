@@ -10,6 +10,7 @@ import EditComment from '@/components/modules/deScier/Article/EditComment'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useGetApprovals } from '@/hooks/useGetApprovals'
 import { header_editor_reviewer } from '@/mock/article_under_review'
 import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
@@ -58,23 +59,8 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
    const [buttonLoading, setButtonLoading] = React.useState({
       comment: false
    })
-   const [reviewerApprovals, setReviewerApprovals] = React.useState<string[]>(['PENDING', 'PENDING'])
-   const [editorApprovals, setEditorApprovals] = React.useState<string[]>(['PENDING'])
 
-   const getApprovals = (approvals: ReviewersOnDocuments[]) => {
-      console.log('apprvals', approvals)
-      const reviewers = approvals.filter((item) => item.role === 'reviewer').slice(0, 2)
-      reviewers.forEach((item, index) => {
-         reviewerApprovals[index] = item.approvedStatus
-         setReviewerApprovals(reviewerApprovals)
-      })
-
-      const editors = approvals.filter((item) => item.role === 'editor')
-      editorApprovals[0] = editors[0].approvedStatus
-      setEditorApprovals(editorApprovals)
-   }
-
-   console.log(reviewerApprovals)
+   const { getApprovals, editorApprovals, reviewerApprovals } = useGetApprovals()
 
    const fetchSingleArticle = async (documentId: string) => {
       await fetch_article(documentId).then((res) => {
@@ -712,7 +698,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                            {item === 'PENDING' && (
                               <Clock
                                  key={uniqueId('reviewer-approval')}
-                                 className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer"
+                                 className="w-6 h-6 hover:scale-125 transition-all duration-200 fill-status-pending cursor-pointer"
                               />
                            )}
                         </>

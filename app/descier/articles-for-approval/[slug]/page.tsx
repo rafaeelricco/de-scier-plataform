@@ -9,6 +9,7 @@ import { File } from '@/components/common/File/File'
 import { RenderMermaidChart } from '@/components/common/RenderMermaidChart/RenderMermaidChart'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { useGetApprovals } from '@/hooks/useGetApprovals'
 import { access_type_options } from '@/mock/access_type'
 import { header_editor_reviewer } from '@/mock/article_under_review'
 import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
@@ -22,11 +23,12 @@ import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
 import { format } from 'date-fns'
+import { uniqueId } from 'lodash'
 import mermaid from 'mermaid'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
-import { ArrowLeft, Check, PlusCircleDotted, X } from 'react-bootstrap-icons'
+import { ArrowLeft, Check, Clock, PlusCircleDotted, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { toast } from 'react-toastify'
 
@@ -49,6 +51,8 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
    })
    const [chartError, setChartError] = React.useState<boolean>(false)
 
+   const { editorApprovals, getApprovals, reviewerApprovals } = useGetApprovals()
+
    const onReorder = (newOrder: typeof items) => setItems((prevItems) => [...newOrder])
 
    const fetchSingleArticle = async (documentId: string) => {
@@ -56,7 +60,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
          setArticle(res as DocumentGetProps)
          const access = res?.document.accessType === 'FREE' ? 'open-access' : 'paid-access'
          setAccessType(access)
-         console.log(res)
+         getApprovals(res?.document.reviewersOnDocuments || [])
       })
    }
 
@@ -407,27 +411,57 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                <div className="flex items-center justify-center gap-12">
                   <div className="flex items-center">
                      <h2 className="text-status-yellow font-semibold text-lg">Reviewer</h2>
-                     {article?.document.reviewersOnDocuments
-                        ?.filter((item) => item.role === 'reviewer')
-                        ?.map((item) =>
-                           item.approvedStatus === 'APPROVED' ? (
-                              <Check key={item.id} className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
-                           ) : (
-                              <X key={item.id} className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer" />
-                           )
-                        )}
+                     {reviewerApprovals?.map((item) => (
+                        <>
+                           {item === 'APPROVED' && (
+                              <Check
+                                 key={uniqueId('reviewer-approval')}
+                                 className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer"
+                              />
+                           )}
+
+                           {item === 'REJECTED' && (
+                              <X
+                                 key={uniqueId('reviewer-approval')}
+                                 className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer"
+                              />
+                           )}
+
+                           {item === 'PENDING' && (
+                              <Clock
+                                 key={uniqueId('reviewer-approval')}
+                                 className="w-6 h-6 hover:scale-125 transition-all duration-200 fill-status-pending cursor-pointer"
+                              />
+                           )}
+                        </>
+                     ))}
                   </div>
                   <div className="flex items-center">
                      <h2 className="text-terciary-main font-semibold text-lg">Editor</h2>
-                     {article?.document.reviewersOnDocuments
-                        ?.filter((item) => item.role === 'editor')
-                        ?.map((item) =>
-                           item.approvedStatus === 'APPROVED' ? (
-                              <Check key={item.id} className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
-                           ) : (
-                              <X key={item.id} className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer" />
-                           )
-                        )}
+                     {editorApprovals?.map((item) => (
+                        <>
+                           {item === 'APPROVED' && (
+                              <Check
+                                 key={uniqueId('reviewer-approval')}
+                                 className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer"
+                              />
+                           )}
+
+                           {item === 'REJECTED' && (
+                              <X
+                                 key={uniqueId('reviewer-approval')}
+                                 className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer"
+                              />
+                           )}
+
+                           {item === 'PENDING' && (
+                              <Clock
+                                 key={uniqueId('reviewer-approval')}
+                                 className="w-6 h-6 hover:scale-125 transition-all duration-200 fill-status-pending cursor-pointer"
+                              />
+                           )}
+                        </>
+                     ))}
                   </div>
                </div>
                {article?.document.status === 'ADMIN_APPROVE' && (
