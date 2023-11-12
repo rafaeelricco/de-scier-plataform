@@ -45,7 +45,10 @@ export const ArticleAcess: React.FC<ArticleAcessProps> = ({ access_type, date, v
                   )}
                </React.Fragment>
             )}
-            <p className="text-base text-center? font-regular">Document published in {formatDate(date)}</p>
+            <div>
+               {access_type === 'paid' && <p className="text-sm text-center text-neutral-light_gray mb-1">This value goes to the author.</p>}
+               <p className="text-base text-center? font-regular">Document published in {formatDate(date)}</p>
+            </div>
          </div>
       </React.Fragment>
    )

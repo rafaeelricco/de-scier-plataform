@@ -183,29 +183,23 @@ export default function Page({ params }: { params: { slug: string } }) {
                   />
                )}
                {purchase.processing && <PurchaseProcessing />}
-               {purchase.my_articles && (
-                  <PurchasedArticles
-                     onClose={() => {
-                        setPurchase({ ...purchase, my_articles: false })
-                     }}
-                  />
-               )}
+               {purchase.my_articles && <PurchasedArticles onClose={() => setPurchase({ ...purchase, my_articles: false })} />}
             </Dialog.Content>
          </Dialog.Root>
          <div className="grid gap-8">
             <div className="flex items-center gap-4 pt-8 md:pt-12">
                <ArrowLeft size={32} className="hover:scale-110 transition-all cursor-pointer" onClick={() => router.back()} />
-               <h1 className="text-1xl font-semibold">Return</h1>
+               <h1 className="text-1xl font-semibold">Back</h1>
             </div>
             <div className="bg-white rounded-xl h-fit p-6 flex flex-col gap-4">
                <div className="flex flex-col gap-2">
                   <div className="hidden md:flex items-center gap-2">
                      <div className="border border-neutral-stroke_light rounded-md px-2 py-1 w-fit flex items-center flex-shrink gap-2">
                         <div className="w-3 h-3 bg-status-green rounded-full" />
-                        <p className="text-sm select-none">{accessType === 'FREE' ? 'Open access' : 'Paid access'} </p>
+                        <p className="text-sm select-none">{accessType === 'FREE' ? 'Open access' : 'Paid access'}</p>
                      </div>
                      <span className="text-black font-semibold">•</span>
-                     <p className="text-lg font-semibold">{capitalizeWord(article?.document?.documentType || 'paper')} </p>
+                     <p className="text-lg font-semibold">{capitalizeWord(article?.document?.documentType || 'paper')}</p>
                      <span className="text-black font-semibold">•</span>
                      <p className="text-lg font-semibold text-primary-main">{article?.document?.field}</p>
                   </div>
@@ -232,7 +226,6 @@ export default function Page({ params }: { params: { slug: string } }) {
                      </HoverCard>
                      <hr className="divider-h w-full my-2" />
                   </div>
-
                   <h3 className="text-2xl md:text-3xl text-black font-bold">{article?.document?.title}</h3>
                   <div className="flex flex-wrap gap-2">
                      {article?.document?.keywords.split(';')?.map((tag) => (
