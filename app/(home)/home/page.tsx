@@ -27,9 +27,9 @@ import { toast } from 'react-toastify'
 
 export default function HomePage() {
    const router = useRouter()
-   const { lg } = useWindowDimension()
    const queryParams = useSearchParams()
 
+   const { lg } = useWindowDimension()
    const { articles, loading } = useArticles()
 
    const [topPapers, setTopPapers] = useState<ArticleCardProps[]>([])
@@ -37,13 +37,6 @@ export default function HomePage() {
 
    const [searchTerm, setSearchTerm] = useState('')
    const [searchAuthor, setSearchAuthor] = useState('')
-
-   const login_component = 'login'
-   const register_component = 'register'
-   const forgot_password_component = 'forgot_password'
-
-   const [open, setOpen] = React.useState(false)
-   const [component, setComponent] = React.useState(login_component)
 
    const handleSearchArticle = () => {
       let searchQuery = '?'
@@ -96,20 +89,23 @@ export default function HomePage() {
       }
    }, [articles])
 
-   console.log(articles)
-
    return (
       <React.Fragment>
          <IllustrationHero className="hidden lg:block lg:w-[45%] xl:w-1/2 absolute right-0 md:top-48 lg:top-50 xl:top-60 h-full lg:max-w-[600px] xl:max-w-[708px] max-h-[554px]" />
          <ShapeHero className="hidden lg:block lg:w-3/4 xl:w-full absolute right-0 top-0 z-[-1] md:max-w-[600px] md:max-h-[700px] lg:max-w-[700px] lg:max-h-[800px] xl:max-w-[742px] xl:max-h-[872px]" />
          <div className="h-auto lg:pt-24 lg:h-[calc(100vh-14rem)]">
             <div className="grid gap-6 content-start">
-               <div className="grid gap-2 mt-8 lg:mt-28">
-                  <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold lg:max-w-[20ch] bg-purple bg-clip-text text-transparent">
-                     A new future for scientific publications
-                  </h1>
-                  <p className="text-sm md:text-base lg:text-lg max-w-[50ch]">
-                     In deScier, scientific papers are published in a community created by scientists, for scientists.
+               <div className="grid gap-4 mt-8 lg:mt-24">
+                  <div className="grid gap-2">
+                     <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold lg:max-w-[20ch] bg-purple bg-clip-text text-transparent h-14">
+                        The DeSci Journal
+                     </h1>
+                     <h3 className="text-2xl md:text-3xl lg:text-3xl font-bold bg-purple bg-clip-text text-transparent h-10">Redefine how you publish</h3>
+                  </div>
+                  <p className="text-sm md:text-base lg:text-lg max-w-[58ch]">
+                     Your scientific and technical documents are welcome here. Publish easily, economically, peer-reviewed papers while retaining 100% of
+                     your copyright. deScier is dedicated to fostering a true community where belonging is not just an idea: it{"'"}s your experience with
+                     us.
                   </p>
                </div>
                <div className="py-3 px-4 max-w-full lg:max-w-[50vw]  xl:max-w-[600px] 2xl:max-w-full bg-white grid sm:grid-flow-col sm:items-center gap-3 lg:gap-4 rounded-xl lg:rounded-full shadow-search lg:w-fit h-fit ">
@@ -154,10 +150,10 @@ export default function HomePage() {
             <div className="relative flex lg:justify-center md:mt-8 lg:mt-0">
                <CirclesHero className="absolute left-[-14rem] bottom-0 min-w-[200px] max-w-[200px]" />
                <h2 className="text-lg lg:text-1xl lg:max-w-[50ch] text-center w-full lg:my-auto lg:mx-0 lg:z-10 lg:mt-[-2.5rem]">
-                  Our enviroment is powered by <span className="font-bold bg-purple bg-clip-text text-transparent">blockchain technology</span>, where we
-                  build a Worldwide community, with{' '}
+                  Leveraged by <span className="font-bold bg-purple bg-clip-text text-transparent">blockchain technology</span>, we build a worldwide
+                  community where{' '}
                   <span className="font-bold bg-purple bg-clip-text text-transparent">
-                     authors having 100% of the ownership and copyright of their creations.
+                     authors retain 100% ownership and copyright of their creations.
                   </span>
                </h2>
                <ShapeSecondary className="absolute max-w-[372px] z-0 left-[-13rem] top-72 lg:top-[4rem] lg:max-w-[472px] lg:max-h-[680px]" />
@@ -211,7 +207,7 @@ export default function HomePage() {
                   <div className="px-1 lg:px-72 grid gap-4 sm:gap-6 lg:gap-8">
                      <div className="grid gap-4 sm:gap-6 lg:gap-10">
                         <div className="grid gap-3 sm:gap-4 md:gap-6 lg:gap-x-6 gap-y-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                           <h3 className="text-xl sm:text-2xl lg:text-3xl font-semibold col-span-full">Latest articles</h3>
+                           <h3 className="text-xl sm:text-2xl lg:text-3xl font-semibold col-span-full">Latest papers</h3>
                            {loading ? (
                               <React.Fragment>
                                  <ArticleUnderReviewSkeleton />
@@ -246,11 +242,11 @@ export default function HomePage() {
                            )}
                            <div className="flex items-center justify-start lg:justify-end gap-3 sm:gap-4 lg:gap-4 col-span-full">
                               <h3
-                                 className="text-sm sm:text-base lg:text-lg font-semibold text-primary-main select-none cursor-pointer"
+                                 className="text-sm sm:text-base lg:text-lg font-semibold text-primary-main select-none cursor-pointer hover:underline transition-all duration-200"
                                  onMouseEnter={() => router.prefetch(home_routes.home.search)}
                                  onClick={() => router.push(home_routes.home.search)}
                               >
-                                 View all articles
+                                 View all papers
                               </h3>
                               <CaretRightFill className="w-4 sm:w-5 h-4 sm:h-5 text-primary-main" />
                            </div>

@@ -32,7 +32,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ article, onPurchase, onSetPa
          />
          <div className="flex flex-col gap-6 pb-14 md:pb-0 md:flex-row">
             <div className="flex flex-col gap-6 md:py-14 md:px-8 md:w-1/2">
-               <h3 className="text-xl font-semibold">Purchase document</h3>
+               <h3 className="text-xl font-semibold">Purchase article</h3>
                <Item article={article} />
                <hr className="divider-h" />
             </div>
@@ -118,7 +118,7 @@ const Resume: React.FC<ResumeProps> = ({ article, onPurchase, onSetPaymentOption
             Price <span className="font-semibold">{formatPriceInUSD(article.price)}</span>
          </h3>
          <Button.Button className="py-3 px-4" onClick={onPurchase}>
-            Purchase document
+            Purchase article
          </Button.Button>
       </React.Fragment>
    )

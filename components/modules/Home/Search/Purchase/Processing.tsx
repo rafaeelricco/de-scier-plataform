@@ -23,7 +23,7 @@ export const PurchaseProcessing: React.FC = () => {
                   />
                </svg>
             </div>
-            <p className="text-base text-neutral-gray text-center">Processing your order and preparing the documents...</p>
+            <p className="text-base text-neutral-gray text-center">Processing your order and preparing the articles...</p>
          </div>
       </React.Fragment>
    )

@@ -4,7 +4,7 @@ import PaginationComponent from '@/components/common/Pagination/Pagination'
 import { BannerStartPublishing } from '@/components/modules/Home/Index/BannerStartPublishing/BannerStartPublishing'
 import ArticleItem from '@/components/modules/Home/Search/ArticleItem/ArticleItem'
 import useDebounce from '@/hooks/useDebounce'
-import { filter_by_year, filter_access, filter_document_type, filter_field } from '@/mock/dropdow_filter_options'
+import { filter_access, filter_by_year, filter_document_type, filter_field } from '@/mock/dropdow_filter_options'
 import { useArticles } from '@/services/document/fetchPublic.service'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
@@ -87,7 +87,7 @@ export default function SearchArticlesPage() {
                <Dropdown no_selected label="Field" className="min-w-fit px-8" items={filter_field} onSelect={(value) => setField(value)} />
                <Dropdown
                   no_selected
-                  label="Document type"
+                  label="Article type"
                   className="min-w-fit px-8"
                   items={filter_document_type}
                   onSelect={(value) => setDocumentType(value)}

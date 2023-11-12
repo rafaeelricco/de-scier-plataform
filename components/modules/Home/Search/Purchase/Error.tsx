@@ -15,7 +15,7 @@ export const PurchaseError: React.FC<PurchaseErrorProps> = ({ onClose }: Purchas
             onClick={onClose}
          />
          <div className="flex flex-col gap-6">
-            <h3 className="text-xl font-semibold">Purchase successful!</h3>
+            <h3 className="text-xl font-semibold">Error on checkout</h3>
             <ErrorIllustration className="max-w-[180px] mx-auto my-0" />
             <p className="text-base text-neutral-gray text-center">There was an error processing your order. (Explanation of the error). Try again.</p>
             <Button.Button variant="outline" className="py-3 px-4" onClick={onClose}>

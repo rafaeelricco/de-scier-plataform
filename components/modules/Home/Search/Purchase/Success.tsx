@@ -19,10 +19,10 @@ export const PurchaseSuccess: React.FC<PurchaseSuccessProps> = ({ onClose, onRet
             <h3 className="text-xl font-semibold">Purchase successful!</h3>
             <SucessIllustration className="max-w-[242px] mx-auto my-0" />
             <p className="text-base text-neutral-gray text-center">
-               Your purchase was confirmed, and the article will be avaliable for accessing and downloading.
+               Your purchase was confirmed, and the article will be available for accessing and downloading.
             </p>
             <Button.Button className="py-3 px-4" onClick={onReturn}>
-               Return to article page
+               Back to article page
             </Button.Button>
          </div>
       </React.Fragment>
