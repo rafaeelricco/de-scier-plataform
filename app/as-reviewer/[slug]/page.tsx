@@ -458,7 +458,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                         </Input.Root>
                      </div>
                      <Button.Button className="px-4 py-2 h-[43px]" onClick={handleAddComment} loading={buttonLoading.comment}>
-                        Add commentss
+                        Add comments
                      </Button.Button>
                   </div>
                </div>
