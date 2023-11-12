@@ -5,7 +5,7 @@ import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import { useRouter } from 'next/navigation'
 import React from 'react'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
 const WithLink: React.FC<WithLinkProps> = ({ article_name, invited_by, inviteCode, onClose }: WithLinkProps) => {
@@ -55,14 +55,15 @@ const WithLink: React.FC<WithLinkProps> = ({ article_name, invited_by, inviteCod
       <React.Fragment>
          <form className="grid gap-6" onSubmit={handleSubmit(handleSubmitReview)}>
             <div className="grid gap-2">
-               <h3 className="text-xl font-semibold">You were invited to be a reviewer/editor for a document</h3>
+               <h3 className="text-xl font-semibold">You were invited to be a Reviewer/ Editor for an article</h3>
                <p className="text-sm">
-                  {invited_by} invited you to be a reviewer/editor for {article_name}, are you interested?
+                  {invited_by} has extended a kind invitation for you to serve as Reviewer/ Editor for the article entitled {article_name} Would this
+                  invitation align with your skills and expertise?
                </p>
             </div>
             <div className="grid grid-cols-2 gap-6">
                <Input.Root>
-                  <Input.Label>Your title</Input.Label>
+                  <Input.Label>Your expertise</Input.Label>
                   <Input.Input placeholder="Ex: Biologist" {...register('title')} />
                </Input.Root>
                <Input.Root>
@@ -78,7 +79,7 @@ const WithLink: React.FC<WithLinkProps> = ({ article_name, invited_by, inviteCod
             </div>
             <div className="grid gap-4">
                <Button.Button className="py-3 px-8" type="submit" loading={loading}>
-                  I want to review/edit!
+                  Yes, I want to review/ edit!
                </Button.Button>
                <Button.Button variant="outline" className="py-3 px-8" onClick={handleDecline}>
                   No, thanks

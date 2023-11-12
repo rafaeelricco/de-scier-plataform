@@ -674,7 +674,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                   <>
                      <Button.Button variant="primary" className="flex items-center" onClick={() => handleApproveDocument(true)} loading={loading}>
                         <Check className="w-5 h-5" />
-                        Approve document
+                        Approve article
                      </Button.Button>
                   </>
                )}
@@ -688,7 +688,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                         loading={loading}
                      >
                         <Check className="w-5 h-5" />
-                        Approve document
+                        Approve article
                      </Button.Button>
                   </>
                )}

@@ -65,7 +65,7 @@ const UpdatePassword: React.FC<UpdatePasswordProps> = ({
             className="w-8 h-8 absolute top-4 right-4 cursor-pointer hover:text-status-error transition-all duration-500 ease-out hover:scale-110 hover:rotate-180 transform"
             onClick={onClose}
          />
-         {success && <GenericSuccess onClose={onClose} text="Password updated" message="Your password was updated." button_text="Return" />}
+         {success && <GenericSuccess onClose={onClose} text="Password updated" message="Your password was updated." button_text="Done" />}
          {new_password && (
             <form className="grid gap-6" onSubmit={handleSubmit(handleUpdatePassword)}>
                <div className="grid gap-2">

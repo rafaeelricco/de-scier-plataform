@@ -147,7 +147,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onBack, onClo
          )}
          {component.success && (
             <div className="w-ful grid gap-6 md:p-16 relative p-6 pb-12">
-               <GenericSuccess text="Password updated" message="Your password was updated." button_text="Return" onClose={onClose} />
+               <GenericSuccess text="Password updated" message="Your password was updated." button_text="Done" onClose={onClose} />
             </div>
          )}
       </form>
