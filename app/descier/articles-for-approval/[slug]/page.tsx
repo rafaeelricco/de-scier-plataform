@@ -3,14 +3,15 @@
 import { AuthorsListDragabble } from '@/components/common/AuthorsListDraggable/AuthorsListDraggable'
 import Box from '@/components/common/Box/Box'
 import CommentItem from '@/components/common/Comment/Comment'
+import { EditorReviewList } from '@/components/common/EditorReviewList/EditorReviewList'
 import { EditorsAndReviewers } from '@/components/common/EditorsAndReviwers/EditorAndReviwer'
 import { File } from '@/components/common/File/File'
 import { RenderMermaidChart } from '@/components/common/RenderMermaidChart/RenderMermaidChart'
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
+import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { access_type_options } from '@/mock/access_type'
 import { header_editor_reviewer } from '@/mock/article_under_review'
-import { Author, Authorship, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
+import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
 import { approveByAdminService } from '@/services/admin/approve.service'
 import { useFetchAdminArticles } from '@/services/admin/fetchDocuments.service'
@@ -18,6 +19,7 @@ import { downloadDocumentVersionService } from '@/services/document/download.ser
 import { DocumentComment, DocumentGetProps } from '@/services/document/getArticles'
 import { keywordsArray } from '@/utils/keywords_format'
 import * as Button from '@components/common/Button/Button'
+import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
 import { format } from 'date-fns'
 import mermaid from 'mermaid'
@@ -38,32 +40,16 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
    const [items, setItems] = React.useState(authors_mock)
    const [share, setShare] = React.useState('')
    const [authors, setAuthors] = React.useState<Author[]>([])
-   const [reviewers, setReviewers] = React.useState<Author[]>([])
-   const [authorship, setAuthorship] = React.useState<Authorship[]>([])
    const [access_type, setAccessType] = React.useState('open-access')
    const [authorship_settings, setAuthorshipSettings] = React.useState<Author>()
-   const [popover, setPopover] = React.useState({ copy_link: false })
    const [dialog, setDialog] = React.useState({ author: false, share_split: false, edit_author: false, reasoning: false })
-   const [loading, setLoading] = React.useState(false)
+   const [loading, setLoading] = React.useState({
+      approve: false,
+      reject: false
+   })
    const [chartError, setChartError] = React.useState<boolean>(false)
 
    const onReorder = (newOrder: typeof items) => setItems((prevItems) => [...newOrder])
-
-   function copyToClipboard() {
-      const textToCopy = document.getElementById('link-to-copy')!.innerText
-
-      navigator.clipboard
-         .writeText(textToCopy)
-         .then(() => {
-            setPopover({ ...popover, copy_link: true })
-            setTimeout(() => {
-               setPopover({ ...popover, copy_link: false })
-            }, 3000)
-         })
-         .catch((err) => {
-            console.error('Erro ao copiar texto: ', err)
-         })
-   }
 
    const fetchSingleArticle = async (documentId: string) => {
       await fetch_article(documentId).then((res) => {
@@ -75,19 +61,22 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
    }
 
    const handleApproveDocument = async (approve: boolean) => {
-      setLoading(true)
+      setLoading({ ...loading, approve: true })
       const response = await approveByAdminService({
          documentId: article?.document.id!,
-         approve
+         approve: approve
       })
 
-      setLoading(false)
+      setLoading({ ...loading, approve: false })
+
       if (!response.success) {
          toast.error(response.message)
          return
       }
+
       const status = approve ? 'approved' : 'rejected'
-      toast.success(`Document ${status} successgully`)
+      toast.success(`Document ${status} successfully!`)
+
       router.push(home_routes.descier.index)
    }
 
@@ -141,16 +130,20 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
 
    return (
       <React.Fragment>
-         {/* <Dialog.Root open={dialog.reasoning}>
+         <Dialog.Root open={dialog.reasoning}>
             <Dialog.Overlay />
             <Dialog.Content className="py-14 px-16 max-w-[600px]">
                <Reasoning
-                  reason=""
+                  message={''}
+                  documentAuthor={article?.document.user?.name!}
                   onClose={() => setDialog({ ...dialog, reasoning: false })}
-                  onConfirm={() => setDialog({ ...dialog, reasoning: false })}
+                  onConfirm={(value) => {
+                     setDialog({ ...dialog, reasoning: false })
+                     handleApproveDocument(false)
+                  }}
                />
             </Dialog.Content>
-         </Dialog.Root> */}
+         </Dialog.Root>
          <div className="grid gap-8">
             <div className="flex items-center gap-4">
                <ArrowLeft size={32} className="hover:scale-110 transition-all cursor-pointer" onClick={() => router.back()} />
@@ -255,7 +248,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                   <p className="text-sm">The reviewing team can publish comments, suggesting updates on your document.</p>
                </div>
                <div className="border rounded-md p-4">
-                  <ScrollArea className="lg:h-[300px] 2xl:h-[400px] pr-2">
+                  <ScrollArea className="lg:h-[300px] pr-2">
                      <div className="grid gap-4">
                         {article?.document.documentComments && article?.document?.documentComments?.length > 0 ? (
                            article?.document.documentComments?.map((comment: DocumentComment) => (
@@ -298,48 +291,13 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
             <Box className="grid gap-8 h-fit py-6 px-8">
                <div className="grid gap-4">
                   <div className="grid gap-2">
-                     <h3 className="text-xl text-primary-main font-semibold lg:text-lg 2xl:text-xl">Editors / Reviewers</h3>
+                     <h3 className="text-lg md:text-xl text-primary-main font-semibold">Editors / Reviewers</h3>
                      <p className="text-sm">
                         At least 1 editor and 2 reviewers’ approval are required to publish the paper. The editors and reviewers cannot be authors in the
                         project. Invite them to the platform through the link:
                      </p>
                   </div>
-                  <div>
-                     <p className="text-sm font-semibold">Invite Link</p>
-                     <div className="flex flex-col md:flex-row md:items-center gap-4">
-                        <p className="text-sm font-semibold text-blue-500 max-w-[50ch] underline truncate ..." id="link-to-copy">
-                           {article?.document.reviewerInviteLink}
-                        </p>
-                        <HoverCard open={popover.copy_link}>
-                           <HoverCardTrigger>
-                              <Button.Button
-                                 variant="outline"
-                                 className="px-4 py-1 text-sm"
-                                 onClick={() => {
-                                    const textToCopy = document.getElementById('link-to-copy')!.innerText
-
-                                    navigator.clipboard
-                                       .writeText(textToCopy)
-                                       .then(() => {
-                                          setPopover({ ...popover, copy_link: true })
-                                          setTimeout(() => {
-                                             setPopover({ ...popover, copy_link: false })
-                                          }, 3000)
-                                       })
-                                       .catch((err) => {
-                                          console.error('Erro ao copiar texto: ', err)
-                                       })
-                                 }}
-                              >
-                                 Copy Link
-                              </Button.Button>
-                           </HoverCardTrigger>
-                           <HoverCardContent className="w-fit px-4 py-2">
-                              <h4 className="text-xs font-semibold text-status-green">O link foi copiado para a área de transferência!</h4>
-                           </HoverCardContent>
-                        </HoverCard>
-                     </div>
-                  </div>
+                  <EditorReviewList article={article} />
                </div>
                <div>
                   <div className="grid grid-cols-5">
@@ -354,7 +312,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
             </Box>
             <Box className="grid gap-8 h-fit py-6 px-8">
                <div className="grid gap-2">
-                  <h3 className="text-xl text-status-green font-semibold lg:text-lg 2xl:text-xl">Authorship</h3>
+                  <h3 className="text-lg md:text-xl text-status-green font-semibold">Authorship</h3>
                   <p className="text-sm">
                      Decide if the project is <span className="text-terciary-main font-semibold">Open Access</span>,{' '}
                      <span className="text-[#EFB521] font-semibold">Paid Access</span>
@@ -474,21 +432,25 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                </div>
                {article?.document.status === 'ADMIN_APPROVE' && (
                   <>
-                     <Button.Button variant="primary" className="flex items-center" onClick={() => handleApproveDocument(true)} loading={loading}>
+                     <Button.Button variant="primary" className="flex items-center" onClick={() => handleApproveDocument(true)} loading={loading.approve}>
                         <Check className="w-5 h-5" />
-                        Approve document
+                        Approve article
                      </Button.Button>
-                     <Button.Button variant="outline" className="flex items-center" onClick={() => handleApproveDocument(false)} loading={loading}>
-                        Reject document
+                     <Button.Button
+                        variant="outline"
+                        className="flex items-center"
+                        onClick={() => setDialog({ ...dialog, reasoning: true })}
+                        loading={loading.reject}
+                     >
+                        Reject article
                      </Button.Button>
                   </>
                )}
-
                {article?.document.status === 'REJECTED' && (
-                  <p className="text-lg text-center text-status-pending font-semibold select-none">Article rejected</p>
+                  <p className="text-lg text-center text-status-error font-semibold select-none">Article rejected</p>
                )}
                {article?.document.status === 'APPROVED' && (
-                  <p className="text-lg text-center text-status-pending font-semibold select-none">Article approved</p>
+                  <p className="text-lg text-center text-status-green font-semibold select-none">Article approved</p>
                )}
             </Box>
          </div>

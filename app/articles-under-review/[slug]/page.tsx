@@ -2,7 +2,7 @@
 
 import Box from '@/components/common/Box/Box'
 import { Pills } from '@/components/common/Button/Pill/Pill'
-import CommentItem from '@/components/common/Comment/Comment'
+import { CommentsList } from '@/components/common/CommentsList/CommentsList'
 import Dropzone from '@/components/common/Dropzone/Dropzone'
 import { StoredFile } from '@/components/common/Dropzone/Typing'
 import { EditorReviewList } from '@/components/common/EditorReviewList/EditorReviewList'
@@ -514,67 +514,50 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   <h3 className="text-lg md:text-xl text-primary-main font-semibold">Comments</h3>
                   <p className="text-sm">The reviewing team may write comments and suggest editions on your document here.</p>
                </div>
-               <div className="border rounded-md p-4">
-                  <ScrollArea className="h-[342px]">
-                     <div className="grid gap-4">
-                        {state.comments && state.comments.length > 0 ? (
-                           state.comments?.map((comment) => (
-                              <React.Fragment key={comment.id}>
-                                 <CommentItem
-                                    comment_author={comment.comment_author}
-                                    comment_content={comment.comment_content}
-                                    status={comment.status as 'PENDING' | 'APPROVED' | 'REJECTED'}
-                                    onApprove={() => {
-                                       handleApproveDocument('APPROVED', comment.id!)
-                                       dispatch({
-                                          type: 'approve_comment',
-                                          payload: {
-                                             id: comment.id,
-                                             comment_content: comment.comment_content,
-                                             comment_author: comment.comment_author,
-                                             status: 'APPROVED'
-                                          }
-                                       } as ActionComments)
-                                    }}
-                                    onReject={() => {
-                                       dispatch({
-                                          type: 'comment_to_edit',
-                                          payload: {
-                                             id: comment.id,
-                                             comment_author: comment.comment_author,
-                                             comment_content: comment.comment_content,
-                                             reason: comment.reason,
-                                             status: 'PENDING'
-                                          }
-                                       } as ActionComments)
-                                       setDialog({
-                                          ...dialog,
-                                          reasoning: true
-                                       })
-                                    }}
-                                    onSeeReasoning={() => {
-                                       dispatch({
-                                          type: 'comment_to_edit',
-                                          payload: {
-                                             id: comment.id,
-                                             comment_author: comment.comment_author,
-                                             comment_content: comment.comment_content,
-                                             reason: comment.reason,
-                                             status: 'PENDING'
-                                          }
-                                       } as ActionComments)
-                                       setDialog({ ...dialog, reasoning: true })
-                                    }}
-                                 />
-                                 <hr className="divider-h mt-1" />
-                              </React.Fragment>
-                           ))
-                        ) : (
-                           <p className="text-center col-span-2 text-gray-500">There are no comments on this document.</p>
-                        )}
-                     </div>
-                  </ScrollArea>
-               </div>
+               <CommentsList
+                  article={article}
+                  onApprove={(comment) => {
+                     handleApproveDocument('APPROVED', comment.id!)
+                     dispatch({
+                        type: 'approve_comment',
+                        payload: {
+                           id: comment.id,
+                           comment_content: comment.comment_content,
+                           comment_author: comment.comment_author,
+                           status: 'APPROVED'
+                        }
+                     } as ActionComments)
+                  }}
+                  onReject={(comment) => {
+                     dispatch({
+                        type: 'comment_to_edit',
+                        payload: {
+                           id: comment.id,
+                           comment_author: comment.comment_author,
+                           comment_content: comment.comment_content,
+                           reason: comment.reason,
+                           status: 'PENDING'
+                        }
+                     } as ActionComments)
+                     setDialog({
+                        ...dialog,
+                        reasoning: true
+                     })
+                  }}
+                  onSeeReasoning={(comment) => {
+                     dispatch({
+                        type: 'comment_to_edit',
+                        payload: {
+                           id: comment.id,
+                           comment_author: comment.comment_author,
+                           comment_content: comment.comment_content,
+                           reason: comment.reason,
+                           status: 'PENDING'
+                        }
+                     } as ActionComments)
+                     setDialog({ ...dialog, reasoning: true })
+                  }}
+               />
             </Box>
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
                <div className="grid gap-2">

@@ -72,7 +72,7 @@ const UpdateProfile: React.FC<UpdateProfileProps> = ({
             className="w-8 h-8 absolute top-4 right-4 cursor-pointer hover:text-status-error transition-all duration-500 ease-out hover:scale-110 hover:rotate-180 transform"
             onClick={onClose}
          />
-         {success && <GenericSuccess onClose={onClose} text="Profile updated" message="Your profile is now updated!" button_text="Return" />}
+         {success && <GenericSuccess onClose={onClose} text="Profile updated" message="Your profile is now updated!" button_text="Done" />}
          {edit_profile && (
             <form className="grid gap-6" onSubmit={handleSubmit(onSubmit)}>
                <div className="grid gap-2">
@@ -93,7 +93,6 @@ const UpdateProfile: React.FC<UpdateProfileProps> = ({
                         <p className="text-5xl w-full px-6 text-center">{name.charAt(0).toUpperCase()}</p>
                      </div>
                   )}
-
                   <div className="w-full">
                      <Dropzone
                         accept="images"
@@ -111,7 +110,7 @@ const UpdateProfile: React.FC<UpdateProfileProps> = ({
                      <Input.Input defaultValue={name} placeholder="Your name" {...register('name')} />
                   </Input.Root>
                   <Input.Root>
-                     <Input.Label optional>Title</Input.Label>
+                     <Input.Label optional>Expertise</Input.Label>
                      <Input.Input defaultValue={title} placeholder="Ex: Biologist, Chemist" {...register('title')} />
                   </Input.Root>
                </div>

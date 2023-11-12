@@ -74,7 +74,7 @@ const UpdateEmail: React.FC<UpdateEmailProps> = ({
             className="w-8 h-8 absolute top-4 right-4 cursor-pointer hover:text-status-error transition-all duration-500 ease-out hover:scale-110 hover:rotate-180 transform"
             onClick={onClose}
          />
-         {success && <GenericSuccess onClose={onClose} text="E-mail updated" message="Your e-mail was updated." button_text="Return" />}
+         {success && <GenericSuccess onClose={onClose} text="E-mail updated" message="Your e-mail was updated." button_text="Done" />}
          {new_email && (
             <form className="grid gap-6" onSubmit={handleSubmit(handleUpdateEmail)}>
                <div className="grid gap-2">
