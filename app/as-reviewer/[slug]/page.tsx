@@ -15,7 +15,7 @@ import { Author, authors_headers, authors_mock, authorship_headers } from '@/moc
 import { home_routes } from '@/routes/home'
 import { AddCommentProps, addCommentSchema } from '@/schemas/comments'
 import { downloadDocumentVersionService } from '@/services/document/download.service'
-import { DocumentGetProps } from '@/services/document/getArticles'
+import { DocumentGetProps, ReviewersOnDocuments } from '@/services/document/getArticles'
 import { addCommentService } from '@/services/reviewer/addComment.service'
 import { updateDocumentApproveStatusService } from '@/services/reviewer/approve.service'
 import { useArticleToReview } from '@/services/reviewer/fetchDocuments.service'
@@ -33,7 +33,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React, { useReducer } from 'react'
-import { ArrowLeft, Check, PlusCircleDotted, X } from 'react-bootstrap-icons'
+import { ArrowLeft, Check, PlusCircleDotted, X, Clock } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -58,6 +58,23 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
    const [buttonLoading, setButtonLoading] = React.useState({
       comment: false
    })
+   const [reviewerApprovals, setReviewerApprovals] = React.useState<string[]>(['PENDING', 'PENDING'])
+   const [editorApprovals, setEditorApprovals] = React.useState<string[]>(['PENDING'])
+
+   const getApprovals = (approvals: ReviewersOnDocuments[]) => {
+      console.log('apprvals', approvals)
+      const reviewers = approvals.filter((item) => item.role === 'reviewer').slice(0, 2)
+      reviewers.forEach((item, index) => {
+         reviewerApprovals[index] = item.approvedStatus
+         setReviewerApprovals(reviewerApprovals)
+      })
+
+      const editors = approvals.filter((item) => item.role === 'editor')
+      editorApprovals[0] = editors[0].approvedStatus
+      setEditorApprovals(editorApprovals)
+   }
+
+   console.log(reviewerApprovals)
 
    const fetchSingleArticle = async (documentId: string) => {
       await fetch_article(documentId).then((res) => {
@@ -70,6 +87,8 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                reason: comment.authorComment,
                status: comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED'
             }))
+
+            getApprovals(res?.document.reviewersOnDocuments || [])
 
             // Despache uma única ação com todos os comentários
             dispatch({
@@ -645,29 +664,59 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                )}
 
                <div className="flex items-center justify-center gap-12">
-                  <div className="flex items-center">
+                  <div className="flex items-center gap-1">
                      <h2 className="text-status-yellow font-semibold text-lg">Reviewer</h2>
-                     {article?.document.reviewersOnDocuments
-                        ?.filter((item) => item.role === 'reviewer')
-                        ?.map((item) =>
-                           item.approvedStatus === 'APPROVED' ? (
-                              <Check key={item.id} className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
-                           ) : (
-                              <X key={item.id} className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer" />
-                           )
-                        )}
+                     {reviewerApprovals?.map((item) => (
+                        <>
+                           {item === 'APPROVED' && (
+                              <Check
+                                 key={uniqueId('reviewer-approval')}
+                                 className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer"
+                              />
+                           )}
+
+                           {item === 'REJECTED' && (
+                              <X
+                                 key={uniqueId('reviewer-approval')}
+                                 className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer"
+                              />
+                           )}
+
+                           {item === 'PENDING' && (
+                              <Clock
+                                 key={uniqueId('reviewer-approval')}
+                                 className="w-6 h-6 hover:scale-125 transition-all duration-200 fill-status-pending cursor-pointer"
+                              />
+                           )}
+                        </>
+                     ))}
                   </div>
                   <div className="flex items-center">
                      <h2 className="text-terciary-main font-semibold text-lg">Editor</h2>
-                     {article?.document.reviewersOnDocuments
-                        ?.filter((item) => item.role === 'editor')
-                        ?.map((item) =>
-                           item.approvedStatus === 'APPROVED' ? (
-                              <Check key={item.id} className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer" />
-                           ) : (
-                              <X key={item.id} className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer" />
-                           )
-                        )}
+                     {editorApprovals?.map((item) => (
+                        <>
+                           {item === 'APPROVED' && (
+                              <Check
+                                 key={uniqueId('reviewer-approval')}
+                                 className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer"
+                              />
+                           )}
+
+                           {item === 'REJECTED' && (
+                              <X
+                                 key={uniqueId('reviewer-approval')}
+                                 className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer"
+                              />
+                           )}
+
+                           {item === 'PENDING' && (
+                              <Clock
+                                 key={uniqueId('reviewer-approval')}
+                                 className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer"
+                              />
+                           )}
+                        </>
+                     ))}
                   </div>
                </div>
                {getReviewStatus() !== 'APPROVED' && (
