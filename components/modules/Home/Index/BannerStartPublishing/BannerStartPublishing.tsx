@@ -52,7 +52,7 @@ export const BannerStartPublishing: React.FC = () => {
                   <div className="grid gap-2">
                      <p className="text-base md:text-lg font-semibold text-white">Want to publish a paper?</p>
                      <p className="text-sm md:text-base font-regular text-white">
-                        PPublishing with deScier is affordable, fast and easy, with selected peer-review and, 100% author-owned copyright. A variety of
+                        Publishing with deScier is affordable, fast and easy, with selected peer-review and, 100% author-owned copyright. A variety of
                         articles genres are welcome for publication. Choose deScier, where your research meets affordability, fairness and community. Your
                         ideas, your terms, your future.
                      </p>

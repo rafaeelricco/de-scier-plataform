@@ -28,7 +28,12 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
                `${responsive && 'max-w-full'}`
             )}
          >
-            <div className={twMerge('w-full h-20 sm:h-48 md:h-52 lg:h-60 overflow-hidden rounded-md relative', `${responsive && 'w-full'}`)}>
+            <div
+               className={twMerge(
+                  'w-full h-20 sm:h-48 sm:w-48 md:w-52 md:h-52 lg:w-60 lg:h-60 overflow-hidden rounded-md relative',
+                  `${responsive && 'w-full'}`
+               )}
+            >
                <Image
                   priority
                   quality={100}
