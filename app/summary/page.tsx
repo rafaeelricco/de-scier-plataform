@@ -1,21 +1,26 @@
 'use client'
 
 import Box from '@/components/common/Box/Box'
+import { PurchaseSuccess } from '@/components/modules/Home/Search/Purchase/Success'
 import WithLink from '@/components/modules/Login/Modals/WithLink/WithLink'
 import Publications from '@/components/modules/Summary/Publications/Publications'
 import Statistics from '@/components/modules/Summary/Statistics/Statistics'
 import Submission from '@/components/modules/Summary/Submission/Submission'
 import TopPapers from '@/components/modules/Summary/TopPapers/TopPapers'
+import { home_routes } from '@/routes/home'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Title from '@components/common/Title/Page'
 import '@styles/summary.css'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 export default function HomePage() {
+   const router = useRouter()
    const queryParams = useSearchParams()
 
    const [open, setOpen] = useState(false)
+   const [paymentSuccess, setPaymentSuccess] = useState(false)
+   const [documentId, setDocumentId] = useState('')
    const [inviteData, setInviteData] = useState({
       article: '',
       author: '',
@@ -34,20 +39,40 @@ export default function HomePage() {
          })
          setOpen(true)
       }
+
+      const encodedPaymentData = queryParams.get('payment')
+      if (encodedPaymentData) {
+         const decodedPaymentData = Buffer.from(encodedPaymentData, 'base64').toString('ascii')
+         setDocumentId(decodedPaymentData)
+         setPaymentSuccess(true)
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [])
 
    return (
       <React.Fragment>
-         <Dialog.Root open={open}>
+         <Dialog.Root open={open || paymentSuccess}>
             <Dialog.Overlay />
             <Dialog.Content className="max-w-[750px]">
-               <WithLink
-                  onClose={() => setOpen(false)}
-                  article_name={inviteData.article}
-                  invited_by={inviteData.author}
-                  inviteCode={inviteData.inviteCode}
-               />
+               {open && (
+                  <WithLink
+                     onClose={() => setOpen(false)}
+                     article_name={inviteData.article}
+                     invited_by={inviteData.author}
+                     inviteCode={inviteData.inviteCode}
+                  />
+               )}
+
+               {paymentSuccess && (
+                  <PurchaseSuccess
+                     onClose={() => {
+                        setPaymentSuccess(false)
+                     }}
+                     onReturn={() => {
+                        router.push(home_routes.home.search + `/${documentId}`)
+                     }}
+                  />
+               )}
             </Dialog.Content>
          </Dialog.Root>
          <div>

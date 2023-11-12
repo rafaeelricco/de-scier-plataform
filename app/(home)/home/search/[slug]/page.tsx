@@ -17,6 +17,7 @@ import {
    ReviewersOnDocuments,
    ReviewersPublicInfo
 } from '@/services/document/getArticles'
+import { createCheckoutService } from '@/services/payment/checkout.service'
 import { capitalizeWord } from '@/utils/format_texts'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import { uniqueId } from 'lodash'
@@ -79,6 +80,31 @@ export default function Page({ params }: { params: { slug: string } }) {
       })
    }
 
+   const handlePurchase = async () => {
+      setPurchase({ ...purchase, checkout: false, processing: true })
+      const response = await createCheckoutService(article?.document.id!)
+      if (!response.success) {
+         setPurchase({
+            ...purchase,
+            checkout: false,
+            error: true,
+            processing: false
+         })
+      }
+      setPurchase({
+         ...purchase,
+         checkout: false,
+         processing: false
+      })
+
+      window.open(response.checkoutUrl)
+
+      /* setPurchase({ ...purchase, checkout: false, processing: true }),
+         setTimeout(() => {
+            setPurchase({ ...purchase, processing: false, checkout: false, success: true })
+         }, 4000) */
+   }
+
    const formatAccessType = () => {
       switch (accessType) {
          case 'PAID':
@@ -117,17 +143,14 @@ export default function Page({ params }: { params: { slug: string } }) {
                {purchase.checkout && (
                   <Checkout
                      article={{
-                        image: 'https://source.unsplash.com/random/900×700/?technology',
-                        date: '11/11/2000',
-                        id: uniqueId('11/11/2000'),
-                        price: 48,
-                        title: 'Hardware security and blockchain systems on the new digital era'
+                        image: article?.document.cover || 'https://source.unsplash.com/random/900×700/?technology',
+                        date: new Date(article?.document.createdAt!).toLocaleDateString() || '',
+                        id: article?.document.id || '',
+                        price: article?.document.price || 0,
+                        title: article?.document.title || ''
                      }}
                      onPurchase={() => {
-                        setPurchase({ ...purchase, checkout: false, processing: true }),
-                           setTimeout(() => {
-                              setPurchase({ ...purchase, processing: false, checkout: false, success: true })
-                           }, 4000)
+                        handlePurchase()
                      }}
                      onClose={() => setPurchase({ ...purchase, checkout: false })}
                      onSetPaymentOption={(value) => {
@@ -237,7 +260,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                   access_type={formatAccessType()}
                   date={new Date(article?.document?.createdAt!).toLocaleDateString('pt-BR')}
                   value={article?.document?.price || 0}
-                  onBuyDocument={() => setPurchase({ ...purchase, checkout: true })}
+                  onBuyDocument={() => handlePurchase()}
                />
                <div className="flex flex-col gap-6 bg-white rounded-xl h-fit w-full flex-grow p-6">
                   <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
