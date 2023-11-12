@@ -12,6 +12,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { header_editor_reviewer } from '@/mock/article_under_review'
 import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
+import { home_routes } from '@/routes/home'
 import { AddCommentProps, addCommentSchema } from '@/schemas/comments'
 import { downloadDocumentVersionService } from '@/services/document/download.service'
 import { DocumentGetProps } from '@/services/document/getArticles'
@@ -126,6 +127,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
 
       const status = approve ? 'approved' : 'rejected'
       toast.success(`Document ${status} successgully`)
+      router.push(home_routes.as_reviewer)
    }
 
    const handleAddComment = async () => {
