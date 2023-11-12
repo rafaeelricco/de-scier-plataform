@@ -2,7 +2,6 @@
 
 import EmailIcon from 'public/svgs/common/footer/icons-footer/email.svg'
 import LocationIcon from 'public/svgs/common/footer/icons-footer/location.svg'
-import PhoneIcon from 'public/svgs/common/footer/icons-footer/phone.svg'
 import WhatsApp from 'public/svgs/common/footer/icons-footer/whatsapp.svg'
 import LogoDeScier from 'public/svgs/common/footer/logo-de-scier-footer.svg'
 import React from 'react'
@@ -38,28 +37,13 @@ const Footer: React.FC = () => {
             </div>
             <div className="grid gap-4 w-full content-start">
                <p className="text-lg font-semibold text-neutral-white">Contact</p>
-               <Link href={'https://maps.app.goo.gl/AMeEcTxsWRsABCAC6'} target="_blank" rel="noopener noreferrer" className="grid gap-1">
-                  <div className="flex items-center gap-3">
-                     <LocationIcon className="w-4 h-4" />
-                     <p className="text-sm text-neutral-white font-semibold select-none">Adress:</p>
-                  </div>
-                  <p className="text-sm text-neutral-white font-regular select-none hover:text-secundary-main cursor-pointer">
-                     R. da Consolação, 2302 - Consolação, São Paulo - SP, 01301-000
-                  </p>
-               </Link>
                <Link href={'https://wa.me/5511983432131'} target="_blank" rel="noopener noreferrer" className="grid gap-1">
                   <div className="flex items-center gap-2">
-                     <div className="flex items-center gap-3">
-                        <PhoneIcon className="w-4 h-4" />
-                        <p className="text-sm text-neutral-white font-semibold select-none">Phone</p>
-                     </div>
-                     <span className="text-sm font-semibold text-neutral-white">/</span>
                      <div className="flex items-center gap-3">
                         <WhatsApp className="w-4 h-4" />
                         <p className="text-sm text-neutral-white font-semibold select-none">Whatsapp</p>
                      </div>
                   </div>
-                  <p className="text-sm text-neutral-white font-regular select-none hover:text-secundary-main cursor-pointer">+55 11 98343-2131</p>
                </Link>
                <Link href={'mailto:contact@descier.science'} className="grid gap-1">
                   <div className="flex items-center gap-3">
@@ -67,6 +51,15 @@ const Footer: React.FC = () => {
                      <p className="text-sm text-neutral-white font-semibold select-none">E-mail</p>
                   </div>
                   <p className="text-sm text-neutral-white font-regular select-none hover:text-secundary-main cursor-pointer">contact@descier.science</p>
+               </Link>
+               <Link href={'https://maps.app.goo.gl/AMeEcTxsWRsABCAC6'} target="_blank" rel="noopener noreferrer" className="grid gap-1">
+                  <div className="flex items-center gap-3">
+                     <LocationIcon className="w-4 h-4" />
+                     <p className="text-sm text-neutral-white font-semibold select-none">Adress:</p>
+                  </div>
+                  <p className="text-sm text-neutral-white font-regular select-none hover:text-secundary-main cursor-pointer">
+                     1636 Paulista Avenue | Group 1504 | São Paulo
+                  </p>
                </Link>
             </div>
          </footer>

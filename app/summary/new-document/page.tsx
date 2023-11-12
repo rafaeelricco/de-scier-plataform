@@ -19,7 +19,6 @@ import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { uniqueId } from 'lodash'
-import mermaid from 'mermaid'
 import { useSession } from 'next-auth/react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
@@ -360,7 +359,7 @@ export default function SubmitNewPaperPage() {
             </Dialog.Content>
          </Dialog.Root>
          <Title.Root>
-            <Title.Title>Submit new document</Title.Title>
+            <Title.Title>Submit new article</Title.Title>
          </Title.Root>
          <form onSubmit={handleSubmit(handleSubmitDocument)} className="grid gap-6 pb-14">
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">

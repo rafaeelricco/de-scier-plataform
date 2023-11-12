@@ -34,7 +34,7 @@ const ProfileDeScier: React.FC = () => {
                      <div className="flex gap-2 w-full p-3 items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                         <IllustrationHandBook />
                         <div className="grid items-center">
-                           <p className="text-sm font-semibold text-[#F4F4F4] select-none">deScier handbook</p>
+                           <p className="text-sm font-semibold text-[#F4F4F4] select-none">deScier Handbook</p>
                            <div className="flex justify-between items-center">
                               <p className="text-[13px] select-none text-[#F4F4F4]">Must-read for researchers!</p>
                               <CaretRight size={16} className="fill-[#F4F4F4] cursor-pointer hover:scale-125 transition-all duration-200" />

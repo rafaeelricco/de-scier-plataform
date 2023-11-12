@@ -69,7 +69,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onFo
                {withLink && (
                   <React.Fragment>
                      <p className="text-sm font-regular">
-                        Marcelo Santana invited you to be a reviewer/editor for “Article name”, sign in or register to continue.
+                        “Author’s name” has extended a kind invitation for you to serve as Reviewer/ Editor. Sign in or register to continue.
                      </p>
                   </React.Fragment>
                )}

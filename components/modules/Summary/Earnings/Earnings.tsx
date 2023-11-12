@@ -8,12 +8,12 @@ const Earnings: React.FC = () => {
             <EarningsIllustration className="max-w-[170px] md:max-w-[14rem] w-full" />
             <div className="grid w-full">
                <div className="grid justify-items-center">
-                  <p className="text-lg text-secundary_blue-main text-center lg:text-base">Total earning from sales</p>
+                  <p className="text-lg text-secundary_blue-main text-center lg:text-base">Total earnings</p>
                   <h3 className="gradient-grad-yellow font-bold text-1xl sm:text-2xl md:text-3xl">$403.330,00</h3>
                </div>
                <div className="divider-h my-4" />
                <div className="grid justify-items-center">
-                  <p className="text-lg text-secundary_blue-main text-center lg:text-base">Weekly earning from sales</p>
+                  <p className="text-lg text-secundary_blue-main text-center lg:text-base">Weekly earnings</p>
                   <h3 className="gradient-grad-2 font-bold text-1xl sm:text-2xl md:text-3xl">$330,00</h3>
                </div>
             </div>

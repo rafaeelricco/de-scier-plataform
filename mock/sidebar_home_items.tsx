@@ -32,7 +32,7 @@ export const links = [
    {
       id: uniqueId(),
       label: 'My IP',
-      link: '/my-ip',
+      link: 'https://app.registermaxi.io/login',
       icon: <RedirectIcon className="w-4 hs-4 fill-blue-gray mb-1 hover:text-secundary_blue-main transition-all duration-200" />
    }
 ]

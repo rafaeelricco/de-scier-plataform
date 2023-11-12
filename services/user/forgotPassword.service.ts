@@ -101,9 +101,9 @@ export type ConfirmRecoveryPasswordProps = {
 export const ConfirmRecoveryPasswordSchema = z
    .object({
       newPassword: z.string(),
-      email: z.string().email('Invalid email.').min(5, 'Email must be at least 3 characters.'),
+      email: z.string().email('Invalid email.').min(5, 'If this e-mail is already registered, you will recieve a message in your inbox.'),
       confirmationCode: z.string().min(7, 'Confirmation code must be at least 5 characters.'),
-      confirmPassword: z.string().min(8, 'Password must be at least 8 characters.')
+      confirmPassword: z.string().min(8, 'Password must be at lea st 8 characters.')
    })
    .refine((data) => data.newPassword === data.confirmPassword, {
       message: "Passwords don't match.",

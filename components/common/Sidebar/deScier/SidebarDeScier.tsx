@@ -21,7 +21,7 @@ const SidebarDeScier: React.FC = () => {
                <LogoDeScier className="w-20 h-20 mx-auto my-0" />
                <Button.Link href={home_routes.summary_routes.new_document}>
                   <Button.Button variant="primary" className="mx-auto my-0 p-3 text-sm">
-                     Submit new document
+                     Submit new article
                      <PlusCircle size={20} />
                   </Button.Button>
                </Button.Link>

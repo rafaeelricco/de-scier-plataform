@@ -12,9 +12,9 @@ import Item from './Item/Item'
 import Logout from './Logout/Logout'
 
 const Sidebar: React.FC = () => {
-   // See more about in https://nextjs.org/docs/app/api-reference/functions/use-pathname
    const { data: session } = useSession()
 
+   // See more about in https://nextjs.org/docs/app/api-reference/functions/use-pathname
    const router = useRouter()
    const currentPath = usePathname()
 
@@ -25,21 +25,22 @@ const Sidebar: React.FC = () => {
                <LogoDeScier className="w-20 h-20 mx-auto my-0" />
                <Button.Link href={home_routes.summary_routes.new_document}>
                   <Button.Button variant="primary" className="mx-auto my-0 p-3 text-sm">
-                     Submit new document
+                     Submit new article
                      <PlusCircle size={20} />
                   </Button.Button>
                </Button.Link>
                <div>
                   {items.map((item) =>
                      session?.user?.userInfo.role !== 'ADMIN' && item.text === 'Admin' ? null : (
-                        <div className="flex items-center" key={item.id}>
+                        <div className="grid" key={item.id}>
                            <Item
                               key={item.id}
-                              text={item.text}
                               icon={item.icon}
                               href={item.path}
-                              active={currentPath.includes(item.path)}
+                              divider={item.divider}
                               icon_end={item.icon_end}
+                              text={item.text as string}
+                              active={currentPath.includes(item.path as string)}
                            />
                         </div>
                      )

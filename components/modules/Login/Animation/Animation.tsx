@@ -19,10 +19,14 @@ const LoginAnimation: React.FC = () => {
          <div className="relative overflow-hidden login-animation-container h-[23rem] md:h-auto">
             <div className="login-text">
                <div className="grid gap-2">
-                  <h2 className="font-semibold text-lg md:text-xl text-neutral-white">Welcome to our platform!</h2>
+                  <h2 className="font-semibold text-lg md:text-xl text-neutral-white">Redefining how you publish!</h2>
                   <p className="text-sm md:text-base text-neutral-white">
-                     Easy scientific article publication, with <br /> 100% of the copyrights to the author,
-                     <br /> protected by Blockchain technology.
+                     Publish easily, economically, peer-
+                     <br />
+                     reviewed scientific and technical
+                     <br /> papers while retaining 100% of your
+                     <br /> copyright, protected by blockchain
+                     <br /> technology.
                   </p>
                </div>
                <h2 className="font-semibold text-lg md:text-xl text-neutral-white">Join the DeSci movement!</h2>

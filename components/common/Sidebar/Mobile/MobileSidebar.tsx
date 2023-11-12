@@ -4,6 +4,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { items } from '@/mock/sidebar_items'
 import { home_routes } from '@/routes/home'
 import * as Button from '@components/common/Button/Button'
+import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import LogoDeScier from 'public/svgs/common/logo/deScier - Logo copy.svg'
 import React from 'react'
@@ -15,6 +16,7 @@ import { SidesProps } from '../Typing'
 export const MobileSidebarComponent: React.FC<SidesProps> = ({ onClose }: SidesProps) => {
    const router = useRouter()
    const currentPath = usePathname()
+   const { data: session } = useSession()
    return (
       <React.Fragment>
          <ScrollArea className="h-[calc(100vh-7.5rem)]">
@@ -29,21 +31,26 @@ export const MobileSidebarComponent: React.FC<SidesProps> = ({ onClose }: SidesP
                   </div>
                   <Button.Link href={home_routes.summary_routes.new_document}>
                      <Button.Button variant="primary" className="mx-auto my-0 p-3 text-sm" onClick={() => onClose()}>
-                        Submit new document
+                        Submit new article
                         <PlusCircle size={20} />
                      </Button.Button>
                   </Button.Link>
                   <div>
-                     {items.map((item) => (
-                        <Item
-                           key={item.id}
-                           text={item.text}
-                           icon={item.icon}
-                           href={item.path}
-                           active={currentPath.includes(item.path)}
-                           onClick={() => onClose()}
-                        />
-                     ))}
+                     {items.map((item) =>
+                        session?.user?.userInfo.role !== 'ADMIN' && item.text === 'Admin' ? null : (
+                           <div className="grid" key={item.id}>
+                              <Item
+                                 key={item.id}
+                                 icon={item.icon}
+                                 href={item.path}
+                                 divider={item.divider}
+                                 icon_end={item.icon_end}
+                                 text={item.text as string}
+                                 active={currentPath.includes(item.path as string)}
+                              />
+                           </div>
+                        )
+                     )}
                   </div>
                </div>
                <Logout onLogout={() => router.push(home_routes.home.index)} />
