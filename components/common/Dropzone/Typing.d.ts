@@ -10,6 +10,7 @@ interface DropzoneProps {
    message?: string
    thumbnail?: boolean
    accept?: 'images' | 'documents'
+   defaultCover?: StoredFile
 }
 
 interface FileWithPreview {

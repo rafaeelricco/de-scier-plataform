@@ -267,8 +267,8 @@ export const header_editor_reviewer = [
    },
    {
       id: 2,
-      label: 'Title',
-      value: 'title'
+      label: 'Expertise',
+      value: 'expertise'
    },
    {
       id: 3,

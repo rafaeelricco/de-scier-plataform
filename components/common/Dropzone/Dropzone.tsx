@@ -1,14 +1,20 @@
 'use client'
 import * as Button from '@components/common/Button/Button'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FileEarmarkText, Upload } from 'react-bootstrap-icons'
 import { Accept, useDropzone } from 'react-dropzone'
 import { twMerge } from 'tailwind-merge'
 import { DropzoneProps, StoredFile } from './Typing'
 
-const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, message, thumbnail = true, accept }: DropzoneProps) => {
+const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, message, thumbnail = true, accept, defaultCover }: DropzoneProps) => {
    const [files, setFiles] = React.useState<Array<StoredFile>>([])
+
+   useEffect(() => {
+      if (defaultCover) {
+         setFiles([defaultCover])
+      }
+   }, [defaultCover])
 
    const createFilePreview = (file: StoredFile) => {
       const fileWithPreview = {

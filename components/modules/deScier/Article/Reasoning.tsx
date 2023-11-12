@@ -14,8 +14,8 @@ const Reasoning: React.FC<ArticleUnderReviewProps> = ({ onClose, onConfirm, mess
          />
          <div className="grid gap-6">
             <div className="grid gap-2">
-               <h3 className="text-xl font-semibold">Reasoning</h3>
-               {message === '' && <p className="text-sm">Explain a bit of the reasoning for the reject, to justify your version.</p>}
+               <h3 className="text-xl font-semibold">Response to Reviewer</h3>
+               {message === '' && <p className="text-sm">Please provide a detailed explanation for why you disagree with the reviewer{"'"}s comments</p>}
             </div>
             {message ? (
                <>
@@ -31,12 +31,15 @@ const Reasoning: React.FC<ArticleUnderReviewProps> = ({ onClose, onConfirm, mess
             ) : (
                <>
                   <Input.Root>
-                     <Input.Label>Reasoning</Input.Label>
+                     <Input.Label className="flex gap-2 items-center">
+                        <span className="text-sm font-semibold">Reasoning</span>
+                        <span className="text-sm text-neutral-light_gray">0/100 words</span>
+                     </Input.Label>
                      <Input.TextArea defaultValue={reason} placeholder="Explain your reasoning" onInput={(e) => setReason(e.currentTarget.value)} />
                   </Input.Root>
                   <div className="grid gap-4">
                      <Button.Button className="py-3 px-8" onClick={() => onConfirm(reason)}>
-                        Confirm rejection
+                        Submit Response
                      </Button.Button>
                      <Button.Button variant="outline" className="py-3 px-8" onClick={onClose}>
                         Cancel

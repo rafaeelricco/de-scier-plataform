@@ -5,6 +5,7 @@ import { Pills } from '@/components/common/Button/Pill/Pill'
 import CommentItem from '@/components/common/Comment/Comment'
 import Dropzone from '@/components/common/Dropzone/Dropzone'
 import { StoredFile } from '@/components/common/Dropzone/Typing'
+import { EditorReviewList } from '@/components/common/EditorReviewList/EditorReviewList'
 import { File } from '@/components/common/File/File'
 import { YouAreAuthor, YouAreReviwer } from '@/components/common/Flags/Author/AuthorFlags'
 import { InviteLink } from '@/components/common/InviteLink/InviteLink'
@@ -24,7 +25,7 @@ import { useArticles } from '@/services/document/getArticles.service'
 import { uploadDocumentFileService } from '@/services/file/file.service'
 import { ApproveStatus, approveCommentService } from '@/services/reviewer/approveComment.service'
 import { ActionComments, comments_initial_state, reducer_comments } from '@/states/reducer_comments'
-import { truncate } from '@/utils/format_texts'
+import { extractFileName } from '@/utils/extract_file_name'
 import { keywordsArray } from '@/utils/keywords_format'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
@@ -41,7 +42,6 @@ import { ArrowLeft, Check, FileEarmarkText, Pencil, PlusCircle, PlusCircleDotted
 import { CurrencyInput } from 'react-currency-mask'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { twMerge } from 'tailwind-merge'
 
 export default function ArticleInReviewPage({ params }: { params: { slug: string } }) {
    const { data } = useSession()
@@ -190,6 +190,15 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                type: item.fileName?.split('.')[1] || ''
             })) || []
          )
+         setValue('cover', {
+            name: extractFileName(article.document.cover as string) || '',
+            lastModified: 0,
+            lastModifiedDate: new Date(),
+            path: article.document.cover as string,
+            preview: article.document.cover as string,
+            size: 0,
+            type: extractFileName(article.document.cover as string)?.split('.')[1] || ''
+         })
       }
    }, [article, setValue])
 
@@ -465,7 +474,12 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                </Input.Root>
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
-                  <Dropzone thumbnail placeholder="Upload cover picture (.png, .jpg)" setSelectedFile={(file) => console.log(file)} />
+                  <Dropzone
+                     thumbnail
+                     placeholder="Upload cover picture (.png, .jpg)"
+                     setSelectedFile={(file) => console.log(file)}
+                     defaultCover={getValues('cover') ? getValues('cover') : undefined}
+                  />
                </div>
             </Box>
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
@@ -498,7 +512,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
                <div className="grid gap-2">
                   <h3 className="text-lg md:text-xl text-primary-main font-semibold">Comments</h3>
-                  <p className="text-sm">The reviewing team can publish comments, suggesting updates on your document.</p>
+                  <p className="text-sm">The reviewing team may write comments and suggest editions on your document here.</p>
                </div>
                <div className="border rounded-md p-4">
                   <ScrollArea className="h-[342px]">
@@ -653,54 +667,14 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   />
                </div>
                <div>
-                  <div className="hidden md:grid grid-cols-5">
+                  <div className="grid grid-cols-5">
                      {header_editor_reviewer.map((header, index) => (
                         <React.Fragment key={index}>
                            <p className="text-sm font-semibold">{header.label}</p>
                         </React.Fragment>
                      ))}
                   </div>
-                  <div>
-                     {article?.document.reviewersOnDocuments?.map((item, index) => (
-                        <div key={item.id}>
-                           <div className="grid md:grid-cols-5  items-center px-0 py-3 rounded-md">
-                              <div className="flex items-center gap-4">
-                                 <div>
-                                    <p className="text-sm text-secundary_blue-main font-regular">{item.reviewer.name}</p>
-                                 </div>
-                              </div>
-                              <div>
-                                 <p className="text-sm text-secundary_blue-main">{item.reviewer.title}</p>
-                              </div>
-                              <div>
-                                 <p className="text-sm text-secundary_blue-main">{truncate(item.reviewer.email, 16)}</p>
-                              </div>
-                              <div>
-                                 <p
-                                    className={twMerge(
-                                       'text-sm text-secundary_blue-main first-letter:uppercase font-semibold lowercase',
-                                       `${item.role == 'reviewer' && 'text-[#EFB521]'}`,
-                                       `${item.role == 'editor' && 'text-terciary-main'}`
-                                    )}
-                                 >
-                                    {item.role}
-                                 </p>
-                              </div>
-                              <div>
-                                 <p
-                                    className={twMerge(
-                                       'text-sm text-secundary_blue-main first-letter:uppercase font-semibold border py-[2px] px-1 text-center rounded-md md:border-none md:py-0 md:px-0 md:rounded-none md:text-start lowercase',
-                                       `${item.inviteStatus == 'PENDING' && 'text-status-pending'}`,
-                                       `${item.inviteStatus == 'ACCEPTED' && 'text-status-green'}`
-                                    )}
-                                 >
-                                    {item.inviteStatus}
-                                 </p>
-                              </div>
-                           </div>
-                        </div>
-                     ))}
-                  </div>
+                  <EditorReviewList article={article} />
                </div>
             </Box>
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
