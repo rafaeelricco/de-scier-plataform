@@ -1,13 +1,15 @@
 import PaginationComponent from '@/components/common/Pagination/Pagination'
 import useDebounce from '@/hooks/useDebounce'
 import useDimension from '@/hooks/useWindowDimension'
-import { articles } from '@/mock/articles_published'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import '@styles/home.css'
 import React from 'react'
 import { Person, Search, X } from 'react-bootstrap-icons'
 import { ArticleCheckout } from './ArticleCheckout'
+import { useFetchPurchasedArticles } from '@/services/document/fetchPurchased.service'
+import { ArticleCardProps } from '../../Index/ArticleCard/Typing'
+import Spinner from '@/components/common/Loading/Spinner'
 
 interface PurchasedArticlesProps {
    onClose: () => void
@@ -15,12 +17,24 @@ interface PurchasedArticlesProps {
 
 export const PurchasedArticles: React.FC<PurchasedArticlesProps> = ({ onClose }: PurchasedArticlesProps) => {
    const { lg } = useDimension()
+
+   const { articles, loading } = useFetchPurchasedArticles()
+
    const per_page = lg == true ? 8 : 6
    const [page, setPage] = React.useState(1)
-   const [results, setResults] = React.useState(articles)
-   const [totalPages, setTotalPages] = React.useState(Math.ceil(results.length / per_page))
+   const [results, setResults] = React.useState<ArticleCardProps[]>([])
+   const [totalPages, setTotalPages] = React.useState(1)
    const [searchTerm, setSearchTerm] = React.useState('')
+   const [searchAuthor, setSearchAuthor] = React.useState('')
    const debouncedSearchTerm = useDebounce(searchTerm, 500)
+   const debouncedSearchAuthor = useDebounce(searchAuthor, 500)
+
+   React.useEffect(() => {
+      if (articles) {
+         setResults(articles || [])
+         setTotalPages(Math.ceil(articles.length / per_page))
+      }
+   }, [articles, per_page])
 
    return (
       <React.Fragment>
@@ -35,6 +49,8 @@ export const PurchasedArticles: React.FC<PurchasedArticlesProps> = ({ onClose }:
                   <Input.Input
                      className="rounded-full py-2 md:py-3 px-3 md:px-4 border-neutral-stroke_light bg-transparent shadow-none border focus:outline-none focus:border-neutral-stroke_light text-xs md:text-sm w-full"
                      placeholder="Find articles with terms"
+                     value={searchTerm}
+                     onChange={(e) => setSearchTerm(e.target.value)}
                      icon={
                         <React.Fragment>
                            <Search className="w-4 md:w-5 h-4 md:h-5 ml-1 text-neutral-light_gray" />
@@ -44,45 +60,55 @@ export const PurchasedArticles: React.FC<PurchasedArticlesProps> = ({ onClose }:
                   <Input.Input
                      className="rounded-full py-2 md:py-3 px-3 md:px-4 border-neutral-stroke_light bg-transparent shadow-none border focus:outline-none focus:border-neutral-stroke_light text-xs md:text-sm w-full"
                      placeholder="Search for an author"
+                     value={searchAuthor}
+                     onChange={(e) => setSearchAuthor(e.target.value)}
                      icon={
                         <React.Fragment>
                            <Person className="w-4 md:w-5 h-4 md:h-5 ml-1 text-neutral-light_gray" />
                         </React.Fragment>
                      }
                   />
-                  <Button.Button variant="outline" className="rounded-full py-2 md:py-3 px-5 md:px-6 text-xs md:text-sm w-full">
+                  {/* <Button.Button variant="outline" className="rounded-full py-2 md:py-3 px-5 md:px-6 text-xs md:text-sm w-full">
                      Search
                      <Search className="w-4 md:w-5 h-4 md:h-5 ml-1" />
-                  </Button.Button>
+                  </Button.Button> */}
                </div>
             </div>
-            <div className="grid gap-4 sm:gap-6 lg:gap-10">
-               <div className="grid gap-3 sm:gap-4 md:gap-6 lg:gap-x-6 gap-y-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                  {results
-                     .filter((article) => article.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
-                     .slice((page - 1) * per_page, page * per_page)
-                     .map((article, index) => (
-                        <React.Fragment key={article.id}>
-                           <div className="grid gap-4 sm:gap-6 lg:grid-flow-col">
-                              <ArticleCheckout responsive id={article.id} authors={article.authors} image={article.image} title={article.title} />
-                              {index !== 3 && index !== 7 && <div className="h-full w-[1px] bg-neutral-stroke_light md:hidden" />}
-                           </div>
-                        </React.Fragment>
-                     ))}
-                  <div className="flex items-center justify-center gap-3 sm:gap-4 lg:gap-4 col-span-full">
-                     <PaginationComponent
-                        key={totalPages}
-                        current={page}
-                        perPage={per_page}
-                        total={results.length}
-                        handleFirstPage={() => setPage(1)}
-                        handleNextPage={() => setPage(page + 1)}
-                        handlePreviousPage={() => setPage(page - 1)}
-                        handleLastPage={() => setPage(totalPages)}
-                     />
+            {loading ? (
+               <div className="flex flex-col justify-center items-center">
+                  <Spinner />
+                  <p>Loading your library...</p>
+               </div>
+            ) : (
+               <div className="grid gap-4 sm:gap-6 lg:gap-10">
+                  <div className="grid gap-3 sm:gap-4 md:gap-6 lg:gap-x-6 gap-y-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                     {results
+                        .filter((article) => article.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
+                        .filter((article) => article.authors.some((author) => author.name.toLowerCase().includes(debouncedSearchAuthor.toLowerCase())))
+                        .slice((page - 1) * per_page, page * per_page)
+                        .map((article, index) => (
+                           <React.Fragment key={article.id}>
+                              <div className="grid gap-4 sm:gap-6 lg:grid-flow-col">
+                                 <ArticleCheckout responsive id={article.id} authors={article.authors} image={article.image} title={article.title} />
+                                 {index !== 3 && index !== 7 && <div className="h-full w-[1px] bg-neutral-stroke_light md:hidden" />}
+                              </div>
+                           </React.Fragment>
+                        ))}
+                     <div className="flex items-center justify-center gap-3 sm:gap-4 lg:gap-4 col-span-full">
+                        <PaginationComponent
+                           key={totalPages}
+                           current={page}
+                           perPage={per_page}
+                           total={totalPages}
+                           handleFirstPage={() => setPage(1)}
+                           handleNextPage={() => setPage(page + 1)}
+                           handlePreviousPage={() => setPage(page - 1)}
+                           handleLastPage={() => setPage(totalPages)}
+                        />
+                     </div>
                   </div>
                </div>
-            </div>
+            )}
          </div>
       </React.Fragment>
    )
