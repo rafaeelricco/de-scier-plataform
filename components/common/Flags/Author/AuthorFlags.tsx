@@ -6,7 +6,7 @@ export const YouAreAuthor = () => {
       <React.Fragment>
          <div className="flex items-center gap-2 border border-neutral-stroke_light w-fit py-1 px-3 rounded-md">
             <Person className="text-primary-light" />
-            <p className="text-xs md:text-sm text-primary-light font-semibold select-none">You are the Author of the document</p>
+            <p className="text-xs md:text-sm text-primary-light font-semibold select-none">You are the Author of this article</p>
          </div>
       </React.Fragment>
    )

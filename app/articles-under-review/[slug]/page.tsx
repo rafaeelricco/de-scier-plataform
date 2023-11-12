@@ -25,6 +25,7 @@ import { uploadDocumentFileService } from '@/services/file/file.service'
 import { ApproveStatus, approveCommentService } from '@/services/reviewer/approveComment.service'
 import { ActionComments, comments_initial_state, reducer_comments } from '@/states/reducer_comments'
 import { truncate } from '@/utils/format_texts'
+import { keywordsArray } from '@/utils/keywords_format'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
@@ -95,6 +96,8 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
          keywords: []
       }
    })
+   console.log('watch', watch())
+   console.log('article', article)
 
    const { append, remove, fields: keywords } = useFieldArray({ name: 'keywords', control: control })
 
@@ -125,8 +128,8 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
             setValue('file', documentFiles)
             trigger('file')
          }
+
          if (res?.document?.documentComments && res?.document?.documentComments.length > 0) {
-            // Crie um array com todos os comentários mapeados para o formato esperado pelo reducer
             const commentsPayload = res.document.documentComments.map((comment) => ({
                id: comment.id,
                comment_author: comment.user.name,
@@ -134,8 +137,6 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                reason: comment.authorComment || '',
                status: comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED'
             }))
-
-            // Despache uma única ação com todos os comentários
             dispatch({
                type: 'store_comments_from_api',
                payload: commentsPayload
@@ -150,9 +151,47 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
       if (!article) {
          fetchSingleArticle(params.slug)
       }
-
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [])
+
+   React.useEffect(() => {
+      if (article) {
+         setValue('title', article.document.title)
+         setValue('field', article.document.field)
+         setValue('abstract', article.document.abstract)
+         setValue('abstractChart', article.document.abstractChart ? article.document.abstractChart : undefined)
+         setValue('documentType', article.document.documentType)
+         setValue('price', String(article.document.price))
+         setValue(
+            'authors',
+            article?.document.authorsOnDocuments?.map((item) => ({
+               email: item.authorEmail as string,
+               id: item.id as string,
+               name: item.author?.name as string,
+               title: item.author?.title as string,
+               revenuePercent: String(item.revenuePercent),
+               walletAddress: item.author?.walletAddress as string
+            })) || []
+         )
+         setValue(
+            'keywords',
+            keywordsArray(article.document.keywords || '').map((item) => ({ id: uniqueId('keywords'), name: item }))
+         )
+         setValue('accessType', article.document.accessType as 'FREE' | 'PAID')
+         setValue(
+            'file',
+            article?.document.documentVersions?.map((item) => ({
+               name: item.fileName as string,
+               lastModified: 0,
+               lastModifiedDate: new Date(item.createdAt),
+               path: item.link,
+               preview: item.link,
+               size: 0,
+               type: item.fileName?.split('.')[1] || ''
+            })) || []
+         )
+      }
+   }, [article, setValue])
 
    const onReorder = (newOrder: typeof items) => {
       setItems((prevItems) => [...newOrder])
@@ -337,12 +376,18 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
                            <span className="text-sm font-semibold">Title</span>
-                           <span className="text-sm text-neutral-light_gray">0/300 characters</span>
+                           <span className="text-sm text-neutral-light_gray">up to 15 words</span>
                         </Input.Label>
-                        <Input.Input placeholder="Title of the article" defaultValue={article?.document.title} />
+                        <Input.Input placeholder="Title of the article" {...register('title')} />
+                        <Input.Error>{errors.title?.message}</Input.Error>
                      </Input.Root>
                      <Input.Root>
-                        <Input.Label className="text-sm font-semibold">Add keywords</Input.Label>
+                        <Input.Label
+                           className="text-sm font-semibold"
+                           tooltip_message="Add up to 5 keywords that best describe the content and focus of your document. This helps others discover your work."
+                        >
+                           Add keywords
+                        </Input.Label>
                         <Input.Input
                            placeholder="Title of the article"
                            value={keywords_temp}
@@ -352,6 +397,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                            icon={
                               <React.Fragment>
                                  <Button.Button
+                                    type="button"
                                     variant="outline"
                                     className="px-2 py-0 border-neutral-light_gray hover:bg-neutral-light_gray hover:bg-opacity-10 flex items-center gap-1 rounded-sm"
                                     onClick={() => {
@@ -367,7 +413,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                         />
                         <Input.Error>{errors.keywords?.message}</Input.Error>
                         <div className="flex flex-wrap gap-1">
-                           {watch('keywords')?.map((keyword, index) => (
+                           {keywords.map((keyword, index) => (
                               <div
                                  className="border rounded-md border-neutral-stroke_light flex items-center px-1 sm:px-2 py-[2px] bg-white w-fit"
                                  key={keyword.id}
@@ -382,13 +428,14 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                         </div>
                      </Input.Root>
                   </div>
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid md:grid-cols-2 items-start gap-6">
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
                            <span className="text-sm font-semibold">Field</span>
                            <span className="text-sm text-neutral-light_gray">0/300 characters</span>
                         </Input.Label>
-                        <Input.Input placeholder="Title of the field" defaultValue={article?.document.field} />
+                        <Input.Input placeholder="Title of the field" {...register('field')} />
+                        <Input.Error>{errors.field?.message}</Input.Error>
                      </Input.Root>
                   </div>
                </div>
