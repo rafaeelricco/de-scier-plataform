@@ -35,6 +35,10 @@ export const ArticleAcess: React.FC<ArticleAcessProps> = ({ access_type, date, v
                               <Badge access_type={access_type} />
                            </div>
                         </div>
+                        <Button.Button className="flex gap-4 px-4 py-2" onClick={onViewDocument}>
+                           View document
+                           <Download className="w-5 h-5" />
+                        </Button.Button>
                      </React.Fragment>
                   ) : (
                      <ArticleType access_type={access_type} value={value} onBuyDocument={onBuyDocument} onViewDocument={onViewDocument} />
