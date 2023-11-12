@@ -2,11 +2,12 @@
 
 import Box from '@/components/common/Box/Box'
 import CommentItem from '@/components/common/Comment/Comment'
+import { EditorReviewList } from '@/components/common/EditorReviewList/EditorReviewList'
 import { File } from '@/components/common/File/File'
 import { YouAreAuthor, YouAreReviwer } from '@/components/common/Flags/Author/AuthorFlags'
+import { InviteLink } from '@/components/common/InviteLink/InviteLink'
 import EditComment from '@/components/modules/deScier/Article/EditComment'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { header_editor_reviewer } from '@/mock/article_under_review'
@@ -19,7 +20,6 @@ import { updateDocumentApproveStatusService } from '@/services/reviewer/approve.
 import { useArticleToReview } from '@/services/reviewer/fetchDocuments.service'
 import { updateCommentService } from '@/services/reviewer/updateComment.service'
 import { ActionComments, comments_initial_state, reducer_comments } from '@/states/reducer_comments'
-import { truncate } from '@/utils/format_texts'
 import { keywordsArray } from '@/utils/keywords_format'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
@@ -36,7 +36,6 @@ import { ArrowLeft, Check, PlusCircleDotted, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { twMerge } from 'tailwind-merge'
 
 export default function AsReviwerPageDetails({ params }: { params: { slug: string } }) {
    const router = useRouter()
@@ -47,7 +46,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
    console.log('state', state)
 
    const [article, setArticle] = React.useState<DocumentGetProps | null>(null)
-   console.log(article)
+   console.log('article', article)
    const [items, setItems] = React.useState(authors_mock)
    const [authors, setAuthors] = React.useState<Author[]>(authors_mock)
    const [access_type, setAccessType] = React.useState('open-access')
@@ -397,8 +396,8 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
             </Box>
             <Box className="grid gap-8 h-fit py-6 px-8">
                <div className="grid gap-2">
-                  <h3 className="text-xl text-primary-main font-semibold lg:text-lg 2xl:text-xl">Comments</h3>
-                  <p className="text-sm">The reviewing team can publish comments, suggesting updates on your document.</p>
+                  <h3 className="text-lg md:text-xl text-primary-main font-semibold">Comments</h3>
+                  <p className="text-sm">The reviewing team may write comments and suggest editions on your document here.</p>
                </div>
                <div className="grid gap-6">
                   <div className="border rounded-md p-4">
@@ -512,26 +511,16 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                         project. Invite them to the platform through the link:
                      </p>
                   </div>
-                  <div>
-                     <p className="text-sm font-semibold">Invite Link</p>
-                     <div className="flex items-center gap-4">
-                        <div className="max-w-[400px]">
-                           <p className="text-sm font-semibold text-blue-500 underline truncate ..." id="link-to-copy">
-                              {article?.document.reviewerInviteLink}
-                           </p>
-                        </div>
-                        <HoverCard open={popover.copy_link}>
-                           <HoverCardTrigger>
-                              <Button.Button variant="outline" className="px-4 py-1 text-sm w-fit" onClick={copyToClipboard}>
-                                 Copy Link
-                              </Button.Button>
-                           </HoverCardTrigger>
-                           <HoverCardContent className="w-fit px-4 py-2">
-                              <h4 className="text-xs font-semibold text-status-green">O link foi copiado para a área de transferência!</h4>
-                           </HoverCardContent>
-                        </HoverCard>
-                     </div>
-                  </div>
+                  <InviteLink
+                     article={article}
+                     onClick={() => {
+                        setPopover({ ...popover, copy_link: true })
+                        setTimeout(() => {
+                           setPopover({ ...popover, copy_link: false })
+                        }, 2000)
+                     }}
+                     open_status={popover.copy_link}
+                  />
                </div>
                <div>
                   <div className="grid grid-cols-5">
@@ -541,47 +530,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                         </React.Fragment>
                      ))}
                   </div>
-                  <div>
-                     {article?.document.reviewersOnDocuments?.map((item, index) => (
-                        <div key={item.id}>
-                           <div className="grid grid-cols-5  items-center px-0 py-3 rounded-md">
-                              <div className="flex items-center gap-4">
-                                 <div>
-                                    <p className="text-sm text-secundary_blue-main">{item.reviewer.name}</p>
-                                 </div>
-                              </div>
-                              <div>
-                                 <p className="text-sm text-secundary_blue-main">{item.reviewer.title}</p>
-                              </div>
-                              <div>
-                                 <p className="text-sm text-secundary_blue-main">{truncate(item.reviewerEmail, 16)}</p>
-                              </div>
-                              <div>
-                                 <p
-                                    className={twMerge(
-                                       'text-sm text-secundary_blue-main first-letter:uppercase font-semibold lowercase',
-                                       `${item.role == 'reviewer' && 'text-[#EFB521]'}`,
-                                       `${item.role == 'editor' && 'text-terciary-main'}`
-                                    )}
-                                 >
-                                    {item.role}
-                                 </p>
-                              </div>
-                              <div>
-                                 <p
-                                    className={twMerge(
-                                       'text-sm text-secundary_blue-main font-semibold border py-[2px] px-1 text-center rounded-md md:border-none md:py-0 md:px-0 md:rounded-none md:text-start first-letter:uppercase lowercase',
-                                       `${item.inviteStatus == 'PENDING' && 'text-status-pending'}`,
-                                       `${item.inviteStatus == 'APPROVED' && 'text-status-green'}`
-                                    )}
-                                 >
-                                    {item.inviteStatus}
-                                 </p>
-                              </div>
-                           </div>
-                        </div>
-                     ))}
-                  </div>
+                  <EditorReviewList article={article} />
                </div>
             </Box>
             <Box className="grid gap-8 h-fit py-6 px-8">

@@ -512,7 +512,7 @@ export default function SubmitNewPaperPage() {
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
                <div className="grid gap-2">
                   <div className="grid">
-                     <h3 className="text-lg md:text-xl text-terciary-main font-semibold">Authors</h3>
+                     <h3 className="text-lg md:text-xl text-terciary-main font-semibold">Authorship</h3>
                   </div>
                   <div className="grid gap-6">
                      <Button.Button
@@ -568,7 +568,7 @@ export default function SubmitNewPaperPage() {
             </Box>
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
                <div className="grid gap-2">
-                  <h3 className="text-lg md:text-xl text-status-green font-semibold">Authorship</h3>
+                  <h3 className="text-lg md:text-xl text-status-green font-semibold">Access type</h3>
                   <p className="text-sm">
                      Decide if the project is <span className="text-[#53AA22] font-semibold">Open Access</span>,{' '}
                      <span className="text-[#AE66E6] font-semibold">Paid Access</span>

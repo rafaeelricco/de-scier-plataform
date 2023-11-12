@@ -26,7 +26,7 @@ const InReviewItem: React.FC<InReviewItemProps> = ({ date, link, ready_to_publis
                         <p className="text-xs sm:text-base font-semibold text-status-green">Ready to publish</p>
                      ) : (
                         <>
-                           {status_editor == 'approved' && <p className="text-xs sm:text-base font-semibold text-status-green">Editor Approval</p>}
+                           {status_editor == 'approved' && <p className="text-xs sm:text-base font-semibold text-status-green">Approved by editor</p>}
                            {status_editor == 'pending' && <p className="text-xs sm:text-base font-semibold text-status-pending">Editor pending</p>}
                            <span className="text-xs sm:text-sm font-semibold text-neutral-light_gray">/</span>
                            {status_reviewer == 'approved' && <p className="text-xs sm:text-base font-semibold text-status-green">Reviewer approval</p>}

@@ -42,7 +42,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
                   <div className="flex items-center gap-4">
                      <p className="text-sm text-neutral-gray italic font-regular">Proposal rejected</p>
                      <p className="text-sm font-semibold text-terciary-main select-none cursor-pointer hover:underline" onClick={onSeeReasoning}>
-                        See reasoning
+                        See argument
                      </p>
                   </div>
                )}

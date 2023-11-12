@@ -45,11 +45,11 @@ export default function PaginationComponent({
                }}
                onClick={() => handlePreviousPage?.()}
             />
-            <p className="text-sm md:text-base">Página</p>
+            <p className="text-sm md:text-base">Page</p>
             <p className="w-5 h-fit md:w-8 md:h-8 border border-blue-gray rounded-xs grid justify-items-center items-center fill-blue-gray text-sm md:text-base">
                {currentPage}
             </p>
-            <p className="text-sm md:text-base">de</p>
+            <p className="text-sm md:text-base">of</p>
             <p className="text-sm md:text-base">{totalPages()}</p>
             <CaretRight
                className="w-5 h-5 transition-all duration-200 hover:scale-110 rounded-xs fill-[#5E6992] cursor-pointer"

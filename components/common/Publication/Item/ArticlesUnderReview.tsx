@@ -58,7 +58,7 @@ export const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
                         className="grid grid-flow-col gap-2
                       md:gap-1 items-center "
                      >
-                        {status_editor == 'approved' && <p className="text-sm 2xl:text-base font-semibold text-status-green">Editor Approval</p>}
+                        {status_editor == 'approved' && <p className="text-sm 2xl:text-base font-semibold text-status-green">Approved by editor</p>}
                         {status_editor == 'pending' && <p className="text-sm 2xl:text-base font-semibold text-status-pending truncate">Editor pending</p>}
                         <span className="text-sm md:text-base font-semibold text-neutral-light_gray">/</span>
                         {status_reviewer == 'approved' && (

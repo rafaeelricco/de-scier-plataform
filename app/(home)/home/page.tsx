@@ -222,7 +222,7 @@ export default function HomePage() {
                            ) : (
                               <React.Fragment>
                                  {!articles || articles?.length === 0 ? (
-                                    <p className="text-center col-span-2 text-gray-500 mt-8">Não há artigos em revisão no momento.</p>
+                                    <p className="text-center col-span-2 text-gray-500 mt-8">There are no articles under review at the moment.</p>
                                  ) : (
                                     articles.slice(0, lg ? 8 : 3).map((article, index) => (
                                        <React.Fragment key={article.id}>

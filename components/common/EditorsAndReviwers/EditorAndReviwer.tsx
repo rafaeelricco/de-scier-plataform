@@ -26,7 +26,7 @@ export const EditorsAndReviewers: React.FC<EditorAndReviewerProps> = ({ article 
                            <p
                               className={twMerge(
                                  'text-sm text-secundary_blue-main first-letter:uppercase font-semibold lowercase',
-                                 `${item.role == 'reviewer' && 'text-[#EFB521]'}`,
+                                 `${item.role == 'reviewer' && 'text-[#B07F03]'}`,
                                  `${item.role == 'editor' && 'text-terciary-main'}`
                               )}
                            >

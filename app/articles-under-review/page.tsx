@@ -97,10 +97,10 @@ export default function ArticlesUnderReviewPage() {
          <div className="grid gap-6">
             <div className="grid gap-6">
                <div className="flex items-center gap-2">
-                  <Input.Search placeholder="Find articles with this terms" onChange={(e) => setSearchTerm(e.target.value)} />
+                  <Input.Search placeholder="Find articles with these terms" onChange={(e) => setSearchTerm(e.target.value)} />
                </div>
                <div className="flex flex-col md:flex-row md:items-center gap-2">
-                  <Dropdown items={document_types} label="Article type:" onSelect={(value) => setDocumentType(value)} />
+                  <Dropdown items={document_types} label="Order by:" onSelect={(value) => setDocumentType(value)} />
                   <Dropdown label="Status:" className="min-w-[180px]" items={filter_status} onSelect={(value) => setStatus(value)} />
                </div>
             </div>
@@ -117,7 +117,7 @@ export default function ArticlesUnderReviewPage() {
                      ) : (
                         <React.Fragment>
                            {results.length === 0 ? (
-                              <p className="text-center col-span-2 text-gray-500 mt-8">Não há artigos em revisão no momento.</p>
+                              <p className="text-center col-span-2 text-gray-500 mt-8">There are no articles under review at the moment.</p>
                            ) : (
                               results.slice((page - 1) * per_page, page * per_page).map((article) => (
                                  <React.Fragment key={article.id}>
