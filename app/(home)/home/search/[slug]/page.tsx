@@ -8,6 +8,7 @@ import { PurchasedArticles } from '@/components/modules/Home/Search/Purchase/Pur
 import { PurchaseSuccess } from '@/components/modules/Home/Search/Purchase/Success'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { addLikeService } from '@/services/document/addLike.service'
+import { downloadDocument } from '@/services/document/download.service'
 import { useArticles } from '@/services/document/fetchPublic.service'
 import {
    AuthorsOnDocuments,
@@ -98,11 +99,24 @@ export default function Page({ params }: { params: { slug: string } }) {
       })
 
       window.open(response.checkoutUrl)
+   }
 
-      /* setPurchase({ ...purchase, checkout: false, processing: true }),
-         setTimeout(() => {
-            setPurchase({ ...purchase, processing: false, checkout: false, success: true })
-         }, 4000) */
+   const handleDownloadDocument = async () => {
+      const response = await downloadDocument(article?.document.id!)
+
+      if (!response.success) {
+         toast.error(response.message)
+         return
+      }
+
+      const url = URL.createObjectURL(response.file!)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = article?.document.title.replace(' ', '_') + '.pdf'!
+      link.click()
+      URL.revokeObjectURL(url)
+
+      toast.success('Download will start...')
    }
 
    const formatAccessType = () => {
@@ -261,6 +275,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                   date={new Date(article?.document?.createdAt!).toLocaleDateString('pt-BR')}
                   value={article?.document?.price || 0}
                   onBuyDocument={() => handlePurchase()}
+                  onViewDocument={() => handleDownloadDocument()}
                />
                <div className="flex flex-col gap-6 bg-white rounded-xl h-fit w-full flex-grow p-6">
                   <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
