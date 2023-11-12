@@ -20,6 +20,9 @@ interface Item {
    icon_end: JSX.Element | null
 }
 
+export const article_key = 'Articles purchased'
+export const admin_key = 'Admin'
+
 export const items: Item[] = [
    {
       id: uniqueId(),
@@ -47,7 +50,7 @@ export const items: Item[] = [
    },
    {
       id: uniqueId(),
-      text: 'Articles purchased',
+      text: article_key,
       icon: <ArticlesPurchased className="w-6 fill-neutral-light_gray md:w-5 lg:w-6" />,
       path: null,
       icon_end: null,
@@ -87,7 +90,7 @@ export const items: Item[] = [
    },
    {
       id: uniqueId(),
-      text: 'Admin',
+      text: admin_key,
       icon: <AdminIcon className="w-6 fill-neutral-light_gray md:w-5 lg:w-6" />,
       path: home_routes.descier.index,
       icon_end: null,

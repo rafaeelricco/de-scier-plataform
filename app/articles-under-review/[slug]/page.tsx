@@ -411,7 +411,8 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                <Input.Root>
                   <Input.Label className="flex gap-2 items-center">
                      <span className="text-sm font-semibold">Abstract</span>
-                     <span className="text-sm text-neutral-light_gray">0/2000 words</span>
+                     <span className="text-sm text-neutral-light_gray">up to 250 words</span>
+                     <span className="text-sm text-neutral-light_gray italic">Optional</span>
                   </Input.Label>
                   <Input.TextArea defaultValue={article?.document.abstract} rows={4} placeholder="Title of the field" />
                </Input.Root>

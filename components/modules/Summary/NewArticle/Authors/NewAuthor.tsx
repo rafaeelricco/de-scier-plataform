@@ -59,7 +59,7 @@ export const NewAuthor: React.FC<NewAuthorProps> = ({ onAddAuthor, onEditAuthor,
                   <Input.Error>{errors.name?.message}</Input.Error>
                </Input.Root>
                <Input.Root>
-                  <Input.Label>Title</Input.Label>
+                  <Input.Label>Expertise</Input.Label>
                   <Input.Input placeholder="Ex: Biologist" {...register('title')} />
                   <Input.Error>{errors.title?.message}</Input.Error>
                </Input.Root>

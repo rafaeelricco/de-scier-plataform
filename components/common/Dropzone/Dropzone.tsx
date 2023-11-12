@@ -78,7 +78,7 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
                         <div className="grid justify-items-center gap-4">
                            <div className="grid gap-2">
                               <div>
-                                 <p className="text-sm font-semibold text-center">{placeholder || 'Upload paper file (.docx)'}</p>
+                                 <p className="text-sm font-semibold text-center">{placeholder || 'Upload article file (.docx)'}</p>
                                  <p className="text-sm font-regular text-center">{message || 'Drop your file here or'}</p>
                               </div>
                               <Button.Button variant="outline" className="py-2 px-6 text-xs sm:text-sm w-fit mx-auto my-0">

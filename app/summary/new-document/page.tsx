@@ -17,6 +17,7 @@ import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
+import * as Tooltip from '@components/common/Tooltip/Tooltip'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { uniqueId } from 'lodash'
 import { useSession } from 'next-auth/react'
@@ -459,6 +460,7 @@ export default function SubmitNewPaperPage() {
                <div className="flex flex-col gap-2">
                   <Dropzone
                      accept="documents"
+                     placeholder="Upload document file (.docx)"
                      thumbnail={false}
                      setSelectedFile={(file) => {
                         if (file) {
@@ -479,9 +481,10 @@ export default function SubmitNewPaperPage() {
                <Input.Root>
                   <Input.Label className="flex gap-2 items-center">
                      <span className="text-sm font-semibold">Abstract</span>
-                     <span className="text-sm text-neutral-light_gray">0/2000 words</span>
+                     <span className="text-sm text-neutral-light_gray">up to 250 words</span>
+                     <span className="text-sm text-neutral-light_gray italic">Optional</span>
                   </Input.Label>
-                  <Input.TextArea {...register('abstract')} rows={4} placeholder="Title of the field" />
+                  <Input.TextArea {...register('abstract')} rows={4} placeholder="Type your abstract" />
                   <Input.Error>{errors.abstract?.message}</Input.Error>
                </Input.Root>
                <div className="grid gap-4">
@@ -552,8 +555,9 @@ export default function SubmitNewPaperPage() {
                   <div className="grid gap-2">
                      <h3 className="text-lg md:text-xl text-primary-main font-semibold">Editors / Reviewers</h3>
                      <p className="text-sm">
-                        At least 1 editor and 2 reviewers’ approval are required to publish the paper. The editors and reviewers cannot be authors_mock in
-                        the project. Invite them to the platform through a link, that will be generated after you submit it for review.
+                        Article approval requirements vary according to the article type: typically, you will need the endorsement of at least one Editor
+                        and, depending on the type, one or two Reviewers. Editors and Reviewers cannot be Authors. After submitting your article for
+                        review, you will be able to send Reviewers an invitation to join this platform via a link that will be automatically generated.
                      </p>
                   </div>
                   <div>
@@ -566,15 +570,15 @@ export default function SubmitNewPaperPage() {
                <div className="grid gap-2">
                   <h3 className="text-lg md:text-xl text-status-green font-semibold">Authorship</h3>
                   <p className="text-sm">
-                     Decide if the project is <span className="text-terciary-main font-semibold">Open Access</span>,{' '}
-                     <span className="text-[#EFB521] font-semibold">Paid Access</span>
+                     Decide if the project is <span className="text-[#53AA22] font-semibold">Open Access</span>,{' '}
+                     <span className="text-[#AE66E6] font-semibold">Paid Access</span>
                   </p>
                </div>
                <div className="grid md:grid-cols-2 items-start gap-6">
                   <Input.Root>
                      <Input.Select
                         label={'Type of access'}
-                        placeholder="Select the type of access"
+                        placeholder="Select if Open or Paid Acess"
                         onValueChange={(value) => {
                            const value_access = value as unknown as CreateDocumentProps['accessType']
 
@@ -602,7 +606,7 @@ export default function SubmitNewPaperPage() {
                            <CurrencyInput
                               currency="USD"
                               onChangeValue={(event, originalValue, maskedValue) => setValue('price', originalValue.toString())}
-                              InputElement={<Input.Input placeholder="USD" />}
+                              InputElement={<Input.Input placeholder="$10" />}
                            />
                         </Input.Root>
                      </React.Fragment>
@@ -617,12 +621,13 @@ export default function SubmitNewPaperPage() {
                      <div className="grid gap-2">
                         <div className="grid grid-cols-3">
                            {authorship_headers.map((header, index) => (
-                              <React.Fragment key={index}>
+                              <div className="flex items-center justify-start gap-2" key={index}>
                                  <p className="text-sm font-semibold">{header.label}</p>
-                              </React.Fragment>
+                                 {header.tooltip && <Tooltip.Information content={header.tooltip} />}
+                              </div>
                            ))}
                         </div>
-                        <div>
+                        <div className="grid gap-4">
                            <div>
                               {authors.map((author, index) => (
                                  <React.Fragment key={index}>
@@ -654,18 +659,21 @@ export default function SubmitNewPaperPage() {
                                           <p className="text-sm text-center text-black w-8">{author.wallet}</p>
                                        </div>
                                     </div>
-
                                     <hr className="divider-h" />
                                  </React.Fragment>
                               ))}
                            </div>
+                           {/* <div className="grid grid-cols-3">
+                              <p className="text-sm font-regular">Total authorship</p>
+                              <p className="text-sm font-regular">0%</p>
+                           </div> */}
                         </div>
                      </div>
                   </React.Fragment>
                )}
             </Box>
             <Button.Button type="submit" variant="primary" loading={loading}>
-               Submit paper for review
+               Submit article for review
                <Clipboard className="w-5" />
             </Button.Button>
          </form>

@@ -6,7 +6,6 @@ import CommentItem from '@/components/common/Comment/Comment'
 import { EditorsAndReviewers } from '@/components/common/EditorsAndReviwers/EditorAndReviwer'
 import { File } from '@/components/common/File/File'
 import { RenderMermaidChart } from '@/components/common/RenderMermaidChart/RenderMermaidChart'
-import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { access_type_options } from '@/mock/access_type'
@@ -19,7 +18,6 @@ import { downloadDocumentVersionService } from '@/services/document/download.ser
 import { DocumentComment, DocumentGetProps } from '@/services/document/getArticles'
 import { keywordsArray } from '@/utils/keywords_format'
 import * as Button from '@components/common/Button/Button'
-import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
 import { format } from 'date-fns'
 import mermaid from 'mermaid'
@@ -283,7 +281,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                <div className="grid gap-6">
                   <div className="grid gap-2">
                      <h3 className="text-xl text-terciary-main font-semibold lg:text-lg 2xl:text-xl">Authors</h3>
-                     <p className="text-sm">Drag the authors to reorder the list.</p>
+                     <p className="text-sm">Drag the Authors to reorder the list.</p>
                   </div>
                   <div className="grid gap-2">
                      <div className="grid grid-cols-3">

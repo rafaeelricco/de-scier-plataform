@@ -10,14 +10,7 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 import { addLikeService } from '@/services/document/addLike.service'
 import { downloadDocument } from '@/services/document/download.service'
 import { useArticles } from '@/services/document/fetchPublic.service'
-import {
-   AuthorsOnDocuments,
-   AuthorsPublicInfo,
-   DocumentGetProps,
-   GetDocumentPublicProps,
-   ReviewersOnDocuments,
-   ReviewersPublicInfo
-} from '@/services/document/getArticles'
+import { AuthorsPublicInfo, GetDocumentPublicProps, ReviewersPublicInfo } from '@/services/document/getArticles'
 import { createCheckoutService } from '@/services/payment/checkout.service'
 import { capitalizeWord } from '@/utils/format_texts'
 import * as Dialog from '@components/common/Dialog/Digalog'
