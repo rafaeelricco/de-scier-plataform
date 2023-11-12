@@ -1,3 +1,4 @@
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { document_types } from '@/mock/document_types'
 import { formatDate } from '@/utils/date_format'
 import { truncate } from 'lodash'
@@ -54,9 +55,16 @@ const ArticleItem: React.FC<ArticleItemProps> = ({
                               )}
                            </React.Fragment>
                         )}
-                        <h6 className="text-base font-semibold text-secundary_blue-main select-none cursor-pointer transition-all duration-200 hover:text-secundary_purple-hover hover:underline">
-                           {truncate(title, { length: 40 })}
-                        </h6>
+                        <HoverCard openDelay={50} closeDelay={10}>
+                           <HoverCardTrigger>
+                              <h6 className="text-base font-semibold text-secundary_blue-main select-none cursor-pointer transition-all duration-200 hover:text-secundary_purple-hover hover:underline">
+                                 {truncate(title, { length: 40 })}
+                              </h6>
+                           </HoverCardTrigger>
+                           <HoverCardContent>
+                              <p className="text-sm text-neutral-gray">{title}</p>
+                           </HoverCardContent>
+                        </HoverCard>
                      </Link>
                   </div>
                   <div className="flex flex-wrap gap-2">
