@@ -1,7 +1,9 @@
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { document_types } from '@/mock/document_types'
 import { formatAuthors } from '@/utils/format_authors'
 import { ArticleCardProps } from '@components/modules/Home/Index/ArticleCard/Typing'
 import '@styles/home.css'
+import { truncate } from 'lodash'
 import Image from 'next/image'
 import React from 'react'
 import { Eye, HandThumbsUp } from 'react-bootstrap-icons'
@@ -46,7 +48,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
             </div>
             <div className="grid gap-1 sm:gap-2">
                <div className="flex items-center gap-1 flex-wrap">
-                  <p className="text-xs sm:text-sm text-[#5E6992]">{formatAuthors(authors)}</p>
+                  <p className="text-xs sm:text-sm text-[#5E6992] first-letter:uppercase">{formatAuthors(authors)}</p>
                </div>
                {documentType && (
                   <React.Fragment>
@@ -60,7 +62,14 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
                      )}
                   </React.Fragment>
                )}
-               <p className="text-sm sm:text-base text-secundary_blue-main font-semibold">{title}</p>
+               <HoverCard openDelay={50} closeDelay={10}>
+                  <HoverCardTrigger>
+                     <p className="text-sm sm:text-base text-secundary_blue-main font-semibold">{truncate(title, { length: 54 })}</p>
+                  </HoverCardTrigger>
+                  <HoverCardContent>
+                     <p className="text-xs sm:text-sm text-secundary_blue-main font-regular">{title}</p>
+                  </HoverCardContent>
+               </HoverCard>
                {!likes && !views ? null : (
                   <div className="flex items-center gap-2 sm:gap-4">
                      <div className="flex items-center gap-1">
