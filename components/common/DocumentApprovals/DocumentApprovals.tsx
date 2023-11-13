@@ -11,7 +11,7 @@ const DocumentApprovals: React.FC<DocumentApprovalsProps> = ({ editorApprovals, 
    return (
       <React.Fragment>
          <div className="grid items-center md:justify-start">
-            <div className="flex items-center">
+            <div className="flex items-center gap-2">
                <h2 className="text-status-yellow font-semibold text-lg">Reviewer</h2>
                {reviewerApprovals?.map((item) => (
                   <>
@@ -38,7 +38,7 @@ const DocumentApprovals: React.FC<DocumentApprovalsProps> = ({ editorApprovals, 
                   </>
                ))}
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center gap-2">
                <h2 className="text-terciary-main font-semibold text-lg">Editor</h2>
                {editorApprovals?.map((item) => (
                   <>
