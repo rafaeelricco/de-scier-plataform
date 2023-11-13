@@ -9,7 +9,7 @@ import { document_types } from '@/mock/document_types'
 import { Author, authors_headers, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
 import { AuthorProps, CreateDocumentProps, CreateDocumentSchema } from '@/schemas/create_document'
-import { generateAbstractService, generateChartAbstractService } from '@/services/document/generateAbstract.service'
+import { generateAbstractService } from '@/services/document/generateAbstract.service'
 import { submitNewDocumentService } from '@/services/document/submit.service'
 import { uploadDocumentFileService } from '@/services/file/file.service'
 import { ErrorMessage } from '@/utils/error_message'
@@ -43,6 +43,7 @@ export default function SubmitNewPaperPage() {
    const [wallet, setWallet] = useState('')
    const [authors, setAuthors] = useState<Author[]>([])
    const [authorship_settings, setAuthorshipSettings] = useState<Author>()
+   console.log('Authors', authors)
    const [author_to_edit, setAuthorToEdit] = useState<Author | undefined>(undefined)
    const [keywords_temp, setKeywordsTemp] = useState<string | undefined>()
    const [abstractChart, setAbstractChart] = useState<string>('')
@@ -56,7 +57,6 @@ export default function SubmitNewPaperPage() {
       trigger,
       getValues,
       control,
-      clearErrors,
       setError
    } = useForm<CreateDocumentProps>({
       resolver: zodResolver(CreateDocumentSchema),
@@ -94,8 +94,6 @@ export default function SubmitNewPaperPage() {
    const { append, remove, fields: keywords } = useFieldArray({ name: 'keywords', control: control })
 
    const onReorder = (newOrder: typeof authors) => setAuthors((prevItems) => [...newOrder])
-
-   console.log(watch('documentType'))
 
    const handleSubmitDocument: SubmitHandler<CreateDocumentProps> = async (data) => {
       setLoading(true)
@@ -194,38 +192,6 @@ export default function SubmitNewPaperPage() {
       toast.success('Abstract generated successfully.')
    }
 
-   const handleGenerateChart = async () => {
-      const toastId = toast.loading('Generating chart with AI...')
-
-      const response = await generateChartAbstractService({
-         abstract: getValues('abstract') || ''
-      })
-
-      toast.dismiss(toastId)
-
-      if (!response.success) {
-         toast.error(response.message)
-         return
-      }
-
-      if (session?.user?.userInfo) {
-         updateSession({
-            ...session,
-            user: {
-               ...session?.user,
-               userInfo: {
-                  ...session?.user?.userInfo,
-                  aiUsageLimit: session?.user?.userInfo?.aiUsageLimit - 1
-               }
-            }
-         })
-      }
-
-      setValue('abstractChart', response.chart)
-      setAbstractChart(response.chart)
-      toast.success('Chart generated successfully.')
-   }
-
    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.keyCode === 13) {
          if (keywords_temp && keywords_temp.trim() !== '') {
@@ -255,18 +221,6 @@ export default function SubmitNewPaperPage() {
          setAuthors([author])
       }
    }, [session?.user, setValue])
-
-   /* useEffect(() => {
-      const runMermaid = async () => {
-         mermaid.initialize({ startOnLoad: false })
-         await mermaid.run({ querySelector: '.mermaid' })
-      }
-
-      if (watch('abstractChart')) {
-         runMermaid()
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [abstractChart, watch('abstractChart')]) */
 
    return (
       <React.Fragment>
@@ -595,14 +549,14 @@ export default function SubmitNewPaperPage() {
                   </Input.Root>
                   {access_type == 'open-access' && (
                      <Input.Root>
-                        <Input.Label className="text-neutral-gray text-sm font-semibold pl-2">Valor total</Input.Label>
+                        <Input.Label className="text-neutral-gray text-sm font-semibold pl-2">Total value</Input.Label>
                         <Input.Input disabled placeholder="R$" />
                      </Input.Root>
                   )}
                   {access_type == 'paid-access' && (
                      <React.Fragment>
                         <Input.Root>
-                           <Input.Label>Price</Input.Label>
+                           <Input.Label className="text-sm font-semibold">Price</Input.Label>
                            <CurrencyInput
                               currency="USD"
                               onChangeValue={(event, originalValue, maskedValue) => setValue('price', originalValue.toString())}
@@ -663,10 +617,19 @@ export default function SubmitNewPaperPage() {
                                  </React.Fragment>
                               ))}
                            </div>
-                           {/* <div className="grid grid-cols-3">
+                           <div className="grid grid-cols-3">
                               <p className="text-sm font-regular">Total authorship</p>
-                              <p className="text-sm font-regular">0%</p>
-                           </div> */}
+                              {authors.length > 0 && (
+                                 <React.Fragment>
+                                    <p className="text-sm font-regular">
+                                       {authors.reduce((acc, author) => {
+                                          return acc + (author.share ? parseFloat(author.share.replace('%', '')) : 0)
+                                       }, 0)}
+                                       %
+                                    </p>
+                                 </React.Fragment>
+                              )}
+                           </div>
                         </div>
                      </div>
                   </React.Fragment>
