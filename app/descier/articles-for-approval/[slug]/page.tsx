@@ -3,6 +3,7 @@
 import { AuthorsListDragabble } from '@/components/common/AuthorsListDraggable/AuthorsListDraggable'
 import Box from '@/components/common/Box/Box'
 import CommentItem from '@/components/common/Comment/Comment'
+import DocumentApprovals from '@/components/common/DocumentApprovals/DocumentApprovals'
 import { EditorReviewList } from '@/components/common/EditorReviewList/EditorReviewList'
 import { EditorsAndReviewers } from '@/components/common/EditorsAndReviwers/EditorAndReviwer'
 import { File } from '@/components/common/File/File'
@@ -408,62 +409,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                   <h3 className="text-lg font-semibold text-status-pending flex justify-center">Your approval is still pending</h3>
                )}
 
-               <div className="flex items-center justify-center gap-12">
-                  <div className="flex items-center">
-                     <h2 className="text-status-yellow font-semibold text-lg">Reviewer</h2>
-                     {reviewerApprovals?.map((item) => (
-                        <>
-                           {item === 'APPROVED' && (
-                              <Check
-                                 key={uniqueId('reviewer-approval')}
-                                 className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer"
-                              />
-                           )}
-
-                           {item === 'REJECTED' && (
-                              <X
-                                 key={uniqueId('reviewer-approval')}
-                                 className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer"
-                              />
-                           )}
-
-                           {item === 'PENDING' && (
-                              <Clock
-                                 key={uniqueId('reviewer-approval')}
-                                 className="w-6 h-6 hover:scale-125 transition-all duration-200 fill-status-pending cursor-pointer"
-                              />
-                           )}
-                        </>
-                     ))}
-                  </div>
-                  <div className="flex items-center">
-                     <h2 className="text-terciary-main font-semibold text-lg">Editor</h2>
-                     {editorApprovals?.map((item) => (
-                        <>
-                           {item === 'APPROVED' && (
-                              <Check
-                                 key={uniqueId('reviewer-approval')}
-                                 className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer"
-                              />
-                           )}
-
-                           {item === 'REJECTED' && (
-                              <X
-                                 key={uniqueId('reviewer-approval')}
-                                 className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer"
-                              />
-                           )}
-
-                           {item === 'PENDING' && (
-                              <Clock
-                                 key={uniqueId('reviewer-approval')}
-                                 className="w-6 h-6 hover:scale-125 transition-all duration-200 fill-status-pending cursor-pointer"
-                              />
-                           )}
-                        </>
-                     ))}
-                  </div>
-               </div>
+               <DocumentApprovals editorApprovals={editorApprovals} reviewerApprovals={reviewerApprovals} />
                {article?.document.status === 'ADMIN_APPROVE' && (
                   <>
                      <Button.Button variant="primary" className="flex items-center" onClick={() => handleApproveDocument(true)} loading={loading.approve}>

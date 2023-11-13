@@ -3,6 +3,7 @@
 import Box from '@/components/common/Box/Box'
 import { Pills } from '@/components/common/Button/Pill/Pill'
 import { CommentsList } from '@/components/common/CommentsList/CommentsList'
+import DocumentApprovals from '@/components/common/DocumentApprovals/DocumentApprovals'
 import Dropzone from '@/components/common/Dropzone/Dropzone'
 import { StoredFile } from '@/components/common/Dropzone/Typing'
 import { EditorReviewList } from '@/components/common/EditorReviewList/EditorReviewList'
@@ -765,66 +766,15 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                )}
             </Box>
             <Box className="grid gap-4 h-fit px-4 py-6 md:px-8">
-               <div className="flex items-center justify-between md:gap-12 md:justify-center">
-                  <div className="flex items-center">
-                     <h2 className="text-status-yellow font-semibold text-lg">Reviewer</h2>
-                     {reviewerApprovals?.map((item) => (
-                        <>
-                           {item === 'APPROVED' && (
-                              <Check
-                                 key={uniqueId('reviewer-approval')}
-                                 className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer"
-                              />
-                           )}
-
-                           {item === 'REJECTED' && (
-                              <X
-                                 key={uniqueId('reviewer-approval')}
-                                 className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer"
-                              />
-                           )}
-
-                           {item === 'PENDING' && (
-                              <Clock
-                                 key={uniqueId('reviewer-approval')}
-                                 className="w-6 h-6 hover:scale-125 transition-all duration-200 fill-status-pending cursor-pointer"
-                              />
-                           )}
-                        </>
-                     ))}
-                  </div>
-                  <div className="flex items-center">
-                     <h2 className="text-terciary-main font-semibold text-lg">Editor</h2>
-                     {editorApprovals?.map((item) => (
-                        <>
-                           {item === 'APPROVED' && (
-                              <Check
-                                 key={uniqueId('reviewer-approval')}
-                                 className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-green cursor-pointer"
-                              />
-                           )}
-
-                           {item === 'REJECTED' && (
-                              <X
-                                 key={uniqueId('reviewer-approval')}
-                                 className="w-8 h-8 hover:scale-125 transition-all duration-200 fill-status-error cursor-pointer"
-                              />
-                           )}
-
-                           {item === 'PENDING' && (
-                              <Clock
-                                 key={uniqueId('reviewer-approval')}
-                                 className="w-6 h-6 hover:scale-125 transition-all duration-200 fill-status-pending cursor-pointer"
-                              />
-                           )}
-                        </>
-                     ))}
-                  </div>
-               </div>
+               <h3 className="text-lg font-semibold">Document status:</h3>
+               <p className="text-md">
+                  The current status of this document refelects the collective input and consensus from our panel of expert reviewers and editos.
+               </p>
+               <DocumentApprovals editorApprovals={editorApprovals} reviewerApprovals={reviewerApprovals} />
                {article?.document.status !== 'ADMIN_APPROVE' ? (
                   <Button.Button variant="primary" className="flex items-center" onClick={handleSubmitDocument} loading={submitLoading}>
                      <FileEarmarkText className="w-5 h-5" />
-                     Publish document
+                     Resubmit for review
                   </Button.Button>
                ) : (
                   <Button.Button
