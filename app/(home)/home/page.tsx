@@ -224,6 +224,7 @@ export default function HomePage() {
                                        <React.Fragment key={article.id}>
                                           <div className="grid gap-4 sm:gap-6 lg:grid-flow-col">
                                              <ArticleCard
+                                                with_dot={false}
                                                 id={article.id!}
                                                 authors={article.authors}
                                                 image={article.image}
@@ -231,6 +232,7 @@ export default function HomePage() {
                                                 tags={article.tags}
                                                 title={article.title!}
                                                 views={article.views || 0}
+                                                documentType={article.documentType}
                                              />
                                              {lg && index !== 3 && index !== 7 && <hr className="divider-article-v" />}
                                           </div>

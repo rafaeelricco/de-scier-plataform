@@ -19,7 +19,8 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
    image,
    className,
    responsive,
-   documentType
+   documentType,
+   with_dot = true
 }: ArticleCardProps) => {
    return (
       <div className="grid items-start">
@@ -57,7 +58,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
                            <span className="text-sm font-semibold text-primary-main hover:underline transition-all duration-200">
                               {document_types.find((document) => document.value === documentType)?.label}
                            </span>
-                           <span className="text-sm font-semibold hover:underline transition-all duration-200">•</span>
+                           {with_dot && <span className="text-sm font-semibold hover:underline transition-all duration-200">•</span>}
                         </React.Fragment>
                      )}
                   </React.Fragment>
