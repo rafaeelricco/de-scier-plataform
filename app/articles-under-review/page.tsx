@@ -35,7 +35,7 @@ export default function ArticlesUnderReviewPage() {
    const debouncedSearchTerm = useDebounce(searchTerm, 500)
 
    /** @notice State for the selected status filter. */
-   const [status, setStatus] = React.useState<string | null>(null)
+   const [status, setStatus] = React.useState<string | null>('pending')
 
    /** @notice Holds the list of filtered articles to be displayed. */
    const [results, setResults] = React.useState<ArticleUnderReviewProps[]>([])
