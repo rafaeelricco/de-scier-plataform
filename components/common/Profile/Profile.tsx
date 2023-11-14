@@ -45,7 +45,7 @@ const Profile: React.FC<ProfileProps> = ({ className, onClose }: ProfileProps) =
                   </div>
                   <div className="grid gap-4">
                      <Image
-                        src={session?.user?.userInfo.avatar || ''}
+                        src={session?.user?.userInfo.avatar || '/images/profile_dk08wk.png'}
                         quality={50}
                         width={144}
                         height={144}
