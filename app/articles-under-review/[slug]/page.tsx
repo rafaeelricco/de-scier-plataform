@@ -492,7 +492,12 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                <div className="grid gap-6">
                   <h3 className="text-lg md:text-xl text-primary-main font-semibold">Document file</h3>
                   <div className="grid md:grid-cols-2 gap-6">
-                     <Dropzone setSelectedFile={(file) => setFile(file)} placeholder="Upload a new document version (.docx, .pdf)" />
+                     <Dropzone
+                        thumbnail={false}
+                        setSelectedFile={(file) => setFile(file)}
+                        placeholder="Upload a new document version (.docx, .pdf)"
+                        accept="documents"
+                     />
                      <ScrollArea className="h-[200px] pr-2">
                         <div className="grid gap-4">
                            {article?.document?.documentVersions && article?.document?.documentVersions?.length > 0 ? (
