@@ -184,7 +184,7 @@ const Header: React.FC = () => {
                         <DropdownMenuTrigger>
                            <div className="grid grid-flow-col items-center gap-4">
                               <p className="font-semibold text-sm text-primary-main select-none">{formatName(data?.user?.userInfo.name as string)}</p>
-                              <ArrowDown className="w-4 fill-neutral-gray" />
+                              <ArrowDown className="w-[14px] fill-neutral-gray" />
                            </div>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="min-w-[180px]">
