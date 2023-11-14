@@ -2,9 +2,10 @@
 
 import { AuthorsListDragabble } from '@/components/common/AuthorsListDraggable/AuthorsListDraggable'
 import Box from '@/components/common/Box/Box'
-import { Option } from '@/components/common/Input/Typing'
 import { NewAuthor } from '@/components/modules/Summary/NewArticle/Authors/NewAuthor'
 import { access_type_options } from '@/mock/access_type'
+import { article_categories } from '@/mock/article_category'
+import { article_types } from '@/mock/article_type'
 import { Author, authors_headers, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
 import { AuthorProps, CreateDocumentProps, CreateDocumentSchema } from '@/schemas/create_document'
@@ -17,7 +18,7 @@ import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
 import * as Tooltip from '@components/common/Tooltip/Tooltip'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { random, uniqueId } from 'lodash'
+import { uniqueId } from 'lodash'
 import { useSession } from 'next-auth/react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
@@ -636,114 +637,3 @@ export default function SubmitNewPaperPage() {
       </React.Fragment>
    )
 }
-
-const article_types: Option[] = [
-   {
-      id: random(1, 1000 * 9999),
-      label: 'Research Articles',
-      value: 'research-articles'
-   },
-   {
-      id: random(1, 1000 * 9999),
-      label: 'Cases and Notes',
-      value: 'cases-and-notes'
-   },
-   {
-      id: random(1, 1000 * 9999),
-      label: 'Reviews',
-      value: 'reviews'
-   },
-   {
-      id: random(1, 1000 * 9999),
-      label: 'Communications',
-      value: 'communications'
-   },
-   {
-      id: random(1, 1000 * 9999),
-      label: 'Others',
-      value: 'others'
-   }
-]
-
-const article_categories: Option[] = [
-   {
-      id: random(1, 1000 * 9999),
-      label: 'Research article',
-      value: 'research-article'
-   },
-   {
-      id: random(1, 1000 * 9999),
-      label: 'Review article',
-      value: 'review-article'
-   },
-   {
-      id: random(1, 1000 * 9999),
-      label: 'Capstone work (TCC)',
-      value: 'capstone-work'
-   },
-   {
-      id: random(1, 1000 * 9999),
-      label: 'Short communication',
-      value: 'short-communication'
-   },
-   {
-      id: random(1, 1000 * 9999),
-      label: 'Case report',
-      value: 'case-report'
-   },
-   {
-      id: random(1, 1000 * 9999),
-      label: 'Case series',
-      value: 'case-series'
-   },
-   {
-      id: random(1, 1000 * 9999),
-      label: 'Technical note',
-      value: 'technical-note'
-   },
-   {
-      id: random(1, 1000 * 9999),
-      label: 'Technical report',
-      value: 'technical-report'
-   },
-   {
-      id: random(1, 1000 * 9999),
-      label: 'Systematic review',
-      value: 'systematic-review'
-   },
-   {
-      id: random(1, 1000 * 9999),
-      label: 'Pictorial essay',
-      value: 'pictorial-essay'
-   },
-   {
-      id: random(1, 1000 * 9999),
-      label: 'Letter to the Editor',
-      value: 'letter-to-the-editor'
-   },
-   {
-      id: random(1, 1000 * 9999),
-      label: 'Correspondence',
-      value: 'correspondence'
-   },
-   {
-      id: random(1, 1000 * 9999),
-      label: 'Commentary',
-      value: 'commentary'
-   },
-   {
-      id: random(1, 1000 * 9999),
-      label: 'Conference Abstract',
-      value: 'conference-abstract'
-   },
-   {
-      id: random(1, 1000 * 9999),
-      label: 'Editorial',
-      value: 'editorial'
-   },
-   {
-      id: random(1, 1000 * 9999),
-      label: 'Other',
-      value: 'other'
-   }
-]
