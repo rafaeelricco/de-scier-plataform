@@ -35,7 +35,8 @@ export const CreateDocumentSchema = zod.object({
    price: zod.string(),
    file: FileSchema,
    cover: FileSchema,
-   authors: zod.array(AuthorSchema).min(1, 'At least one author is required.')
+   authors: zod.array(AuthorSchema).min(1, 'At least one author is required.'),
+   category: zod.string({ required_error: 'Category type is required' })
 })
 
 /**

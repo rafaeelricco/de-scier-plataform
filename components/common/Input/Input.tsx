@@ -1,3 +1,4 @@
+import useDimension from '@/hooks/useWindowDimension'
 import { cn } from '@/lib/utils'
 import { ComboboxProps, ErrorProps, InputProps, LabelProps, SelectInputProps, TextAreaProps, WrapperInputProps } from '@components/common/Input/Typing'
 import * as S from '@components/common/Select/Select'
@@ -238,16 +239,14 @@ const Select = React.forwardRef<HTMLInputElement, SelectInputProps>(
       /** @dev define if has icon */
       const hasIcon = icon !== undefined
 
+      const { windowDimension } = useDimension()
+
       /** @dev Get ref object to set width of content */
       const triggerRef = useRef<HTMLDivElement>(null)
-      const [triggerWidth, setTriggerWidth] = useState<number>(0)
 
-      /** @dev Set width of content when trigger width is changed */
       useEffect(() => {
-         if (triggerRef.current) {
-            setTriggerWidth(triggerRef.current.offsetWidth)
-         }
-      }, [triggerWidth])
+         console.log(triggerRef.current?.clientWidth)
+      }, [windowDimension])
 
       return (
          <S.Root
@@ -270,7 +269,7 @@ const Select = React.forwardRef<HTMLInputElement, SelectInputProps>(
                         {icon}
                      </div>
                   )}
-                  <div ref={triggerRef} className="w-full">
+                  <div className="w-full" ref={triggerRef}>
                      <S.Trigger variant={variant} aria-controls="select-trigger" name={name}>
                         <S.Value placeholder={placeholder} />
                         <S.Icon>
@@ -285,7 +284,7 @@ const Select = React.forwardRef<HTMLInputElement, SelectInputProps>(
                </div>
             </div>
             <S.Portal>
-               <S.Content sideOffset={5} position="item-aligned" className={twMerge(className)} style={{ width: triggerWidth }}>
+               <S.Content sideOffset={5} position="item-aligned" className={twMerge(className)} style={{ minWidth: triggerRef.current?.clientWidth }}>
                   <S.Viewport>
                      <S.Group>
                         {options?.map((option) => (
@@ -340,7 +339,16 @@ const Percentage = React.forwardRef<HTMLInputElement, CurrencyInputProps>(({ ...
  *
  * @return {JSX.Element} The rendered Combobox component.
  */
-const Combobox: React.FC<ComboboxProps> = ({ options, className, onSelect, placeholder }: ComboboxProps) => {
+const Combobox: React.FC<ComboboxProps> = ({
+   options,
+   className,
+   className_icon,
+   placeholder,
+   is_input = false,
+   onSelect,
+   onUnselect,
+   ...props
+}: ComboboxProps) => {
    /** @dev States to controll when is opened and values */
    const [open, setOpen] = useState(false)
    const [value, setValue] = useState('')
@@ -348,27 +356,36 @@ const Combobox: React.FC<ComboboxProps> = ({ options, className, onSelect, place
    /** @dev Constants to define define values until render */
    const valueOrPlaceholder = value ? options.find((opt) => opt.value === value)?.label : placeholder
 
+   const buttonRef = useRef<HTMLButtonElement>(null)
+
    return (
       <Popover open={open} onOpenChange={setOpen}>
          <PopoverTrigger asChild>
-            <button type="button" className={twMerge(S.select({ type: 'small' }), 'items-center justify-between w-52 py-2', className)}>
-               <span className="text-gray-main text-sm">{valueOrPlaceholder}</span>
+            <button
+               ref={buttonRef}
+               type="button"
+               className={twMerge(S.select({ type: 'small' }), 'items-center justify-between py-2', `${is_input && input()}`, className)}
+               {...props}
+            >
+               <span className={twMerge('text-gray-main text-sm', `${is_input && 'text-gray-light'}`)}>{valueOrPlaceholder}</span>
                <CaretDown className="fill-black-primary" width={18} />
             </button>
          </PopoverTrigger>
-         <PopoverContent className="pb-1 w-52">
+         <PopoverContent side="bottom" className={'pb-1 w-52'} style={{ width: is_input ? buttonRef.current?.clientWidth : 'auto' }}>
             <Command>
                <CommandInput placeholder={`Digite para pesquisar`} />
                <CommandEmpty>Não há resultados</CommandEmpty>
                <CommandGroup>
                   {options.map((opt) => (
                      <CommandItem
+                        className="cursor-pointer"
                         key={opt.value}
                         onSelect={() => {
                            if (opt.value === value) {
                               setValue('')
                               onSelect?.('')
                               setOpen(false)
+                              onUnselect?.()
                            } else {
                               setValue(opt.value)
                               onSelect?.(opt.value)

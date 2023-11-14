@@ -2,10 +2,9 @@
 
 import { AuthorsListDragabble } from '@/components/common/AuthorsListDraggable/AuthorsListDraggable'
 import Box from '@/components/common/Box/Box'
-import { Pills } from '@/components/common/Button/Pill/Pill'
+import { Option } from '@/components/common/Input/Typing'
 import { NewAuthor } from '@/components/modules/Summary/NewArticle/Authors/NewAuthor'
 import { access_type_options } from '@/mock/access_type'
-import { document_types } from '@/mock/document_types'
 import { Author, authors_headers, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
 import { AuthorProps, CreateDocumentProps, CreateDocumentSchema } from '@/schemas/create_document'
@@ -18,7 +17,7 @@ import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
 import * as Tooltip from '@components/common/Tooltip/Tooltip'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { uniqueId } from 'lodash'
+import { random, uniqueId } from 'lodash'
 import { useSession } from 'next-auth/react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
@@ -42,7 +41,6 @@ export default function SubmitNewPaperPage() {
    const [wallet, setWallet] = useState('')
    const [authors, setAuthors] = useState<Author[]>([])
    const [authorship_settings, setAuthorshipSettings] = useState<Author>()
-   console.log('Authors', authors)
    const [author_to_edit, setAuthorToEdit] = useState<Author | undefined>(undefined)
    const [keywords_temp, setKeywordsTemp] = useState<string | undefined>()
    const [abstractChart, setAbstractChart] = useState<string>('')
@@ -86,6 +84,7 @@ export default function SubmitNewPaperPage() {
             size: 0,
             type: ''
          },
+         category: '',
          authors: [{}],
          keywords: []
       }
@@ -97,7 +96,6 @@ export default function SubmitNewPaperPage() {
 
    const handleSubmitDocument: SubmitHandler<CreateDocumentProps> = async (data) => {
       setLoading(true)
-      console.log(data)
       const requestData = {
          abstract: data.abstract,
          accessType: access_type === 'open-access' ? 'FREE' : 'PAID',
@@ -106,7 +104,8 @@ export default function SubmitNewPaperPage() {
          price: access_type === 'open-access' ? 0 : Number(data.price),
          title: data.title,
          abstractChart: abstractChart,
-         keywords: data.keywords.map((item) => item.name)
+         keywords: data.keywords.map((item) => item.name),
+         category: data.category
       }
 
       const documentAuthors = authors.map((item) => ({
@@ -158,8 +157,6 @@ export default function SubmitNewPaperPage() {
       }
    }
 
-   console.log(watch('cover'))
-
    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.keyCode === 13) {
          if (keywords_temp && keywords_temp.trim() !== '') {
@@ -205,7 +202,6 @@ export default function SubmitNewPaperPage() {
                            email: value.email,
                            revenuePercent: value.revenuePercent
                         }
-                        console.log(newAuthor)
                         setAuthors((prevItems) => [...prevItems, newAuthor])
                      }}
                      onClose={() => setDialog({ ...dialog, author: false })}
@@ -271,8 +267,6 @@ export default function SubmitNewPaperPage() {
                                  updatedAuthors[authorIndex].share = share.includes('%') ? share : share + '%'
                                  updatedAuthors[authorIndex].wallet = wallet
                                  setAuthors(updatedAuthors)
-
-                                 console.log(authors)
 
                                  setDialog({ ...dialog, share_split: false })
                               }}
@@ -350,7 +344,7 @@ export default function SubmitNewPaperPage() {
                   <div className="grid md:grid-cols-2 items-start gap-6">
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
-                           <span className="text-sm font-semibold">Field</span>
+                           <span className="text-sm  font-semibold">Field</span>
                            <span className="text-sm text-neutral-light_gray">0/300 characters</span>
                         </Input.Label>
                         <Input.Input placeholder="Title of the field" {...register('field')} />
@@ -358,30 +352,29 @@ export default function SubmitNewPaperPage() {
                      </Input.Root>
                   </div>
                </div>
-               <div>
-                  <div className="hidden lg:grid lg:gap-2">
-                     <h3 className="text-sm font-semibold">Document type</h3>
-                     <Pills
-                        onSelect={(value) => {
-                           setValue('documentType', value.value), trigger('documentType')
+               <div className="grid md:grid-cols-2 items-start gap-6">
+                  <Input.Root>
+                     <Input.Select
+                        label={'Article category'}
+                        options={article_categories}
+                        placeholder="Select a category"
+                        onValueChange={(value) => {
+                           setValue('category', value), trigger('category')
                         }}
-                        items={document_types}
                      />
                      <Input.Error>{errors.documentType?.message}</Input.Error>
-                  </div>
-                  <div className="block md:hidden">
-                     <Input.Root>
-                        <Input.Select
-                           label={'Document type'}
-                           options={document_types}
-                           placeholder="Title of the field"
-                           onValueChange={(value) => {
-                              setValue('documentType', value), trigger('documentType')
-                           }}
-                        />
-                        <Input.Error>{errors.documentType?.message}</Input.Error>
-                     </Input.Root>
-                  </div>
+                  </Input.Root>
+                  <Input.Root>
+                     <Input.Select
+                        label={'Article type'}
+                        options={article_types}
+                        placeholder="Select the article type"
+                        onValueChange={(value) => {
+                           setValue('documentType', value), trigger('documentType')
+                        }}
+                     />
+                     <Input.Error>{errors.documentType?.message}</Input.Error>
+                  </Input.Root>
                </div>
                <div className="flex flex-col gap-2">
                   <Dropzone
@@ -643,3 +636,114 @@ export default function SubmitNewPaperPage() {
       </React.Fragment>
    )
 }
+
+const article_types: Option[] = [
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Research Articles',
+      value: 'research-articles'
+   },
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Cases and Notes',
+      value: 'cases-and-notes'
+   },
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Reviews',
+      value: 'reviews'
+   },
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Communications',
+      value: 'communications'
+   },
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Others',
+      value: 'others'
+   }
+]
+
+const article_categories: Option[] = [
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Research article',
+      value: 'research-article'
+   },
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Review article',
+      value: 'review-article'
+   },
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Capstone work (TCC)',
+      value: 'capstone-work'
+   },
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Short communication',
+      value: 'short-communication'
+   },
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Case report',
+      value: 'case-report'
+   },
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Case series',
+      value: 'case-series'
+   },
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Technical note',
+      value: 'technical-note'
+   },
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Technical report',
+      value: 'technical-report'
+   },
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Systematic review',
+      value: 'systematic-review'
+   },
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Pictorial essay',
+      value: 'pictorial-essay'
+   },
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Letter to the Editor',
+      value: 'letter-to-the-editor'
+   },
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Correspondence',
+      value: 'correspondence'
+   },
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Commentary',
+      value: 'commentary'
+   },
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Conference Abstract',
+      value: 'conference-abstract'
+   },
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Editorial',
+      value: 'editorial'
+   },
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Other',
+      value: 'other'
+   }
+]

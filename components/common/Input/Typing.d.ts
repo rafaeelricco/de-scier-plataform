@@ -50,11 +50,14 @@ interface LabelWithTrashIconProps extends React.HTMLAttributes<HTMLDivElement> {
    onDelete: () => void
 }
 
-interface ComboboxProps {
+interface ComboboxProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
    placeholder?: string
    options: Option[]
    onSelect?: ((value: string) => void) | undefined
+   onUnselect?: () => void
    className?: string
+   className_icon?: string
+   is_input?: boolean
 }
 
 export { ComboboxProps, ErrorProps, InputProps, LabelProps, LabelWithTrashIconProps, Option, SelectInputProps, TextAreaProps, WrapperInputProps }
