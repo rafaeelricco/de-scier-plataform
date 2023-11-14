@@ -1,7 +1,9 @@
+import { home_routes } from '@/routes/home'
 import { formatAuthors } from '@/utils/format_authors'
 import { ArticleCardProps } from '@components/modules/Home/Index/ArticleCard/Typing'
 import '@styles/home.css'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 import { Eye, HandThumbsUpFill } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
@@ -18,7 +20,7 @@ export const ArticleCheckout: React.FC<ArticleCardProps> = ({
    responsive
 }: ArticleCardProps) => {
    return (
-      <div className="flex md:grid items-start">
+      <Link href={home_routes.home.search + `/${id}`} className="flex md:grid items-start">
          <div className={twMerge('flex md:grid gap-2 md:gap-3', className)}>
             <div className={twMerge('flex-shrink-0 w-20 md:w-full md:h-52 h-20 overflow-hidden rounded-md relative')}>
                <Image fill src={image} alt="placeholder" className={twMerge('w-28 h-28 md:w-full md:h-full object-cover absolute inset-0')} />
@@ -51,6 +53,6 @@ export const ArticleCheckout: React.FC<ArticleCardProps> = ({
                )}
             </div>
          </div>
-      </div>
+      </Link>
    )
 }

@@ -212,7 +212,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                         <div className="grid gap-0">
                            <HoverCardTrigger className="flex flex-col md:flex-row md:items-center gap-4 flex-1 min-w-0">
                               <p className="text-sm font-semibold text-primary-main max-w-full truncate">
-                                 <span className="text-black">{capitalizeWord(article?.document.documentType || 'paper')} -</span>{' '}
+                                 <span className="text-black">{capitalizeWord(article?.document?.documentType || 'paper')} -</span>{' '}
                                  {article?.document?.field}
                               </p>
                            </HoverCardTrigger>
