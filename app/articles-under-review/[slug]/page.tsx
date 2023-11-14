@@ -540,34 +540,34 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                </div>
                <CommentsList
                   article={article}
-                  onApprove={(comment) => {
-                     handleApproveDocument('APPROVED', comment.id!)
-                     dispatch({
-                        type: 'approve_comment',
-                        payload: {
-                           id: comment.id,
-                           comment_content: comment.comment_content,
-                           comment_author: comment.comment_author,
-                           status: 'APPROVED'
-                        }
-                     } as ActionComments)
-                  }}
-                  onReject={(comment) => {
-                     dispatch({
-                        type: 'comment_to_edit',
-                        payload: {
-                           id: comment.id,
-                           comment_author: comment.comment_author,
-                           comment_content: comment.comment_content,
-                           reason: comment.reason,
-                           status: 'PENDING'
-                        }
-                     } as ActionComments)
-                     setDialog({
-                        ...dialog,
-                        reasoning: true
-                     })
-                  }}
+                  //   onApprove={(comment) => {
+                  //      handleApproveDocument('APPROVED', comment.id!)
+                  //      dispatch({
+                  //         type: 'approve_comment',
+                  //         payload: {
+                  //            id: comment.id,
+                  //            comment_content: comment.comment_content,
+                  //            comment_author: comment.comment_author,
+                  //            status: 'APPROVED'
+                  //         }
+                  //      } as ActionComments)
+                  //   }}
+                  //   onReject={(comment) => {
+                  //      dispatch({
+                  //         type: 'comment_to_edit',
+                  //         payload: {
+                  //            id: comment.id,
+                  //            comment_author: comment.comment_author,
+                  //            comment_content: comment.comment_content,
+                  //            reason: comment.reason,
+                  //            status: 'PENDING'
+                  //         }
+                  //      } as ActionComments)
+                  //      setDialog({
+                  //         ...dialog,
+                  //         reasoning: true
+                  //      })
+                  //   }}
                   onSeeReasoning={(comment) => {
                      dispatch({
                         type: 'comment_to_edit',
