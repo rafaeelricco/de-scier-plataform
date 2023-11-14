@@ -41,6 +41,7 @@ export default function SubmitNewPaperPage() {
    const [share, setShare] = useState('')
    const [wallet, setWallet] = useState('')
    const [authors, setAuthors] = useState<Author[]>([])
+   console.log('authors', authors)
    const [edit_share_split, setEditShare] = useState<Author | null>()
    const [authorship_settings, setAuthorshipSettings] = useState<Author>()
    const [author_to_edit, setAuthorToEdit] = useState<Author | undefined>(undefined)
@@ -90,6 +91,7 @@ export default function SubmitNewPaperPage() {
          keywords: []
       }
    })
+
    console.log('watch', watch())
 
    const { append, remove, fields: keywords } = useFieldArray({ name: 'keywords', control: control })
@@ -202,7 +204,8 @@ export default function SubmitNewPaperPage() {
             if (author.id === currentAuthorId) {
                return { ...author, share: `${newShareValue}%` }
             } else {
-               totalShared += parseFloat(author.share!.replace('%', ''))
+               if (!author.share) return author
+               totalShared += parseFloat(author.share.replace('%', ''))
                return author
             }
          })
@@ -237,6 +240,15 @@ export default function SubmitNewPaperPage() {
          setEditShare(null)
       }
    }
+
+   useEffect(() => {
+      if (authors.length === 1 && authors[0].share !== '100%') {
+         const updatedAuthors = [{ ...authors[0], share: '100%' }]
+
+         setAuthors(updatedAuthors)
+         setValue('authors', updatedAuthors)
+      }
+   }, [authors, setValue])
 
    return (
       <React.Fragment>
@@ -490,7 +502,9 @@ export default function SubmitNewPaperPage() {
                         type="button"
                         variant="outline"
                         className="px-4 py-3 w-full text-sm"
-                        onClick={() => setDialog({ ...dialog, author: true })}
+                        onClick={() => {
+                           setDialog({ ...dialog, author: true })
+                        }}
                      >
                         Add authors for this paper
                         <PlusCircle className="w-4 fill-primary-main" />
