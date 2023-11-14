@@ -54,6 +54,7 @@ export type DocumentProps = {
    views: number
    userId: string
    user?: UserProps
+   category: string
    reviewerApprovals: number
    editorsApprovals: number
    adminApproval: number

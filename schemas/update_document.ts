@@ -35,7 +35,8 @@ export const UpdateDocumentSchema = zod.object({
    price: zod.string().optional(),
    file: zod.array(FileSchema).optional(),
    cover: FileSchema.optional(),
-   authors: zod.array(AuthorSchema).optional()
+   authors: zod.array(AuthorSchema).optional(),
+   category: zod.string({ required_error: 'Category type is required' })
 })
 
 /**

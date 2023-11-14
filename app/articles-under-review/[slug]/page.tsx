@@ -1,7 +1,6 @@
 'use client'
 
 import Box from '@/components/common/Box/Box'
-import { Pills } from '@/components/common/Button/Pill/Pill'
 import { CommentsList } from '@/components/common/CommentsList/CommentsList'
 import DocumentApprovals from '@/components/common/DocumentApprovals/DocumentApprovals'
 import Dropzone from '@/components/common/Dropzone/Dropzone'
@@ -15,8 +14,9 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useGetApprovals } from '@/hooks/useGetApprovals'
 import { access_type_options } from '@/mock/access_type'
+import { article_categories } from '@/mock/article_category'
+import { article_types } from '@/mock/article_type'
 import { header_editor_reviewer } from '@/mock/article_under_review'
-import { document_types } from '@/mock/document_types'
 import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
 import { UpdateDocumentProps, UpdateDocumentSchema } from '@/schemas/update_document'
@@ -95,7 +95,9 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
          title: '',
          file: [],
          authors: [{}],
-         keywords: []
+         keywords: [],
+         category: '',
+         cover: {}
       }
    })
    console.log('watch', watch())
@@ -205,6 +207,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
             size: 0,
             type: extractFileName(article.document.cover as string)?.split('.')[1] || ''
          })
+         setValue('category', article.document.category)
       }
    }, [article, setValue])
 
@@ -454,21 +457,31 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                      </Input.Root>
                   </div>
                </div>
-               <div>
-                  <div className="hidden lg:grid lg:gap-2">
-                     <h3 className="text-sm font-semibold">Document type</h3>
-                     <Pills items={document_types} selected={article?.document.documentType?.toLowerCase() || 'manuscript'} />
-                  </div>
-                  <div className="block md:hidden">
-                     <Input.Root>
-                        <Input.Select
-                           label={'Document type'}
-                           defaultValue={article?.document.documentType}
-                           options={document_types}
-                           placeholder="Title of the field"
-                        />
-                     </Input.Root>
-                  </div>
+               <div className="grid md:grid-cols-2 items-start gap-6">
+                  <Input.Root>
+                     <Input.Select
+                        label={'Article category'}
+                        options={article_categories}
+                        placeholder="Select a category"
+                        value={watch('category') || undefined}
+                        onValueChange={(value) => {
+                           setValue('category', value), trigger('category')
+                        }}
+                     />
+                     <Input.Error>{errors.category?.message}</Input.Error>
+                  </Input.Root>
+                  <Input.Root>
+                     <Input.Select
+                        label={'Article type'}
+                        options={article_types}
+                        placeholder="Select the article type"
+                        value={watch('documentType') || undefined}
+                        onValueChange={(value) => {
+                           setValue('documentType', value), trigger('documentType')
+                        }}
+                     />
+                     <Input.Error>{errors.documentType?.message}</Input.Error>
+                  </Input.Root>
                </div>
                <Input.Root>
                   <Input.Label className="flex gap-2 items-center">
