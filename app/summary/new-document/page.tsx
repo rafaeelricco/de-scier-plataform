@@ -9,7 +9,6 @@ import { document_types } from '@/mock/document_types'
 import { Author, authors_headers, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
 import { AuthorProps, CreateDocumentProps, CreateDocumentSchema } from '@/schemas/create_document'
-import { generateAbstractService } from '@/services/document/generateAbstract.service'
 import { submitNewDocumentService } from '@/services/document/submit.service'
 import { uploadDocumentFileService } from '@/services/file/file.service'
 import { ErrorMessage } from '@/utils/error_message'
@@ -24,7 +23,7 @@ import { useSession } from 'next-auth/react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { Clipboard, PlusCircle, PlusCircleDotted, X } from 'react-bootstrap-icons'
+import { Clipboard, Pencil, PlusCircle, PlusCircleDotted, Trash, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -37,7 +36,7 @@ export default function SubmitNewPaperPage() {
    const { data: session, update: updateSession } = useSession()
 
    const [loading, setLoading] = useState(false)
-   const [dialog, setDialog] = useState({ author: false, share_split: false, edit_author: false })
+   const [dialog, setDialog] = useState({ author: false, share_split: false, edit_author: false, edit_share_split: false })
    const [access_type, setAccessType] = useState('open-access')
    const [share, setShare] = useState('')
    const [wallet, setWallet] = useState('')
@@ -47,6 +46,7 @@ export default function SubmitNewPaperPage() {
    const [author_to_edit, setAuthorToEdit] = useState<Author | undefined>(undefined)
    const [keywords_temp, setKeywordsTemp] = useState<string | undefined>()
    const [abstractChart, setAbstractChart] = useState<string>('')
+   const [edit_share_split, setEditShare] = useState<Author | null>()
 
    const {
       register,
@@ -160,38 +160,6 @@ export default function SubmitNewPaperPage() {
 
    console.log(watch('cover'))
 
-   const handleGenerateAbstract = async () => {
-      const toastId = toast.loading('Generating abstract with AI...')
-
-      const response = await generateAbstractService({
-         fileLocalUrl: getValues('file').preview,
-         filename: getValues('file').name
-      })
-
-      toast.dismiss(toastId)
-
-      if (!response.success) {
-         toast.error(response.message)
-         return
-      }
-
-      if (session?.user?.userInfo) {
-         updateSession({
-            ...session,
-            user: {
-               ...session?.user,
-               userInfo: {
-                  ...session?.user?.userInfo,
-                  aiUsageLimit: session?.user?.userInfo?.aiUsageLimit - 1
-               }
-            }
-         })
-      }
-
-      setValue('abstract', response.abstract)
-      toast.success('Abstract generated successfully.')
-   }
-
    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.keyCode === 13) {
          if (keywords_temp && keywords_temp.trim() !== '') {
@@ -224,7 +192,7 @@ export default function SubmitNewPaperPage() {
 
    return (
       <React.Fragment>
-         <Dialog.Root open={dialog.author || dialog.share_split || dialog.edit_author}>
+         <Dialog.Root open={dialog.author || dialog.share_split || dialog.edit_author || dialog.edit_share_split}>
             <Dialog.Overlay />
             <Dialog.Content className={twMerge('md:px-16 md:py-14 pb-20')}>
                {dialog.author && (
@@ -262,17 +230,21 @@ export default function SubmitNewPaperPage() {
                            <div className="flex items-center gap-6">
                               <Input.Root>
                                  <Input.Label>Share</Input.Label>
-                                 <Input.Input
-                                    type="number"
+                                 <Input.Percentage
+                                    defaultValue={edit_share_split?.share?.replace('%', '') || undefined}
                                     placeholder="% of the revenue"
-                                    onChange={(e) => {
-                                       setShare(e.target.value)
+                                    onValueChange={(value) => {
+                                       setShare(value as string)
                                     }}
                                  />
                               </Input.Root>
                               <Input.Root>
                                  <Input.Label optional>Wallet</Input.Label>
-                                 <Input.Input placeholder="Crypto wallet adress to recieve the revenue" onChange={(e) => setWallet(e.target.value)} />
+                                 <Input.Input
+                                    defaultValue={edit_share_split?.wallet || undefined}
+                                    placeholder="Crypto wallet adress to recieve the revenue"
+                                    onChange={(e) => setWallet(e.target.value)}
+                                 />
                               </Input.Root>
                            </div>
                            <Button.Button
@@ -609,8 +581,36 @@ export default function SubmitNewPaperPage() {
                                              </Button.Button>
                                           )}
                                        </div>
-                                       <div className="w-fit">
-                                          <p className="text-sm text-center text-black w-8">{author.wallet}</p>
+                                       <div className="w-full flex items-center justify-between">
+                                          <p className="text-base text-center text-black w-8">{author.wallet || '-'}</p>
+                                          <div className="flex items-center gap-2">
+                                             <Trash
+                                                size={20}
+                                                className=" fill-status-error hover:scale-110 transition-all duration-200 cursor-pointer"
+                                                onClick={() => {
+                                                   const author_whitout_share = authors.filter((item) => item.id !== author.id)
+
+                                                   const author_updated: AuthorProps = {
+                                                      email: author.email,
+                                                      id: author.id,
+                                                      name: author.name,
+                                                      title: author.title,
+                                                      revenuePercent: '0',
+                                                      walletAddress: author.wallet || ''
+                                                   }
+
+                                                   setAuthors((prevItems) => [...author_whitout_share, author_updated])
+                                                }}
+                                             />
+                                             <Pencil
+                                                size={20}
+                                                className=" fill-primary-main hover:scale-110 transition-all duration-200 cursor-pointer"
+                                                onClick={() => {
+                                                   setEditShare(author)
+                                                   setDialog({ ...dialog, share_split: true })
+                                                }}
+                                             />
+                                          </div>
                                        </div>
                                     </div>
                                     <hr className="divider-h" />

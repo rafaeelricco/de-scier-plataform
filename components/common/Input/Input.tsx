@@ -7,6 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@components/ui/popover'
 import { Check } from 'lucide-react'
 import React, { LegacyRef, useEffect, useRef, useState } from 'react'
 import { CaretDown, Eye, EyeSlash, Search as SearchIcon } from 'react-bootstrap-icons'
+import CurrencyInput, { CurrencyInputProps } from 'react-currency-input-field'
 import { twMerge } from 'tailwind-merge'
 import { tv } from 'tailwind-variants'
 
@@ -302,6 +303,33 @@ const Select = React.forwardRef<HTMLInputElement, SelectInputProps>(
 )
 
 /**
+ * @title Percentage Input Component
+ * @notice A specialized input component to capture percentage values with some validation checks.
+ * @dev This component uses the MaskedInput library to format and validate the percentage input. It ensures the inputted percentage doesn't exceed certain thresholds.
+ * @param {string} [mask] Mask pattern to format the input. This is currently unused and should be removed or made functional.
+ * @return {ReactElement} Renders the Percentage input component.
+ */
+const Percentage = React.forwardRef<HTMLInputElement, CurrencyInputProps>(({ ...props }, ref) => {
+   return (
+      <CurrencyInput
+         className={twMerge(input(), props.className)}
+         decimalSeparator=","
+         groupSeparator="."
+         decimalsLimit={2}
+         suffix="%"
+         onInput={(event: React.ChangeEvent<HTMLInputElement>) => {
+            const value = event.target.value
+            const number = parseFloat(value.replace(',', '.'))
+
+            if (number > 100) event.target.value = '100,00'
+         }}
+         ref={ref}
+         {...props}
+      />
+   )
+})
+
+/**
  * @notice The Combobox component provides an interactive dropdown list of options.
  * @dev This component leverages the Popover component for rendering. It has controlled states for openness and the currently selected value.
  *
@@ -365,5 +393,6 @@ Password.displayName = 'Password'
 Input.displayName = 'Input'
 Search.displayName = 'Search'
 Select.displayName = 'Select'
+Percentage.displayName = 'Percentage'
 
-export { Combobox, Error, Input, Label, Password, Root, Search, Select, TextArea }
+export { Combobox, Error, Input, Label, Password, Percentage, Root, Search, Select, TextArea }
