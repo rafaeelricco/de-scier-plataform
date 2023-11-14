@@ -315,6 +315,7 @@ const Percentage = React.forwardRef<HTMLInputElement, CurrencyInputProps>(({ ...
          decimalSeparator=","
          groupSeparator="."
          decimalsLimit={2}
+         allowNegativeValue={false}
          suffix="%"
          onInput={(event: React.ChangeEvent<HTMLInputElement>) => {
             const value = event.target.value

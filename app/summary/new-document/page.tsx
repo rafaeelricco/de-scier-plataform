@@ -41,11 +41,11 @@ export default function SubmitNewPaperPage() {
    const [share, setShare] = useState('')
    const [wallet, setWallet] = useState('')
    const [authors, setAuthors] = useState<Author[]>([])
+   const [edit_share_split, setEditShare] = useState<Author | null>()
    const [authorship_settings, setAuthorshipSettings] = useState<Author>()
    const [author_to_edit, setAuthorToEdit] = useState<Author | undefined>(undefined)
    const [keywords_temp, setKeywordsTemp] = useState<string | undefined>()
    const [abstractChart, setAbstractChart] = useState<string>('')
-   const [edit_share_split, setEditShare] = useState<Author | null>()
 
    const {
       register,
@@ -90,6 +90,7 @@ export default function SubmitNewPaperPage() {
          keywords: []
       }
    })
+   console.log('watch', watch())
 
    const { append, remove, fields: keywords } = useFieldArray({ name: 'keywords', control: control })
 
@@ -176,7 +177,7 @@ export default function SubmitNewPaperPage() {
    useEffect(() => {
       if (session?.user) {
          const author = {
-            id: uniqueId(`${session?.user?.userInfo.id}`),
+            id: uniqueId('author_'),
             email: session?.user?.email,
             name: session?.user?.userInfo.name,
             revenuePercent: '0',
@@ -187,6 +188,55 @@ export default function SubmitNewPaperPage() {
          setAuthors([author])
       }
    }, [session?.user, setValue])
+
+   const calculateRemainingShare = (currentAuthorId: string, newAuthorShare: string) => {
+      const newShareValue = parseFloat(newAuthorShare.replace('%', ''))
+      console.log('newShareValue', authors.length === 1 && getValues('authors').length === 1)
+
+      if (authors.length === 1 && getValues('authors').length === 1) {
+         setAuthors(authors.map((author) => ({ ...author, share: '100%' })))
+      } else {
+         let totalShared = newShareValue
+
+         const updatedAuthors = authors.map((author) => {
+            if (author.id === currentAuthorId) {
+               return { ...author, share: `${newShareValue}%` }
+            } else {
+               totalShared += parseFloat(author.share!.replace('%', ''))
+               return author
+            }
+         })
+
+         if (totalShared > 100) {
+            updatedAuthors.forEach((author) => {
+               if (author.id !== currentAuthorId) {
+                  const currentShare = parseFloat(author.share!.replace('%', ''))
+                  const adjustedShare = currentShare - (totalShared - 100)
+                  author.share = `${adjustedShare}%`
+               }
+            })
+         }
+
+         setAuthors(updatedAuthors)
+         setValue('authors', [...updatedAuthors])
+         setEditShare(null)
+      }
+   }
+
+   const onSaveShareSettings = () => {
+      if (edit_share_split && share) {
+         const shareValue = parseInt(share.replace('%', ''))
+
+         if (shareValue <= 100) {
+            calculateRemainingShare(edit_share_split.id, share)
+         } else {
+            console.error('Share value cannot be more than 100%')
+         }
+
+         setDialog({ ...dialog, share_split: false, edit_author: false })
+         setEditShare(null)
+      }
+   }
 
    return (
       <React.Fragment>
@@ -204,6 +254,7 @@ export default function SubmitNewPaperPage() {
                            revenuePercent: value.revenuePercent
                         }
                         setAuthors((prevItems) => [...prevItems, newAuthor])
+                        setValue('authors', [...authors, newAuthor])
                      }}
                      onClose={() => setDialog({ ...dialog, author: false })}
                   />
@@ -269,7 +320,7 @@ export default function SubmitNewPaperPage() {
                                  updatedAuthors[authorIndex].wallet = wallet
                                  setAuthors(updatedAuthors)
 
-                                 setDialog({ ...dialog, share_split: false })
+                                 onSaveShareSettings()
                               }}
                            >
                               Add share split
@@ -460,6 +511,7 @@ export default function SubmitNewPaperPage() {
                            onDelete={(item) => {
                               const new_list = authors.filter((author) => author.id !== item.id)
                               setAuthors(new_list)
+                              setValue('authors', new_list)
                            }}
                            onEdit={(item) => {
                               setAuthorToEdit(item as AuthorProps)
@@ -505,6 +557,7 @@ export default function SubmitNewPaperPage() {
                            if (value_access === 'FREE') {
                               setAccessType(value)
                               setAuthorshipSettings(undefined)
+                              setAuthors(authors.map((author) => ({ ...author, share: '0%' })))
                            } else {
                               setAccessType(value)
                            }
@@ -568,6 +621,7 @@ export default function SubmitNewPaperPage() {
                                                 onClick={() => {
                                                    setDialog({ ...dialog, share_split: true })
                                                    setAuthorshipSettings(author)
+                                                   setEditShare(author)
                                                 }}
                                              >
                                                 Add authorship settings

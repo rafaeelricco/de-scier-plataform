@@ -22,7 +22,7 @@ import { home_routes } from '@/routes/home'
 import { UpdateDocumentProps, UpdateDocumentSchema } from '@/schemas/update_document'
 import { downloadDocumentVersionService } from '@/services/document/download.service'
 import { finalSubmitDocumentService } from '@/services/document/finalSubmit.service'
-import { DocumentGetProps, ReviewersOnDocuments } from '@/services/document/getArticles'
+import { DocumentGetProps } from '@/services/document/getArticles'
 import { useArticles } from '@/services/document/getArticles.service'
 import { uploadDocumentFileService } from '@/services/file/file.service'
 import { ApproveStatus, approveCommentService } from '@/services/reviewer/approveComment.service'
@@ -40,7 +40,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React, { useReducer } from 'react'
-import { ArrowLeft, Check, Clock, FileEarmarkText, Pencil, PlusCircle, PlusCircleDotted, Trash, X } from 'react-bootstrap-icons'
+import { ArrowLeft, FileEarmarkText, Pencil, PlusCircle, PlusCircleDotted, Trash, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -753,7 +753,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                                           )}
                                        </div>
                                        <div className="w-fit">
-                                          <p className="text-sm text-center text-black w-8">{author.author?.walletAddress}</p>
+                                          <p className="text-sm text-center text-black w-8">{author.author?.walletAddress || '-'}</p>
                                        </div>
                                     </div>
                                     <hr className="divider-h" />
