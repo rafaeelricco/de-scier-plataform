@@ -173,9 +173,13 @@ export default function ProfilePage() {
                   <div className="grid gap-2">
                      <h1 className="text-xl text-secundary_blue-main font-semibold flex justify-center lg:text-lg 2xl:text-xl">{session?.user?.name}</h1>
                      <div className="grid md:grid-flow-col items-center justify-center gap-2 md:gap-4">
-                        <p className="text-sm text-primary-main font-regular select-none text-center">{session?.user?.userInfo.title}</p>
-                        <div className="divider-h md:hidden bg-gray-300 h-px" />
-                        <div className="divider-v hidden md:block bg-gray-300 w-px" />
+                        {session?.user?.userInfo.title !== '' && (
+                           <React.Fragment>
+                              <p className="text-sm text-primary-main font-regular select-none text-center">{session?.user?.userInfo.title}</p>
+                              <div className="divider-h md:hidden bg-gray-300 h-px" />
+                              <div className="divider-v hidden md:block bg-gray-300 w-px" />
+                           </React.Fragment>
+                        )}
                         <div className="flex items-center gap-2">
                            <Envelope className="w-4 h-5 fill-neutral-gray" />
                            <p className="text-sm text-neutral-gray select-none">{session?.user?.email}</p>
