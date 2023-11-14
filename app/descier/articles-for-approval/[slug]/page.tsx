@@ -4,10 +4,8 @@ import { AuthorsListDragabble } from '@/components/common/AuthorsListDraggable/A
 import Box from '@/components/common/Box/Box'
 import CommentItem from '@/components/common/Comment/Comment'
 import DocumentApprovals from '@/components/common/DocumentApprovals/DocumentApprovals'
-import { EditorReviewList } from '@/components/common/EditorReviewList/EditorReviewList'
 import { EditorsAndReviewers } from '@/components/common/EditorsAndReviwers/EditorAndReviwer'
 import { File } from '@/components/common/File/File'
-import { RenderMermaidChart } from '@/components/common/RenderMermaidChart/RenderMermaidChart'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useGetApprovals } from '@/hooks/useGetApprovals'
@@ -19,17 +17,17 @@ import { approveByAdminService } from '@/services/admin/approve.service'
 import { useFetchAdminArticles } from '@/services/admin/fetchDocuments.service'
 import { downloadDocumentVersionService } from '@/services/document/download.service'
 import { DocumentComment, DocumentGetProps } from '@/services/document/getArticles'
+import { getArticleTypeLabel } from '@/utils/generate_labels'
 import { keywordsArray } from '@/utils/keywords_format'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
 import { format } from 'date-fns'
-import { uniqueId } from 'lodash'
 import mermaid from 'mermaid'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
-import { ArrowLeft, Check, Clock, PlusCircleDotted, X } from 'react-bootstrap-icons'
+import { ArrowLeft, Check, PlusCircleDotted } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { toast } from 'react-toastify'
 
@@ -189,19 +187,12 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                </div>
                <div className="grid gap-2">
                   <h3 className="text-sm font-semibold">Document type</h3>
-                  <p className="text-sm font-regular first-letter:uppercase lowercase">{article?.document.documentType}</p>
+                  <p className="text-sm font-regular first-letter:uppercase lowercase">{getArticleTypeLabel(article?.document.documentType as string)}</p>
                </div>
 
                <div className="grid gap-2">
                   <h3 className="text-sm font-semibold">Abstract</h3>
                   <p className="text-sm font-regular">{article?.document.abstract}</p>
-               </div>
-
-               <div className="grid gap-4">
-                  <div className="grid gap-2">
-                     <p className="text-sm font-semibold">Visual abstract</p>
-                  </div>
-                  <RenderMermaidChart article={article} chartError={chartError} />
                </div>
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
@@ -302,7 +293,6 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                         project. Invite them to the platform through the link:
                      </p>
                   </div>
-                  <EditorReviewList article={article} />
                </div>
                <div>
                   <div className="grid grid-cols-5">

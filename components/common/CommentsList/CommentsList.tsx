@@ -43,7 +43,7 @@ export const CommentsList: React.FC<EditorReviewListProps> = ({ article, onAppro
 }
 interface EditorReviewListProps {
    article: DocumentGetProps | null
-   onApprove: (comment: CommentItemProps) => void
+   onApprove?: (comment: CommentItemProps) => void
    onReject?: (comment: CommentItemProps) => void
    onSeeReasoning?: (comment: CommentItemProps) => void
 }
