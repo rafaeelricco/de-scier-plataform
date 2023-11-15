@@ -4,16 +4,36 @@ import deScierStamp from 'public/svgs/modules/login/selo.png'
 import BlobShape from 'public/svgs/modules/login/shape.svg'
 import React, { useEffect } from 'react'
 
-const LoginAnimation: React.FC = () => {
+interface LoginAnimationProps {
+   animation_key?: string | number
+}
+
+const LoginAnimation: React.FC<LoginAnimationProps> = ({ animation_key }: LoginAnimationProps) => {
    useEffect(() => {
-      const svgatorObject: any = document?.getElementById('animated-svg')
+      const checkAndPlayAnimation = () => {
+         const svgatorObject = document.getElementById('animated-svg') as HTMLObjectElement
 
-      const svgatorDocument = svgatorObject?.contentDocument || svgatorObject?.contentWindow.document
+         if (!svgatorObject) return
 
-      const svgatorElement = svgatorDocument.getElementById('descier-login-animation')
-      svgatorElement?.svgatorPlayer?.play()
+         const svgatorDocument = svgatorObject.contentDocument || svgatorObject.contentWindow?.document
+
+         if (!svgatorDocument) return
+
+         const svgatorElement = svgatorDocument.getElementById('descier-login-animation') as unknown as SVGElement & {
+            svgatorPlayer: {
+               play: () => void
+            }
+         }
+
+         if (svgatorElement) {
+            svgatorElement?.svgatorPlayer?.play()
+         } else {
+            setTimeout(checkAndPlayAnimation, 100)
+         }
+      }
+
+      checkAndPlayAnimation()
    }, [])
-
    return (
       <React.Fragment>
          <div className="relative overflow-hidden login-animation-container h-[23rem] md:h-auto">
