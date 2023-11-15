@@ -34,43 +34,39 @@ export const useArticles = () => {
 
    useEffect(() => {
       const fetchArticles = async () => {
-         if (data?.user?.token) {
-            const session = await getSession()
+         const request = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/documents`, {
+            method: 'GET',
+            headers: {
+               'Content-Type': 'application/json'
+            }
+         })
 
-            const request = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/documents`, {
-               method: 'GET',
-               headers: {
-                  'Content-Type': 'application/json'
-               }
-            })
+         const response: DocumentPaginationProps = await request.json()
 
-            const response: DocumentPaginationProps = await request.json()
+         console.log('response', response)
 
-            console.log('response', response)
+         const formatted_response: ArticleCardProps[] = response?.documents?.map((article) => {
+            return {
+               id: article.id,
+               image: article.cover || '',
+               title: article.title,
+               authors:
+                  article.authorsOnDocuments?.map((item) => ({
+                     id: item.id,
+                     name: item.author?.name!
+                  })) || [],
+               likes: article.likes,
+               views: article.views,
+               tags: article.keywords.split(';')?.map((item) => ({ id: uniqueId('keyword'), name: item })) || [],
+               publishedAt: new Date(article.createdAt),
+               documentType: article.documentType,
+               accessType: article.accessType === 'FREE' ? 'open' : 'paid',
+               field: article.field
+            }
+         })
 
-            const formatted_response: ArticleCardProps[] = response?.documents?.map((article) => {
-               return {
-                  id: article.id,
-                  image: article.cover || '',
-                  title: article.title,
-                  authors:
-                     article.authorsOnDocuments?.map((item) => ({
-                        id: item.id,
-                        name: item.author?.name!
-                     })) || [],
-                  likes: article.likes,
-                  views: article.views,
-                  tags: article.keywords.split(';')?.map((item) => ({ id: uniqueId('keyword'), name: item })) || [],
-                  publishedAt: new Date(article.createdAt),
-                  documentType: article.documentType,
-                  accessType: article.accessType === 'FREE' ? 'open' : 'paid',
-                  field: article.field
-               }
-            })
-
-            setArticles(formatted_response)
-            setLoading(false)
-         }
+         setArticles(formatted_response)
+         setLoading(false)
       }
       fetchArticles()
    }, [data?.user?.token, article])
