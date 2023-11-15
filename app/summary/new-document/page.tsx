@@ -93,6 +93,7 @@ export default function SubmitNewPaperPage() {
    })
 
    console.log('watch', watch())
+   console.log('errors', errors)
 
    const { append, remove, fields: keywords } = useFieldArray({ name: 'keywords', control: control })
 

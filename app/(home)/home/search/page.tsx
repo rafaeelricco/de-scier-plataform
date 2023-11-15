@@ -1,10 +1,10 @@
 'use client'
 import { Dropdown } from '@/components/common/Dropdown/Dropdown'
+import { SelectArticleType } from '@/components/common/Filters/SelectArticleType/SelectArticleType'
 import PaginationComponent from '@/components/common/Pagination/Pagination'
 import { BannerStartPublishing } from '@/components/modules/Home/Index/BannerStartPublishing/BannerStartPublishing'
 import ArticleItem from '@/components/modules/Home/Search/ArticleItem/ArticleItem'
 import useDebounce from '@/hooks/useDebounce'
-import { article_category_filter } from '@/mock/articles_categories'
 import { filter_access, filter_by_year, filter_field } from '@/mock/dropdow_filter_options'
 import { useArticles } from '@/services/document/fetchPublic.service'
 import * as Input from '@components/common/Input/Input'
@@ -26,7 +26,7 @@ export default function SearchArticlesPage() {
    const [searchTerm, setSearchTerm] = React.useState('')
    const [searchAuthor, setSearchAuthor] = React.useState('')
    const [accessType, setAccessType] = React.useState('')
-   const [documentType, setDocumentType] = React.useState('')
+   const [documentType, setDocumentType] = React.useState<string | null>('')
    const [publicationYear, setPublicationYear] = React.useState<number>()
    const [field, setField] = React.useState('')
    const debouncedSearchTerm = useDebounce(searchTerm, 500)
@@ -86,7 +86,13 @@ export default function SearchArticlesPage() {
             <div className="flex flex-wrap justify-center md:justify-start items-center gap-2">
                <Dropdown no_selected items={filter_by_year} label="Year of publication" onSelect={(value) => setPublicationYear(Number(value))} />
                <Dropdown no_selected label="Field" className="min-w-fit px-8" items={filter_field} onSelect={(value) => setField(value)} />
-               <Dropdown label="Article type:" className="min-w-fit px-8" items={article_category_filter} onSelect={(value) => setDocumentType(value)} />
+               <SelectArticleType
+                  selected={documentType}
+                  onValueChange={(value) => {
+                     if (value === 'all') setDocumentType(null)
+                     setDocumentType(value)
+                  }}
+               />
                <Dropdown no_selected label="Access" className="min-w-fit px-8" items={filter_access} onSelect={(value) => setAccessType(value)} />
             </div>
             <div className="flex flex-col gap-6 mt-6">
@@ -94,7 +100,7 @@ export default function SearchArticlesPage() {
                   {results
                      ?.filter((article) => article.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
                      .filter((article) => article.authors.some((author) => author.name.toLowerCase().includes(debouncedSearchAuthor.toLowerCase())))
-                     .filter((article) => article.documentType?.includes(documentType))
+                     .filter((article) => article.documentType?.includes(documentType || ''))
                      .filter((article) => article.accessType?.includes(accessType))
                      .filter((article) => article.field?.toLowerCase()?.includes(field))
                      .filter((article) => {
