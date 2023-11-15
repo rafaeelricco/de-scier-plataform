@@ -145,11 +145,7 @@ const Viewport: React.FC<Select.SelectViewportProps> = ({ children, className, .
  * @param {ReactNode} props.children The children components or nodes.
  */
 const Portal: React.FC<Select.SelectPortalProps> = ({ children, ...props }: Select.SelectPortalProps) => {
-   return (
-      <Select.Portal className="w-full relative" {...props}>
-         {children}
-      </Select.Portal>
-   )
+   return <Select.Portal {...props}>{children}</Select.Portal>
 }
 
 /**
