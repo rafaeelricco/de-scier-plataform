@@ -104,7 +104,7 @@ export const research_article = articles_types.slice(0, 4)
 export const cases_and_notes = articles_types.slice(5, 8)
 export const reviews = articles_types.slice(8, 10)
 export const communications = articles_types.slice(10, 13)
-export const others = articles_types.slice(13, 14)
+export const others = articles_types.slice(13, 15)
 
 export const articles_types_filter: ArticlesTypesFilter[] = [
    ...all,
