@@ -1,11 +1,11 @@
 'use client'
 
-import { AuthorsListDragabble } from '@/components/common/AuthorsListDraggable/AuthorsListDraggable'
 import Box from '@/components/common/Box/Box'
 import CommentItem from '@/components/common/Comment/Comment'
 import DocumentApprovals from '@/components/common/DocumentApprovals/DocumentApprovals'
 import { EditorsAndReviewers } from '@/components/common/EditorsAndReviwers/EditorAndReviwer'
 import { File } from '@/components/common/File/File'
+import { AuthorsListDragabble } from '@/components/common/Lists/Authors/Authors'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useGetApprovals } from '@/hooks/useGetApprovals'

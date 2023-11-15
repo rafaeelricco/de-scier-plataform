@@ -1,7 +1,7 @@
 'use client'
 
-import { AuthorsListDragabble } from '@/components/common/AuthorsListDraggable/AuthorsListDraggable'
 import Box from '@/components/common/Box/Box'
+import { AuthorsListDragabble } from '@/components/common/Lists/Authors/Authors'
 import { NewAuthor } from '@/components/modules/Summary/NewArticle/Authors/NewAuthor'
 import { access_type_options } from '@/mock/access_type'
 import { article_categories } from '@/mock/article_category'
