@@ -30,12 +30,10 @@ import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
-import { Reorder } from 'framer-motion'
 import { isEqual, uniqueId } from 'lodash'
 import mermaid from 'mermaid'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React, { useReducer } from 'react'
 import { ArrowLeft, Check } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
@@ -480,31 +478,28 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                            </React.Fragment>
                         ))}
                      </div>
-                     <Reorder.Group axis="y" values={items} onReorder={onReorder}>
-                        <div className="grid gap-2">
-                           {article?.document.authorsOnDocuments?.map((item, index) => (
-                              <Reorder.Item key={item.id} value={item}>
-                                 <div className="grid grid-cols-3 gap-4 items-center px-0 py-3 rounded-md cursor-grab hover:bg-[#F1FFFF]">
-                                    <div className="flex items-center gap-4">
-                                       <div className="flex items-center gap-0">
-                                          <CircleIcon className="w-8 cursor-grab" />
-                                          <p className="text-sm text-blue-gray">{index + 1}º</p>
-                                       </div>
-                                       <div>
-                                          <p className="text-sm text-secundary_blue-main">{item.author?.name}</p>
-                                       </div>
+                     <div className="grid gap-2">
+                        {article?.document.authorsOnDocuments?.map((item, index) => (
+                           <React.Fragment key={index}>
+                              <div className="grid grid-cols-3 gap-4 items-center px-0 py-3 rounded-md cursor-grab hover:bg-[#F1FFFF]">
+                                 <div className="flex items-center gap-4">
+                                    <div className="flex items-center gap-0">
+                                       <p className="text-sm text-blue-gray">{index + 1}º</p>
                                     </div>
                                     <div>
-                                       <p className="text-sm text-secundary_blue-main">{item.author?.title}</p>
-                                    </div>
-                                    <div>
-                                       <p className="text-sm text-secundary_blue-main">{item.authorEmail}</p>
+                                       <p className="text-sm text-secundary_blue-main">{item.author?.name}</p>
                                     </div>
                                  </div>
-                              </Reorder.Item>
-                           ))}
-                        </div>
-                     </Reorder.Group>
+                                 <div>
+                                    <p className="text-sm text-secundary_blue-main">{item.author?.title}</p>
+                                 </div>
+                                 <div>
+                                    <p className="text-sm text-secundary_blue-main">{item.authorEmail}</p>
+                                 </div>
+                              </div>
+                           </React.Fragment>
+                        ))}
+                     </div>
                   </div>
                </div>
             </Box>
@@ -597,7 +592,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                                        <div>
                                           {author.revenuePercent && (
                                              <div className="flex gap-2 px-4 py-1 border rounded-md border-terciary-main w-fit">
-                                                <p className="text-sm text-center text-terciary-main w-8">{author.revenuePercent}</p>
+                                                <p className="text-sm text-center text-terciary-main w-8">{author.revenuePercent}%</p>
                                                 <p className="text-sm text-terciary-main">Authorship</p>
                                              </div>
                                           )}
@@ -625,7 +620,6 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                {getReviewStatus() === 'APPROVED' && (
                   <h3 className="text-lg font-semibold text-status-green flex justify-center">Your approved the document</h3>
                )}
-
                <DocumentApprovals editorApprovals={editorApprovals} reviewerApprovals={reviewerApprovals} />
                {getReviewStatus() !== 'APPROVED' && (
                   <>

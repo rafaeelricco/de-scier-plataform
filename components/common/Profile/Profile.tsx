@@ -67,10 +67,19 @@ const Profile: React.FC<ProfileProps> = ({ className, onClose }: ProfileProps) =
                      <div className="flex gap-2 w-full p-3 items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                         <IllustrationHandBook />
                         <div className="grid items-center">
-                           <p className="text-sm font-semibold text-[#F4F4F4] select-none">deScier Handbook</p>
-                           <div className="flex justify-between items-center">
+                           <Link href={'https://descier-1.gitbook.io/the-desci-journal-handbook/'} target="_blank" rel="noreferrer">
+                              <p className="text-sm font-semibold text-[#F4F4F4] cursor-pointer hover:underline hover:scale-105 transition-all duration-300">
+                                 deScier Handbook
+                              </p>
+                           </Link>
+                           <div className="flex justify-between items-center w-full">
                               <p className="text-[13px] select-none text-[#F4F4F4]">Must-read for researchers!</p>
-                              <CaretRight size={16} className="fill-[#F4F4F4] cursor-pointer hover:scale-125 transition-all duration-200" />
+                              <Link href={'https://descier-1.gitbook.io/the-desci-journal-handbook/'} target="_blank" rel="noreferrer">
+                                 <CaretRight
+                                    size={16}
+                                    className="fill-[#F4F4F4] cursor-pointer hover:scale-125 transition-all duration-200 hover:fill-primary-light"
+                                 />
+                              </Link>
                            </div>
                         </div>
                      </div>

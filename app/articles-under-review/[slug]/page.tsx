@@ -797,10 +797,15 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                </p>
                <DocumentApprovals editorApprovals={editorApprovals} reviewerApprovals={reviewerApprovals} />
                {article?.document.status !== 'ADMIN_APPROVE' ? (
-                  <Button.Button variant="primary" className="flex items-center" onClick={handleSubmitDocument} loading={submitLoading}>
-                     <FileEarmarkText className="w-5 h-5" />
-                     Resubmit for review
-                  </Button.Button>
+                  <React.Fragment>
+                     <Button.Button variant="primary" className="flex items-center" onClick={handleSubmitDocument} loading={submitLoading}>
+                        <FileEarmarkText className="w-5 h-5" />
+                        Resubmit for review
+                     </Button.Button>
+                     <Button.Button variant="outline" className="flex items-center" onClick={handleSaveDocument} loading={saveLoading}>
+                        Save
+                     </Button.Button>
+                  </React.Fragment>
                ) : (
                   <Button.Button
                      variant="disabled"
@@ -812,9 +817,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                      Waiting admin approval
                   </Button.Button>
                )}
-               <Button.Button variant="outline" className="flex items-center" onClick={handleSaveDocument} loading={saveLoading}>
-                  Save
-               </Button.Button>
+
                {documentSaved && <p className="text-base text-center text-status-green select-none"> Changes saved successfully! </p>}
             </Box>
          </div>
