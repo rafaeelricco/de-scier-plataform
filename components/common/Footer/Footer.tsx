@@ -111,12 +111,12 @@ const links = [
    {
       id: uniqueId(),
       name: 'Support',
-      link: ''
+      link: 'https://wa.me/5511983432131'
    },
    {
       id: uniqueId(),
       name: 'Onboard Discord',
-      link: ''
+      link: 'https://discord.com/invite/Z6U9P28YtV'
    },
    {
       id: uniqueId(),

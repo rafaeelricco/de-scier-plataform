@@ -9,6 +9,7 @@ import { File } from '@/components/common/File/File'
 import { YouAreAuthor, YouAreReviwer } from '@/components/common/Flags/Author/AuthorFlags'
 import { InviteLink } from '@/components/common/InviteLink/InviteLink'
 import { EditorReviewList } from '@/components/common/Lists/EditorReview/EditorReview'
+import EditComment from '@/components/modules/deScier/Article/EditComment'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -19,13 +20,16 @@ import { article_types } from '@/mock/article_type'
 import { header_editor_reviewer } from '@/mock/article_under_review'
 import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
+import { AddCommentProps, addCommentSchema } from '@/schemas/comments'
 import { UpdateDocumentProps, UpdateDocumentSchema } from '@/schemas/update_document'
 import { downloadDocumentVersionService } from '@/services/document/download.service'
 import { finalSubmitDocumentService } from '@/services/document/finalSubmit.service'
 import { DocumentGetProps } from '@/services/document/getArticles'
 import { useArticles } from '@/services/document/getArticles.service'
 import { uploadDocumentFileService } from '@/services/file/file.service'
+import { addCommentService } from '@/services/reviewer/addComment.service'
 import { ApproveStatus, approveCommentService } from '@/services/reviewer/approveComment.service'
+import { updateCommentService } from '@/services/reviewer/updateComment.service'
 import { ActionComments, comments_initial_state, reducer_comments } from '@/states/reducer_comments'
 import { extractFileName } from '@/utils/extract_file_name'
 import { keywordsArray } from '@/utils/keywords_format'
@@ -59,27 +63,24 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
    const [authorship_settings, setAuthorshipSettings] = React.useState<Author>()
    const [mermaid_error, setMermaidError] = React.useState('' as string | null)
    const [popover, setPopover] = React.useState({ copy_link: false })
-   const [dialog, setDialog] = React.useState({ author: false, share_split: false, edit_author: false, reasoning: false })
+   const [dialog, setDialog] = React.useState({ author: false, share_split: false, edit_author: false, reasoning: false, edit_comment: false })
    const [loading, setLoading] = React.useState(false)
    const [submitLoading, setSubmitLoading] = React.useState(false)
    const [saveLoading, setSaveLoading] = React.useState(false)
    const [is_author, setIsAuthor] = React.useState(false)
    const [documentSaved, setDocumentSaved] = React.useState(false)
    const [keywords_temp, setKeywordsTemp] = React.useState<string | undefined>()
-
    const [file, setFile] = React.useState<StoredFile | null>()
-   const [files, setFiles] = React.useState<StoredFile[]>([])
+   const [buttonLoading, setButtonLoading] = React.useState({ comment: false })
 
    const {
       register,
-      handleSubmit,
       watch,
       formState: { errors },
       setValue,
       trigger,
       getValues,
       control,
-      clearErrors,
       setError
    } = useForm<UpdateDocumentProps>({
       resolver: zodResolver(UpdateDocumentSchema),
@@ -96,6 +97,22 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
          keywords: [],
          category: '',
          cover: {}
+      }
+   })
+
+   const {
+      register: register_comment,
+      handleSubmit: handleSubmit_comment,
+      watch: watch_comment,
+      setValue: setValue_comment,
+      trigger: trigger_comment,
+      getValues: getValues_comment,
+      control: control_comment
+   } = useForm<AddCommentProps>({
+      resolver: zodResolver(addCommentSchema),
+      values: {
+         comment: '',
+         documentId: article?.document.id || ''
       }
    })
 
@@ -347,32 +364,113 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
       }
    }
 
+   const handleAddComment = async () => {
+      setButtonLoading({
+         comment: true
+      })
+
+      const response = await addCommentService({
+         documentId: article?.document.id as string,
+         comment: getValues_comment('comment')
+      })
+
+      setButtonLoading({
+         comment: false
+      })
+
+      if (!response.success) {
+         toast.error(response.message)
+         return
+      }
+
+      dispatch({
+         type: 'add_new_comment',
+         payload: {
+            id: uniqueId(watch_comment('comment') + '_'),
+            comment_author: data?.user?.name,
+            comment_content: watch_comment('comment'),
+            status: 'PENDING'
+         }
+      } as ActionComments)
+
+      setValue_comment('comment', '')
+
+      fetchSingleArticle(params.slug)
+      router.refresh()
+   }
+
+   const handleEditComment = async (commentId: string, newComment: string) => {
+      setButtonLoading({
+         comment: true
+      })
+      const response = await updateCommentService({
+         commentId: commentId,
+         comment: newComment
+      })
+
+      setButtonLoading({
+         comment: false
+      })
+
+      if (!response.success) {
+         toast.error(response.message)
+         return
+      }
+
+      dispatch({
+         type: 'update_comment',
+         payload: {
+            id: commentId as string,
+            comment_author: data?.user?.userInfo.name as string,
+            status: 'PENDING' as 'PENDING' | 'APPROVED' | 'REJECTED',
+            comment_content: newComment
+         }
+      } as ActionComments)
+
+      setValue_comment('comment', '')
+      router.refresh()
+   }
+
    return (
       <React.Fragment>
-         <Dialog.Root open={dialog.reasoning}>
+         <Dialog.Root open={dialog.reasoning || dialog.edit_comment}>
             <Dialog.Overlay />
             <Dialog.Content className="py-14 px-16 max-w-[600px]">
-               <Reasoning
-                  message={state.comment_to_edit?.reason || ''}
-                  documentAuthor={data?.user?.userInfo.name}
-                  onClose={() => setDialog({ ...dialog, reasoning: false })}
-                  onConfirm={(value) => {
-                     console.log('state', state.comment_to_edit)
-                     handleApproveDocument('REJECTED', state.comment_to_edit?.id!, value)
-                     dispatch({
-                        type: 'reject_comment',
-                        payload: {
-                           id: state.comment_to_edit?.id,
-                           commentId: state.comment_to_edit?.id,
-                           comment_content: state.comment_to_edit?.comment_content,
-                           comment_author: state.comment_to_edit?.comment_author,
-                           reason: value,
-                           status: 'REJECTED'
-                        }
-                     } as ActionComments)
-                     setDialog({ ...dialog, reasoning: false })
-                  }}
-               />
+               {dialog.reasoning && (
+                  <Reasoning
+                     message={state.comment_to_edit?.reason || ''}
+                     documentAuthor={data?.user?.userInfo.name}
+                     onClose={() => setDialog({ ...dialog, reasoning: false })}
+                     onConfirm={(value) => {
+                        console.log('state', state.comment_to_edit)
+                        handleApproveDocument('REJECTED', state.comment_to_edit?.id!, value)
+                        dispatch({
+                           type: 'reject_comment',
+                           payload: {
+                              id: state.comment_to_edit?.id,
+                              commentId: state.comment_to_edit?.id,
+                              comment_content: state.comment_to_edit?.comment_content,
+                              comment_author: state.comment_to_edit?.comment_author,
+                              reason: value,
+                              status: 'REJECTED'
+                           }
+                        } as ActionComments)
+                        setDialog({ ...dialog, reasoning: false })
+                     }}
+                  />
+               )}
+               {dialog.edit_comment && (
+                  <EditComment
+                     comment={state.comment_to_edit?.comment_content as string}
+                     onConfirm={(value) => {
+                        handleEditComment(state.comment_to_edit?.id!, value)
+
+                        setDialog({ ...dialog, edit_comment: false })
+                        dispatch({ type: 'comment_to_edit', payload: null })
+                     }}
+                     onClose={() => setDialog({ ...dialog, edit_comment: false })}
+                  />
+               )}
             </Dialog.Content>
          </Dialog.Root>
          <div className="grid gap-8">
@@ -530,7 +628,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   </div>
                </div>
             </Box>
-            <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
+            <Box className="grid gap-8 h-fit py-6 px-8">
                <div className="grid gap-2">
                   <h3 className="text-lg md:text-xl text-primary-main font-semibold">Comments</h3>
                   <p className="text-sm">The reviewing team may write comments and suggest editions on your document here.</p>
@@ -546,25 +644,18 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                                        comment_author={comment.comment_author}
                                        comment_content={comment.comment_content}
                                        status={comment.status as 'PENDING' | 'APPROVED' | 'REJECTED'}
-                                       //    onApprove={() => {
-                                       //       handleApproveDocument('APPROVED', comment.id as string)
-
-                                       //       fetchSingleArticle(params.slug)
-                                       //       router.refresh()
-                                       //    }}
-                                       //    onReject={() => {
-                                       //       dispatch({
-                                       //          type: 'comment_to_edit',
-                                       //          payload: {
-                                       //             id: comment.id,
-                                       //             comment_author: comment.comment_author,
-                                       //             comment_content: comment.comment_content,
-                                       //             reason: comment.reason,
-                                       //             status: 'REJECTED'
-                                       //          }
-                                       //       } as ActionComments)
-                                       //       setDialog({ ...dialog, reasoning: true })
-                                       //    }}
+                                       onEdit={() => {
+                                          dispatch({
+                                             type: 'comment_to_edit',
+                                             payload: {
+                                                id: comment.id,
+                                                comment_author: comment.comment_author,
+                                                comment_content: comment.comment_content,
+                                                status: 'PENDING'
+                                             }
+                                          } as ActionComments)
+                                          setDialog({ ...dialog, edit_comment: true })
+                                       }}
                                        onSeeReasoning={() => {
                                           dispatch({
                                              type: 'comment_to_edit',
@@ -587,6 +678,20 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                            )}
                         </div>
                      </ScrollArea>
+                  </div>
+                  <div className="flex items-center gap-4">
+                     <div className="flex-grow">
+                        <Input.Root>
+                           <Input.Input
+                              className="border p-2 rounded-md focus:border-primary-main"
+                              placeholder="Type your comment"
+                              {...register_comment('comment')}
+                           />
+                        </Input.Root>
+                     </div>
+                     <Button.Button className="px-4 py-2 h-[43px]" onClick={handleAddComment} loading={buttonLoading.comment}>
+                        Add comments
+                     </Button.Button>
                   </div>
                </div>
             </Box>
