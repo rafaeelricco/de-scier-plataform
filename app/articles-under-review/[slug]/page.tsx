@@ -546,25 +546,25 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                                        comment_author={comment.comment_author}
                                        comment_content={comment.comment_content}
                                        status={comment.status as 'PENDING' | 'APPROVED' | 'REJECTED'}
-                                       onApprove={() => {
-                                          handleApproveDocument('APPROVED', comment.id as string)
+                                       //    onApprove={() => {
+                                       //       handleApproveDocument('APPROVED', comment.id as string)
 
-                                          fetchSingleArticle(params.slug)
-                                          router.refresh()
-                                       }}
-                                       onReject={() => {
-                                          dispatch({
-                                             type: 'comment_to_edit',
-                                             payload: {
-                                                id: comment.id,
-                                                comment_author: comment.comment_author,
-                                                comment_content: comment.comment_content,
-                                                reason: comment.reason,
-                                                status: 'REJECTED'
-                                             }
-                                          } as ActionComments)
-                                          setDialog({ ...dialog, reasoning: true })
-                                       }}
+                                       //       fetchSingleArticle(params.slug)
+                                       //       router.refresh()
+                                       //    }}
+                                       //    onReject={() => {
+                                       //       dispatch({
+                                       //          type: 'comment_to_edit',
+                                       //          payload: {
+                                       //             id: comment.id,
+                                       //             comment_author: comment.comment_author,
+                                       //             comment_content: comment.comment_content,
+                                       //             reason: comment.reason,
+                                       //             status: 'REJECTED'
+                                       //          }
+                                       //       } as ActionComments)
+                                       //       setDialog({ ...dialog, reasoning: true })
+                                       //    }}
                                        onSeeReasoning={() => {
                                           dispatch({
                                              type: 'comment_to_edit',
