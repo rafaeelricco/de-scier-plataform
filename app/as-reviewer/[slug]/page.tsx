@@ -110,9 +110,11 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
    }
 
    React.useEffect(() => {
-      fetchSingleArticle(params.slug)
+      if (params.slug !== undefined) {
+         fetchSingleArticle(params.slug)
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [params.slug])
+   }, [params.slug, data?.user?.userInfo?.id])
 
    const onReorder = (newOrder: typeof items) => {
       setItems((prevItems) => [...newOrder])

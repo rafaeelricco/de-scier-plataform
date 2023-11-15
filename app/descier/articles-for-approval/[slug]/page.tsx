@@ -106,9 +106,11 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
    }
 
    React.useEffect(() => {
-      fetchSingleArticle(params.slug)
+      if (params.slug !== undefined) {
+         fetchSingleArticle(params.slug)
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [params.slug])
+   }, [params.slug, session?.user?.userInfo?.id])
 
    React.useEffect(() => {
       const runMermaid = async () => {
