@@ -1,7 +1,7 @@
 'use client'
 
-import { AuthorsListDragabble } from '@/components/common/AuthorsListDraggable/AuthorsListDraggable'
 import Box from '@/components/common/Box/Box'
+import { AuthorsListDragabble } from '@/components/common/Lists/Authors/Authors'
 import { NewAuthor } from '@/components/modules/Summary/NewArticle/Authors/NewAuthor'
 import { access_type_options } from '@/mock/access_type'
 import { article_categories } from '@/mock/article_category'
@@ -96,7 +96,10 @@ export default function SubmitNewPaperPage() {
 
    const { append, remove, fields: keywords } = useFieldArray({ name: 'keywords', control: control })
 
-   const onReorder = (newOrder: typeof authors) => setAuthors((prevItems) => [...newOrder])
+   const onReorder = (newOrder: typeof authors) => {
+      setAuthors(newOrder)
+      setValue('authors', newOrder)
+   }
 
    const handleSubmitDocument: SubmitHandler<CreateDocumentProps> = async (data) => {
       setLoading(true)
@@ -179,7 +182,7 @@ export default function SubmitNewPaperPage() {
    useEffect(() => {
       if (session?.user) {
          const author = {
-            id: uniqueId('author_'),
+            id: session.user.userInfo.id,
             email: session?.user?.email,
             name: session?.user?.userInfo.name,
             revenuePercent: '0',

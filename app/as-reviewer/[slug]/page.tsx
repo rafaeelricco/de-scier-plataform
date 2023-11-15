@@ -3,10 +3,10 @@
 import Box from '@/components/common/Box/Box'
 import CommentItem from '@/components/common/Comment/Comment'
 import DocumentApprovals from '@/components/common/DocumentApprovals/DocumentApprovals'
-import { EditorReviewList } from '@/components/common/EditorReviewList/EditorReviewList'
 import { File } from '@/components/common/File/File'
 import { YouAreAuthor, YouAreReviwer } from '@/components/common/Flags/Author/AuthorFlags'
 import { InviteLink } from '@/components/common/InviteLink/InviteLink'
+import { EditorReviewList } from '@/components/common/Lists/EditorReview/EditorReview'
 import EditComment from '@/components/modules/deScier/Article/EditComment'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -17,17 +17,19 @@ import { Author, authors_headers, authors_mock, authorship_headers } from '@/moc
 import { home_routes } from '@/routes/home'
 import { AddCommentProps, addCommentSchema } from '@/schemas/comments'
 import { downloadDocumentVersionService } from '@/services/document/download.service'
-import { DocumentGetProps, ReviewersOnDocuments } from '@/services/document/getArticles'
+import { DocumentGetProps } from '@/services/document/getArticles'
 import { addCommentService } from '@/services/reviewer/addComment.service'
 import { updateDocumentApproveStatusService } from '@/services/reviewer/approve.service'
 import { useArticleToReview } from '@/services/reviewer/fetchDocuments.service'
 import { updateCommentService } from '@/services/reviewer/updateComment.service'
 import { ActionComments, comments_initial_state, reducer_comments } from '@/states/reducer_comments'
+import { getArticleTypeLabel } from '@/utils/generate_labels'
 import { keywordsArray } from '@/utils/keywords_format'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { format } from 'date-fns'
 import { Reorder } from 'framer-motion'
 import { isEqual, uniqueId } from 'lodash'
 import mermaid from 'mermaid'
@@ -35,7 +37,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React, { useReducer } from 'react'
-import { ArrowLeft, Check, PlusCircleDotted, X, Clock } from 'react-bootstrap-icons'
+import { ArrowLeft, Check } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -61,12 +63,30 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
       comment: false
    })
 
+   const {
+      register,
+      handleSubmit,
+      watch,
+      formState: { errors },
+      setValue,
+      trigger,
+      getValues,
+      control,
+      clearErrors,
+      setError
+   } = useForm<AddCommentProps>({
+      resolver: zodResolver(addCommentSchema),
+      values: {
+         comment: '',
+         documentId: article?.document.id || ''
+      }
+   })
+
    const { getApprovals, editorApprovals, reviewerApprovals } = useGetApprovals()
 
    const fetchSingleArticle = async (documentId: string) => {
       await fetch_article(documentId).then((res) => {
          if (res?.document?.documentComments && res?.document?.documentComments.length > 0) {
-            // Crie um array com todos os comentários mapeados para o formato esperado pelo reducer
             const commentsPayload = res.document.documentComments.map((comment) => ({
                id: comment.id,
                comment_author: comment.user.name,
@@ -77,7 +97,6 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
 
             getApprovals(res?.document.reviewersOnDocuments || [])
 
-            // Despache uma única ação com todos os comentários
             dispatch({
                type: 'store_comments_from_api',
                payload: commentsPayload
@@ -91,28 +110,14 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
    }
 
    React.useEffect(() => {
-      fetchSingleArticle(params.slug)
+      if (params.slug !== undefined) {
+         fetchSingleArticle(params.slug)
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [params.slug])
+   }, [params.slug, data?.user?.userInfo?.id])
 
    const onReorder = (newOrder: typeof items) => {
       setItems((prevItems) => [...newOrder])
-   }
-
-   function copyToClipboard() {
-      const textToCopy = document.getElementById('link-to-copy')!.innerText
-
-      navigator.clipboard
-         .writeText(textToCopy)
-         .then(() => {
-            setPopover({ ...popover, copy_link: true })
-            setTimeout(() => {
-               setPopover({ ...popover, copy_link: false })
-            }, 3000)
-         })
-         .catch((err) => {
-            console.error('Erro ao copiar texto: ', err)
-         })
    }
 
    const [loading, setLoading] = React.useState(false)
@@ -140,8 +145,9 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
       setButtonLoading({
          comment: true
       })
+
       const response = await addCommentService({
-         documentId: article?.document.id!,
+         documentId: article?.document.id as string,
          comment: getValues('comment')
       })
 
@@ -165,9 +171,14 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
       } as ActionComments)
 
       setValue('comment', '')
+
+      fetchSingleArticle(params.slug)
+      router.refresh()
    }
 
    const handleEditComment = async (commentId: string, newComment: string) => {
+      console.log('commentId', commentId)
+      console.log('newComment', newComment)
       setButtonLoading({
          comment: true
       })
@@ -196,6 +207,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
       } as ActionComments)
 
       setValue('comment', '')
+      router.refresh()
    }
 
    const getReviewStatus = () => {
@@ -265,24 +277,6 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [article?.document.abstractChart])
 
-   const {
-      register,
-      handleSubmit,
-      watch,
-      formState: { errors },
-      setValue,
-      trigger,
-      getValues,
-      control,
-      clearErrors,
-      setError
-   } = useForm<AddCommentProps>({
-      resolver: zodResolver(addCommentSchema),
-      values: {
-         comment: '',
-         documentId: article?.document.id || ''
-      }
-   })
    return (
       <React.Fragment>
          <Dialog.Root open={dialog.reasoning || dialog.edit_comment}>
@@ -355,7 +349,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                </div>
                <div className="grid gap-2">
                   <h3 className="text-sm font-semibold">Document type</h3>
-                  <p className="text-sm font-regular">{article?.document.documentType}</p>
+                  <p className="text-sm font-regular">{getArticleTypeLabel(article?.document.documentType as string)}</p>
                </div>
 
                <div className="grid gap-2">
@@ -373,7 +367,11 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                         className="absolute w-full h-full object-cover"
                      />
                   </div>
-                  <p className="text-sm font-semibold">Last updated on 29/09/2023 - 14:34</p>
+                  {article?.document.updatedAt && (
+                     <p className="text-sm font-regular">
+                        Last updated on {format(new Date(article?.document.updatedAt as unknown as string), 'dd/MM/yyyy - HH:mm')}
+                     </p>
+                  )}
                </div>
             </Box>
             <Box className="grid gap-8 h-fit py-6 px-8">

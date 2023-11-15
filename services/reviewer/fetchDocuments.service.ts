@@ -57,7 +57,8 @@ export const useArticleToReview = () => {
                      image: article.cover || '',
                      since: new Date(article.createdAt).toLocaleDateString('pt-BR'),
                      link: article.documentLink || '',
-                     title: article.title
+                     title: article.title,
+                     document_type: article.documentType
                   }
                })
 

@@ -1,14 +1,14 @@
 'use client'
 
 import Box from '@/components/common/Box/Box'
-import { CommentsList } from '@/components/common/CommentsList/CommentsList'
 import DocumentApprovals from '@/components/common/DocumentApprovals/DocumentApprovals'
 import Dropzone from '@/components/common/Dropzone/Dropzone'
 import { StoredFile } from '@/components/common/Dropzone/Typing'
-import { EditorReviewList } from '@/components/common/EditorReviewList/EditorReviewList'
 import { File } from '@/components/common/File/File'
 import { YouAreAuthor, YouAreReviwer } from '@/components/common/Flags/Author/AuthorFlags'
 import { InviteLink } from '@/components/common/InviteLink/InviteLink'
+import { CommentsList } from '@/components/common/Lists/Comments/Comments'
+import { EditorReviewList } from '@/components/common/Lists/EditorReview/EditorReview'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -46,13 +46,11 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
 export default function ArticleInReviewPage({ params }: { params: { slug: string } }) {
-   const { data } = useSession()
-
    const router = useRouter()
 
+   const { data } = useSession()
    const { fetch_article } = useArticles()
    const [state, dispatch] = useReducer(reducer_comments, comments_initial_state)
-   console.log('State comments', state)
 
    const [article, setArticle] = React.useState<DocumentGetProps | null>(null)
    const [items, setItems] = React.useState(authors_mock)
@@ -100,8 +98,6 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
          cover: {}
       }
    })
-   console.log('watch', watch())
-   console.log('article', article)
 
    const { getApprovals, editorApprovals, reviewerApprovals } = useGetApprovals()
 
@@ -109,6 +105,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
 
    const fetchSingleArticle = async (documentId: string) => {
       await fetch_article(documentId).then((res) => {
+         console.log('res', res)
          setArticle(res as DocumentGetProps)
          const access = res?.document.accessType === 'FREE' ? 'open-access' : 'paid-access'
          setAccessType(access)
@@ -153,14 +150,12 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
       })
    }
 
-   console.log('article', article)
-
    React.useEffect(() => {
-      if (!article) {
+      if (params.slug !== undefined) {
          fetchSingleArticle(params.slug)
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [])
+   }, [params.slug, data?.user?.userInfo?.id])
 
    React.useEffect(() => {
       if (article) {

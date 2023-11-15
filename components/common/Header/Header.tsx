@@ -5,6 +5,7 @@ import { PurchasedArticles } from '@/components/modules/Home/Search/Purchase/Pur
 import LoginModal from '@/components/modules/Login/Login'
 import RegisterModal from '@/components/modules/Register/Register'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { Skeleton } from '@/components/ui/skeleton'
 import { dashboard_key, links } from '@/mock/sidebar_home_items'
 import { home_routes } from '@/routes/home'
 import { formatName } from '@/utils/format_texts'
@@ -125,7 +126,7 @@ const Header: React.FC = () => {
                               </div>
                            )
                         ) : (
-                           <div className="flex justify-center min-w-[149px] py-2 px-4">
+                           <div className="flex justify-center min-w-[149px] py-2 px-4 gap-4">
                               <Link
                                  href={link.link}
                                  className={twMerge(
@@ -142,6 +143,14 @@ const Header: React.FC = () => {
                   ))}
                </div>
             </div>
+            {status == 'loading' && (
+               <React.Fragment>
+                  <div className="grid grid-cols-2 gap-4 min-w-[242px]">
+                     <Skeleton className="flex gap-2 items-center justify-center w-full hover:scale-[1.01] rounded-full py-2 px-8 min-h-[39px]" />
+                     <Skeleton className="flex gap-2 items-center justify-center w-full hover:scale-[1.01] rounded-full py-2 px-8 min-h-[39px]" />
+                  </div>
+               </React.Fragment>
+            )}
             {status === 'unauthenticated' && (
                <div className="flex items-center gap-4">
                   <Button.Button

@@ -3,7 +3,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { DocumentGetProps } from '@/services/document/getArticles'
 import { comments_initial_state, reducer_comments } from '@/states/reducer_comments'
 import React, { useReducer } from 'react'
-import { CommentItemProps } from '../Comment/Typing'
+import { CommentItemProps } from '../../Comment/Typing'
 
 export const CommentsList: React.FC<EditorReviewListProps> = ({ article, onApprove, onReject, onSeeReasoning }: EditorReviewListProps) => {
    const [state, dispatch] = useReducer(reducer_comments, comments_initial_state)

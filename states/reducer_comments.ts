@@ -4,12 +4,7 @@ export function reducer_comments(state: StateComments, action: ActionComments): 
    switch (action.type) {
       case 'store_comments_from_api':
          const comments = action.payload as CommentItemProps[]
-         const state_comments = state.comments || []
-         if (!Array.isArray(comments)) {
-            console.error('Payload is not an array:', action.payload)
-            return state
-         }
-         return { ...state, comments: [...state_comments, ...comments] }
+         return { ...state, comments: [...comments] }
       case 'current_comment':
          const current_comment = action.payload as string
          return {
@@ -24,26 +19,20 @@ export function reducer_comments(state: StateComments, action: ActionComments): 
             comment_to_edit: comment_to_edit
          }
       case 'update_comment':
-         const StateComments_update_comments = state.comments || []
-         const comment_update = action.payload as CommentItemProps
-         const updated_update_comments = StateComments_update_comments.map((item) => {
-            if (item.id === comment_update.id) {
-               return comment_update
+         const state_comments = state.comments || []
+         const comment_updated = action.payload as CommentItemProps
+         const updated_update_comments = state_comments.map((item) => {
+            if (item.id === comment_updated.id) {
+               return comment_updated
             }
             return item
          })
-
-         return {
-            ...state,
-            comments: updated_update_comments
-         }
+         return { ...state, comments: updated_update_comments }
       case 'add_new_comment':
          const StateComments_comments = state.comments
          const new_comment = action.payload as CommentItemProps
 
-         return {
-            ...state
-         }
+         return { ...state, comments: [new_comment, ...(StateComments_comments || [])] }
       case 'reject_comment':
          const StateComments_reject_comments = state.comments || []
          const comment = action.payload as CommentItemProps

@@ -29,7 +29,7 @@ interface ErrorProps {
 export type Option = {
    id?: number
    label: string
-   value: string
+   value: string | null
 }
 
 interface SelectInputProps extends React.InputHTMLAttributes<HTMLInputElement> {

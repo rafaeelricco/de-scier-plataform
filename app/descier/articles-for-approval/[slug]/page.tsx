@@ -1,15 +1,14 @@
 'use client'
 
-import { AuthorsListDragabble } from '@/components/common/AuthorsListDraggable/AuthorsListDraggable'
 import Box from '@/components/common/Box/Box'
 import CommentItem from '@/components/common/Comment/Comment'
 import DocumentApprovals from '@/components/common/DocumentApprovals/DocumentApprovals'
 import { EditorsAndReviewers } from '@/components/common/EditorsAndReviwers/EditorAndReviwer'
 import { File } from '@/components/common/File/File'
+import { AuthorsListDragabble } from '@/components/common/Lists/Authors/Authors'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useGetApprovals } from '@/hooks/useGetApprovals'
-import { access_type_options } from '@/mock/access_type'
 import { header_editor_reviewer } from '@/mock/article_under_review'
 import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
@@ -27,7 +26,7 @@ import mermaid from 'mermaid'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
-import { ArrowLeft, Check, PlusCircleDotted } from 'react-bootstrap-icons'
+import { ArrowLeft, Check } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { toast } from 'react-toastify'
 
@@ -107,9 +106,11 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
    }
 
    React.useEffect(() => {
-      fetchSingleArticle(params.slug)
+      if (params.slug !== undefined) {
+         fetchSingleArticle(params.slug)
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [params.slug])
+   }, [params.slug, session?.user?.userInfo?.id])
 
    React.useEffect(() => {
       const runMermaid = async () => {
@@ -253,9 +254,6 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                                     comment_author={comment.user.name}
                                     comment_content={comment.comment}
                                     status={comment.approvedByAuthor as 'APPROVED' | 'REJECTED' | 'PENDING'}
-                                    onApprove={() => console.log('approved', comment)}
-                                    onReject={() => console.log('rejected', comment)}
-                                    onSeeReasoning={() => setDialog({ ...dialog, reasoning: true })}
                                  />
                               </React.Fragment>
                            ))
@@ -363,7 +361,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                                        <div>
                                           {author.revenuePercent && (
                                              <div className="flex gap-2 px-4 py-1 border rounded-md border-terciary-main w-fit">
-                                                <p className="text-sm text-center text-terciary-main w-8">{author.revenuePercent}</p>
+                                                <p className="text-sm text-center text-terciary-main w-8">{author.revenuePercent}%</p>
                                                 <p className="text-sm text-terciary-main">Authorship</p>
                                              </div>
                                           )}

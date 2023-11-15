@@ -7,7 +7,7 @@ import { CaretDown } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 import { DropdownProps } from './Typing'
 
-const Dropdown: React.FC<DropdownProps> = ({ label, className, items, no_selected = false, onSelect }: DropdownProps) => {
+const Dropdown: React.FC<DropdownProps> = ({ label, className, items, no_selected = false, custom_intial_value, onSelect }: DropdownProps) => {
    const [selected, setSelected] = React.useState<string | null>(no_selected === true ? null : items[0].label)
    return (
       <React.Fragment>
@@ -20,7 +20,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, className, items, no_selecte
                   )}
                >
                   <span className="text-sm font-semibold text-primary-main">
-                     {label} {selected}
+                     {label} {selected} {custom_intial_value}
                   </span>
                   <CaretDown className="ml-2" />
                </div>
