@@ -288,7 +288,7 @@ const Select = React.forwardRef<HTMLInputElement, SelectInputProps>(
                   <S.Viewport>
                      <S.Group>
                         {options?.map((option) => (
-                           <S.Item className="text-md font-regular" key={option.id || option.value} value={option.value}>
+                           <S.Item className="text-md font-regular" key={option.id || option.value} value={option.value as string}>
                               <S.ItemText>{option.label}</S.ItemText>
                            </S.Item>
                         ))}
@@ -388,8 +388,8 @@ const Combobox: React.FC<ComboboxProps> = ({
                               setOpen(false)
                               onUnselect?.()
                            } else {
-                              setValue(opt.value)
-                              onSelect?.(opt.value)
+                              setValue(opt.value as string)
+                              onSelect?.(opt.value as string)
                               setOpen(false)
                            }
                         }}
