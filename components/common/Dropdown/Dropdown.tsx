@@ -12,7 +12,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, className, items, no_selecte
    return (
       <React.Fragment>
          <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger className="focus:outline-none">
                <div
                   className={twMerge(
                      'flex items-center justify-center py-2 px-4 text-sm rounded-full min-w-[200px] border-[1px] border-primary-main text-primary-main hover:scale-105 transition-all duration-200',
