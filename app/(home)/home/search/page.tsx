@@ -4,7 +4,7 @@ import PaginationComponent from '@/components/common/Pagination/Pagination'
 import { BannerStartPublishing } from '@/components/modules/Home/Index/BannerStartPublishing/BannerStartPublishing'
 import ArticleItem from '@/components/modules/Home/Search/ArticleItem/ArticleItem'
 import useDebounce from '@/hooks/useDebounce'
-import { article_types } from '@/mock/article_type'
+import { article_types_filter } from '@/mock/article_type'
 import { filter_access, filter_by_year, filter_field } from '@/mock/dropdow_filter_options'
 import { useArticles } from '@/services/document/fetchPublic.service'
 import * as Input from '@components/common/Input/Input'
@@ -86,7 +86,7 @@ export default function SearchArticlesPage() {
             <div className="flex flex-wrap justify-center md:justify-start items-center gap-2">
                <Dropdown no_selected items={filter_by_year} label="Year of publication" onSelect={(value) => setPublicationYear(Number(value))} />
                <Dropdown no_selected label="Field" className="min-w-fit px-8" items={filter_field} onSelect={(value) => setField(value)} />
-               <Dropdown no_selected label="Article type" className="min-w-fit px-8" items={article_types} onSelect={(value) => setDocumentType(value)} />
+               <Dropdown label="Article type:" className="min-w-fit px-8" items={article_types_filter} onSelect={(value) => setDocumentType(value)} />
                <Dropdown no_selected label="Access" className="min-w-fit px-8" items={filter_access} onSelect={(value) => setAccessType(value)} />
             </div>
             <div className="flex flex-col gap-6 mt-6">

@@ -4,7 +4,7 @@ import { Dropdown } from '@/components/common/Dropdown/Dropdown'
 import PaginationComponent from '@/components/common/Pagination/Pagination'
 import { ArticleUnderReview, ArticleUnderReviewProps, ArticleUnderReviewSkeleton } from '@/components/common/Publication/Item/ArticlesUnderReview'
 import useDebounce from '@/hooks/useDebounce'
-import { article_types } from '@/mock/article_type'
+import { article_types_filter } from '@/mock/article_type'
 import { filter_status } from '@/mock/dropdow_filter_options'
 import { home_routes } from '@/routes/home'
 import { useArticles } from '@/services/document/getArticles.service'
@@ -98,13 +98,7 @@ export default function ArticlesUnderReviewPage() {
                   <Input.Search placeholder="Find articles with these terms" onChange={(e) => setSearchTerm(e.target.value)} />
                </div>
                <div className="flex flex-col md:flex-row md:items-center gap-2">
-                  <Dropdown
-                     no_selected
-                     items={article_types}
-                     label="Order by:"
-                     custom_intial_value="Article Type"
-                     onSelect={(value) => setDocumentType(value)}
-                  />
+                  <Dropdown items={article_types_filter} label="Order by:" onSelect={(value) => setDocumentType(value)} />
                   <Dropdown label="Status:" className="min-w-[180px]" items={filter_status} onSelect={(value) => setStatus(value)} />
                </div>
             </div>
