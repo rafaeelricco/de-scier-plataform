@@ -7,7 +7,8 @@ import ReviewerItem from '@/components/modules/AsReviewer/ReviewerItem/ReviewerI
 import { ReviewerItemProps } from '@/components/modules/AsReviewer/ReviewerItem/Typing'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import useDebounce from '@/hooks/useDebounce'
-import { filter_order_by, filter_status } from '@/mock/dropdow_filter_options'
+import { article_types } from '@/mock/article_type'
+import { filter_status } from '@/mock/dropdow_filter_options'
 import { useArticleToReview } from '@/services/reviewer/fetchDocuments.service'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
@@ -16,13 +17,29 @@ import React from 'react'
 export default function AsReviewerPage() {
    const { articles, loading } = useArticleToReview()
 
-   const per_page = 6
+   /** @dev Number of articles displayed per page. */
+   const per_page = 8
+
+   /** @notice Current page number state.*/
    const [page, setPage] = React.useState(1)
-   const [results, setResults] = React.useState<ReviewerItemProps[]>([])
-   const [totalPages, setTotalPages] = React.useState(Math.ceil(results.length / per_page))
+
+   /** @notice State for the selected document type filter. */
+   const [documentType, setDocumentType] = React.useState<string | null>(null)
+
+   /** @notice State for the search term. */
    const [searchTerm, setSearchTerm] = React.useState('')
+
+   /** @notice Debounces the search term. */
    const debouncedSearchTerm = useDebounce(searchTerm, 500)
 
+   /** @notice State for the selected status filter. */
+   const [status, setStatus] = React.useState<string | null>('pending')
+
+   /** @notice Holds the list of filtered articles to be displayed. */
+   const [results, setResults] = React.useState<ReviewerItemProps[]>([])
+
+   /** @notice Holds the total number of pages based on the number of results and articles per page. */
+   const [totalPages, setTotalPages] = React.useState(Math.ceil(results.length / per_page))
    React.useEffect(() => {
       setResults(articles || [])
    }, [articles])
@@ -40,18 +57,20 @@ export default function AsReviewerPage() {
 
       let filteredArticles = [...articles]
 
+      if (documentType) {
+         filteredArticles = filteredArticles.filter((article) => article.document_type?.toLowerCase() == documentType?.toLowerCase())
+      }
+
+      if (status) {
+         filteredArticles = filteredArticles.filter((article) => article.status?.toLocaleLowerCase() == status?.toLowerCase())
+      }
+
       if (debouncedSearchTerm) {
          filteredArticles = filteredArticles.filter((article) => article.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
       }
 
       setResults(filteredArticles)
-   }, [articles, debouncedSearchTerm])
-
-   React.useEffect(() => {
-      setTotalPages(Math.ceil(results.length / per_page))
-   }, [results, per_page])
-
-   console.log(results)
+   }, [articles, documentType, status, debouncedSearchTerm])
 
    return (
       <React.Fragment>
@@ -81,8 +100,14 @@ export default function AsReviewerPage() {
                      <Input.Search placeholder="Find articles with this terms" onChange={(e) => setSearchTerm(e.target.value)} />
                   </div>
                   <div className="flex flex-col md:flex-row md:items-center gap-2">
-                     <Dropdown items={filter_order_by} label="Order by:" onSelect={(value) => console.log(value)} />
-                     <Dropdown label="Status:" className="min-w-[180px]" items={filter_status} onSelect={(value) => console.log(value)} />
+                     <Dropdown
+                        no_selected
+                        items={article_types}
+                        label="Order by:"
+                        custom_intial_value="Article Type"
+                        onSelect={(value) => setDocumentType(value)}
+                     />
+                     <Dropdown label="Status:" className="min-w-[180px]" items={filter_status} onSelect={(value) => setStatus(value)} />
                   </div>
                </div>
                <div className="grid gap-8">

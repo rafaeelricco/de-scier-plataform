@@ -11,6 +11,7 @@ interface ReviewerItemProps {
    since: string
    title: string
    link: string
+   document_type?: string
 }
 
 export { ReviewerItemProps }

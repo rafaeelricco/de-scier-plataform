@@ -23,11 +23,13 @@ import { updateDocumentApproveStatusService } from '@/services/reviewer/approve.
 import { useArticleToReview } from '@/services/reviewer/fetchDocuments.service'
 import { updateCommentService } from '@/services/reviewer/updateComment.service'
 import { ActionComments, comments_initial_state, reducer_comments } from '@/states/reducer_comments'
+import { getArticleTypeLabel } from '@/utils/generate_labels'
 import { keywordsArray } from '@/utils/keywords_format'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { format } from 'date-fns'
 import { Reorder } from 'framer-motion'
 import { isEqual, uniqueId } from 'lodash'
 import mermaid from 'mermaid'
@@ -345,7 +347,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                </div>
                <div className="grid gap-2">
                   <h3 className="text-sm font-semibold">Document type</h3>
-                  <p className="text-sm font-regular">{article?.document.documentType}</p>
+                  <p className="text-sm font-regular">{getArticleTypeLabel(article?.document.documentType as string)}</p>
                </div>
 
                <div className="grid gap-2">
@@ -363,7 +365,11 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                         className="absolute w-full h-full object-cover"
                      />
                   </div>
-                  <p className="text-sm font-semibold">Last updated on 29/09/2023 - 14:34</p>
+                  {article?.document.updatedAt && (
+                     <p className="text-sm font-regular">
+                        Last updated on {format(new Date(article?.document.updatedAt as unknown as string), 'dd/MM/yyyy - HH:mm')}
+                     </p>
+                  )}
                </div>
             </Box>
             <Box className="grid gap-8 h-fit py-6 px-8">
