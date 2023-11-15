@@ -250,7 +250,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                            article?.document.documentComments?.map((comment: DocumentComment) => (
                               <React.Fragment key={comment.id}>
                                  <CommentItem
-                                    comment_author={comment.comment_author}
+                                    comment_author={comment.user.name}
                                     comment_content={comment.comment}
                                     status={comment.approvedByAuthor as 'APPROVED' | 'REJECTED' | 'PENDING'}
                                     onApprove={() => console.log('approved', comment)}
