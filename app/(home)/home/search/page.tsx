@@ -84,8 +84,8 @@ export default function SearchArticlesPage() {
                </div>
             </div>
             <div className="flex flex-wrap justify-center md:justify-start items-center gap-2">
-               <Dropdown no_selected items={filter_by_year} label="Year of publication" onSelect={(value) => setPublicationYear(Number(value))} />
-               <Dropdown no_selected label="Field" className="min-w-fit px-8" items={filter_field} onSelect={(value) => setField(value)} />
+               <Dropdown no_selected items={filter_by_year} label="Year of publication:" onSelect={(value) => setPublicationYear(Number(value))} />
+               <Dropdown no_selected label="Field:" className="min-w-fit px-8" items={filter_field} onSelect={(value) => setField(value)} />
                <SelectArticleType
                   selected={documentType}
                   onValueChange={(value) => {
@@ -93,7 +93,7 @@ export default function SearchArticlesPage() {
                      setDocumentType(value)
                   }}
                />
-               <Dropdown no_selected label="Access" className="min-w-fit px-8" items={filter_access} onSelect={(value) => setAccessType(value)} />
+               <Dropdown no_selected label="Access:" className="min-w-fit px-8" items={filter_access} onSelect={(value) => setAccessType(value)} />
             </div>
             <div className="flex flex-col gap-6 mt-6">
                <div className="grid md:grid-cols-2 gap-6 md:gap-4">
