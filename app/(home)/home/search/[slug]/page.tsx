@@ -132,7 +132,7 @@ export default function Page({ params }: { params: { slug: string } }) {
          fetchSingleArticle(params.slug)
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [])
+   }, [session?.user])
 
    return (
       <React.Fragment>

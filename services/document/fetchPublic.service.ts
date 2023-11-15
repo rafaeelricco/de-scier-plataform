@@ -76,12 +76,13 @@ export const useArticles = () => {
     * @return {DocumentProps} The fetched article data.
     */
    const fetchArticle = async (documentId: string) => {
-      setLoading(true)
+      const session = await getSession()
       if (!article) {
          const request = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/documents/${documentId}`, {
             method: 'GET',
             headers: {
-               'Content-Type': 'application/json'
+               'Content-Type': 'application/json',
+               authorization: `Bearer ${session?.user?.token}`
             }
          })
 
