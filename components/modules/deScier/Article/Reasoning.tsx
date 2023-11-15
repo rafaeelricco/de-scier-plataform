@@ -19,8 +19,8 @@ const Reasoning: React.FC<ArticleUnderReviewProps> = ({ onClose, onConfirm, mess
             </div>
             {message ? (
                <>
-                  <div className="grid gap-2">
-                     <p className="text-lg font-semibold"> {documentAuthor} </p>
+                  <div className="grid gap-0">
+                     <p className="text-base font-semibold"> {documentAuthor} </p>
                      <p className="text-md"> {message} </p>
                   </div>
 
