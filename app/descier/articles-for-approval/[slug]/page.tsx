@@ -315,13 +315,8 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                </div>
                <div className="grid grid-cols-2 items-start gap-6">
                   <Input.Root>
-                     <Input.Select
-                        label={'Type of access'}
-                        placeholder="Select the type of access"
-                        onValueChange={(value) => setAccessType(value)}
-                        value={access_type}
-                        options={access_type_options}
-                     />
+                     <Input.Label>Type of access</Input.Label>
+                     <Input.Input disabled defaultValue={access_type === 'open-access' ? 'Open access' : 'Paid access'} />
                   </Input.Root>
                   {access_type == 'open-access' && (
                      <Input.Root>
@@ -335,8 +330,9 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                            <Input.Label>Price</Input.Label>
                            <CurrencyInput
                               currency="USD"
+                              defaultValue={article?.document.price}
                               onChangeValue={(event, originalValue, maskedValue) => console.log(maskedValue)}
-                              InputElement={<Input.Input placeholder="USD" />}
+                              InputElement={<Input.Input placeholder="USD" disabled />}
                            />
                         </Input.Root>
                      </React.Fragment>
@@ -358,31 +354,22 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                         </div>
                         <div>
                            <div>
-                              {authors.map((author, index) => (
+                              {article?.document.authorsOnDocuments?.map((author, index) => (
                                  <React.Fragment key={index}>
                                     <div className="grid grid-cols-3 items-center py-3">
                                        <div>
-                                          <p className="text-sm text-secundary_blue-main">{author.name}</p>
+                                          <p className="text-sm text-secundary_blue-main">{author.author?.name}</p>
                                        </div>
                                        <div>
-                                          {author.share ? (
+                                          {author.revenuePercent && (
                                              <div className="flex gap-2 px-4 py-1 border rounded-md border-terciary-main w-fit">
-                                                <p className="text-sm text-center text-terciary-main w-8">{author.share}</p>
+                                                <p className="text-sm text-center text-terciary-main w-8">{author.revenuePercent}</p>
                                                 <p className="text-sm text-terciary-main">Authorship</p>
                                              </div>
-                                          ) : (
-                                             <Button.Button
-                                                variant="outline"
-                                                className="px-4 py-2 w-fit text-sm"
-                                                onClick={() => {
-                                                   setDialog({ ...dialog, share_split: true })
-                                                   setAuthorshipSettings(author)
-                                                }}
-                                             >
-                                                Add authorship settings
-                                                <PlusCircleDotted size={18} className="fill-primary-main" />
-                                             </Button.Button>
                                           )}
+                                       </div>
+                                       <div className="w-fit">
+                                          <p className="text-sm text-center text-black w-8">{author.author?.walletAddress || '-'}</p>
                                        </div>
                                     </div>
                                     <hr className="divider-h" />
