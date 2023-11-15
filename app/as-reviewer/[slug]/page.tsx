@@ -17,7 +17,7 @@ import { Author, authors_headers, authors_mock, authorship_headers } from '@/moc
 import { home_routes } from '@/routes/home'
 import { AddCommentProps, addCommentSchema } from '@/schemas/comments'
 import { downloadDocumentVersionService } from '@/services/document/download.service'
-import { DocumentGetProps, ReviewersOnDocuments } from '@/services/document/getArticles'
+import { DocumentGetProps } from '@/services/document/getArticles'
 import { addCommentService } from '@/services/reviewer/addComment.service'
 import { updateDocumentApproveStatusService } from '@/services/reviewer/approve.service'
 import { useArticleToReview } from '@/services/reviewer/fetchDocuments.service'
@@ -35,7 +35,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React, { useReducer } from 'react'
-import { ArrowLeft, Check, PlusCircleDotted, X, Clock } from 'react-bootstrap-icons'
+import { ArrowLeft, Check } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -61,12 +61,30 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
       comment: false
    })
 
+   const {
+      register,
+      handleSubmit,
+      watch,
+      formState: { errors },
+      setValue,
+      trigger,
+      getValues,
+      control,
+      clearErrors,
+      setError
+   } = useForm<AddCommentProps>({
+      resolver: zodResolver(addCommentSchema),
+      values: {
+         comment: '',
+         documentId: article?.document.id || ''
+      }
+   })
+
    const { getApprovals, editorApprovals, reviewerApprovals } = useGetApprovals()
 
    const fetchSingleArticle = async (documentId: string) => {
       await fetch_article(documentId).then((res) => {
          if (res?.document?.documentComments && res?.document?.documentComments.length > 0) {
-            // Crie um array com todos os comentários mapeados para o formato esperado pelo reducer
             const commentsPayload = res.document.documentComments.map((comment) => ({
                id: comment.id,
                comment_author: comment.user.name,
@@ -77,7 +95,6 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
 
             getApprovals(res?.document.reviewersOnDocuments || [])
 
-            // Despache uma única ação com todos os comentários
             dispatch({
                type: 'store_comments_from_api',
                payload: commentsPayload
@@ -97,22 +114,6 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
 
    const onReorder = (newOrder: typeof items) => {
       setItems((prevItems) => [...newOrder])
-   }
-
-   function copyToClipboard() {
-      const textToCopy = document.getElementById('link-to-copy')!.innerText
-
-      navigator.clipboard
-         .writeText(textToCopy)
-         .then(() => {
-            setPopover({ ...popover, copy_link: true })
-            setTimeout(() => {
-               setPopover({ ...popover, copy_link: false })
-            }, 3000)
-         })
-         .catch((err) => {
-            console.error('Erro ao copiar texto: ', err)
-         })
    }
 
    const [loading, setLoading] = React.useState(false)
@@ -140,8 +141,9 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
       setButtonLoading({
          comment: true
       })
+
       const response = await addCommentService({
-         documentId: article?.document.id!,
+         documentId: article?.document.id as string,
          comment: getValues('comment')
       })
 
@@ -165,9 +167,14 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
       } as ActionComments)
 
       setValue('comment', '')
+
+      fetchSingleArticle(params.slug)
+      router.refresh()
    }
 
    const handleEditComment = async (commentId: string, newComment: string) => {
+      console.log('commentId', commentId)
+      console.log('newComment', newComment)
       setButtonLoading({
          comment: true
       })
@@ -196,6 +203,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
       } as ActionComments)
 
       setValue('comment', '')
+      router.refresh()
    }
 
    const getReviewStatus = () => {
@@ -265,24 +273,6 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [article?.document.abstractChart])
 
-   const {
-      register,
-      handleSubmit,
-      watch,
-      formState: { errors },
-      setValue,
-      trigger,
-      getValues,
-      control,
-      clearErrors,
-      setError
-   } = useForm<AddCommentProps>({
-      resolver: zodResolver(addCommentSchema),
-      values: {
-         comment: '',
-         documentId: article?.document.id || ''
-      }
-   })
    return (
       <React.Fragment>
          <Dialog.Root open={dialog.reasoning || dialog.edit_comment}>
