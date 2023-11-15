@@ -10,6 +10,7 @@ import { useArticles } from '@/services/document/fetchPublic.service'
 import { ConfirmProfileRequestProps, confirmProfileService } from '@/services/user/confirmProfile.service'
 import { formatAuthors } from '@/utils/format_authors'
 import { capitalizeWord } from '@/utils/format_texts'
+import { getArticleTypeLabel } from '@/utils/generate_labels'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import '@styles/home.css'
@@ -298,7 +299,7 @@ const CardBig: React.FC<TopPapersProps> = (data: TopPapersProps) => {
          <div className="absolute flex flex-col z-10 bottom-4 sm:bottom-8 left-4 sm:left-8 right-4 sm:right-8 gap-2 sm:gap-4">
             <div>
                <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-t-md w-fit text-xs sm:text-sm font-semibold">
-                  • {data.documentType}
+                  • {getArticleTypeLabel(data.documentType.toLowerCase())}
                </div>
                <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-b-md rounded-tr-md font-semibold max-w-[24ch] text-lg sm:text-3xl">
                   {data.title}
@@ -333,8 +334,10 @@ const CardSmall: React.FC<TopPapersProps> = (data: TopPapersProps) => {
          <Image fill className="absolute inset-0 object-cover w-full rounded-md" src={data.image} alt="placeholder" />
          <div className="absolute flex flex-col z-10 bottom-4 sm:bottom-8 left-4 sm:left-8 right-4 sm:right-8 gap-2 sm:gap-4">
             <div>
-               <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-t-md w-fit text-sm font-semibold">{data.documentType}</div>
-               <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-b-md rounded-tr-md font-semibold max-w-[24ch] text-base sm:text-lg">
+               <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-t-md w-fit text-sm font-semibold">
+                  {getArticleTypeLabel(data.documentType.toLowerCase())}
+               </div>
+               <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-b-md rounded-tr-md font-semibold w-fit text-base sm:text-lg">
                   {data.title}
                </div>
             </div>

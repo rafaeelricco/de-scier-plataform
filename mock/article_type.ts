@@ -4,12 +4,12 @@ import { random } from 'lodash'
 export const article_types: Option[] = [
    {
       id: random(1, 1000 * 9999),
-      label: 'Research Articles',
+      label: 'Research articles',
       value: 'research-articles'
    },
    {
       id: random(1, 1000 * 9999),
-      label: 'Cases and Notes',
+      label: 'Cases and notes',
       value: 'cases-and-notes'
    },
    {
@@ -37,12 +37,12 @@ export const article_types_filter: Option[] = [
    },
    {
       id: random(1, 1000 * 9999),
-      label: 'Research Articles',
+      label: 'Research articles',
       value: 'research-articles'
    },
    {
       id: random(1, 1000 * 9999),
-      label: 'Cases and Notes',
+      label: 'Cases and notes',
       value: 'cases-and-notes'
    },
    {
