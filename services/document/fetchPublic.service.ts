@@ -76,24 +76,20 @@ export const useArticles = () => {
     * @return {DocumentProps} The fetched article data.
     */
    const fetchArticle = async (documentId: string) => {
-      if (data?.user?.token) {
-         const session = await getSession()
-         setLoading(true)
-         if (!article) {
-            const request = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/documents/${documentId}`, {
-               method: 'GET',
-               headers: {
-                  'Content-Type': 'application/json',
-                  authorization: `Bearer ${session?.user?.token}`
-               }
-            })
+      setLoading(true)
+      if (!article) {
+         const request = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/documents/${documentId}`, {
+            method: 'GET',
+            headers: {
+               'Content-Type': 'application/json'
+            }
+         })
 
-            const response: GetDocumentPublicProps = await request.json().then((res) => {
-               return res
-            })
-            setArticle(response)
-            return response
-         }
+         const response: GetDocumentPublicProps = await request.json().then((res) => {
+            return res
+         })
+         setArticle(response)
+         return response
       }
    }
 
