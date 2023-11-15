@@ -1,7 +1,7 @@
 import { Option } from '@/components/common/Input/Typing'
 import { random } from 'lodash'
 
-export const article_categories: Option[] = [
+export const articles_types: Option[] = [
    {
       id: random(1, 1000 * 9999),
       label: 'Research article',

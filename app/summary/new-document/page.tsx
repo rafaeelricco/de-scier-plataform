@@ -4,8 +4,8 @@ import Box from '@/components/common/Box/Box'
 import { AuthorsListDragabble } from '@/components/common/Lists/Authors/Authors'
 import { NewAuthor } from '@/components/modules/Summary/NewArticle/Authors/NewAuthor'
 import { access_type_options } from '@/mock/access_type'
-import { article_categories } from '@/mock/article_category'
-import { article_types } from '@/mock/article_type'
+import { articles_categories } from '@/mock/articles_categories'
+import { articles_types } from '@/mock/articles_types'
 import { Author, authors_headers, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
 import { AuthorProps, CreateDocumentProps, CreateDocumentSchema } from '@/schemas/create_document'
@@ -423,7 +423,7 @@ export default function SubmitNewPaperPage() {
                   <Input.Root>
                      <Input.Select
                         label={'Article category'}
-                        options={article_categories}
+                        options={articles_categories}
                         placeholder="Select a category"
                         onValueChange={(value) => {
                            setValue('category', value), trigger('category')
@@ -434,7 +434,7 @@ export default function SubmitNewPaperPage() {
                   <Input.Root>
                      <Input.Select
                         label={'Article type'}
-                        options={article_types}
+                        options={articles_types}
                         placeholder="Select the article type"
                         onValueChange={(value) => {
                            setValue('documentType', value), trigger('documentType')

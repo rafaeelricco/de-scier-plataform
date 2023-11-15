@@ -1,9 +1,9 @@
-import { article_categories } from '@/mock/article_category'
-import { article_types } from '@/mock/article_type'
+import { articles_categories } from '@/mock/articles_categories'
+import { articles_types } from '@/mock/articles_types'
 
 export function getArticleCategoryLabel(value: string): string {
    let find_label = ''
-   article_categories?.forEach((category) => {
+   articles_categories?.forEach((category) => {
       if (category.value === value) {
          find_label = category.label
       }
@@ -13,7 +13,7 @@ export function getArticleCategoryLabel(value: string): string {
 
 export function getArticleTypeLabel(value: string): string {
    let find_label = ''
-   article_types?.forEach((category) => {
+   articles_types?.forEach((category) => {
       if (category.value === value) {
          find_label = category.label
       }

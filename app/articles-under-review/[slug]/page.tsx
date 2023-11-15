@@ -15,9 +15,9 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useGetApprovals } from '@/hooks/useGetApprovals'
 import { access_type_options } from '@/mock/access_type'
-import { article_categories } from '@/mock/article_category'
-import { article_types } from '@/mock/article_type'
 import { header_editor_reviewer } from '@/mock/article_under_review'
+import { articles_categories } from '@/mock/articles_categories'
+import { articles_types } from '@/mock/articles_types'
 import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
 import { AddCommentProps, addCommentSchema } from '@/schemas/comments'
@@ -556,7 +556,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   <Input.Root>
                      <Input.Select
                         label={'Article category'}
-                        options={article_categories}
+                        options={articles_categories}
                         placeholder="Select a category"
                         value={watch('category') || undefined}
                         onValueChange={(value) => {
@@ -568,7 +568,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   <Input.Root>
                      <Input.Select
                         label={'Article type'}
-                        options={article_types}
+                        options={articles_types}
                         placeholder="Select the article type"
                         value={watch('documentType') || undefined}
                         onValueChange={(value) => {
