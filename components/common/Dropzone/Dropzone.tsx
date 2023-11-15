@@ -1,4 +1,5 @@
 'use client'
+import { formatFileName } from '@/utils/format_file_name'
 import * as Button from '@components/common/Button/Button'
 import Image from 'next/image'
 import React, { useEffect } from 'react'
@@ -117,7 +118,7 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
                                        `${thumbnail === false && 'text-black'}`
                                     )}
                                  >
-                                    {files[0]?.name}
+                                    {formatFileName(files[0]?.name)}
                                  </p>
                               </div>
                               <Button.Button

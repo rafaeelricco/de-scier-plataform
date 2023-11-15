@@ -4,7 +4,7 @@ import Box from '@/components/common/Box/Box'
 import CommentItem from '@/components/common/Comment/Comment'
 import DocumentApprovals from '@/components/common/DocumentApprovals/DocumentApprovals'
 import { File } from '@/components/common/File/File'
-import { YouAreAuthor, YouAreReviwer } from '@/components/common/Flags/Author/AuthorFlags'
+import { YouAre, YouAreAuthor } from '@/components/common/Flags/Author/AuthorFlags'
 import { InviteLink } from '@/components/common/InviteLink/InviteLink'
 import { EditorReviewList } from '@/components/common/Lists/EditorReview/EditorReview'
 import EditComment from '@/components/modules/deScier/Article/EditComment'
@@ -113,10 +113,6 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [params.slug, data?.user?.userInfo?.id])
-
-   const onReorder = (newOrder: typeof items) => {
-      setItems((prevItems) => [...newOrder])
-   }
 
    const [loading, setLoading] = React.useState(false)
    const [is_author, setIsAuthor] = React.useState(false)
@@ -247,6 +243,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
          } else {
             setIsAuthor(false)
          }
+
          setLoading(false)
       }
 
@@ -311,7 +308,29 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                {loading ? (
                   <Skeleton className="flex items-center gap-2 w-72 py-1 px-3 rounded-md h-7" />
                ) : (
-                  <React.Fragment>{is_author ? <YouAreAuthor /> : <YouAreReviwer />}</React.Fragment>
+                  <React.Fragment>
+                     {is_author ? (
+                        <YouAreAuthor />
+                     ) : (
+                        <React.Fragment>
+                           {is_author ? (
+                              <YouAreAuthor />
+                           ) : (
+                              <React.Fragment>
+                                 {article?.document.reviewersOnDocuments?.find((item) => item.reviewerEmail === data?.user?.email) ? (
+                                    <YouAre
+                                       role={
+                                          article?.document.reviewersOnDocuments?.find((item) => item.reviewerEmail === data?.user?.email)?.role as
+                                             | 'editor'
+                                             | 'reviewer'
+                                       }
+                                    />
+                                 ) : null}
+                              </React.Fragment>
+                           )}
+                        </React.Fragment>
+                     )}
+                  </React.Fragment>
                )}
                <div className="grid grid-cols-2 gap-6">
                   <div className="grid grid-cols-1">

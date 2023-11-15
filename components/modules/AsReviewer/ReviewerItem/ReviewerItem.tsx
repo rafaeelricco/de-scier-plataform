@@ -22,7 +22,7 @@ const ReviewerItem: React.FC<ReviewerItemProps> = ({
 }: ReviewerItemProps) => {
    const { md } = useDimension()
    return (
-      <Link href={link}>
+      <Link href={link} className="w-full">
          <div className="grid gap-2 bg-[#fff] py-3 px-4 rounded-lg">
             <div className="grid gap-1 items-center">
                <div>
@@ -42,7 +42,7 @@ const ReviewerItem: React.FC<ReviewerItemProps> = ({
                <hr className="divider-h" />
             </div>
             <div className="grid md:grid-cols-max-min-auto md:justify-start items-center gap-2 md:gap-4">
-               <Image src={image} width={400} height={400} alt={title} style={{ objectFit: 'cover' }} className="rounded-md w-20 h-20" />
+               <Image src={image} width={400} height={400} alt={title} style={{ objectFit: 'cover' }} className="rounded-md w-full md:w-20 h-20" />
                <hr className="divider-v hidden md:block" />
                <hr className="divider-h mt-1 md:hidden" />
                <div className="grid gap-2">

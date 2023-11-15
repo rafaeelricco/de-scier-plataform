@@ -321,6 +321,7 @@ const Percentage = React.forwardRef<HTMLInputElement, CurrencyInputProps>(({ ...
             const value = event.target.value
             const number = parseFloat(value.replace(',', '.'))
 
+            if (value === '-') event.target.value = ''
             if (number > 100) event.target.value = '100,00'
          }}
          ref={ref}

@@ -6,7 +6,7 @@ import DocumentApprovals from '@/components/common/DocumentApprovals/DocumentApp
 import Dropzone from '@/components/common/Dropzone/Dropzone'
 import { StoredFile } from '@/components/common/Dropzone/Typing'
 import { File } from '@/components/common/File/File'
-import { YouAreAuthor, YouAreReviwer } from '@/components/common/Flags/Author/AuthorFlags'
+import { YouAre, YouAreAuthor } from '@/components/common/Flags/Author/AuthorFlags'
 import { InviteLink } from '@/components/common/InviteLink/InviteLink'
 import { EditorReviewList } from '@/components/common/Lists/EditorReview/EditorReview'
 import EditComment from '@/components/modules/deScier/Article/EditComment'
@@ -482,7 +482,29 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                {loading ? (
                   <Skeleton className="flex items-center gap-2 w-72 py-1 px-3 rounded-md h-7" />
                ) : (
-                  <React.Fragment>{is_author ? <YouAreAuthor /> : <YouAreReviwer />}</React.Fragment>
+                  <React.Fragment>
+                     {is_author ? (
+                        <YouAreAuthor />
+                     ) : (
+                        <React.Fragment>
+                           {is_author ? (
+                              <YouAreAuthor />
+                           ) : (
+                              <React.Fragment>
+                                 {article?.document.reviewersOnDocuments?.find((item) => item.reviewerEmail === data?.user?.email) ? (
+                                    <YouAre
+                                       role={
+                                          article?.document.reviewersOnDocuments?.find((item) => item.reviewerEmail === data?.user?.email)?.role as
+                                             | 'editor'
+                                             | 'reviewer'
+                                       }
+                                    />
+                                 ) : null}
+                              </React.Fragment>
+                           )}
+                        </React.Fragment>
+                     )}
+                  </React.Fragment>
                )}
                <div className="grid gap-x-6 gap-y-4">
                   <div className="grid md:grid-cols-2 items-start gap-6">
