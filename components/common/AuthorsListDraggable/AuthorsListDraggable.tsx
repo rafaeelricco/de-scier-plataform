@@ -1,6 +1,7 @@
 import { Author } from '@/mock/submit_new_document'
 import { DocumentGetProps } from '@/services/document/getArticles'
 import { Reorder } from 'framer-motion'
+import { useSession } from 'next-auth/react'
 import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React from 'react'
 import { Pencil, Trash } from 'react-bootstrap-icons'
@@ -12,6 +13,9 @@ export const AuthorsListDragabble: React.FC<AuthorsListDragabbleProps> = ({
    onDelete,
    onEdit
 }: AuthorsListDragabbleProps) => {
+   const { data: session } = useSession()
+   console.log('session', session)
+   console.log('authors', authors)
    return (
       <React.Fragment>
          {article?.document.authorsOnDocuments ? (
@@ -33,7 +37,7 @@ export const AuthorsListDragabble: React.FC<AuthorsListDragabbleProps> = ({
                                     </div>
                                     <div className="block md:hidden">
                                        <p className="text-sm text-secundary_blue-main">{item.author?.email}</p>
-                                       {index !== 0 && (
+                                       {item.id !== session?.user?.userInfo.id && (
                                           <React.Fragment>
                                              <div className="flex items-center gap-2">
                                                 <Trash
@@ -71,7 +75,7 @@ export const AuthorsListDragabble: React.FC<AuthorsListDragabbleProps> = ({
                               </div>
                               <div className="hidden md:flex items-center justify-between">
                                  <p className="text-sm text-secundary_blue-main">{item.author?.email}</p>
-                                 {index !== 0 && (
+                                 {item.id !== session?.user?.userInfo.id && (
                                     <React.Fragment>
                                        <div className="flex items-center gap-2">
                                           <Trash
@@ -135,7 +139,7 @@ export const AuthorsListDragabble: React.FC<AuthorsListDragabbleProps> = ({
                               </div>
                               <div className="hidden md:flex items-center justify-between">
                                  <p className="text-sm text-secundary_blue-main">{item.email}</p>
-                                 {index !== 0 && (
+                                 {item.id !== session?.user?.userInfo.id && (
                                     <React.Fragment>
                                        <div className="flex items-center gap-2">
                                           <Trash
