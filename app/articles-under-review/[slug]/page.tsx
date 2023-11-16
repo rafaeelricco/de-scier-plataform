@@ -157,7 +157,8 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                comment_author: comment.user.name,
                comment_content: comment.comment,
                reason: comment.authorComment || '',
-               status: comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED'
+               status: comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED',
+               user_id: comment.userId
             }))
             dispatch({
                type: 'store_comments_from_api',
@@ -452,7 +453,8 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                               comment_content: state.comment_to_edit?.comment_content,
                               comment_author: state.comment_to_edit?.comment_author,
                               reason: value,
-                              status: 'REJECTED'
+                              status: 'REJECTED',
+                              user_id: state.comment_to_edit?.user_id
                            }
                         } as ActionComments)
                         setDialog({ ...dialog, reasoning: false })
@@ -694,6 +696,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                                              reasoning: true
                                           })
                                        }}
+                                       user_id={comment.user_id}
                                        onSeeReasoning={() => {
                                           dispatch({
                                              type: 'comment_to_edit',

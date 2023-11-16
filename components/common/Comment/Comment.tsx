@@ -1,6 +1,7 @@
 import React from 'react'
 import { Check, Pencil, X } from 'react-bootstrap-icons'
 import { CommentItemProps } from './Typing'
+import { useSession } from 'next-auth/react'
 
 const CommentItem: React.FC<CommentItemProps> = ({
    comment_author,
@@ -10,8 +11,10 @@ const CommentItem: React.FC<CommentItemProps> = ({
    status = 'PENDING',
    onReject,
    onSeeReasoning,
-   onEdit
+   onEdit,
+   user_id
 }: CommentItemProps) => {
+   const { data: session } = useSession()
    return (
       <React.Fragment>
          <div className="grid gap-2">
@@ -20,7 +23,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
                {status === 'PENDING' && (
                   <React.Fragment>
                      <div className="flex items-center gap-2">
-                        {onEdit && (
+                        {onEdit && session?.user?.userInfo.id === user_id && (
                            <div onClick={onEdit}>
                               <Pencil className="w-5 h-5 hover:scale-110 transition-all duration-200 fill-primary-main cursor-pointer" />
                            </div>

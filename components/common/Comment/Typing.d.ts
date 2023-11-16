@@ -4,6 +4,7 @@ interface CommentItemProps {
    comment_content: string
    reason?: string
    status?: 'PENDING' | 'APPROVED' | 'REJECTED'
+   user_id: string
    onApprove?: () => void
    onReject?: () => void
    onEdit?: () => void

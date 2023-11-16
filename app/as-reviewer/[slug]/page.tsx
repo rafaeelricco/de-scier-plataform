@@ -90,7 +90,8 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                comment_author: comment.user.name,
                comment_content: comment.comment,
                reason: comment.authorComment,
-               status: comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED'
+               status: comment.approvedByAuthor as 'PENDING' | 'APPROVED' | 'REJECTED',
+               user_id: comment.userId
             }))
 
             getApprovals(res?.document.reviewersOnDocuments || [])
@@ -272,6 +273,8 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [article?.document.abstractChart])
 
+   console.log('article', article)
+
    return (
       <React.Fragment>
          <Dialog.Root open={dialog.reasoning || dialog.edit_comment}>
@@ -445,6 +448,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                                           } as ActionComments)
                                           setDialog({ ...dialog, edit_comment: true })
                                        }}
+                                       user_id={comment.user_id}
                                        onSeeReasoning={() => {
                                           dispatch({
                                              type: 'comment_to_edit',
