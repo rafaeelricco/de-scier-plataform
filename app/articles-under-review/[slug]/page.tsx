@@ -666,17 +666,33 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                                        comment_author={comment.comment_author}
                                        comment_content={comment.comment_content}
                                        status={comment.status as 'PENDING' | 'APPROVED' | 'REJECTED'}
-                                       onEdit={() => {
+                                       onApprove={() => {
+                                          handleApproveDocument('APPROVED', comment.id as string)
+                                          dispatch({
+                                             type: 'approve_comment',
+                                             payload: {
+                                                id: comment.id,
+                                                comment_content: comment.comment_content,
+                                                comment_author: comment.comment_author,
+                                                status: 'APPROVED'
+                                             }
+                                          } as ActionComments)
+                                       }}
+                                       onReject={() => {
                                           dispatch({
                                              type: 'comment_to_edit',
                                              payload: {
                                                 id: comment.id,
                                                 comment_author: comment.comment_author,
                                                 comment_content: comment.comment_content,
+                                                reason: comment.reason,
                                                 status: 'PENDING'
                                              }
                                           } as ActionComments)
-                                          setDialog({ ...dialog, edit_comment: true })
+                                          setDialog({
+                                             ...dialog,
+                                             reasoning: true
+                                          })
                                        }}
                                        onSeeReasoning={() => {
                                           dispatch({
@@ -701,7 +717,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                         </div>
                      </ScrollArea>
                   </div>
-                  <div className="flex items-center gap-4">
+                  {/* <div className="flex items-center gap-4">
                      <div className="flex-grow">
                         <Input.Root>
                            <Input.Input
@@ -714,7 +730,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                      <Button.Button className="px-4 py-2 h-[43px]" onClick={handleAddComment} loading={buttonLoading.comment}>
                         Add comments
                      </Button.Button>
-                  </div>
+                  </div> */}
                </div>
             </Box>
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
