@@ -54,9 +54,30 @@
    display: none;
 }
 
-@media (max-height: 954px) {
+@media (max-height: 1000px) {
    .blockchain-text-height {
       display: block;
-      min-height: clamp(60vh, 75vh, 80vh);
+      min-height: clamp(10vh, 16vh, 80vh);
+   }
+}
+
+@media (max-height: 900px) {
+   .blockchain-text-height {
+      display: block;
+      min-height: clamp(30vh, 40vh, 80vh);
+   }
+}
+
+@media (max-height: 800px) {
+   .blockchain-text-height {
+      display: block;
+      min-height: clamp(54vh, 64vh, 80vh);
+   }
+}
+
+@media (max-height: 768px) {
+   .blockchain-text-height {
+      display: block;
+      min-height: clamp(50vh, 50vh, 80vh);
    }
 }
