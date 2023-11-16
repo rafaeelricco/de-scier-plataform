@@ -28,6 +28,7 @@ export const CommentsList: React.FC<EditorReviewListProps> = ({ article, onAppro
                               onSeeReasoning={() => {
                                  onSeeReasoning && onSeeReasoning(comment)
                               }}
+                              user_id={comment.user_id}
                            />
                            <hr className="divider-h mt-1" />
                         </React.Fragment>

@@ -254,6 +254,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                                     comment_author={comment.user.name}
                                     comment_content={comment.comment}
                                     status={comment.approvedByAuthor as 'APPROVED' | 'REJECTED' | 'PENDING'}
+                                    user_id={comment.userId}
                                  />
                               </React.Fragment>
                            ))
