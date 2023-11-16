@@ -72,7 +72,7 @@ interface ArticleTypeProps {
 const ArticleType: React.FC<ArticleTypeProps> = ({ access_type, value, onBuyDocument, onViewDocument }: ArticleTypeProps) => {
    return (
       <React.Fragment>
-         {access_type === 'paid' ? (
+         {access_type === 'PAID' ? (
             <div className="flex items-center">
                <div className="flex flex-grow">
                   <h3 className="text-2xl font-semibold text-status-green">{formatPriceInUSD(value)}</h3>
@@ -82,7 +82,7 @@ const ArticleType: React.FC<ArticleTypeProps> = ({ access_type, value, onBuyDocu
          ) : (
             <Badge access_type={'FREE'} />
          )}
-         {access_type === 'paid' ? (
+         {access_type === 'PAID' ? (
             <Button.Button className="flex gap-4 px-4 py-2" onClick={onBuyDocument}>
                Purchase document to view
                <Coin className="w-5 h-5" />
