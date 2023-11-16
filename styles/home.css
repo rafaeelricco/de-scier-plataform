@@ -49,3 +49,14 @@
    border-left: 1px solid #dbdbdb;
    height: 100%;
 }
+
+.blockchain-text-height {
+   display: none;
+}
+
+@media (max-height: 954px) {
+   .blockchain-text-height {
+      display: block;
+      min-height: clamp(60vh, 75vh, 80vh);
+   }
+}

@@ -143,6 +143,7 @@ export default function HomePage() {
                </div>
             </div>
          </div>
+         <div className="blockchain-text-height"></div>
          <div className="grid gap-52">
             <div className="relative w-full flex items-center justify-center lg:hidden">
                <IllustrationHero className="w-[90%] sm:w-3/4 h-auto mt-8 sm:mt-12 max-w-[372px] md:max-w-[454px] lg:hidden" />
