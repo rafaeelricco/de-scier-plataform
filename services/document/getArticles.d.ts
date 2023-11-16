@@ -21,6 +21,7 @@ export type DocumentPublicProps = {
    field: string
    documentType: string
    accessType: string
+   accessStatus?: string
    price: number
    likes: number
    reviewerApprovals?: number

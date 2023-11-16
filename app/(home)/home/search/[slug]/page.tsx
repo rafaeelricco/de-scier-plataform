@@ -61,7 +61,7 @@ export default function Page({ params }: { params: { slug: string } }) {
          setArticle(res as GetDocumentPublicProps)
          setAuthors(res?.document?.authors || [])
          setReviewers(res?.document?.reviewers || [])
-         setAccessType(res?.document?.accessType || 'PAID')
+         setAccessType(res?.document?.accessStatus || 'PAID')
          setLikesAmount(res?.document.likes || 0)
          setViewsAmount(res?.document.views || 0)
          const isUserLikeThisDocument = res?.document.documentLikes.find((item) => item.userId === session?.user?.userInfo.id)
@@ -310,7 +310,8 @@ export default function Page({ params }: { params: { slug: string } }) {
             </div>
             <div className="flex items-start flex-col lg:flex-row-reverse gap-8 mb-10">
                <ArticleAcess
-                  access_type={formatAccessType()}
+                  access_type={(article?.document.accessType as 'PAID' | 'FREE') || 'PAID'}
+                  access_status={formatAccessType()}
                   date={new Date(article?.document?.createdAt!).toLocaleDateString('pt-BR')}
                   value={article?.document?.price || 0}
                   onBuyDocument={() => handlePurchase()}
