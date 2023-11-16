@@ -32,7 +32,7 @@ export const ArticleAcess: React.FC<ArticleAcessProps> = ({ access_type, date, v
                               <p className="text-base">Purchased</p>
                            </div>
                            <div className="flex flex-grow">
-                              <Badge access_type={access_type} />
+                              <Badge access_type={'paid'} />
                            </div>
                         </div>
                         <Button.Button className="flex gap-4 px-4 py-2" onClick={onViewDocument}>
