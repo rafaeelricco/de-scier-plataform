@@ -1,11 +1,14 @@
 'use client'
 
+import ForgotPasswordModal from '@/components/modules/ForgotPassword/ForgotPassword'
 import { ArticleAcess } from '@/components/modules/Home/Search/ArticleAccess/ArticleAcess'
 import { Checkout } from '@/components/modules/Home/Search/Purchase/Checkout'
 import { PurchaseError } from '@/components/modules/Home/Search/Purchase/Error'
 import { PurchaseProcessing } from '@/components/modules/Home/Search/Purchase/Processing'
 import { PurchasedArticles } from '@/components/modules/Home/Search/Purchase/PurchasedArticles'
 import { PurchaseSuccess } from '@/components/modules/Home/Search/Purchase/Success'
+import LoginModal from '@/components/modules/Login/Login'
+import RegisterModal from '@/components/modules/Register/Register'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { addLikeService } from '@/services/document/addLike.service'
 import { downloadDocument } from '@/services/document/download.service'
@@ -15,7 +18,7 @@ import { createCheckoutService } from '@/services/payment/checkout.service'
 import { capitalizeWord } from '@/utils/format_texts'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import { uniqueId } from 'lodash'
-import { useSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import LikedIcon from 'public/svgs/common/likes/Icons/liked.svg'
@@ -38,13 +41,20 @@ export default function Page({ params }: { params: { slug: string } }) {
    const { fetch_article, loading } = useArticles()
 
    const [liked, setLiked] = React.useState(false)
-   const [purchase, setPurchase] = React.useState({ checkout: false, processing: false, success: false, error: false, my_articles: false })
+   const [purchase, setPurchase] = React.useState({ checkout: false, processing: false, success: false, error: false, my_articles: false, login: false })
    const [article, setArticle] = React.useState<GetDocumentPublicProps>()
    const [authors, setAuthors] = React.useState<AuthorsPublicInfo[]>([])
    const [reviewers, setReviewers] = React.useState<ReviewersPublicInfo[]>([])
    const [accessType, setAccessType] = React.useState('PAID')
    const [likesAmount, setLikesAmount] = React.useState(0)
    const [viewsAmount, setViewsAmount] = React.useState(0)
+
+   const login_component = 'login'
+   const register_component = 'register'
+   const forgot_password_component = 'forgot_password'
+   const purchased = 'purchased'
+
+   const [component, setComponent] = React.useState(login_component)
 
    const fetchSingleArticle = async (documentId: string) => {
       await fetch_article(documentId).then((res) => {
@@ -75,7 +85,16 @@ export default function Page({ params }: { params: { slug: string } }) {
    }
 
    const handlePurchase = async () => {
+      if (!session) {
+         setPurchase({
+            ...purchase,
+            processing: false,
+            login: true
+         })
+         return
+      }
       setPurchase({ ...purchase, checkout: false, processing: true })
+
       const response = await createCheckoutService(article?.document.id!)
       if (!response.success) {
          setPurchase({
@@ -136,7 +155,7 @@ export default function Page({ params }: { params: { slug: string } }) {
 
    return (
       <React.Fragment>
-         <Dialog.Root open={purchase.checkout || purchase.processing || purchase.success || purchase.error || purchase.my_articles}>
+         <Dialog.Root open={purchase.checkout || purchase.processing || purchase.success || purchase.error || purchase.my_articles || purchase.login}>
             <Dialog.Overlay />
             <Dialog.Content
                className={twMerge(
@@ -144,7 +163,9 @@ export default function Page({ params }: { params: { slug: string } }) {
                   `${purchase.processing && 'max-w-[600px] md:px-16 md:py-14'}`,
                   `${purchase.success && 'max-w-[600px] md:px-16 md:py-14'}`,
                   `${purchase.error && 'max-w-[600px] md:px-16 md:py-14'}`,
-                  `${purchase.my_articles && 'max-w-[80%]'}`
+                  `${purchase.my_articles && 'max-w-[80%]'}`,
+                  `${purchase.login && 'w-[80%] max-w-[1200px] p-0 transition-all duration-300'}`,
+                  component === forgot_password_component && 'max-w-[554px]'
                )}
             >
                {purchase.checkout && (
@@ -164,6 +185,38 @@ export default function Page({ params }: { params: { slug: string } }) {
                         console.log(value)
                      }}
                   />
+               )}
+               {purchase.login && component === login_component && (
+                  <LoginModal
+                     onClose={() =>
+                        setPurchase({
+                           ...purchase,
+                           login: false
+                        })
+                     }
+                     noRedirect
+                     onForgotPassword={() => setComponent(forgot_password_component)}
+                     onLogin={() => setComponent(login_component)}
+                     onRegister={() => setComponent(register_component)}
+                  />
+               )}
+               {component === register_component && (
+                  <RegisterModal
+                     onBack={() => setComponent(login_component)}
+                     onClose={() => {
+                        setPurchase({
+                           ...purchase,
+                           login: false
+                        })
+                        setComponent(login_component)
+                     }}
+                     onLogin={() => setComponent(login_component)}
+                     onRegister={() => setComponent(register_component)}
+                     onReturnToLogin={() => setComponent(login_component)}
+                  />
+               )}
+               {component === forgot_password_component && (
+                  <ForgotPasswordModal onBack={() => setComponent(login_component)} onClose={() => setComponent(login_component)} />
                )}
                {purchase.success && (
                   <PurchaseSuccess

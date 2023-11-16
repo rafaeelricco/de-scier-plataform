@@ -14,7 +14,7 @@ import { toast } from 'react-toastify'
 import LoginAnimation from './Animation/Animation'
 import { LoginModalProps } from './Typing'
 
-const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onForgotPassword, onLogin, onRegister }: LoginModalProps) => {
+const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onForgotPassword, onLogin, onRegister, noRedirect }: LoginModalProps) => {
    const router = useRouter()
 
    const [loading, setLoading] = useState(false)
@@ -45,6 +45,10 @@ const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onFo
       }
 
       toast.success('Successful login. Redirecting...')
+      if (noRedirect) {
+         onClose()
+         return
+      }
       router.refresh()
       router.push(home_routes.summary)
    }
