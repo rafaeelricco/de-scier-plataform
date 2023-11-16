@@ -50,7 +50,7 @@ export const useArticles = () => {
                   return {
                      id: article.id,
                      status_editor: article.editorsApprovals === 0 ? 'pending' : ('approved' as ArticleUnderReviewProps['status_editor']),
-                     status_reviewer: article.reviewerApprovals < 2 ? 'pending' : ('approved' as ArticleUnderReviewProps['status_reviewer']),
+                     status_reviewer: article.reviewerApprovals < 1 ? 'pending' : ('approved' as ArticleUnderReviewProps['status_reviewer']),
                      image: article.cover || '',
                      since: format(new Date(article.createdAt), 'dd/MM/yyyy'),
                      title: article.title,

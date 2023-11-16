@@ -568,7 +568,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                <div className="grid grid-cols-2 items-start gap-6">
                   <Input.Root>
                      <Input.Label>Type of access</Input.Label>
-                     <Input.Input disabled defaultValue={access_type === 'open-access' ? 'Open access' : 'Paid access'} />
+                     <Input.Input disabled defaultValue={article?.document?.accessType === 'FREE' ? 'Open access' : 'Paid access'} />
                   </Input.Root>
                   {access_type == 'open-access' && (
                      <Input.Root>
