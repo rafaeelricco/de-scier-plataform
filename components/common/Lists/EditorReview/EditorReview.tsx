@@ -39,7 +39,7 @@ export const EditorReviewList: React.FC<EditorReviewListProps> = ({ article }: E
                               'text-sm text-secundary_blue-main font-semibold border py-[2px] px-1 text-center rounded-md md:border-none md:py-0 md:px-0 md:rounded-none md:text-start first-letter:uppercase lowercase'
                            )}
                         >
-                           {item.inviteStatus === 'ACCEPTED' ? (
+                           {item.approvedStatus === 'APPROVED' ? (
                               <Check size={24} className="fill-status-green" />
                            ) : (
                               <Clock size={24} className="fill-status-pending" />
