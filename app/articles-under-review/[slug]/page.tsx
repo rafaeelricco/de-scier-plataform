@@ -48,6 +48,7 @@ import { ArrowLeft, FileEarmarkText, Pencil, PlusCircle, PlusCircleDotted, Trash
 import { CurrencyInput } from 'react-currency-mask'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
+import { twMerge } from 'tailwind-merge'
 
 export default function ArticleInReviewPage({ params }: { params: { slug: string } }) {
    const router = useRouter()
@@ -659,8 +660,8 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                </div>
                <div className="grid gap-6">
                   <div className="border rounded-md p-4">
-                     <ScrollArea className="h-[342px]">
-                        <div className="grid gap-4">
+                     <ScrollArea className={twMerge('h-[342px]', `${state.comments && state.comments.length == 0 && 'h-full'}`)}>
+                        <div className="grid gap-4 h-full">
                            {state.comments && state.comments.length > 0 ? (
                               state.comments?.map((comment) => (
                                  <React.Fragment key={comment.id}>
@@ -715,7 +716,9 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                                  </React.Fragment>
                               ))
                            ) : (
-                              <p className="text-center col-span-2 text-gray-500">There are no comments on this document.</p>
+                              <p className="text-center flex justify-center h-full row-span-2 col-span-2 text-gray-500 items-center">
+                                 There are no comments on this document.
+                              </p>
                            )}
                         </div>
                      </ScrollArea>

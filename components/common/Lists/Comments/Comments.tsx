@@ -3,6 +3,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { DocumentGetProps } from '@/services/document/getArticles'
 import { comments_initial_state, reducer_comments } from '@/states/reducer_comments'
 import React, { useReducer } from 'react'
+import { twMerge } from 'tailwind-merge'
 import { CommentItemProps } from '../../Comment/Typing'
 
 export const CommentsList: React.FC<EditorReviewListProps> = ({ article, onApprove, onReject, onSeeReasoning }: EditorReviewListProps) => {
@@ -10,7 +11,7 @@ export const CommentsList: React.FC<EditorReviewListProps> = ({ article, onAppro
    return (
       <React.Fragment>
          <div className="border rounded-md p-4">
-            <ScrollArea className="h-[342px]">
+            <ScrollArea className={twMerge('h-[342px]', `${state.comments && state.comments.length == 0 && 'h-full'}`)}>
                <div className="grid gap-4">
                   {state.comments && state.comments.length > 0 ? (
                      state.comments?.map((comment) => (

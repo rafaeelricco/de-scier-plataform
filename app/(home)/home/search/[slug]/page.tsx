@@ -10,15 +10,17 @@ import { PurchaseSuccess } from '@/components/modules/Home/Search/Purchase/Succe
 import LoginModal from '@/components/modules/Login/Login'
 import RegisterModal from '@/components/modules/Register/Register'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
+import { Skeleton } from '@/components/ui/skeleton'
 import { addLikeService } from '@/services/document/addLike.service'
 import { downloadDocument } from '@/services/document/download.service'
 import { useArticles } from '@/services/document/fetchPublic.service'
 import { AuthorsPublicInfo, GetDocumentPublicProps, ReviewersPublicInfo } from '@/services/document/getArticles'
 import { createCheckoutService } from '@/services/payment/checkout.service'
 import { capitalizeWord } from '@/utils/format_texts'
+import { getArticleTypeLabel } from '@/utils/generate_labels'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import { uniqueId } from 'lodash'
-import { getSession, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import LikedIcon from 'public/svgs/common/likes/Icons/liked.svg'
@@ -299,13 +301,21 @@ export default function Page({ params }: { params: { slug: string } }) {
                   ))}
                </div>
                <div className="relative h-80 md:h-96 rounded-lg overflow-hidden">
-                  <Image
-                     fill
-                     src={article?.document?.cover || 'https://source.unsplash.com/random/900×700/?technology'}
-                     alt="article-image"
-                     style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-                     className="object-cover"
-                  />
+                  {article?.document.cover ? (
+                     <React.Fragment>
+                        <Image
+                           fill
+                           src={article?.document?.cover}
+                           alt="article-image"
+                           style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                           className="object-cover"
+                        />
+                     </React.Fragment>
+                  ) : (
+                     <React.Fragment>
+                        <Skeleton className="relative h-80 md:h-96 rounded-lg overflow-hidden" />
+                     </React.Fragment>
+                  )}
                </div>
             </div>
             <div className="flex items-start flex-col lg:flex-row-reverse gap-8 mb-10">
@@ -341,7 +351,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                      </div>
                   </div>
                   <hr className="divider-h" />
-                  <div>
+                  <div className="grid gap-1">
                      <h6 className="text-base font-semibold">Authors</h6>
                      <div className="flex flex-col bg-[#F6F6FF] rounded-lg px-4">
                         {authors.map((author, index) => (
@@ -370,7 +380,9 @@ export default function Page({ params }: { params: { slug: string } }) {
                      <div className="flex flex-col flex-grow">
                         <p className="text-base font-semibold">Document type</p>
 
-                        <p className="text-base font-regular">{capitalizeWord(article?.document?.documentType || 'paper')}</p>
+                        <p className="text-base font-regular">
+                           {capitalizeWord(getArticleTypeLabel(article?.document?.documentType as string) || 'paper')}
+                        </p>
                      </div>
                   </div>
                   <div>

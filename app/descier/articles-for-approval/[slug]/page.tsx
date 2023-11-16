@@ -29,6 +29,7 @@ import React from 'react'
 import { ArrowLeft, Check } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { toast } from 'react-toastify'
+import { twMerge } from 'tailwind-merge'
 
 export default function ArticleForApprovalPage({ params }: { params: { slug: string } }) {
    const { data: session } = useSession()
@@ -245,7 +246,12 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                   <p className="text-sm">The reviewing team can publish comments, suggesting updates on your document.</p>
                </div>
                <div className="border rounded-md p-4">
-                  <ScrollArea className="lg:h-[300px] pr-2">
+                  <ScrollArea
+                     className={twMerge(
+                        'h-[342px]',
+                        `${article?.document.documentComments && article?.document?.documentComments?.length == 0 && 'h-full'}`
+                     )}
+                  >
                      <div className="grid gap-4">
                         {article?.document.documentComments && article?.document?.documentComments?.length > 0 ? (
                            article?.document.documentComments?.map((comment: DocumentComment) => (

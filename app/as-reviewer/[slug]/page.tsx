@@ -39,6 +39,7 @@ import { ArrowLeft, Check } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
+import { twMerge } from 'tailwind-merge'
 
 export default function AsReviwerPageDetails({ params }: { params: { slug: string } }) {
    const router = useRouter()
@@ -427,7 +428,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                </div>
                <div className="grid gap-6">
                   <div className="border rounded-md p-4">
-                     <ScrollArea className="h-[342px]">
+                     <ScrollArea className={twMerge('h-[342px]', `${state.comments && state.comments.length == 0 && 'h-full'}`)}>
                         <div className="grid gap-4">
                            {state.comments && state.comments.length > 0 ? (
                               state.comments?.map((comment) => (
