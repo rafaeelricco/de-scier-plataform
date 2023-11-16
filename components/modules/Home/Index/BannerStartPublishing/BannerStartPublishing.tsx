@@ -1,14 +1,19 @@
 import ForgotPasswordModal from '@/components/modules/ForgotPassword/ForgotPassword'
 import LoginModal from '@/components/modules/Login/Login'
 import RegisterModal from '@/components/modules/Register/Register'
+import { home_routes } from '@/routes/home'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import '@styles/home.css'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import IllustrationBannerFooter from 'public/svgs/modules/home/banner-footer/illustrations-banner.svg'
 import React from 'react'
 import { twMerge } from 'tailwind-merge'
 
 export const BannerStartPublishing: React.FC = () => {
+   const router = useRouter()
+   const { status } = useSession()
    const login_component = 'login'
    const register_component = 'register'
    const forgot_password_component = 'forgot_password'
@@ -61,8 +66,12 @@ export const BannerStartPublishing: React.FC = () => {
                      <Button.Button
                         className="py-3 px-10 lg:w-fit w-full text-sm lg:text-base"
                         onClick={() => {
-                           setOpen(true)
-                           setComponent(login_component)
+                           if (status === 'unauthenticated') {
+                              setOpen(true)
+                              setComponent(login_component)
+                           } else {
+                              router.push(home_routes.summary)
+                           }
                         }}
                      >
                         Start publishing now!
