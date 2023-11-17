@@ -26,6 +26,7 @@ import { downloadDocumentVersionService } from '@/services/document/download.ser
 import { finalSubmitDocumentService } from '@/services/document/finalSubmit.service'
 import { DocumentGetProps } from '@/services/document/getArticles'
 import { useArticles } from '@/services/document/getArticles.service'
+import { updateDocumentService } from '@/services/document/update.service'
 import { uploadDocumentFileService } from '@/services/file/file.service'
 import { addCommentService } from '@/services/reviewer/addComment.service'
 import { ApproveStatus, approveCommentService } from '@/services/reviewer/approveComment.service'
@@ -46,7 +47,7 @@ import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React, { useReducer } from 'react'
 import { ArrowLeft, FileEarmarkText, Pencil, PlusCircle, PlusCircleDotted, Trash, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
-import { useFieldArray, useForm } from 'react-hook-form'
+import { useFieldArray, useForm, SubmitHandler } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { twMerge } from 'tailwind-merge'
 
@@ -77,6 +78,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
    const {
       register,
       watch,
+      handleSubmit,
       formState: { errors },
       setValue,
       trigger,
@@ -256,9 +258,37 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
       router.push(home_routes.articles_under_review)
    }
 
+   const createNewAuthors = () => {
+      const documentAuthors = article?.document.authorsOnDocuments || []
+      const newAuthors = getValues('authors')?.filter((item) => !documentAuthors.some((author) => author.authorEmail === item.email))
+
+      return newAuthors?.map((item) => ({ ...item, revenuePercent: Number(item.revenuePercent) || 0 })) || []
+   }
+
    const handleSaveDocument = async () => {
+      console.log('update')
       if (!article) return
       setSaveLoading(true)
+
+      const updateResponse = await updateDocumentService({
+         documentId: article.document.id!,
+         document: {
+            abstract: getValues('abstract'),
+            title: getValues('title'),
+            abstractChart: getValues('abstractChart'),
+            accessType: getValues('accessType'),
+            authors: createNewAuthors(),
+            category: getValues('category'),
+            documentType: getValues('documentType'),
+            field: getValues('field'),
+            keywords: getValues('keywords')?.map((item) => item.name)
+         }
+      })
+
+      if (!updateResponse.success) {
+         toast.error(updateResponse.message)
+         return
+      }
 
       if (file) {
          const response = await uploadDocumentFileService({
@@ -272,6 +302,19 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
             setSaveLoading(false)
             toast.error('Error in upload file.')
             return
+         }
+      }
+      console.log(getValues('cover'))
+      if (getValues('cover')?.preview && getValues('cover')?.preview !== article?.document.cover) {
+         const uploadCoverSuccess = await uploadDocumentFileService({
+            documentId: article?.document.id!,
+            fileLocalUrl: getValues('cover')?.preview!,
+            filename: getValues('cover')?.name!,
+            mimetype: getValues('cover')?.type!
+         })
+
+         if (!uploadCoverSuccess) {
+            toast.warning('There was an error uploading your cover file. But you can upload later.')
          }
       }
 
@@ -615,8 +658,9 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   <p className="text-sm font-semibold">Cover</p>
                   <Dropzone
                      thumbnail
+                     accept="images"
                      placeholder="Upload cover picture (.png, .jpg)"
-                     setSelectedFile={(file) => console.log(file)}
+                     setSelectedFile={(file) => setValue('cover', file!)}
                      defaultCover={getValues('cover') ? getValues('cover') : undefined}
                   />
                </div>
