@@ -48,7 +48,7 @@ type DocumentProps = {
    authors?: CreateAuthor[]
 }
 
-type CreateAuthor = {
+export type CreateAuthor = {
    name: string
    email: string
    title: string
@@ -56,7 +56,7 @@ type CreateAuthor = {
    walletAddress?: string
 }
 
-type UpdateAuthor = {
+export type UpdateAuthor = {
    id: string
    name?: string
    email?: string

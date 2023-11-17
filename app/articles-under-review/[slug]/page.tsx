@@ -8,7 +8,9 @@ import { StoredFile } from '@/components/common/Dropzone/Typing'
 import { File } from '@/components/common/File/File'
 import { YouAre, YouAreAuthor } from '@/components/common/Flags/Author/AuthorFlags'
 import { InviteLink } from '@/components/common/InviteLink/InviteLink'
+import { AuthorsListDragabble } from '@/components/common/Lists/Authors/Authors'
 import { EditorReviewList } from '@/components/common/Lists/EditorReview/EditorReview'
+import { NewAuthor } from '@/components/modules/Summary/NewArticle/Authors/NewAuthor'
 import EditComment from '@/components/modules/deScier/Article/EditComment'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -21,12 +23,12 @@ import { articles_types } from '@/mock/articles_types'
 import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
 import { AddCommentProps, addCommentSchema } from '@/schemas/comments'
-import { UpdateDocumentProps, UpdateDocumentSchema } from '@/schemas/update_document'
+import { AuthorProps, UpdateDocumentProps, UpdateDocumentSchema } from '@/schemas/update_document'
 import { downloadDocumentVersionService } from '@/services/document/download.service'
 import { finalSubmitDocumentService } from '@/services/document/finalSubmit.service'
 import { DocumentGetProps } from '@/services/document/getArticles'
 import { useArticles } from '@/services/document/getArticles.service'
-import { updateDocumentService } from '@/services/document/update.service'
+import { UpdateAuthor, updateDocumentService } from '@/services/document/update.service'
 import { uploadDocumentFileService } from '@/services/file/file.service'
 import { addCommentService } from '@/services/reviewer/addComment.service'
 import { ApproveStatus, approveCommentService } from '@/services/reviewer/approveComment.service'
@@ -60,20 +62,29 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
 
    const [article, setArticle] = React.useState<DocumentGetProps | null>(null)
    const [items, setItems] = React.useState(authors_mock)
-   const [authors, setAuthors] = React.useState<Author[]>(authors_mock)
+   const [authors, setAuthors] = React.useState<Author[]>([])
    const [access_type, setAccessType] = React.useState('open-access')
    const [authorship_settings, setAuthorshipSettings] = React.useState<Author>()
    const [mermaid_error, setMermaidError] = React.useState('' as string | null)
    const [popover, setPopover] = React.useState({ copy_link: false })
-   const [dialog, setDialog] = React.useState({ author: false, share_split: false, edit_author: false, reasoning: false, edit_comment: false })
+   const [dialog, setDialog] = React.useState({
+      author: false,
+      share_split: false,
+      edit_author: false,
+      reasoning: false,
+      edit_comment: false
+   })
    const [loading, setLoading] = React.useState(false)
    const [submitLoading, setSubmitLoading] = React.useState(false)
    const [saveLoading, setSaveLoading] = React.useState(false)
    const [is_author, setIsAuthor] = React.useState(false)
    const [documentSaved, setDocumentSaved] = React.useState(false)
    const [keywords_temp, setKeywordsTemp] = React.useState<string | undefined>()
+   const [author_to_edit, setAuthorToEdit] = React.useState<Author | undefined>(undefined)
    const [file, setFile] = React.useState<StoredFile | null>()
    const [buttonLoading, setButtonLoading] = React.useState({ comment: false })
+   const [updateAuthors, setUpdateAuthors] = React.useState<UpdateAuthor[]>([])
+   const [removeAuthors, setRemoveAuthors] = React.useState<string[]>([])
 
    const {
       register,
@@ -167,6 +178,21 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                type: 'store_comments_from_api',
                payload: commentsPayload
             } as ActionComments)
+         }
+
+         if (res?.document?.authorsOnDocuments && res.document.authorsOnDocuments.length > 0) {
+            const documentAuthors: Author[] = res.document.authorsOnDocuments.map((item) => {
+               return {
+                  email: item.authorEmail!,
+                  id: item.id,
+                  name: item.author?.name!,
+                  title: item.author?.title!,
+                  share: item.revenuePercent ? String(item.revenuePercent) : '',
+                  wallet: item.author?.walletAddress
+               }
+            })
+
+            setAuthors(documentAuthors)
          }
       })
    }
@@ -282,7 +308,9 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
             documentType: getValues('documentType'),
             field: getValues('field'),
             keywords: getValues('keywords')?.map((item) => item.name)
-         }
+         },
+         authorsToRemove: removeAuthors,
+         updateAuthors: updateAuthors
       })
 
       if (!updateResponse.success) {
@@ -478,7 +506,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
 
    return (
       <React.Fragment>
-         <Dialog.Root open={dialog.reasoning || dialog.edit_comment}>
+         <Dialog.Root open={dialog.reasoning || dialog.edit_comment || dialog.author || dialog.edit_author}>
             <Dialog.Overlay />
             <Dialog.Content className="py-14 px-16 max-w-[600px]">
                {dialog.reasoning && (
@@ -515,6 +543,35 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                         dispatch({ type: 'comment_to_edit', payload: null })
                      }}
                      onClose={() => setDialog({ ...dialog, edit_comment: false })}
+                  />
+               )}
+               {dialog.author && (
+                  <NewAuthor
+                     onAddAuthor={(value) => {
+                        const newAuthor: AuthorProps = {
+                           name: value.name,
+                           title: value.title,
+                           email: value.email,
+                           revenuePercent: value.revenuePercent
+                        }
+                        setAuthors((prevItems) => [...prevItems, { ...newAuthor, id: uniqueId('author') }])
+                        setValue('authors', [...authors, newAuthor])
+                     }}
+                     onClose={() => setDialog({ ...dialog, author: false })}
+                  />
+               )}
+               {dialog.edit_author && (
+                  <NewAuthor
+                     onEditAuthor={author_to_edit}
+                     onUpdateAuthor={(updatedAuthor) => {
+                        setAuthors((prevItems) => {
+                           return prevItems.map((item) => (item.id === author_to_edit?.id ? { ...item, ...updatedAuthor } : item))
+                        })
+                        if (!updatedAuthor.id.includes('author')) {
+                           setUpdateAuthors((prev) => [...prev, { ...updatedAuthor, revenuePercent: Number(updatedAuthor.revenuePercent || '0') }])
+                        }
+                     }}
+                     onClose={() => setDialog({ ...dialog, edit_author: false })}
                   />
                )}
             </Dialog.Content>
@@ -785,10 +842,21 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
             </Box>
             <Box className="grid gap-8 h-fit px-4 py-6 md:px-8">
                <div className="grid gap-2">
-                  <div className="grid ">
-                     <h3 className="text-lg md:text-xl text-terciary-main font-semibold">Authors</h3>
+                  <div className="grid">
+                     <h3 className="text-lg md:text-xl text-terciary-main font-semibold">Authorship</h3>
                   </div>
                   <div className="grid gap-6">
+                     <Button.Button
+                        type="button"
+                        variant="outline"
+                        className="px-4 py-3 w-full text-sm"
+                        onClick={() => {
+                           setDialog({ ...dialog, author: true })
+                        }}
+                     >
+                        Add authors for this paper
+                        <PlusCircle className="w-4 fill-primary-main" />
+                     </Button.Button>
                      <p className="text-sm">Drag the authors to reorder the list.</p>
                      <div className="grid gap-2">
                         <div className="hidden md:grid grid-cols-3">
@@ -798,57 +866,23 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                               </React.Fragment>
                            ))}
                         </div>
-                        <Reorder.Group axis="y" values={authors} onReorder={onReorder}>
-                           <div className="grid gap-2">
-                              {article?.document.authorsOnDocuments?.map((item, index) => (
-                                 <Reorder.Item key={item.id} value={item} id={item.id}>
-                                    <div className="grid md:grid-cols-3 items-center px-0 py-3 rounded-md cursor-grab">
-                                       <div className="flex items-center gap-4">
-                                          <div className="flex gap-0 items-center">
-                                             <CircleIcon className="w-8" />
-                                             <p className="text-sm text-blue-gray">{index + 1}º</p>
-                                          </div>
-                                          <div>
-                                             <p className="text-sm text-secundary_blue-main font-semibold md:font-regular">{item.author?.name}</p>
-                                             <div className="block md:hidden">
-                                                <p className="text-sm text-secundary_blue-main">{item.author?.title}</p>
-                                             </div>
-                                             <div className="block md:hidden">
-                                                <p className="text-sm text-secundary_blue-main">{item.author?.email}</p>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div className="hidden md:block">
-                                          <p className="text-sm text-secundary_blue-main">{item.author?.title}</p>
-                                       </div>
-                                       <div className="hidden md:flex items-center justify-between">
-                                          <p className="text-sm text-secundary_blue-main">{item.author?.email}</p>
-                                          {index !== 0 && (
-                                             <React.Fragment>
-                                                <div className="flex items-center gap-2">
-                                                   <Trash
-                                                      className="fill-status-error w-5 h-full cursor-pointer hover:scale-110 transition-all duration-200"
-                                                      onClick={() => {
-                                                         //  const new_list = authors.filter((author) => author.id !== item.id)
-                                                         //  setAuthors(new_list)
-                                                      }}
-                                                   />
-                                                   <Pencil
-                                                      className="fill-primary-main w-5 h-full cursor-pointer hover:scale-110 transition-all duration-200"
-                                                      onClick={() => {
-                                                         //  setAuthorToEdit(item as unknown as AuthorProps)
-                                                         //  setDialog({ ...dialog, edit_author: true })
-                                                      }}
-                                                   />
-                                                </div>
-                                             </React.Fragment>
-                                          )}
-                                       </div>
-                                    </div>
-                                 </Reorder.Item>
-                              ))}
-                           </div>
-                        </Reorder.Group>
+                        <AuthorsListDragabble
+                           article={null}
+                           authors={authors}
+                           onReorder={onReorder}
+                           onDelete={(item) => {
+                              const new_list = authors.filter((author) => author.id !== item.id)
+                              setAuthors(new_list)
+                              setValue('authors', new_list)
+                              const authorsFromApi = new_list.filter((item) => !item.id.includes('author'))
+                              const authorsIds = authorsFromApi.map((item) => item.id)
+                              setRemoveAuthors(authorsIds)
+                           }}
+                           onEdit={(item) => {
+                              setAuthorToEdit(item)
+                              setDialog({ ...dialog, edit_author: true })
+                           }}
+                        />
                      </div>
                   </div>
                </div>
