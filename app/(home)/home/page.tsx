@@ -92,18 +92,22 @@ export default function HomePage() {
 
    return (
       <React.Fragment>
+         {/* Ilustração */}
          <IllustrationHero className="hidden lg:block lg:w-[45%] xl:w-1/2 absolute right-0 md:top-48 lg:top-50 xl:top-60 h-full lg:max-w-[600px] xl:max-w-[708px] max-h-[554px]" />
-         <ShapeHero className="hidden lg:block lg:w-3/4 xl:w-full absolute right-0 top-0 z-[-1] md:max-w-[600px] md:max-h-[700px] lg:max-w-[700px] lg:max-h-[800px] xl:max-w-[742px] xl:max-h-[872px]" />
+         {/* Shape */}
+         <ShapeHero className="hidden lg:block lg:w-3/4 xl:w-full absolute right-0 top-0 lg:-right-20 xl:-right-0 z-[-1] md:max-w-[600px] md:max-h-[700px] lg:max-w-[700px] lg:max-h-[800px] xl:max-w-[742px] xl:max-h-[872px]" />
          <div className="h-auto lg:pt-24 lg:h-[calc(100vh-14rem)]">
-            <div className="grid gap-6 content-start">
-               <div className="grid gap-4 mt-8 lg:mt-24">
+            <div className="grid gap-4 md:gap-6 content-start">
+               <div className="grid gap-2 md:gap-4 mt-6 lg:mt-24">
                   <div className="grid gap-2">
-                     <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold lg:max-w-[20ch] bg-purple bg-clip-text text-transparent h-14">
+                     <h1 className="text-3xl sm:text-4xl md:text-3xl lg:text-5xl xl:text-6xl font-bold lg:max-w-[20ch] bg-linear-gradient bg-clip-text text-transparent h-8 md:h-14 flex items-center">
                         The DeSci Journal
                      </h1>
-                     <h3 className="text-2xl md:text-3xl lg:text-3xl font-bold bg-purple bg-clip-text text-transparent h-10">Redefine how you publish</h3>
+                     <h3 className="text-1xl md:text-3xl lg:text-3xl xl:text-4xl font-bold bg-linear-gradient bg-clip-text text-transparent flex md:h-14 lg:h-auto">
+                        Redefine how you publish
+                     </h3>
                   </div>
-                  <p className="text-sm md:text-base lg:text-lg max-w-[58ch]">
+                  <p className="text-sm md:text-base lg:text-lg lg:max-w-[50ch] 2xl:max-w-[60ch]">
                      Your scientific and technical documents are welcome here. Publish easily, economically, peer-reviewed papers while retaining 100% of
                      your copyright. deScier is dedicated to fostering a true community where belonging is not just an idea: it{"'"}s your experience with
                      us.
@@ -143,7 +147,9 @@ export default function HomePage() {
                </div>
             </div>
          </div>
-         <div className="blockchain-text-height"></div>
+         <div className="hidden md:block">
+            <div className="blockchain-text-height"></div>
+         </div>
          <div className="grid gap-52">
             <div className="relative w-full flex items-center justify-center lg:hidden">
                <IllustrationHero className="w-[90%] sm:w-3/4 h-auto mt-8 sm:mt-12 max-w-[372px] md:max-w-[454px] lg:hidden" />

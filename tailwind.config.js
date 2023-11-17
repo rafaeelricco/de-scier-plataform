@@ -99,7 +99,8 @@ module.exports = {
             aquarela: 'linear-gradient(108deg, #E2E6FF 0%, #DCE8FF 37.72%, #EBDEFF 68.82%, #FFE5E5 97.88%)',
             purple: 'linear-gradient(45deg, #513296 0.01%, #8636BE 100%)',
             'white-home': 'linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.65) 100%)',
-            'white-home-footer': 'linear-gradient(180deg, rgba(255, 255, 255, 0.44) 98.5%, rgba(255, 255, 255, 0.55) 127.32%)'
+            'white-home-footer': 'linear-gradient(180deg, rgba(255, 255, 255, 0.44) 98.5%, rgba(255, 255, 255, 0.55) 127.32%)',
+            'linear-gradient': 'linear-gradient(58deg, #9036C8 11.17%, #3B4BDB 50.03%, #BC22D6 87.93%)'
          },
          dropShadow: {
             'drop-shadow-footer': 'drop-shadow(0px 4px 8px rgba(39, 0, 90, 0.07))'
