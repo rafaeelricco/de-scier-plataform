@@ -1159,28 +1159,32 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                                                 className=" fill-status-error hover:scale-110 transition-all duration-200 cursor-pointer"
                                                 onClick={() => {
                                                    const author_whitout_share = authors.filter((item) => item.id !== author.id)
+                                                   const author_updated: Author = {
+                                                      id: author.id,
+                                                      email: author.email,
+                                                      name: author.name,
+                                                      title: author.title,
+                                                      share: '0',
+                                                      wallet: author.wallet || ''
+                                                   }
+
+                                                   setAuthors((prevItems) => [...author_whitout_share, author_updated])
                                                    if (!author.id.includes('author')) {
                                                       const author_updated: UpdateAuthor = {
                                                          id: author.id,
                                                          email: author.email,
                                                          name: author.name,
                                                          title: author.title,
-                                                         revenuePercent: Number(author.share) || 0,
+                                                         revenuePercent: 0,
                                                          walletAddress: author.wallet || ''
                                                       }
-
-                                                      setUpdateAuthors((prevItems) => [...author_whitout_share, author_updated])
-                                                   } else {
-                                                      const author_updated: Author = {
-                                                         id: author.id,
-                                                         email: author.email,
-                                                         name: author.name,
-                                                         title: author.title,
-                                                         share: author.share || '0',
-                                                         wallet: author.wallet || ''
+                                                      const authorIndex = updateAuthors.findIndex((item) => item.id === author_updated.id)
+                                                      if (authorIndex >= 0) {
+                                                         updateAuthors[authorIndex].revenuePercent = 0
+                                                         setUpdateAuthors(updateAuthors)
+                                                      } else {
+                                                         setUpdateAuthors((prevItems) => [...prevItems, author_updated])
                                                       }
-
-                                                      setAuthors((prevItems) => [...author_whitout_share, author_updated])
                                                    }
                                                 }}
                                              />
