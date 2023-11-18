@@ -689,7 +689,6 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                                        updateAuthors[authorIndex].revenuePercent = Number(share) || 0
                                        setUpdateAuthors(updateAuthors)
                                     } else {
-                                       console.log('nao tem')
                                        setUpdateAuthors((prev) => [
                                           ...prev,
                                           {
@@ -1131,7 +1130,9 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                                        <div>
                                           {author.share ? (
                                              <div className="flex gap-2 px-4 py-1 border rounded-md border-terciary-main w-fit">
-                                                <p className="text-sm text-center text-terciary-main w-8">{author.share}</p>
+                                                <p className="text-sm text-center text-terciary-main w-8">
+                                                   {author.share.includes('%') ? author.share : author.share + '%'}
+                                                </p>
                                                 <p className="text-sm text-terciary-main">Authorship</p>
                                              </div>
                                           ) : (
