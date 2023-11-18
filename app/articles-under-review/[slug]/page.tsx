@@ -701,6 +701,17 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                                           }
                                        ])
                                     }
+                                 } else {
+                                    const newAuthorsUpdate = updatedAuthors.map((item) => ({
+                                       email: item.email,
+                                       name: item.name,
+                                       title: item.title,
+                                       revenuePercent: share,
+                                       walletAddress: item.wallet || ''
+                                    }))
+
+                                    setValue('authors', newAuthorsUpdate)
+                                    trigger('authors')
                                  }
 
                                  onSaveShareSettings()
