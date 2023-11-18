@@ -1228,7 +1228,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   The current status of this document refelects the collective input and consensus from our panel of expert reviewers and editos.
                </p>
                <DocumentApprovals editorApprovals={editorApprovals} reviewerApprovals={reviewerApprovals} />
-               {article?.document.status !== 'ADMIN_APPROVE' ? (
+               {['PENDING', 'APPROVED', 'REJECTED'].includes(article?.document.status!) && (
                   <React.Fragment>
                      <Button.Button variant="primary" className="flex items-center" onClick={handleSubmitDocument} loading={submitLoading}>
                         <FileEarmarkText className="w-5 h-5" />
@@ -1238,7 +1238,9 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                         Save
                      </Button.Button>
                   </React.Fragment>
-               ) : (
+               )}
+
+               {article?.document.status === 'ADMIN_APPROVE' && (
                   <Button.Button
                      variant="disabled"
                      className="flex items-center bg-status-disable_bg text-status-disable_text"
@@ -1247,6 +1249,18 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   >
                      <FileEarmarkText className="w-5 h-5" />
                      Waiting admin approval
+                  </Button.Button>
+               )}
+
+               {article?.document.status === 'SUBMITTED' && (
+                  <Button.Button
+                     variant="disabled"
+                     className="flex items-center bg-status-disable_bg text-status-disable_text"
+                     onClick={handleSubmitDocument}
+                     loading={submitLoading}
+                  >
+                     <FileEarmarkText className="w-5 h-5" />
+                     Document was submitted
                   </Button.Button>
                )}
 
