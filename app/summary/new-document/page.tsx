@@ -11,6 +11,7 @@ import { home_routes } from '@/routes/home'
 import { AuthorProps, CreateDocumentProps, CreateDocumentSchema } from '@/schemas/create_document'
 import { submitNewDocumentService } from '@/services/document/submit.service'
 import { uploadDocumentFileService } from '@/services/file/file.service'
+import { calculateRemainingShare } from '@/utils/calculate_remain_share'
 import { ErrorMessage } from '@/utils/error_message'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
@@ -195,47 +196,12 @@ export default function SubmitNewPaperPage() {
       }
    }, [session?.user, setValue])
 
-   const calculateRemainingShare = (currentAuthorId: string, newAuthorShare: string) => {
-      const newShareValue = parseFloat(newAuthorShare.replace('%', ''))
-      console.log('newShareValue', authors.length === 1 && getValues('authors').length === 1)
-
-      if (authors.length === 1 && getValues('authors').length === 1) {
-         setAuthors(authors.map((author) => ({ ...author, share: '100%' })))
-      } else {
-         let totalShared = newShareValue
-
-         const updatedAuthors = authors.map((author) => {
-            if (author.id === currentAuthorId) {
-               return { ...author, share: `${newShareValue}%` }
-            } else {
-               if (!author.share) return author
-               totalShared += parseFloat(author.share.replace('%', ''))
-               return author
-            }
-         })
-
-         if (totalShared > 100) {
-            updatedAuthors.forEach((author) => {
-               if (author.id !== currentAuthorId) {
-                  const currentShare = parseFloat(author.share!.replace('%', ''))
-                  const adjustedShare = currentShare - (totalShared - 100)
-                  author.share = `${adjustedShare}%`
-               }
-            })
-         }
-
-         setAuthors(updatedAuthors)
-         setValue('authors', [...updatedAuthors])
-         setEditShare(null)
-      }
-   }
-
    const onSaveShareSettings = () => {
       if (edit_share_split && share) {
          const shareValue = parseInt(share.replace('%', ''))
 
          if (shareValue <= 100) {
-            calculateRemainingShare(edit_share_split.id, share)
+            calculateRemainingShare(edit_share_split.id, share, authors, setAuthors)
          } else {
             console.error('Share value cannot be more than 100%')
          }
@@ -629,7 +595,7 @@ export default function SubmitNewPaperPage() {
                                        <div>
                                           {author.share ? (
                                              <div className="flex gap-2 px-4 py-1 border rounded-md border-terciary-main w-fit">
-                                                <p className="text-sm text-center text-terciary-main w-8">{author.share}</p>
+                                                <p className="text-sm text-center text-terciary-main">{author.share}</p>
                                                 <p className="text-sm text-terciary-main">Authorship</p>
                                              </div>
                                           ) : (
@@ -649,25 +615,28 @@ export default function SubmitNewPaperPage() {
                                        </div>
                                        <div className="w-full flex items-center justify-between">
                                           <p className="text-base text-center text-black w-8">{author.wallet || '-'}</p>
+
                                           <div className="flex items-center gap-2">
-                                             <Trash
-                                                size={20}
-                                                className=" fill-status-error hover:scale-110 transition-all duration-200 cursor-pointer"
-                                                onClick={() => {
-                                                   const author_whitout_share = authors.filter((item) => item.id !== author.id)
+                                             {author.id !== session?.user?.userInfo.id && (
+                                                <Trash
+                                                   size={20}
+                                                   className=" fill-status-error hover:scale-110 transition-all duration-200 cursor-pointer"
+                                                   onClick={() => {
+                                                      const author_whitout_share = authors.filter((item) => item.id !== author.id)
 
-                                                   const author_updated: AuthorProps = {
-                                                      email: author.email,
-                                                      id: author.id,
-                                                      name: author.name,
-                                                      title: author.title,
-                                                      revenuePercent: '0',
-                                                      walletAddress: author.wallet || ''
-                                                   }
+                                                      const author_updated: AuthorProps = {
+                                                         email: author.email,
+                                                         id: author.id,
+                                                         name: author.name,
+                                                         title: author.title,
+                                                         revenuePercent: '0',
+                                                         walletAddress: author.wallet || ''
+                                                      }
 
-                                                   setAuthors((prevItems) => [...author_whitout_share, author_updated])
-                                                }}
-                                             />
+                                                      setAuthors((prevItems) => [...author_whitout_share, author_updated])
+                                                   }}
+                                                />
+                                             )}
                                              <Pencil
                                                 size={20}
                                                 className=" fill-primary-main hover:scale-110 transition-all duration-200 cursor-pointer"
