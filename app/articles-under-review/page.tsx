@@ -99,6 +99,7 @@ export default function ArticlesUnderReviewPage() {
                </div>
                <div className="flex flex-col md:flex-row md:items-center gap-2">
                   <SelectArticleType
+                     placeholder={`Article type: ${documentType || 'All'}`}
                      selected={documentType}
                      onValueChange={(value) => {
                         if (value === 'all') setDocumentType(null)

@@ -7,9 +7,10 @@ import { twMerge } from 'tailwind-merge'
 interface SelectArticleTypeProps {
    onValueChange: (value: string) => void
    selected: string | null
+   placeholder?: string
 }
 
-export const SelectArticleType: React.FC<SelectArticleTypeProps> = ({ onValueChange, selected }: SelectArticleTypeProps) => {
+export const SelectArticleType: React.FC<SelectArticleTypeProps> = ({ onValueChange, selected, placeholder }: SelectArticleTypeProps) => {
    return (
       <React.Fragment>
          <Select
@@ -22,8 +23,7 @@ export const SelectArticleType: React.FC<SelectArticleTypeProps> = ({ onValueCha
                   'flex items-center gap-1 justify-center py-2 px-4 text-sm rounded-full min-w-[200px] w-fit border-[1px] border-primary-main text-primary-main hover:scale-105 transition-all duration- bg-transparent font-semibold'
                )}
             >
-               {selected !== null && <span>Article type:</span>}
-               <SelectValue placeholder="Article type:" />
+               <SelectValue placeholder={placeholder || 'Article type:'} />
             </SelectTrigger>
             <SelectContent>
                <SelectGroup>

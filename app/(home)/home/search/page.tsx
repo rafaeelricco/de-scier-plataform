@@ -87,6 +87,7 @@ export default function SearchArticlesPage() {
                <Dropdown no_selected items={filter_by_year} label="Year of publication:" onSelect={(value) => setPublicationYear(Number(value))} />
                <Dropdown no_selected label="Field:" className="min-w-fit px-8" items={filter_field} onSelect={(value) => setField(value)} />
                <SelectArticleType
+                  placeholder={`Article type: ${documentType || 'All'}`}
                   selected={documentType}
                   onValueChange={(value) => {
                      if (value === 'all') setDocumentType(null)
