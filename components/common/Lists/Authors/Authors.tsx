@@ -14,8 +14,6 @@ export const AuthorsListDragabble: React.FC<AuthorsListDragabbleProps> = ({
    onEdit
 }: AuthorsListDragabbleProps) => {
    const { data: session } = useSession()
-   console.log('session', session)
-   console.log('authors', authors)
    return (
       <React.Fragment>
          {article?.document.authorsOnDocuments ? (
@@ -71,7 +69,7 @@ export const AuthorsListDragabble: React.FC<AuthorsListDragabbleProps> = ({
                                  </div>
                               </div>
                               <div className="hidden md:block">
-                                 <p className="text-sm text-secundary_blue-main">{item.author?.title === '' ? '-' : item.author?.title}</p>
+                                 <p className="text-sm text-secundary_blue-main truncate">{item.author?.title === '' ? '-' : item.author?.title}</p>
                               </div>
                               <div className="hidden md:flex items-center justify-between">
                                  <p className="text-sm text-secundary_blue-main">{item.author?.email}</p>
@@ -135,7 +133,7 @@ export const AuthorsListDragabble: React.FC<AuthorsListDragabbleProps> = ({
                                  </div>
                               </div>
                               <div className="hidden md:block">
-                                 <p className="text-sm text-secundary_blue-main">{item.title}</p>
+                                 <p className="text-sm text-secundary_blue-main max-w-[20ch] truncate">{item.title}</p>
                               </div>
                               <div className="hidden md:flex items-center justify-between">
                                  <p className="text-sm text-secundary_blue-main">{item.email}</p>
