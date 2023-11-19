@@ -39,11 +39,13 @@ export type StatisticsProps = {
    pendingDocuments: DocumentBasicProps[]
 }
 
-type DocumentBasicProps = {
+export type DocumentBasicProps = {
    id: string
    title: string
    cover?: string
    createdAt: Date
+   reviewerApprovals: number
+   editorsApprovals: number
    likes: number
    views: number
 }

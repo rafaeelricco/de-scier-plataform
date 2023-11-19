@@ -88,8 +88,8 @@ export default function HomePage() {
                      <Submission pendingAmount={statistics?.totalSubmittedDocuments || 0} publishedAmount={statistics?.totalUnderReviewDocuments || 0} />
                   </div>
                   <div className="divider-v" />
-                  <div className="w-full md:flex-grow">
-                     <Publications />
+                  <div className="w-full md:flex-grow md:self-start">
+                     <Publications pendingDocuments={statistics?.pendingDocuments || []} publishedDocuments={statistics?.publishedDocuments || []} />
                   </div>
                </Box>
                <div className="grid lg:grid-cols-2 gap-8">
@@ -102,7 +102,7 @@ export default function HomePage() {
                      />
                   </Box>
                   <Box className="h-fit w-full px-4 py-6 md:py-6 md:px-8">
-                     <TopPapers />
+                     <TopPapers publishedDocuments={statistics?.publishedDocuments || []} />
                   </Box>
                   {/* <Box className="h-fit px-4 py-6 md:py-6 md:px-8">
                      <h3 className="text-xl font-[500] lg:text-lg 2xl:text-xl">Earnings</h3>
