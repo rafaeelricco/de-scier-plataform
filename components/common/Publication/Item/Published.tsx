@@ -26,7 +26,7 @@ const PublicationItem: React.FC<PublicationItemProps> = ({ date, link, likes, vi
                height={420}
                alt={title}
                style={{ objectFit: 'cover' }}
-               className="rounded-md w-full h-20 lg:w-20 object-cover"
+               className="rounded-md w-full h-20 lg:w-20 xxl:w-16 xxl:h-16 2xl:w-20 2xl:h-20 object-cover"
             />
             <div className="grid gap-2">
                {isSmallDesktop ? (
