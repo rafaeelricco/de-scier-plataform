@@ -87,6 +87,8 @@ export default function ArticlesUnderReviewPage() {
       setTotalPages(Math.ceil(results.length / per_page))
    }, [results, per_page])
 
+   const withoutFilters = documentType === null && status === null && debouncedSearchTerm === ''
+
    return (
       <React.Fragment>
          <Title.Root>
@@ -95,7 +97,7 @@ export default function ArticlesUnderReviewPage() {
          <div className="grid gap-6">
             <div className="grid gap-6">
                <div className="flex items-center gap-2">
-                  <Input.Search placeholder="Find articles with these terms" onChange={(e) => setSearchTerm(e.target.value)} />
+                  <Input.Search value={searchTerm} placeholder="Find articles with these terms" onChange={(e) => setSearchTerm(e.target.value)} />
                </div>
                <div className="flex flex-col md:flex-row md:items-center gap-2">
                   <SelectArticleType
@@ -107,6 +109,18 @@ export default function ArticlesUnderReviewPage() {
                      }}
                   />
                   <Dropdown label="Status:" className="min-w-[180px]" items={filter_status} onSelect={(value) => setStatus(value)} />
+                  {withoutFilters ? null : (
+                     <p
+                        className="text-base font-semibold text-terciary-main cursor-pointer hover:underline select-none"
+                        onClick={() => {
+                           setDocumentType(null)
+                           setStatus(null)
+                           setSearchTerm('')
+                        }}
+                     >
+                        Clear Filters
+                     </p>
+                  )}
                </div>
             </div>
             <div className="flex flex-col gap-6 min-h-[calc(50vh)]">
