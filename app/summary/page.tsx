@@ -85,7 +85,11 @@ export default function HomePage() {
             <div className="grid gap-8">
                <Box className="flex flex-col w-full lg:flex-row gap-5 items-center px-4 py-6 md:py-6 md:px-8">
                   <div className="w-full md:w-fit flex-shrink-0">
-                     <Submission pendingAmount={statistics?.totalSubmittedDocuments || 0} publishedAmount={statistics?.totalUnderReviewDocuments || 0} />
+                     <Submission
+                        pendingAmount={statistics?.totalUnderReviewDocuments || 0}
+                        publishedAmount={statistics?.totalSubmittedDocuments || 0}
+                        totalDocuments={statistics?.totalDocuments || 0}
+                     />
                   </div>
                   <div className="divider-v" />
                   <div className="w-full md:flex-grow md:self-start">

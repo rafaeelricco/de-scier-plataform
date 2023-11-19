@@ -11,7 +11,7 @@ const Submission: React.FC<SubmissionProps> = (data: SubmissionProps) => {
             <h3 className="text-xl font-[500] lg:text-lg 2xl:text-xl">Submissions</h3>
             <div className="flex flex-col justify-items-center gap-6 w-full">
                <div className="mx-auto my-0">
-                  <PieChartComponent pendingAmount={data.pendingAmount} publishedAmount={data.publishedAmount} />
+                  <PieChartComponent pendingAmount={data.pendingAmount} publishedAmount={data.publishedAmount} totalDocuments={data.totalDocuments} />
                </div>
                <div className="grid gap-6">
                   <div className="grid grid-flow-col gap-2 items-center justify-items-center">
@@ -41,6 +41,7 @@ const Submission: React.FC<SubmissionProps> = (data: SubmissionProps) => {
 type SubmissionProps = {
    publishedAmount: number
    pendingAmount: number
+   totalDocuments: number
 }
 
 export default Submission
