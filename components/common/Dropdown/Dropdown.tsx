@@ -7,8 +7,23 @@ import { CaretDown } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 import { DropdownProps } from './Typing'
 
-const Dropdown: React.FC<DropdownProps> = ({ label, className, items, no_selected = false, custom_intial_value, onSelect }: DropdownProps) => {
-   const [selected, setSelected] = React.useState<string | null>(no_selected === true ? null : items[0].label)
+const Dropdown: React.FC<DropdownProps> = ({
+   label,
+   className,
+   items,
+   no_selected = false,
+   custom_intial_value,
+   selected: selected_value,
+   onSelect
+}: DropdownProps) => {
+   const initialSelected = no_selected ? null : selected_value || items[0].label
+   const [selected, setSelected] = React.useState<string | null>(initialSelected)
+
+   React.useEffect(() => {
+      if (selected_value !== undefined) {
+         setSelected(selected_value)
+      }
+   }, [selected_value])
    return (
       <React.Fragment>
          <DropdownMenu>
