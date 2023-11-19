@@ -4,14 +4,14 @@ import * as Button from '@components/common/Button/Button'
 import React from 'react'
 import { PlusCircle } from 'react-bootstrap-icons'
 
-const Submission: React.FC = () => {
+const Submission: React.FC<SubmissionProps> = (data: SubmissionProps) => {
    return (
       <React.Fragment>
          <div className="grid gap-6 content-between w-full min-w-full lg:min-w-[254px] xl:min-w-[232px] xxl:min-w-[200px] 2xl:min-w-[242px] h-full lg:gap-12">
             <h3 className="text-xl font-[500] lg:text-lg 2xl:text-xl">Submissions</h3>
             <div className="flex flex-col justify-items-center gap-6 w-full">
                <div className="mx-auto my-0">
-                  <PieChartComponent />
+                  <PieChartComponent pendingAmount={data.pendingAmount} publishedAmount={data.publishedAmount} />
                </div>
                <div className="grid gap-6">
                   <div className="grid grid-flow-col gap-2 items-center justify-items-center">
@@ -36,6 +36,11 @@ const Submission: React.FC = () => {
          </div>
       </React.Fragment>
    )
+}
+
+type SubmissionProps = {
+   publishedAmount: number
+   pendingAmount: number
 }
 
 export default Submission

@@ -8,6 +8,7 @@ import Statistics from '@/components/modules/Summary/Statistics/Statistics'
 import Submission from '@/components/modules/Summary/Submission/Submission'
 import TopPapers from '@/components/modules/Summary/TopPapers/TopPapers'
 import { home_routes } from '@/routes/home'
+import { useStatistics } from '@/services/document/getStatistics.service'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Title from '@components/common/Title/Page'
 import '@styles/summary.css'
@@ -17,6 +18,8 @@ import React, { useEffect, useState } from 'react'
 export default function HomePage() {
    const router = useRouter()
    const queryParams = useSearchParams()
+
+   const { statistics } = useStatistics()
 
    const [open, setOpen] = useState(false)
    const [paymentSuccess, setPaymentSuccess] = useState(false)
@@ -82,7 +85,10 @@ export default function HomePage() {
             <div className="grid gap-8">
                <Box className="flex flex-col w-full lg:flex-row gap-5 items-center px-4 py-6 md:py-6 md:px-8">
                   <div className="w-full md:w-fit flex-shrink-0">
-                     <Submission />
+                     <Submission
+                        pendingAmount={statistics?.pendingDocuments?.length || 0}
+                        publishedAmount={statistics?.publishedDocuments?.length || 0}
+                     />
                   </div>
                   <div className="divider-v" />
                   <div className="w-full md:flex-grow">

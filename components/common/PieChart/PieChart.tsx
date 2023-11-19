@@ -1,22 +1,24 @@
 import useDimension from '@/hooks/useWindowDimension'
 import { Pie, PieChart, ResponsiveContainer } from 'recharts'
 
-const data = [
-   {
-      name: 'Group A',
-      value: 200,
-      fill: '#0BD2E2'
-   },
-   {
-      name: 'Group B',
-      value: 100,
-      fill: '#FA9963'
-   }
-]
-
-export default function PieChartComponent() {
+export default function PieChartComponent({ pendingAmount, publishedAmount }: ChartProps) {
    const { windowDimension, md, lg, xl, xxl } = useDimension()
    if (!windowDimension) return null
+
+   const data = [
+      {
+         name: 'Group A',
+         value: publishedAmount,
+         fill: '#0BD2E2'
+      },
+      {
+         name: 'Group B',
+         value: pendingAmount,
+         fill: '#FA9963'
+      }
+   ]
+
+   console.log('chart', data)
 
    return (
       <>
@@ -45,4 +47,9 @@ export default function PieChartComponent() {
          </div>
       </>
    )
+}
+
+export type ChartProps = {
+   publishedAmount: number
+   pendingAmount: number
 }
