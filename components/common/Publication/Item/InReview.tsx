@@ -18,7 +18,7 @@ const InReviewItem: React.FC<InReviewItemProps> = ({ date, link, ready_to_publis
                style={{ objectFit: 'cover' }}
                className="rounded-md w-full h-20 lg:w-20 xxl:w-16 xxl:h-16 2xl:w-20 2xl:h-20 object-cover"
             />
-            <div className="grid gap-2">
+            <div className="grid gap-1 2xl:gap-2">
                {isSmallDesktop ? (
                   <HoverCard>
                      <HoverCardTrigger className="truncate cursor-pointer">
@@ -29,30 +29,24 @@ const InReviewItem: React.FC<InReviewItemProps> = ({ date, link, ready_to_publis
                ) : (
                   <h6 className="text-sm md:text-base font-semibold text-secundary_blue-main truncate cursor-pointer">{title}</h6>
                )}
-               <div className="flex flex-col xxl:flex-row xxl:items-center md:justify-start gap-2">
+               <div className="flex flex-col gap-1 xxl:flex-row xxl:items-center md:justify-start">
                   <div className="flex flex-grow justify-center gap-1 items-center border p-1 rounded-md w-full md:border-none md:p-0 md:justify-start md:w-fit md:flex-grow-0">
                      {ready_to_publish ? (
-                        <p className="text-xs sm:text-base font-semibold text-status-green truncate xl:max-w-[8ch] 2xl:max-w-full">Ready to publish</p>
+                        <p className="text-xs sm:text-base font-semibold text-status-green truncate xl:text-sm flex-shrink-0">Ready to publish</p>
                      ) : (
                         <>
                            {status_editor == 'approved' && (
-                              <p className="text-xs sm:text-base font-semibold text-status-green truncate xl:max-w-[8ch] 2xl:max-w-full">
-                                 Approved by editor
-                              </p>
+                              <p className="text-xs sm:text-base font-semibold text-status-green truncate xl:text-sm flex-shrink-0">Approved by editor</p>
                            )}
                            {status_editor == 'pending' && (
-                              <p className="text-xs sm:text-base font-semibold text-status-pending truncate xl:max-w-[8ch] 2xl:max-w-full">
-                                 Editor pending
-                              </p>
+                              <p className="text-xs sm:text-base font-semibold text-status-pending truncate xl:text-sm flex-shrink-0">Editor pending</p>
                            )}
-                           <span className="text-xs sm:text-sm font-semibold text-neutral-light_gray truncate xl:max-w-[8ch] 2xl:max-w-full">/</span>
+                           <span className="text-xs sm:text-sm font-semibold text-neutral-light_gray truncate xl:text-sm flex-shrink-0">/</span>
                            {status_reviewer == 'approved' && (
-                              <p className="text-xs sm:text-base font-semibold text-status-green truncate xl:max-w-[8ch] 2xl:max-w-full">
-                                 Reviewer approval
-                              </p>
+                              <p className="text-xs sm:text-base font-semibold text-status-green truncate xl:text-sm flex-shrink-0">Reviewer approval</p>
                            )}
                            {status_reviewer == 'pending' && (
-                              <p className="text-xs sm:text-base font-semibold text-status-pending truncate xl:max-w-[8ch] 2xl:max-w-full">
+                              <p className="text-xs sm:text-base font-semibold text-status-pending truncate xl:text-sm flex-shrink-0 lg:max-w-[10ch] 2xl:max-w-full">
                                  Reviewer pending
                               </p>
                            )}
