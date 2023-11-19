@@ -1,7 +1,6 @@
 import { Author } from '@/mock/submit_new_document'
 /**
  * @title Calculate Remaining Share Function
- * @author Your Name
  * @notice This function is used to distribute a share value evenly among authors, excluding the current author, and update their shares accordingly.
  * @dev This function takes the ID of the current author, their new share percentage, a list of authors, and a setter function for updating authors. It calculates the new share percentage for other authors and updates the state.
  * @param {string} currentAuthorId - The unique identifier of the current author.
@@ -37,7 +36,6 @@ export const calculateRemainingShare = (currentAuthorId: string, newAuthorShare:
 
 /**
  * @title Update Authors' Shares in Single Author Scenario
- * @author Your Name
  * @notice Adjusts the share of a single author to 100% if it is not already set to this value. This is typically used in scenarios where there is only one author in the list.
  * @dev This useEffect hook triggers whenever the authors array or the setValue function changes. It checks if there is only one author and updates their share to 100% if it's not already. It then updates the authors state and a form value 'authors'.
  * @param {Author[]} authors - A dependency array containing the current list of authors. React will re-run the effect if this array changes.
