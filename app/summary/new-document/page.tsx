@@ -32,22 +32,27 @@ import { twMerge } from 'tailwind-merge'
 const Dropzone = dynamic(() => import('@/components/common/Dropzone/Dropzone'), { ssr: false })
 
 export default function SubmitNewPaperPage() {
+   /** @dev Initialize router for navigation and session hook for user session management */
    const router = useRouter()
    const { data: session, update: updateSession } = useSession()
 
+   /** @dev Initialize states for loading indicators, dialog settings, and various form inputs */
    const [loading, setLoading] = useState(false)
    const [dialog, setDialog] = useState({ author: false, share_split: false, edit_author: false, edit_share_split: false })
    const [access_type, setAccessType] = useState('open-access')
    const [share, setShare] = useState('')
    const [wallet, setWallet] = useState('')
    const [authors, setAuthors] = useState<Author[]>([])
-   console.log('authors', authors)
    const [edit_share_split, setEditShare] = useState<Author | null>()
    const [authorship_settings, setAuthorshipSettings] = useState<Author>()
    const [author_to_edit, setAuthorToEdit] = useState<Author | undefined>(undefined)
    const [keywords_temp, setKeywordsTemp] = useState<string | undefined>()
    const [abstractChart, setAbstractChart] = useState<string>('')
 
+   /**
+    * @dev Using `useForm` hook from React Hook Form for form state management and validation
+    * @return The useForm hook returns several methods and states for form management
+    */
    const {
       register,
       handleSubmit,
@@ -92,16 +97,26 @@ export default function SubmitNewPaperPage() {
       }
    })
 
+   /** @dev Logging watched values and errors for debugging */
    console.log('watch', watch())
    console.log('errors', errors)
 
+   /** @dev Using `useFieldArray` to manage dynamic keyword fields */
    const { append, remove, fields: keywords } = useFieldArray({ name: 'keywords', control: control })
 
+   /**
+    * @dev Function to handle reordering of authors
+    * @param newOrder The new order of authors
+    */
    const onReorder = (newOrder: typeof authors) => {
       setAuthors(newOrder)
       setValue('authors', newOrder)
    }
 
+   /**
+    * @dev Async function to handle document submission
+    * @param data The form data for document submission
+    */
    const handleSubmitDocument: SubmitHandler<CreateDocumentProps> = async (data) => {
       setLoading(true)
       const requestData = {
@@ -165,6 +180,10 @@ export default function SubmitNewPaperPage() {
       }
    }
 
+   /**
+    * @dev Function to handle keyword addition on enter key press
+    * @param e The keyboard event
+    */
    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.keyCode === 13) {
          if (keywords_temp && keywords_temp.trim() !== '') {
@@ -180,6 +199,9 @@ export default function SubmitNewPaperPage() {
       }
    }
 
+   /**
+    * @dev useEffect hook to set initial author details from session
+    */
    useEffect(() => {
       if (session?.user) {
          const author = {
@@ -199,36 +221,73 @@ export default function SubmitNewPaperPage() {
       }
    }, [session?.user, authors, setValue, getValues])
 
+   /**
+    * @title Save Share Settings Function
+    * @notice Handles the logic for saving the share settings of authors.
+    * @dev This function updates the share percentage of an author in a list of authors. It ensures the total share does not exceed 100%.
+    */
    const onSaveShareSettings = () => {
+      /**
+       * @dev Check if 'edit_share_split' and 'share' are truthy. If not, log an error.
+       */
       if (edit_share_split && share) {
+         /**
+          * @dev Convert the 'share' value from a string to a float and remove the '%' character.
+          */
          let shareValue = parseFloat(share.replace('%', ''))
 
+         /**
+          * @dev Calculate the total share percentage of authors excluding the current one being edited.
+          */
          const totalOtherShares = authors.reduce((acc, author) => {
+            /**
+             * @dev Accumulate the share of each author, excluding the author being edited.
+             */
             return author.id !== edit_share_split.id && author.share ? acc + parseFloat(author.share.replace('%', '')) : acc
          }, 0)
 
+         /**
+          * @dev Calculate the maximum allowed share for the current author by subtracting others' shares from 100%.
+          */
          const maxAllowedShare = 100 - totalOtherShares
 
+         /**
+          * @dev If the calculated share value exceeds the maximum allowed, set it to the maximum.
+          */
          if (shareValue > maxAllowedShare) {
             shareValue = maxAllowedShare
          }
 
+         /**
+          * @dev Update the 'authors' array with the new share value for the edited author.
+          */
          const updatedAuthors = authors.map((author) => {
+            /**
+             * @dev For the author being edited, update their share value.
+             */
             if (author.id === edit_share_split.id) {
                return { ...author, share: `${shareValue}%` }
             }
             return author
          })
 
+         /**
+          * @dev Set the 'authors' state with the updated authors array.
+          */
          setAuthors(updatedAuthors)
       } else {
+         /**
+          * @dev Log an error if the function is called without valid 'edit_share_split' and 'share' values.
+          */
          console.error('Share value cannot be more than 100%')
       }
 
+      /**
+       * @dev Update the 'dialog' state to close the share split and edit author dialogs, and reset the 'editShare' state.
+       */
       setDialog({ ...dialog, share_split: false, edit_author: false })
       setEditShare(null)
    }
-
    return (
       <React.Fragment>
          <Dialog.Root open={dialog.author || dialog.share_split || dialog.edit_author || dialog.edit_share_split}>
