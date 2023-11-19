@@ -57,8 +57,9 @@ const WithLink: React.FC<WithLinkProps> = ({ article_name, invited_by, inviteCod
             <div className="grid gap-2">
                <h3 className="text-xl font-semibold">You were invited to be a Reviewer/ Editor for an article</h3>
                <p className="text-sm">
-                  {invited_by} has extended a kind invitation for you to serve as Reviewer/ Editor for the article entitled {article_name} Would this
-                  invitation align with your skills and expertise?
+                  <p className="text-sm first-letter:uppercase">{invited_by}</p> has extended a kind invitation for you to serve as Reviewer/ Editor for
+                  the article entitled <span className="text-sm font-semibold">{article_name}</span> Would this invitation align with your skills and
+                  expertise?
                </p>
             </div>
             <div className="grid grid-cols-2 gap-6">
