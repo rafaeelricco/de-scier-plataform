@@ -62,7 +62,11 @@ export default function SubmitNewPaperPage() {
       trigger,
       getValues,
       control,
-      setError
+      setError,
+      clearErrors,
+      unregister,
+      reset,
+      resetField
    } = useForm<CreateDocumentProps>({
       resolver: zodResolver(CreateDocumentSchema),
       defaultValues: {
@@ -607,8 +611,10 @@ export default function SubmitNewPaperPage() {
                               setAccessType(value)
                               setAuthorshipSettings(undefined)
                               setAuthors(authors.map((author) => ({ ...author, share: '0%' })))
+                              setValue('price', '0')
                            } else {
                               setAccessType(value)
+                              setValue('price', '10,00')
                            }
                         }}
                         value={access_type}
@@ -627,9 +633,11 @@ export default function SubmitNewPaperPage() {
                            <Input.Label className="text-sm font-semibold">Price</Input.Label>
                            <CurrencyInput
                               currency="USD"
+                              defaultValue={watch('price')}
                               onChangeValue={(event, originalValue, maskedValue) => setValue('price', originalValue.toString())}
                               InputElement={<Input.Input placeholder="$10" />}
                            />
+                           <Input.Error>{errors.price?.message}</Input.Error>
                         </Input.Root>
                      </React.Fragment>
                   )}
