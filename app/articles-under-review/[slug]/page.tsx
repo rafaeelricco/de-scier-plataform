@@ -9,6 +9,7 @@ import { File } from '@/components/common/File/File'
 import { YouAre, YouAreAuthor } from '@/components/common/Flags/Author/AuthorFlags'
 import { InviteLink } from '@/components/common/InviteLink/InviteLink'
 import { EditorReviewList } from '@/components/common/Lists/EditorReview/EditorReview'
+import { NewAuthor } from '@/components/modules/Summary/NewArticle/Authors/NewAuthor'
 import EditComment from '@/components/modules/deScier/Article/EditComment'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -102,13 +103,9 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
    })
 
    const {
-      register: register_comment,
-      handleSubmit: handleSubmit_comment,
       watch: watch_comment,
       setValue: setValue_comment,
-      trigger: trigger_comment,
-      getValues: getValues_comment,
-      control: control_comment
+      getValues: getValues_comment
    } = useForm<AddCommentProps>({
       resolver: zodResolver(addCommentSchema),
       values: {
@@ -433,11 +430,12 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
       router.refresh()
    }
 
+   const [author_to_edit, setAuthorToEdit] = React.useState<Author | undefined>(undefined)
    return (
       <React.Fragment>
-         <Dialog.Root open={dialog.reasoning || dialog.edit_comment}>
+         <Dialog.Root open={dialog.reasoning || dialog.edit_comment || dialog.author}>
             <Dialog.Overlay />
-            <Dialog.Content className="py-14 px-16 max-w-[600px]">
+            <Dialog.Content className={twMerge('md:px-16 md:py-14 pb-20')}>
                {dialog.reasoning && (
                   <Reasoning
                      message={state.comment_to_edit?.reason || ''}
@@ -472,6 +470,35 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                         dispatch({ type: 'comment_to_edit', payload: null })
                      }}
                      onClose={() => setDialog({ ...dialog, edit_comment: false })}
+                  />
+               )}
+               {dialog.edit_author && (
+                  <NewAuthor
+                     onEditAuthor={author_to_edit}
+                     onUpdateAuthor={(updatedAuthor) => {
+                        setAuthors((prevItems) => {
+                           return prevItems.map((item) => (item.id === author_to_edit?.id ? { ...item, ...updatedAuthor } : item))
+                        })
+                     }}
+                     onClose={() => setDialog({ ...dialog, edit_author: false })}
+                  />
+               )}
+               {dialog.author && (
+                  <NewAuthor
+                     onAddAuthor={(value) => {
+                        const newAuthor = {
+                           id: value.id,
+                           name: value.name,
+                           title: value.title,
+                           email: value.email,
+                           revenuePercent: value.revenuePercent
+                        }
+                        setAuthors((prevItems) => [...prevItems, newAuthor])
+                        setValue('authors', [...authors, newAuthor])
+                        /// Update authorsOnDocuments
+                        /// fetchSingleArticle(parms.slug)
+                     }}
+                     onClose={() => setDialog({ ...dialog, author: false })}
                   />
                )}
             </Dialog.Content>
@@ -744,6 +771,17 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   <div className="grid ">
                      <h3 className="text-lg md:text-xl text-terciary-main font-semibold">Authors</h3>
                   </div>
+                  <Button.Button
+                     type="button"
+                     variant="outline"
+                     className="px-4 py-3 w-full text-sm"
+                     onClick={() => {
+                        setDialog({ ...dialog, author: true })
+                     }}
+                  >
+                     Add authors for this paper
+                     <PlusCircle className="w-4 fill-primary-main" />
+                  </Button.Button>
                   <div className="grid gap-6">
                      <p className="text-sm">Drag the authors to reorder the list.</p>
                      <div className="grid gap-2">
