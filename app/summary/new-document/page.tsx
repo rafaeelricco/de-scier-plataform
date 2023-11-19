@@ -255,7 +255,14 @@ export default function SubmitNewPaperPage() {
                {dialog.share_split && (
                   <React.Fragment>
                      <div className="grid gap-6">
-                        <Dialog.Title title="Share split" onClose={() => setDialog({ ...dialog, share_split: false })} />
+                        <Dialog.Title
+                           title="Share split"
+                           onClose={() => {
+                              setDialog({ ...dialog, share_split: false })
+                              setEditShare(null)
+                              setAuthorshipSettings(undefined)
+                           }}
+                        />
                         <div className="grid gap-6">
                            <div className="flex items-center gap-6">
                               <Input.Root>
@@ -283,16 +290,6 @@ export default function SubmitNewPaperPage() {
                                  if (!authorship_settings!.id) {
                                     console.error('Authorship settings does not have an ID!')
                                     return
-                                 }
-
-                                 const updatedAuthor: Author = {
-                                    ...authorship_settings!,
-                                    id: authorship_settings!.id,
-                                    name: authorship_settings!.name,
-                                    title: authorship_settings!.title,
-                                    email: authorship_settings!.email,
-                                    wallet: authorship_settings!.wallet,
-                                    share: share.includes('%') ? share : share + '%'
                                  }
 
                                  const authorIndex = authors.findIndex((author) => author.id === authorship_settings!.id)
@@ -633,18 +630,21 @@ export default function SubmitNewPaperPage() {
                                                          walletAddress: author.wallet || ''
                                                       }
 
-                                                      setAuthors((prevItems) => [...author_whitout_share, author_updated])
+                                                      setAuthors(() => [...author_whitout_share, author_updated])
                                                    }}
                                                 />
                                              )}
-                                             <Pencil
-                                                size={20}
-                                                className=" fill-primary-main hover:scale-110 transition-all duration-200 cursor-pointer"
-                                                onClick={() => {
-                                                   setEditShare(author)
-                                                   setDialog({ ...dialog, share_split: true })
-                                                }}
-                                             />
+                                             {author.id === session?.user?.userInfo.id && authors.length > 1 && (
+                                                <Pencil
+                                                   size={20}
+                                                   className=" fill-primary-main hover:scale-110 transition-all duration-200 cursor-pointer"
+                                                   onClick={() => {
+                                                      setEditShare(author)
+                                                      setAuthorshipSettings(author)
+                                                      setDialog({ ...dialog, share_split: true })
+                                                   }}
+                                                />
+                                             )}
                                           </div>
                                        </div>
                                     </div>
