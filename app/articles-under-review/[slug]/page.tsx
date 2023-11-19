@@ -232,12 +232,29 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
          return
       }
 
-      if (!article.document.documentVersions) {
+      const documentFiles = article.document?.documentVersions || []
+      const lastDocumentVersion = documentFiles[0]
+      const isPdfFile = lastDocumentVersion?.fileName?.includes('pdf')
+
+      if ((!file || !file.name.includes('pdf')) && !isPdfFile) {
          toast.error('Upload a pdf file to final submit.')
          return
       }
 
       setSubmitLoading(true)
+      if (file && !isPdfFile) {
+         const uploadFileResponse = await uploadDocumentFileService({
+            fileLocalUrl: file.preview,
+            filename: file.name,
+            mimetype: file.type,
+            documentId: article.document.id
+         })
+         if (!uploadFileResponse) {
+            setSaveLoading(false)
+            toast.error('Error in upload file.')
+            return
+         }
+      }
 
       const response = await finalSubmitDocumentService({
          documentId: article.document.id
