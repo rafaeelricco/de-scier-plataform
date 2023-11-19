@@ -11,7 +11,6 @@ import { home_routes } from '@/routes/home'
 import { AuthorProps, CreateDocumentProps, CreateDocumentSchema } from '@/schemas/create_document'
 import { submitNewDocumentService } from '@/services/document/submit.service'
 import { uploadDocumentFileService } from '@/services/file/file.service'
-import { calculateRemainingShare } from '@/utils/calculate_remain_share'
 import { ErrorMessage } from '@/utils/error_message'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
@@ -191,34 +190,44 @@ export default function SubmitNewPaperPage() {
             title: session?.user?.userInfo.title || '',
             walletAddress: session?.user?.userInfo.walletAddress || ''
          }
-         setValue('authors', [author])
-         setAuthors([author])
+         if (!authors.length) {
+            setAuthors([author])
+         }
+         if (!getValues('authors').length) {
+            setValue('authors', [author])
+         }
       }
-   }, [session?.user, setValue])
+   }, [session?.user, authors, setValue, getValues])
 
    const onSaveShareSettings = () => {
       if (edit_share_split && share) {
-         const shareValue = parseInt(share.replace('%', ''))
+         let shareValue = parseFloat(share.replace('%', ''))
 
-         if (shareValue <= 100) {
-            calculateRemainingShare(edit_share_split.id, share, authors, setAuthors)
-         } else {
-            console.error('Share value cannot be more than 100%')
+         const totalOtherShares = authors.reduce((acc, author) => {
+            return author.id !== edit_share_split.id && author.share ? acc + parseFloat(author.share.replace('%', '')) : acc
+         }, 0)
+
+         const maxAllowedShare = 100 - totalOtherShares
+
+         if (shareValue > maxAllowedShare) {
+            shareValue = maxAllowedShare
          }
 
-         setDialog({ ...dialog, share_split: false, edit_author: false })
-         setEditShare(null)
-      }
-   }
-
-   useEffect(() => {
-      if (authors.length === 1 && authors[0].share !== '100%') {
-         const updatedAuthors = [{ ...authors[0], share: '100%' }]
+         const updatedAuthors = authors.map((author) => {
+            if (author.id === edit_share_split.id) {
+               return { ...author, share: `${shareValue}%` }
+            }
+            return author
+         })
 
          setAuthors(updatedAuthors)
-         setValue('authors', updatedAuthors)
+      } else {
+         console.error('Share value cannot be more than 100%')
       }
-   }, [authors, setValue])
+
+      setDialog({ ...dialog, share_split: false, edit_author: false })
+      setEditShare(null)
+   }
 
    return (
       <React.Fragment>
@@ -388,7 +397,7 @@ export default function SubmitNewPaperPage() {
                      <Input.Select
                         label={'Article category'}
                         options={articles_categories}
-                        placeholder="Select a category"
+                        placeholder="Select the article category"
                         onValueChange={(value) => {
                            setValue('category', value), trigger('category')
                         }}
