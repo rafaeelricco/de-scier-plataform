@@ -173,6 +173,7 @@ export function HeaderMobile() {
                                           'flex items-center gap-2 text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200',
                                           `${verifyPath(link.label.toLowerCase()) && 'font-semibold text-secundary_blue-main'}`
                                        )}
+                                       onClick={() => setOpenNav(false)}
                                     >
                                        {link.label} {link.icon !== null && link.icon}
                                     </Link>
@@ -186,6 +187,7 @@ export function HeaderMobile() {
                                        'flex items-center gap-2 text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200',
                                        `${verifyPath(link.label.toLowerCase()) && 'font-semibold text-secundary_blue-main'}`
                                     )}
+                                    onClick={() => setOpenNav(false)}
                                  >
                                     {link.label}
                                     {link.icon !== null && link.icon}

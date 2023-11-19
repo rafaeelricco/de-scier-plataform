@@ -1,13 +1,11 @@
 'use client'
 
 import { ScrollArea } from '@/components/ui/scroll-area'
-import useDimension from '@/hooks/useWindowDimension'
 import { home_routes } from '@/routes/home'
 import * as Button from '@components/common/Button/Button'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
 import ShapeDeScierHandBookBottom from 'public/svgs/modules/sidebar/Ellipse 46.svg'
 import ShapeDeScierHandBookTop from 'public/svgs/modules/sidebar/Ellipse 48.svg'
 import IllustrationHandBook from 'public/svgs/modules/sidebar/emojione-v1_document.svg'
@@ -17,18 +15,11 @@ import { twMerge } from 'tailwind-merge'
 import SubmitedItem from './SubmitedItem/SubmitedItem'
 
 const Profile: React.FC<ProfileProps> = ({ className, onClose }: ProfileProps) => {
-   // See more about in https://nextjs.org/docs/app/api-reference/functions/use-pathname
-
    const { data: session } = useSession()
-
-   const router = useRouter()
-   const { md } = useDimension()
-   const currentPath = usePathname()
-
    return (
       <React.Fragment>
-         <div className={twMerge('hidden md:relative md:block overflow-hidden h-fit', className)}>
-            <div className="flex flex-col gap-8 sticky h-[100vh] right-0 md:py-14 md:px-6 justify-between bg-[#FEFEFE]">
+         <aside className={twMerge('hidden md:relative md:block overflow-hidden', className)}>
+            <div className="flex flex-col gap-8 sticky md:h-screen xxl:min-h-full 2xl:h-screen 2xl:min-h-screen right-0 md:py-14 md:px-6 justify-between bg-[#FEFEFE]">
                <div className="flex flex-col gap-6">
                   <div className="flex justify-between items-center">
                      <h3 className="text-xl font-semibold">My profile</h3>
@@ -98,7 +89,7 @@ const Profile: React.FC<ProfileProps> = ({ className, onClose }: ProfileProps) =
                   </div>
                </div>
             </div>
-         </div>
+         </aside>
       </React.Fragment>
    )
 }
