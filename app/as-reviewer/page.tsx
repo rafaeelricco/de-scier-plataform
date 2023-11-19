@@ -72,6 +72,8 @@ export default function AsReviewerPage() {
       setResults(filteredArticles)
    }, [articles, documentType, status, debouncedSearchTerm])
 
+   const withoutFilters = documentType === null && status === 'pending' && debouncedSearchTerm === ''
+
    return (
       <React.Fragment>
          <Title.Root>
@@ -97,7 +99,7 @@ export default function AsReviewerPage() {
                      </div>
                   </TabsList>
                   <div className="flex items-center gap-2">
-                     <Input.Search placeholder="Find articles with this terms" onChange={(e) => setSearchTerm(e.target.value)} />
+                     <Input.Search value={searchTerm} placeholder="Find articles with this terms" onChange={(e) => setSearchTerm(e.target.value)} />
                   </div>
                   <div className="flex flex-col md:flex-row md:items-center gap-2">
                      <SelectArticleType
@@ -109,6 +111,18 @@ export default function AsReviewerPage() {
                         }}
                      />
                      <Dropdown label="Status:" className="min-w-[180px]" items={filter_status} onSelect={(value) => setStatus(value)} />
+                     {withoutFilters ? null : (
+                        <p
+                           className="text-base font-semibold text-terciary-main cursor-pointer hover:underline select-none"
+                           onClick={() => {
+                              setDocumentType(null)
+                              setStatus('pending')
+                              setSearchTerm('')
+                           }}
+                        >
+                           Clear Filters
+                        </p>
+                     )}
                   </div>
                </div>
                <div className="grid gap-8">
