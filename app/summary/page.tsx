@@ -85,10 +85,7 @@ export default function HomePage() {
             <div className="grid gap-8">
                <Box className="flex flex-col w-full lg:flex-row gap-5 items-center px-4 py-6 md:py-6 md:px-8">
                   <div className="w-full md:w-fit flex-shrink-0">
-                     <Submission
-                        pendingAmount={statistics?.pendingDocuments?.length || 0}
-                        publishedAmount={statistics?.publishedDocuments?.length || 0}
-                     />
+                     <Submission pendingAmount={statistics?.totalSubmittedDocuments || 0} publishedAmount={statistics?.totalUnderReviewDocuments || 0} />
                   </div>
                   <div className="divider-v" />
                   <div className="w-full md:flex-grow">
@@ -98,7 +95,11 @@ export default function HomePage() {
                <div className="grid lg:grid-cols-2 gap-8">
                   <Box className="h-full px-4 py-6 md:py-6 md:px-8">
                      <h3 className="text-xl font-[500] lg:text-lg 2xl:text-xl">Statistics</h3>
-                     <Statistics />
+                     <Statistics
+                        totalArticlesPublished={statistics?.totalSubmittedDocuments || 0}
+                        totalLikes={statistics?.totalLikesOnDocuments || 0}
+                        totalViews={statistics?.totalViewsOnDocuments || 0}
+                     />
                   </Box>
                   <Box className="h-fit w-full px-4 py-6 md:py-6 md:px-8">
                      <TopPapers />

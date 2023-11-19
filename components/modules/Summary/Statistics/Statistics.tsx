@@ -1,3 +1,4 @@
+import { addNumberSuffix } from '@/utils/format_number'
 import 'keen-slider/keen-slider.min.css'
 import { useKeenSlider } from 'keen-slider/react'
 import LikesIllustration from 'public/svgs/modules/statistics/likes.svg'
@@ -7,7 +8,7 @@ import React from 'react'
 import { CaretLeft, CaretRight } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 
-const Statistics: React.FC = () => {
+const Statistics: React.FC<StatisticsProps> = (data: StatisticsProps) => {
    const [currentSlide, setCurrentSlide] = React.useState(0)
    const [sliderRef, instanceRef] = useKeenSlider({
       slides: { perView: 1, spacing: 0 },
@@ -37,15 +38,15 @@ const Statistics: React.FC = () => {
    const carrousel = [
       {
          id: 1,
-         component: <TotalArticles total_articles={33} />
+         component: <TotalArticles total_articles={data.totalArticlesPublished} />
       },
       {
          id: 2,
-         component: <TotalLikes total_likes={123} />
+         component: <TotalLikes total_likes={data.totalLikes} />
       },
       {
          id: 3,
-         component: <TotalViews total_views={10000000} />
+         component: <TotalViews total_views={data.totalViews} />
       }
    ]
 
@@ -89,7 +90,7 @@ const TotalArticles: React.FC<{ total_articles: number }> = ({ total_articles })
       <div className="grid lg:grid-flow-col items-center">
          <StatisticsIllustration className="w-full max-w-[170px] md:max-w-[14rem] mx-auto my-0" />
          <div className="grid justify-items-center content-center">
-            <h3 className="gradient-grad-2 font-bold text-3xl lg:text-3xl 2xl:text-5xl">33</h3>
+            <h3 className="gradient-grad-2 font-bold text-3xl lg:text-3xl 2xl:text-5xl">{addNumberSuffix(total_articles)}</h3>
             <p className="text-lg text-secundary_blue-main md:max-w-[12ch] text-center lg:text-base 2xl:text-lg">Total articles published</p>
          </div>
       </div>
@@ -101,7 +102,7 @@ const TotalLikes: React.FC<{ total_likes: number }> = ({ total_likes }) => {
       <div className="grid lg:grid-flow-col items-center">
          <LikesIllustration className="w-full max-w-[170px] md:max-w-[14rem] mx-auto my-0" />
          <div className="grid justify-items-center content-center">
-            <h3 className="gradient-grad-2 font-bold text-3xl lg:text-3xl 2xl:text-5xl">123k</h3>
+            <h3 className="gradient-grad-2 font-bold text-3xl lg:text-3xl 2xl:text-5xl">{addNumberSuffix(total_likes)}</h3>
             <p className="text-lg text-secundary_blue-main md:max-w-[12ch] text-center lg:text-base 2xl:text-lg">Total likes on articles</p>
          </div>
       </div>
@@ -113,7 +114,7 @@ const TotalViews: React.FC<{ total_views: number }> = ({ total_views }) => {
       <div className="grid lg:grid-flow-col items-center">
          <ViewsIllustration className="w-full max-w-[170px] md:max-w-[14rem] mx-auto my-0" />
          <div className="grid justify-items-center content-center">
-            <h3 className="gradient-grad-2 font-bold text-3xl lg:text-3xl 2xl:text-5xl">10m</h3>
+            <h3 className="gradient-grad-2 font-bold text-3xl lg:text-3xl 2xl:text-5xl">{addNumberSuffix(total_views)}</h3>
             <p className="text-lg text-secundary_blue-main md:max-w-[12ch] text-center lg:text-base 2xl:text-lg">Total views on articles</p>
          </div>
       </div>
@@ -121,3 +122,9 @@ const TotalViews: React.FC<{ total_views: number }> = ({ total_views }) => {
 }
 
 export default Statistics
+
+type StatisticsProps = {
+   totalArticlesPublished: number
+   totalLikes: number
+   totalViews: number
+}
