@@ -15,6 +15,7 @@ import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import '@styles/home.css'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import IllustrationHero from 'public/svgs/modules/home/illustration-home.svg'
 import ShapeMobile from 'public/svgs/modules/home/shape-mobile.svg'
@@ -25,6 +26,7 @@ import ShapeTertiary from 'public/svgs/modules/home/shapes/shape3.svg'
 import React, { useEffect, useState } from 'react'
 import { CaretRightFill, Eye, HandThumbsUpFill, Person, Search } from 'react-bootstrap-icons'
 import { toast } from 'react-toastify'
+import slug from 'slug'
 
 export default function HomePage() {
    const router = useRouter()
@@ -170,6 +172,7 @@ export default function HomePage() {
                   <div className="w-full min-h-[600px] grid md:grid-cols-2 md:grid-rows-2 gap-6 z-0">
                      {topPapers[0] && (
                         <CardBig
+                           id={topPapers[0].id}
                            key={topPapers[0].id}
                            title={topPapers[0].title}
                            documentType={capitalizeWord(topPapers[0].documentType!)}
@@ -182,6 +185,7 @@ export default function HomePage() {
                      )}
                      {topPapers[1] && (
                         <CardSmall
+                           id={topPapers[1].id}
                            key={topPapers[1].id}
                            title={topPapers[1].title}
                            documentType={capitalizeWord(topPapers[1].documentType!)}
@@ -194,6 +198,7 @@ export default function HomePage() {
                      )}
                      {topPapers[2] && (
                         <CardSmall
+                           id={topPapers[2].id}
                            key={topPapers[2].id}
                            title={topPapers[2].title}
                            documentType={capitalizeWord(topPapers[2].documentType!)}
@@ -273,6 +278,7 @@ export default function HomePage() {
 }
 
 interface TopPapersProps {
+   id: string
    likes: number
    views: number
    title: string
@@ -306,9 +312,11 @@ const CardBig: React.FC<TopPapersProps> = (data: TopPapersProps) => {
                <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-t-md w-fit text-xs sm:text-sm font-semibold">
                   • {getArticleTypeLabel(data.documentType.toLowerCase())}
                </div>
-               <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-b-md rounded-tr-md font-semibold max-w-[24ch] text-lg sm:text-3xl">
-                  {data.title}
-               </div>
+               <Link href="/home/search/[slug]" as={`/home/search/${slug(data.id)}`}>
+                  <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-b-md rounded-tr-md font-semibold max-w-[24ch] text-lg sm:text-3xl">
+                     {data.title}
+                  </div>
+               </Link>
             </div>
             <div className="bg-white w-fit px-2 sm:px-3 py-1 rounded-sm text-secundary_blue-main text-xs sm:text-base font-semibold">
                by {formatAuthors(data.authors)}
@@ -342,9 +350,11 @@ const CardSmall: React.FC<TopPapersProps> = (data: TopPapersProps) => {
                <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-t-md w-fit text-sm font-semibold">
                   {getArticleTypeLabel(data.documentType.toLowerCase())}
                </div>
-               <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-b-md rounded-tr-md font-semibold w-fit text-base sm:text-lg">
-                  {data.title}
-               </div>
+               <Link href="/home/search/[slug]" as={`/home/search/${slug(data.id)}`}>
+                  <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-b-md rounded-tr-md font-semibold w-fit text-base sm:text-lg">
+                     {data.title}
+                  </div>
+               </Link>
             </div>
             <div className="bg-white w-fit px-2 sm:px-3 py-1 rounded-sm text-secundary_blue-main text-xs sm:text-base font-semibold">
                by {formatAuthors(data.authors)}
