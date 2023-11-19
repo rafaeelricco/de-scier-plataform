@@ -49,6 +49,8 @@ export default function SearchArticlesPage() {
       }
    }, [searchQueries])
 
+   const withoutFilters = !searchTerm && !searchAuthor && !accessType && !documentType && !publicationYear && !field
+
    return (
       <React.Fragment>
          <div className="flex flex-col gap-6">
@@ -95,6 +97,20 @@ export default function SearchArticlesPage() {
                   }}
                />
                <Dropdown no_selected label="Access:" className="min-w-fit px-8" items={filter_access} onSelect={(value) => setAccessType(value)} />
+               {withoutFilters ? null : (
+                  <p
+                     className="text-base font-semibold text-terciary-main cursor-pointer hover:underline select-none"
+                     onClick={() => {
+                        setDocumentType('')
+                        setSearchTerm('')
+                        setSearchAuthor('')
+                        setAccessType('')
+                        setPublicationYear(undefined)
+                     }}
+                  >
+                     Clear Filters
+                  </p>
+               )}
             </div>
             <div className="flex flex-col gap-6 mt-6">
                <div className="grid md:grid-cols-2 gap-6 md:gap-4">

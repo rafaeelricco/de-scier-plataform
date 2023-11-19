@@ -87,7 +87,7 @@ export default function ArticlesUnderReviewPage() {
       setTotalPages(Math.ceil(results.length / per_page))
    }, [results, per_page])
 
-   const withoutFilters = documentType === null && status === null && debouncedSearchTerm === ''
+   const withoutFilters = documentType === null && status === 'pending' && debouncedSearchTerm === ''
 
    return (
       <React.Fragment>
@@ -108,13 +108,19 @@ export default function ArticlesUnderReviewPage() {
                         setDocumentType(value)
                      }}
                   />
-                  <Dropdown label="Status:" className="min-w-[180px]" items={filter_status} onSelect={(value) => setStatus(value)} />
+                  <Dropdown
+                     label="Status:"
+                     selected={status || undefined}
+                     className="min-w-[180px]"
+                     items={filter_status}
+                     onSelect={(value) => setStatus(value)}
+                  />
                   {withoutFilters ? null : (
                      <p
                         className="text-base font-semibold text-terciary-main cursor-pointer hover:underline select-none"
                         onClick={() => {
                            setDocumentType(null)
-                           setStatus(null)
+                           setStatus('pending')
                            setSearchTerm('')
                         }}
                      >

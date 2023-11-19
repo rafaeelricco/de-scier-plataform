@@ -110,7 +110,13 @@ export default function AsReviewerPage() {
                            setDocumentType(value)
                         }}
                      />
-                     <Dropdown label="Status:" className="min-w-[180px]" items={filter_status} onSelect={(value) => setStatus(value)} />
+                     <Dropdown
+                        label="Status:"
+                        selected={status || undefined}
+                        className="min-w-[180px]"
+                        items={filter_status}
+                        onSelect={(value) => setStatus(value)}
+                     />
                      {withoutFilters ? null : (
                         <p
                            className="text-base font-semibold text-terciary-main cursor-pointer hover:underline select-none"
