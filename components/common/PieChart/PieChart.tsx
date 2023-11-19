@@ -1,7 +1,7 @@
 import useDimension from '@/hooks/useWindowDimension'
 import { Pie, PieChart, ResponsiveContainer } from 'recharts'
 
-export default function PieChartComponent({ pendingAmount, publishedAmount, totalDocuments }: ChartProps) {
+export default function PieChartComponent({ pendingAmount = 0, publishedAmount = 0, totalDocuments = 0 }: ChartProps) {
    const { windowDimension, md, lg, xl, xxl } = useDimension()
    if (!windowDimension) return null
    const data = [
