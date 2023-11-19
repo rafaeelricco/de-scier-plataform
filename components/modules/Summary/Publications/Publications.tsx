@@ -24,7 +24,7 @@ const Publications: React.FC = () => {
             <div className="grid md:grid-cols-2 items-start w-full h-fit">
                <button
                   data-active={publications}
-                  className="py-2 px-4 font-semibold text-base text-[#009EAB] rounded-[32px] w-full data-[active='true']:bg-[#F1FFFF] transition-all duration-200 data-[active='false']:text-neutral-light_gray data-[active='false']:font-regular lg:text-sm 2xl:text-base select-none"
+                  className="py-2 px-4 font-semibold text-base text-[#009EAB] rounded-[32px] w-full data-[active='true']:bg-[#F1FFFF] transition-all duration-200 data-[active='false']:text-neutral-light_gray data-[active='false']:font-regular lg:text-sm 2xl:text-base select-none truncate"
                   onClick={() => {
                      setPublications(true)
                      setUnderReview(false)
@@ -37,7 +37,7 @@ const Publications: React.FC = () => {
                </button>
                <button
                   data-active={underReview}
-                  className="py-2 px-4 font-semibold text-base text-[#FA9963] rounded-[32px] w-full data-[active='true']:bg-[#FFF4DE] transition-all duration-200 data-[active='false']:text-neutral-light_gray data-[active='false']:font-regular lg:text-sm 2xl:text-base select-none"
+                  className="py-2 px-4 font-semibold text-base text-[#FA9963] rounded-[32px] w-full data-[active='true']:bg-[#FFF4DE] transition-all duration-200 data-[active='false']:text-neutral-light_gray data-[active='false']:font-regular lg:text-sm 2xl:text-base select-none truncate"
                   onClick={() => {
                      setPublications(false)
                      setUnderReview(true)

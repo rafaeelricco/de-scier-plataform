@@ -7,14 +7,14 @@ import { PlusCircle } from 'react-bootstrap-icons'
 const Submission: React.FC = () => {
    return (
       <React.Fragment>
-         <div className="grid gap-6 content-between w-full min-w-full lg:min-w-[254px] 2xl:min-w-[242px] h-full lg:gap-12">
+         <div className="grid gap-6 content-between w-full min-w-full lg:min-w-[254px] xl:min-w-[232px] xxl:min-w-[200px] 2xl:min-w-[242px] h-full lg:gap-12">
             <h3 className="text-xl font-[500] lg:text-lg 2xl:text-xl">Submissions</h3>
             <div className="flex flex-col justify-items-center gap-6 w-full">
                <div className="mx-auto my-0">
                   <PieChartComponent />
                </div>
                <div className="grid gap-6">
-                  <div className="grid grid-flow-col gap-2 items-center justify-items-center lg:gap-2 2xl:gap-2">
+                  <div className="grid grid-flow-col gap-2 items-center justify-items-center">
                      <div className="grid grid-flow-col items-center justify-start gap-2">
                         <div className="w-3 h-3 bg-blue-light rounded-full" />
                         <p className="text-sm text-secundary_blue-main">Published</p>
@@ -24,7 +24,7 @@ const Submission: React.FC = () => {
                         <p className="text-sm font-regular ext-secundary_blue-main">Under Review</p>
                      </div>
                   </div>
-                  <hr className="divider-h" />
+                  <hr className="h-full bg-[#dbdbdb]" />
                   <Button.Link href={home_routes.summary_routes.new_document}>
                      <Button.Button variant="outline" className="py-2 px-4 md:py-3">
                         Submit new article
