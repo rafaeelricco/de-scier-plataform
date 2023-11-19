@@ -92,15 +92,13 @@ export default function HomePage() {
 
    return (
       <React.Fragment>
-         {/* Ilustração */}
-         <IllustrationHero className="hidden lg:block lg:w-[45%] xl:w-1/2 absolute right-0 md:top-48 lg:top-50 xl:top-60 h-full lg:max-w-[600px] xl:max-w-[708px] max-h-[554px]" />
-         {/* Shape */}
-         <ShapeHero className="hidden lg:block lg:w-3/4 xl:w-full absolute right-0 top-0 lg:-right-20 xl:-right-0 z-[-1] md:max-w-[600px] md:max-h-[700px] lg:max-w-[700px] lg:max-h-[800px] xl:max-w-[742px] xl:max-h-[872px]" />
+         <IllustrationHero className="hidden lg:block lg:w-[45%] xl:w-1/2 absolute right-0 md:top-48 lg:top-50 xl:top-40 2xl:top-60 h-full lg:max-w-[600px] xl:max-w-[708px] max-h-[554px]" />
+         <ShapeHero className="hidden lg:block lg:w-3/4 xl:w-full absolute right-0 top-0 lg:-right-20 xl:-right-0 z-[-1] md:max-w-[600px] md:max-h-[700px] lg:max-w-[700px] lg:max-h-[800px] 2xl:max-w-[742px] 2xl:max-h-[872px]" />
          <div className="h-auto lg:pt-24 lg:h-[calc(100vh-14rem)]">
             <div className="grid gap-4 md:gap-6 content-start">
-               <div className="grid gap-2 md:gap-4 mt-6 lg:mt-24">
+               <div className="grid gap-2 mt-6 lg:mt-24 xl:mt-16 2xl:mt-24">
                   <div className="grid gap-2">
-                     <h1 className="text-3xl sm:text-4xl md:text-3xl lg:text-5xl xl:text-6xl font-bold lg:max-w-[20ch] bg-linear-gradient bg-clip-text text-transparent h-8 md:h-14 flex items-center">
+                     <h1 className="text-3xl sm:text-4xl md:text-3xl lg:text-5xl xl:text-6xl font-bold lg:max-w-[20ch] bg-linear-gradient bg-clip-text text-transparent h-8 sm:h-14 flex items-center">
                         The DeSci Journal
                      </h1>
                      <h3 className="text-1xl md:text-3xl lg:text-3xl xl:text-4xl font-bold bg-linear-gradient bg-clip-text text-transparent flex md:h-14 lg:h-auto">
