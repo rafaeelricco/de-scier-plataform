@@ -1,9 +1,9 @@
-import useDimension from '@/hooks/useWindowDimension'
 import { truncate } from 'lodash'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { CardText, Eye, HandThumbsUpFill, Pencil } from 'react-bootstrap-icons'
+import { CardText, Pencil } from 'react-bootstrap-icons'
+import { PublishedStatus } from '../../Home/Search/ArticleItem/ArticleItem'
 import { ReviewerItemProps } from './Typing'
 
 const ReviewerItem: React.FC<ReviewerItemProps> = ({
@@ -20,7 +20,6 @@ const ReviewerItem: React.FC<ReviewerItemProps> = ({
    published_date,
    views
 }: ReviewerItemProps) => {
-   const { md } = useDimension()
    return (
       <Link href={link} className="w-full">
          <div className="grid gap-2 bg-[#fff] py-3 px-4 rounded-lg">
@@ -46,34 +45,53 @@ const ReviewerItem: React.FC<ReviewerItemProps> = ({
                <hr className="divider-v hidden md:block" />
                <hr className="divider-h mt-1 md:hidden" />
                <div className="grid gap-2">
-                  <div>
+                  <div className="grid gap-2">
                      <Link href={link}>
                         <h6 className="text-sm font-semibold text-secundary_blue-main lg:text-base cursor-pointer hover:text-primary-main hover:underline transition-all duration-200">
                            {truncate(title, { length: 40 })}
                         </h6>
                      </Link>
-                     {access_type != 'open' && access_type != 'paid' && (
-                        <div className="flex items-center gap-2">
-                           <p className="text-sm text-neutral-gray lg:text-sm 2xl:text-base">Under review since</p>
-                           <p className="text-base font-semibold lg:text-sm 2xl:text-base">{since}</p>
-                        </div>
+                     {published ? (
+                        <React.Fragment>
+                           <div className="flex items-center gap-2">
+                              <p className="text-sm text-neutral-gray">Published in</p>
+                              <p className="text-sm">{since}</p>
+                           </div>
+                        </React.Fragment>
+                     ) : (
+                        <React.Fragment>
+                           {access_type != 'open' && access_type != 'paid' && (
+                              <div className="flex items-center gap-2">
+                                 <p className="text-sm text-neutral-gray">Under review since</p>
+                                 <p className="text-sm">{since}</p>
+                              </div>
+                           )}
+                        </React.Fragment>
                      )}
                   </div>
-                  {access_type == 'open' || access_type == 'paid' ? (
+                  {published ? (
                      <React.Fragment>
-                        <PublishedStatus access_type={access_type} published_date={published_date} likes={likes} views={views} />
+                        <PublishedStatus published_date={published_date as string} access_type={access_type} likes={likes} views={views} />
                      </React.Fragment>
                   ) : (
                      <React.Fragment>
-                        <div className="border-[1px] rounded-md px-2 border-neutral-stroke_light w-full md:w-fit">
-                           <div className="grid grid-flow-col items-center md:justify-start justify-center">
-                              <div className="grid grid-flow-col gap-1 items-center">
-                                 {status == 'APPROVED' && <p className="text-sm lg:text-sm font-semibold  text-status-green">You approved</p>}
-                                 {status == 'PENDING' && <p className="text-sm lg:text-sm font-semibold  text-status-pending">Approval pending</p>}
-                                 {status == 'REJECTED' && <p className="text-sm lg:text-sm font-semibold  text-status-error">Rejected</p>}
+                        {access_type == 'open' || access_type == 'paid' ? (
+                           <React.Fragment>
+                              <PublishedStatus access_type={access_type} published_date={published_date as string} likes={likes} views={views} />
+                           </React.Fragment>
+                        ) : (
+                           <React.Fragment>
+                              <div className="border-[1px] rounded-md px-2 border-neutral-stroke_light w-full md:w-fit">
+                                 <div className="grid grid-flow-col items-center md:justify-start justify-center">
+                                    <div className="grid grid-flow-col gap-1 items-center">
+                                       {status == 'APPROVED' && <p className="text-sm lg:text-sm font-semibold  text-status-green">You approved</p>}
+                                       {status == 'PENDING' && <p className="text-sm lg:text-sm font-semibold  text-status-pending">Approval pending</p>}
+                                       {status == 'REJECTED' && <p className="text-sm lg:text-sm font-semibold  text-status-error">Rejected</p>}
+                                    </div>
+                                 </div>
                               </div>
-                           </div>
-                        </div>
+                           </React.Fragment>
+                        )}
                      </React.Fragment>
                   )}
                </div>
@@ -83,56 +101,56 @@ const ReviewerItem: React.FC<ReviewerItemProps> = ({
    )
 }
 
-interface PublishedStatusProps {
-   published_date?: string | null
-   access_type?: 'open' | 'paid' | null
-   likes?: number | null
-   views?: number | null
-}
+// interface PublishedStatusProps {
+//    published_date?: string | null
+//    access_type?: 'open' | 'paid' | null
+//    likes?: number | null
+//    views?: number | null
+// }
 
-const PublishedStatus: React.FC<PublishedStatusProps> = ({ published_date, access_type, likes, views }: PublishedStatusProps) => {
-   return (
-      <React.Fragment>
-         <div className="grid gap-1">
-            <p className="text-sm text-neutral-gray lg:text-sm 2xl:text-base">Published in {published_date}</p>
-            <div className="grid gap-2">
-               {access_type == 'open' ? (
-                  <React.Fragment>
-                     <div className="flex gap-2 items-center">
-                        <div className="w-2 h-2 md:w-3 md:h-3 bg-status-green rounded-full" />
-                        <p className="text-sm">Open access</p>
-                        <span className="text-neutral-gray">•</span>
-                        <div className="flex items-center gap-1">
-                           <HandThumbsUpFill className="text-terciary-main w-4 h-4 md:w-5 md:h-5" />
-                           <p className="text-sm md:text-base text-neutral-gray">{likes}</p>
-                        </div>
-                        <div className="flex items-center gap-1">
-                           <Eye className="text-terciary-main w-4 h-4 md:w-5 md:h-5" />
-                           <p className="text-sm md:text-base text-neutral-gray">{views}</p>
-                        </div>
-                     </div>
-                  </React.Fragment>
-               ) : (
-                  <React.Fragment>
-                     <div className="flex gap-2 items-center">
-                        <div className="w-2 h-2 md:w-3 md:h-3 bg-secundary_purple-main rounded-full" />
-                        <p className="text-sm">Paid access</p>
-                        <div className="flex items-center gap-1">
-                           <HandThumbsUpFill className="text-terciary-main w-4 h-4 md:w-5 md:h-5" />
-                           <p className="text-sm md:text-base text-neutral-gray">{likes}</p>
-                        </div>
-                        <span className="text-neutral-gray">•</span>
-                        <div className="flex items-center gap-1">
-                           <Eye className="text-terciary-main w-4 h-4 md:w-5 md:h-5" />
-                           <p className="text-sm md:text-base text-neutral-gray">{views}</p>
-                        </div>
-                     </div>
-                  </React.Fragment>
-               )}
-            </div>
-         </div>
-      </React.Fragment>
-   )
-}
+// const PublishedStatus: React.FC<PublishedStatusProps> = ({ published_date, access_type, likes, views }: PublishedStatusProps) => {
+//    return (
+//       <React.Fragment>
+//          <div className="grid gap-1">
+//             <p className="text-sm text-neutral-gray lg:text-sm 2xl:text-base">Published in {published_date}</p>
+//             <div className="grid gap-2">
+//                {access_type == 'open' ? (
+//                   <React.Fragment>
+//                      <div className="flex gap-2 items-center">
+//                         <div className="w-2 h-2 md:w-3 md:h-3 bg-status-green rounded-full" />
+//                         <p className="text-sm">Open access</p>
+//                         <span className="text-neutral-gray">•</span>
+//                         <div className="flex items-center gap-1">
+//                            <HandThumbsUpFill className="text-terciary-main w-4 h-4 md:w-5 md:h-5" />
+//                            <p className="text-sm md:text-base text-neutral-gray">{likes}</p>
+//                         </div>
+//                         <div className="flex items-center gap-1">
+//                            <Eye className="text-terciary-main w-4 h-4 md:w-5 md:h-5" />
+//                            <p className="text-sm md:text-base text-neutral-gray">{views}</p>
+//                         </div>
+//                      </div>
+//                   </React.Fragment>
+//                ) : (
+//                   <React.Fragment>
+//                      <div className="flex gap-2 items-center">
+//                         <div className="w-2 h-2 md:w-3 md:h-3 bg-secundary_purple-main rounded-full" />
+//                         <p className="text-sm">Paid access</p>
+//                         <div className="flex items-center gap-1">
+//                            <HandThumbsUpFill className="text-terciary-main w-4 h-4 md:w-5 md:h-5" />
+//                            <p className="text-sm md:text-base text-neutral-gray">{likes}</p>
+//                         </div>
+//                         <span className="text-neutral-gray">•</span>
+//                         <div className="flex items-center gap-1">
+//                            <Eye className="text-terciary-main w-4 h-4 md:w-5 md:h-5" />
+//                            <p className="text-sm md:text-base text-neutral-gray">{views}</p>
+//                         </div>
+//                      </div>
+//                   </React.Fragment>
+//                )}
+//             </div>
+//          </div>
+//       </React.Fragment>
+//    )
+// }
 
 export default ReviewerItem

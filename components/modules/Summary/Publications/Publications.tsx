@@ -1,6 +1,6 @@
 import PaginationComponent from '@/components/common/Pagination/Pagination'
-import InReviewItem, { InReviewItemProps } from '@/components/common/Publication/Item/InReview'
-import PublicationItem, { PublicationItemProps } from '@/components/common/Publication/Item/Published'
+import InReviewItem from '@/components/common/Publication/Item/InReview'
+import PublicationItem from '@/components/common/Publication/Item/Published'
 import { DocumentBasicProps } from '@/services/document/getStatistics.service'
 import { addNumberSuffix } from '@/utils/format_number'
 import React from 'react'
@@ -52,67 +52,83 @@ const Publications: React.FC<PublicationsProps> = ({ pendingDocuments, published
                </button>
             </div>
             {publications && (
-               <div className="bg-[#F1FFFF] h-full rounded-md transition-all duration-200 p-3 md:p-4">
+               <div className="bg-[#F1FFFF] h-full rounded-md transition-all duration-200 p-3 md:p-4 min-h-[371px] grid">
                   <div className="grid gap-4 h-full">
-                     {publishedDocuments?.slice((page - 1) * per_page, page * per_page).map((item) => (
-                        <React.Fragment key={item.id}>
-                           <PublicationItem
-                              key={item.id}
-                              date={new Date(item.createdAt).toLocaleDateString('pt-BR')}
-                              link={''}
-                              likes={addNumberSuffix(item.likes)}
-                              title={item.title}
-                              views={addNumberSuffix(item.views)}
-                              image={item.cover || ''}
-                           />
-                           <hr className="divider-h" />
+                     {publishedDocuments?.length === 0 ? (
+                        <div className="flex items-center justify-center">
+                           <p className="text-neutral-gray">No published articles found.</p>
+                        </div>
+                     ) : (
+                        <React.Fragment>
+                           {publishedDocuments?.slice((page - 1) * per_page, page * per_page).map((item) => (
+                              <React.Fragment key={item.id}>
+                                 <PublicationItem
+                                    key={item.id}
+                                    date={new Date(item.createdAt).toLocaleDateString('pt-BR')}
+                                    link={''}
+                                    likes={addNumberSuffix(item.likes)}
+                                    title={item.title}
+                                    views={addNumberSuffix(item.views)}
+                                    image={item.cover || ''}
+                                 />
+                                 <hr className="divider-h" />
+                              </React.Fragment>
+                           ))}
+                           <div className="mx-auto my-0">
+                              <PaginationComponent
+                                 key={totalPages}
+                                 current={page}
+                                 perPage={per_page}
+                                 total={publishedDocuments?.length || 1}
+                                 handleFirstPage={() => setPage(1)}
+                                 handleNextPage={() => setPage(page + 1)}
+                                 handlePreviousPage={() => setPage(page - 1)}
+                                 handleLastPage={() => setPage(totalPages)}
+                              />
+                           </div>
                         </React.Fragment>
-                     ))}
-                     <div className="mx-auto my-0">
-                        <PaginationComponent
-                           key={totalPages}
-                           current={page}
-                           perPage={per_page}
-                           total={publishedDocuments?.length || 1}
-                           handleFirstPage={() => setPage(1)}
-                           handleNextPage={() => setPage(page + 1)}
-                           handlePreviousPage={() => setPage(page - 1)}
-                           handleLastPage={() => setPage(totalPages)}
-                        />
-                     </div>
+                     )}
                   </div>
                </div>
             )}
             {underReview && (
-               <div className="bg-[#FFF4DE] h-full rounded-md transition-all duration-200  p-3 md:p-4">
+               <div className="bg-[#FFF4DE] h-full rounded-md transition-all duration-200  p-3 md:p-4 min-h-[371px] grid">
                   <div className="grid gap-4 h-full">
-                     {pendingDocuments?.slice((pageReview - 1) * per_page, pageReview * per_page).map((item) => (
-                        <React.Fragment key={item.id}>
-                           <InReviewItem
-                              key={item.id}
-                              date={new Date(item.createdAt).toLocaleDateString('pt-BR')}
-                              link={''}
-                              title={item.title}
-                              image={item.cover || ''}
-                              status_editor={item.editorsApprovals >= 1 ? 'approved' : 'pending'}
-                              status_reviewer={item.reviewerApprovals >= 1 ? 'approved' : 'pending'}
-                              ready_to_publish={item.editorsApprovals >= 1 && item.reviewerApprovals >= 1 ? true : false}
-                           />
-                           <hr className="divider-h" />
+                     {pendingDocuments?.length === 0 ? (
+                        <div className="flex items-center justify-center">
+                           <p className="text-neutral-gray">No published articles found.</p>
+                        </div>
+                     ) : (
+                        <React.Fragment>
+                           {pendingDocuments?.slice((pageReview - 1) * per_page, pageReview * per_page).map((item) => (
+                              <React.Fragment key={item.id}>
+                                 <InReviewItem
+                                    key={item.id}
+                                    date={new Date(item.createdAt).toLocaleDateString('pt-BR')}
+                                    link={''}
+                                    title={item.title}
+                                    image={item.cover || ''}
+                                    status_editor={item.editorsApprovals >= 1 ? 'approved' : 'pending'}
+                                    status_reviewer={item.reviewerApprovals >= 1 ? 'approved' : 'pending'}
+                                    ready_to_publish={item.editorsApprovals >= 1 && item.reviewerApprovals >= 1 ? true : false}
+                                 />
+                                 <hr className="divider-h" />
+                              </React.Fragment>
+                           ))}
+                           <div className="mx-auto my-0">
+                              <PaginationComponent
+                                 perPage={per_page}
+                                 current={pageReview}
+                                 key={totalPagesReview}
+                                 total={pendingDocuments?.length || 1}
+                                 handlePreviousPage={() => setPageReview(pageReview - 1)}
+                                 handleFirstPage={() => setPageReview(1)}
+                                 handleLastPage={() => setPageReview(totalPagesReview)}
+                                 handleNextPage={() => setPageReview(pageReview + 1)}
+                              />
+                           </div>
                         </React.Fragment>
-                     ))}
-                     <div className="mx-auto my-0">
-                        <PaginationComponent
-                           perPage={per_page}
-                           current={pageReview}
-                           key={totalPagesReview}
-                           total={pendingDocuments?.length || 1}
-                           handlePreviousPage={() => setPageReview(pageReview - 1)}
-                           handleFirstPage={() => setPageReview(1)}
-                           handleLastPage={() => setPageReview(totalPagesReview)}
-                           handleNextPage={() => setPageReview(pageReview + 1)}
-                        />
-                     </div>
+                     )}
                   </div>
                </div>
             )}

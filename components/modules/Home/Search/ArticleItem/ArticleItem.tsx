@@ -11,7 +11,7 @@ import { twMerge } from 'tailwind-merge'
 import './ArticleItem.css'
 import { ArticleItemProps } from './Typing'
 
-const ArticleItem: React.FC<ArticleItemProps> = ({
+export const ArticleItem: React.FC<ArticleItemProps> = ({
    image,
    title,
    access_type,
@@ -103,7 +103,7 @@ interface PublishedStatusProps {
    views?: number | null
 }
 
-const PublishedStatus: React.FC<PublishedStatusProps> = ({ published_date, access_type, likes, views }: PublishedStatusProps) => {
+export const PublishedStatus: React.FC<PublishedStatusProps> = ({ published_date, access_type, likes, views }: PublishedStatusProps) => {
    return (
       <React.Fragment>
          <div className="grid gap-1">
@@ -148,5 +148,3 @@ const PublishedStatus: React.FC<PublishedStatusProps> = ({ published_date, acces
       </React.Fragment>
    )
 }
-
-export default ArticleItem

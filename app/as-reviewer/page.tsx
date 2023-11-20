@@ -20,6 +20,8 @@ export default function AsReviewerPage() {
    /** @dev Number of articles displayed per page. */
    const per_page = 8
 
+   const [current, setCurrent] = React.useState<string>('under-review')
+
    /** @notice Current page number state.*/
    const [page, setPage] = React.useState(1)
 
@@ -76,23 +78,25 @@ export default function AsReviewerPage() {
 
    return (
       <React.Fragment>
-         <Title.Root>
+         <Title.Root className="mb-0 md:mb-2 ">
             <Title.Title>As Reviewer/Editor</Title.Title>
          </Title.Root>
-         <Tabs defaultValue="account">
+         <Tabs defaultValue="under-review">
             <div className="grid gap-6">
                <div className="grid gap-6">
                   <TabsList className="bg-transparent grid h-fit w-full items-start justify-normal">
                      <div className="grid sm:grid-flow-col gap-4 sm:gap-5 md:gap-6">
                         <TabsTrigger
                            className="bg-primary-main text-neutral-white py-2 px-8 text-sm md:text-lg font-semibold rounded-md border data-[state=inactive]:bg-transparent data-[state=inactive]:text-neutral-gray data-[state=inactive]:font-regular data-[state=active]:bg-primary-main data-[state=active]:text-white data-[state=inactive]:border-neutral-gray"
-                           value="account"
+                           value="under-review"
+                           onClick={() => setCurrent('under-review')}
                         >
                            Ongoing reviews
                         </TabsTrigger>
                         <TabsTrigger
                            className="bg-primary-main text-neutral-white py-2 px-8 text-sm md:text-lg font-semibold rounded-md border data-[state=inactive]:bg-transparent data-[state=inactive]:text-neutral-gray data-[state=inactive]:font-regular data-[state=active]:bg-primary-main data-[state=active]:text-white data-[state=inactive]:border-neutral-gray"
-                           value="password"
+                           value="published"
+                           onClick={() => setCurrent('published')}
                         >
                            Completed reviews
                         </TabsTrigger>
@@ -110,67 +114,119 @@ export default function AsReviewerPage() {
                            setDocumentType(value)
                         }}
                      />
-                     <Dropdown
-                        label="Status:"
-                        selected={status || undefined}
-                        className="min-w-[180px]"
-                        items={filter_status}
-                        onSelect={(value) => setStatus(value)}
-                     />
-                     {withoutFilters ? null : (
-                        <p
-                           className="text-base font-semibold text-terciary-main cursor-pointer hover:underline select-none"
-                           onClick={() => {
-                              setDocumentType(null)
-                              setStatus('pending')
-                              setSearchTerm('')
-                           }}
-                        >
-                           Clear Filters
-                        </p>
-                     )}
-                  </div>
-               </div>
-               <div className="grid gap-8">
-                  <div className="grid md:grid-cols-2 gap-4">
-                     {loading ? (
+                     {current !== 'published' && (
                         <React.Fragment>
-                           <ArticleUnderReviewSkeleton />
-                           <ArticleUnderReviewSkeleton />
-                           <ArticleUnderReviewSkeleton />
-                           <ArticleUnderReviewSkeleton />
-                        </React.Fragment>
-                     ) : (
-                        <React.Fragment>
-                           {results.length === 0 ? (
-                              <p className="text-center col-span-2 text-gray-500 mt-8">There are no articles under review at the moment.</p>
-                           ) : (
-                              results.slice((page - 1) * per_page, page * per_page).map((article) => (
-                                 <React.Fragment key={article.id}>
-                                    <ReviewerItem
-                                       {...article}
-                                       link={`
-                                    /as-reviewer/${article.id}`}
-                                    />
-                                 </React.Fragment>
-                              ))
+                           <Dropdown
+                              label="Status:"
+                              selected={status || undefined}
+                              className="min-w-[180px]"
+                              items={filter_status}
+                              onSelect={(value) => setStatus(value)}
+                           />
+                           {withoutFilters ? null : (
+                              <p
+                                 className="text-base font-semibold text-terciary-main cursor-pointer hover:underline select-none"
+                                 onClick={() => {
+                                    setDocumentType(null)
+                                    setStatus('pending')
+                                    setSearchTerm('')
+                                 }}
+                              >
+                                 Clear Filters
+                              </p>
                            )}
                         </React.Fragment>
                      )}
                   </div>
                </div>
-               <div className="flex justify-center">
-                  <PaginationComponent
-                     key={totalPages}
-                     current={page}
-                     perPage={per_page}
-                     total={results.length}
-                     handleFirstPage={() => setPage(1)}
-                     handleNextPage={() => setPage(page + 1)}
-                     handlePreviousPage={() => setPage(page - 1)}
-                     handleLastPage={() => setPage(totalPages)}
-                  />
-               </div>
+               {current === 'under-review' && (
+                  <React.Fragment>
+                     <div className="grid gap-8">
+                        <div className="grid md:grid-cols-2 gap-4">
+                           {loading ? (
+                              <React.Fragment>
+                                 <ArticleUnderReviewSkeleton />
+                                 <ArticleUnderReviewSkeleton />
+                                 <ArticleUnderReviewSkeleton />
+                                 <ArticleUnderReviewSkeleton />
+                              </React.Fragment>
+                           ) : (
+                              <React.Fragment>
+                                 {results.length === 0 ? (
+                                    <p className="text-center col-span-2 text-gray-500 mt-8">There are no articles under review at the moment.</p>
+                                 ) : (
+                                    results.slice((page - 1) * per_page, page * per_page).map((article) => (
+                                       <React.Fragment key={article.id}>
+                                          <ReviewerItem
+                                             {...article}
+                                             link={`
+                                    /as-reviewer/${article.id}`}
+                                          />
+                                       </React.Fragment>
+                                    ))
+                                 )}
+                              </React.Fragment>
+                           )}
+                        </div>
+                     </div>
+                     <div className="flex justify-center">
+                        <PaginationComponent
+                           key={totalPages}
+                           current={page}
+                           perPage={per_page}
+                           total={results.length}
+                           handleFirstPage={() => setPage(1)}
+                           handleNextPage={() => setPage(page + 1)}
+                           handlePreviousPage={() => setPage(page - 1)}
+                           handleLastPage={() => setPage(totalPages)}
+                        />
+                     </div>
+                  </React.Fragment>
+               )}
+               {current === 'published' && (
+                  <React.Fragment>
+                     <div className="grid gap-8">
+                        <div className="grid md:grid-cols-2 gap-4">
+                           {loading ? (
+                              <React.Fragment>
+                                 <ArticleUnderReviewSkeleton />
+                                 <ArticleUnderReviewSkeleton />
+                                 <ArticleUnderReviewSkeleton />
+                                 <ArticleUnderReviewSkeleton />
+                              </React.Fragment>
+                           ) : (
+                              <React.Fragment>
+                                 {results.length === 0 ? (
+                                    <p className="text-center col-span-2 text-gray-500 mt-8">There are no articles under review at the moment.</p>
+                                 ) : (
+                                    results.slice((page - 1) * per_page, page * per_page).map((article) => (
+                                       <React.Fragment key={article.id}>
+                                          <ReviewerItem
+                                             published /// pass this prop to change the layout to the published one
+                                             {...article}
+                                             link={`/as-reviewer/${article.id}`}
+                                          />
+                                       </React.Fragment>
+                                    ))
+                                 )}
+                              </React.Fragment>
+                           )}
+                        </div>
+                     </div>
+                     <div className="flex justify-center">
+                        <PaginationComponent
+                           key={totalPages}
+                           current={page}
+                           perPage={per_page}
+                           total={results.length}
+                           handleFirstPage={() => setPage(1)}
+                           handleNextPage={() => setPage(page + 1)}
+                           handlePreviousPage={() => setPage(page - 1)}
+                           handleLastPage={() => setPage(totalPages)}
+                        />
+                     </div>
+                  </React.Fragment>
+               )}
             </div>
          </Tabs>
       </React.Fragment>

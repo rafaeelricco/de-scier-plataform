@@ -49,26 +49,50 @@ export const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
                         </h6>
                      </Link>
                      <div className="flex items-center gap-2">
-                        <p className="text-sm text-neutral-gray lg:text-sm">Under review since</p>
-                        <p className="text-base font-semibold lg:text-sm 2xl:text-base">{since}</p>
+                        {status_editor === 'approved' && status_reviewer === 'approved' ? (
+                           <React.Fragment>
+                              <p className="text-sm text-neutral-gray lg:text-sm">Published in</p>
+                              <p className="text-base font-semibold lg:text-sm 2xl:text-base">{since}</p>
+                           </React.Fragment>
+                        ) : (
+                           <React.Fragment>
+                              <div className="flex items-center flex-grow">
+                                 <p className="text-sm text-neutral-gray lg:text-sm truncate">Under review since</p>
+                                 <p className="text-base font-semibold lg:text-sm 2xl:text-base truncate">{since}</p>
+                              </div>
+                           </React.Fragment>
+                        )}
                      </div>
                   </div>
                   <div className="border-[1px] rounded-md px-2 border-neutral-stroke_light md:w-fit">
                      <div className="grid grid-flow-col items-center justify-center md:justify-start">
-                        <div
-                           className="grid grid-flow-col gap-2
-                      md:gap-1 items-center "
-                        >
-                           {status_editor == 'approved' && <p className="text-sm 2xl:text-base font-semibold text-status-green">Approved by editor</p>}
-                           {status_editor == 'pending' && (
-                              <p className="text-sm 2xl:text-base font-semibold text-status-pending truncate">Editor pending</p>
-                           )}
-                           <span className="text-sm md:text-base font-semibold text-neutral-light_gray">/</span>
-                           {status_reviewer == 'approved' && (
-                              <p className="text-sm 2xl:text-base font-semibold text-status-green truncate">Reviewer approval</p>
-                           )}
-                           {status_reviewer == 'pending' && (
-                              <p className="text-sm 2xl:text-base font-semibold text-status-pending truncate">Reviewer pending</p>
+                        <div className="grid grid-flow-col gap-2 md:gap-1 items-center">
+                           {status_editor === 'approved' && status_reviewer === 'approved' ? (
+                              <p className="text-sm 2xl:text-base font-semibold text-status-green">Published</p>
+                           ) : (
+                              <React.Fragment>
+                                 {status_editor === 'approved' && (
+                                    <p className="text-xs sm:text-base font-semibold text-status-green truncate xl:text-sm flex-shrink-0">
+                                       Approved by editor
+                                    </p>
+                                 )}
+                                 {status_editor === 'pending' && (
+                                    <p className="text-xs sm:text-base font-semibold text-status-pending truncate xl:text-sm flex-shrink-0">
+                                       Editor pending
+                                    </p>
+                                 )}
+                                 <span className="text-sm md:text-base font-semibold text-neutral-light_gray">/</span>
+                                 {status_reviewer === 'approved' && (
+                                    <p className="text-xs sm:text-base font-semibold text-status-green truncate xl:text-sm flex-shrink-0">
+                                       Reviewer approval
+                                    </p>
+                                 )}
+                                 {status_reviewer === 'pending' && (
+                                    <p className="text-xs sm:text-base font-semibold text-status-pending truncate xl:text-sm flex-shrink-0">
+                                       Reviewer pending
+                                    </p>
+                                 )}
+                              </React.Fragment>
                            )}
                         </div>
                      </div>
