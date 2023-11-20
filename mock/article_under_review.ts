@@ -294,7 +294,7 @@ export const articles_under_review: ArticleUnderReviewProps[] = [
       since: '25/04/2023',
       link: 'https://www.google.com/1',
       status_editor: 'approved',
-      status_reviewer: 'pending',
+      status_reviewer: 'approved',
       image: 'https://random.imagecdn.app/150/150'
    },
    {

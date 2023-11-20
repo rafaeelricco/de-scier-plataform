@@ -3,6 +3,7 @@ import useDimension from '@/hooks/useWindowDimension'
 import Image from 'next/image'
 import React from 'react'
 import { Eye, HandThumbsUpFill } from 'react-bootstrap-icons'
+import { twMerge } from 'tailwind-merge'
 
 export interface PublicationItemProps {
    id?: string
@@ -12,14 +13,17 @@ export interface PublicationItemProps {
    title: string
    link: string
    image: string
+   access_type?: string
+   className?: string
+   published?: boolean
 }
 
-const PublicationItem: React.FC<PublicationItemProps> = ({ date, link, likes, views, id, title, image }: PublicationItemProps) => {
+const PublicationItem: React.FC<PublicationItemProps> = ({ date, link, likes, views, id, title, image, className, published }: PublicationItemProps) => {
    const { windowDimension } = useDimension()
    const isSmallDesktop = windowDimension && windowDimension < 1440 && windowDimension >= 1024
    return (
       <React.Fragment>
-         <div className="flex flex-col lg:flex-row lg:items-center lg:gap-4 gap-2">
+         <div className={twMerge('flex flex-col lg:flex-row lg:items-center lg:gap-4 gap-2', className)}>
             <Image
                src={image}
                width={420}
