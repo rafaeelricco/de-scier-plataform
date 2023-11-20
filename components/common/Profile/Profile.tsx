@@ -13,9 +13,12 @@ import React from 'react'
 import { CaretRight, PlusCircle, X } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 import SubmitedItem from './SubmitedItem/SubmitedItem'
+import { useArticles } from '@/services/document/getArticles.service'
 
 const Profile: React.FC<ProfileProps> = ({ className, onClose }: ProfileProps) => {
    const { data: session } = useSession()
+
+   const { articles } = useArticles()
    return (
       <React.Fragment>
          <aside className={twMerge('hidden md:relative md:block overflow-hidden', className)}>
@@ -81,8 +84,8 @@ const Profile: React.FC<ProfileProps> = ({ className, onClose }: ProfileProps) =
                      <p className="text-base font-semibold text-[#3F3F44]">Last Submitted</p>
                      <ScrollArea className="h-[164px] lg:h-[300px] 2xl:h-[400px] pr-2">
                         <div className="grid gap-4">
-                           {submited_item_mock.map((item) => (
-                              <SubmitedItem key={item.id} date={item.date} status={item.status as 'published' | 'in_review'} title={item.title} />
+                           {articles?.slice(0, 9)?.map((item) => (
+                              <SubmitedItem key={item.id} date={item.since} status={item.status as 'published' | 'in_review'} title={item.title} />
                            ))}
                         </div>
                      </ScrollArea>
