@@ -1,11 +1,10 @@
 import useDimension from '@/hooks/useWindowDimension'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Pie, PieChart, ResponsiveContainer } from 'recharts'
 
-export default function PieChartComponent({ pendingAmount = 0, publishedAmount = 0, totalDocuments = 0 }: ChartProps) {
+export default function PieChartComponent({ pendingAmount, publishedAmount, totalDocuments }: ChartProps) {
    const { windowDimension, md, lg, xl, xxl } = useDimension()
 
-   const [publishedPercent, setPublishedPercent] = useState<number>(publishedAmount / totalDocuments)
    if (!windowDimension) return null
    const data = [
       {
@@ -24,7 +23,7 @@ export default function PieChartComponent({ pendingAmount = 0, publishedAmount =
       <>
          <div className="relative">
             <h3 className="text-3xl xl:text-2xl 2xl:text-3xl text-secundary_blue-main font-semibold absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-               {(publishedPercent || 0) * 100}%
+               {(publishedAmount / totalDocuments || 0) * 100}%
             </h3>
             <div className="relative w-[151px] h-[151px] 2xl:w-[161px] 2xl:h-[161px] xl:w-[151px] xl:h-[151px]">
                <div className="absolute w-[151px] h-[151px] rounded-full chart-box-shadow fade-in 2xl:w-[161px] 2xl:h-[161px] lg:w-[151px] lg:h-[151px]" />
