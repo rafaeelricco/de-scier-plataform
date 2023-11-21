@@ -8,7 +8,7 @@ import ReviewerItem from '@/components/modules/AsReviewer/ReviewerItem/ReviewerI
 import { ReviewerItemProps } from '@/components/modules/AsReviewer/ReviewerItem/Typing'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import useDebounce from '@/hooks/useDebounce'
-import { filter_status } from '@/mock/dropdow_filter_options'
+import { reviewer_filter_status } from '@/mock/dropdow_filter_options'
 import { useArticleToReview } from '@/services/reviewer/fetchDocuments.service'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
@@ -35,7 +35,7 @@ export default function AsReviewerPage() {
    const debouncedSearchTerm = useDebounce(searchTerm, 500)
 
    /** @notice State for the selected status filter. */
-   const [status, setStatus] = React.useState<string | null>('pending')
+   const [status, setStatus] = React.useState<string | null>('')
 
    /** @notice Holds the list of filtered articles to be displayed. */
    const [results, setResults] = React.useState<ReviewerItemProps[]>([])
@@ -72,7 +72,7 @@ export default function AsReviewerPage() {
       }
 
       setResults(filteredArticles)
-   }, [articles, documentType, status, debouncedSearchTerm])
+   }, [articles, documentType, status, debouncedSearchTerm, current])
 
    const withoutFilters = documentType === null && status === 'pending' && debouncedSearchTerm === ''
 
@@ -89,14 +89,18 @@ export default function AsReviewerPage() {
                         <TabsTrigger
                            className="bg-primary-main text-neutral-white py-2 px-8 text-sm md:text-lg font-semibold rounded-md border data-[state=inactive]:bg-transparent data-[state=inactive]:text-neutral-gray data-[state=inactive]:font-regular data-[state=active]:bg-primary-main data-[state=active]:text-white data-[state=inactive]:border-neutral-gray"
                            value="under-review"
-                           onClick={() => setCurrent('under-review')}
+                           onClick={() => {
+                              setCurrent('under-review')
+                           }}
                         >
                            Ongoing reviews
                         </TabsTrigger>
                         <TabsTrigger
                            className="bg-primary-main text-neutral-white py-2 px-8 text-sm md:text-lg font-semibold rounded-md border data-[state=inactive]:bg-transparent data-[state=inactive]:text-neutral-gray data-[state=inactive]:font-regular data-[state=active]:bg-primary-main data-[state=active]:text-white data-[state=inactive]:border-neutral-gray"
                            value="published"
-                           onClick={() => setCurrent('published')}
+                           onClick={() => {
+                              setCurrent('published')
+                           }}
                         >
                            Completed reviews
                         </TabsTrigger>
@@ -120,7 +124,7 @@ export default function AsReviewerPage() {
                               label="Status:"
                               selected={status || undefined}
                               className="min-w-[180px]"
-                              items={filter_status}
+                              items={reviewer_filter_status}
                               onSelect={(value) => setStatus(value)}
                            />
                            {withoutFilters ? null : (
@@ -157,11 +161,7 @@ export default function AsReviewerPage() {
                                  ) : (
                                     results.slice((page - 1) * per_page, page * per_page).map((article) => (
                                        <React.Fragment key={article.id}>
-                                          <ReviewerItem
-                                             {...article}
-                                             link={`
-                                    /as-reviewer/${article.id}`}
-                                          />
+                                          <ReviewerItem {...article} link={`/as-reviewer/${article.id}`} />
                                        </React.Fragment>
                                     ))
                                  )}
@@ -196,18 +196,21 @@ export default function AsReviewerPage() {
                               </React.Fragment>
                            ) : (
                               <React.Fragment>
-                                 {results.length === 0 ? (
+                                 {articles?.length === 0 ? (
                                     <p className="text-center col-span-2 text-gray-500 mt-8">There are no articles under review at the moment.</p>
                                  ) : (
-                                    results.slice((page - 1) * per_page, page * per_page).map((article) => (
-                                       <React.Fragment key={article.id}>
-                                          <ReviewerItem
-                                             published /// pass this prop to change the layout to the published one
-                                             {...article}
-                                             link={`/as-reviewer/${article.id}`}
-                                          />
-                                       </React.Fragment>
-                                    ))
+                                    articles
+                                       ?.slice((page - 1) * per_page, page * per_page)
+                                       ?.filter((item) => item.published)
+                                       .map((article) => (
+                                          <React.Fragment key={article.id}>
+                                             <ReviewerItem
+                                                published /// pass this prop to change the layout to the published one
+                                                {...article}
+                                                link={`/as-reviewer/${article.id}`}
+                                             />
+                                          </React.Fragment>
+                                       ))
                                  )}
                               </React.Fragment>
                            )}

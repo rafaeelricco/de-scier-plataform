@@ -58,7 +58,8 @@ export const useArticleToReview = () => {
                      since: new Date(article.createdAt).toLocaleDateString('pt-BR'),
                      link: article.documentLink || '',
                      title: article.title,
-                     document_type: article.documentType
+                     document_type: article.documentType,
+                     published: article.status === 'SUBMITTED'
                   }
                })
 

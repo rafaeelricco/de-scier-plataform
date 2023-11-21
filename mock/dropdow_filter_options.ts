@@ -151,3 +151,21 @@ export const filter_status = [
       value: 'submitted'
    }
 ]
+
+export const reviewer_filter_status = [
+   {
+      id: 1,
+      label: 'All',
+      value: ''
+   },
+   {
+      id: 2,
+      label: 'Pending',
+      value: 'pending'
+   },
+   {
+      id: 3,
+      label: 'You approved',
+      value: 'approved'
+   }
+]
