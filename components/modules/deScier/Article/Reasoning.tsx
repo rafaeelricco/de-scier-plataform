@@ -1,9 +1,11 @@
+import { useLimitCharacters } from '@/hooks/useLimitCharacters'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import React from 'react'
 import { X } from 'react-bootstrap-icons'
 
 const Reasoning: React.FC<ArticleUnderReviewProps> = ({ onClose, onConfirm, message, documentAuthor }: ArticleUnderReviewProps) => {
+   const { characterLimit, length } = useLimitCharacters(500)
    const [reason, setReason] = React.useState(message || '')
 
    return (
@@ -33,9 +35,21 @@ const Reasoning: React.FC<ArticleUnderReviewProps> = ({ onClose, onConfirm, mess
                   <Input.Root>
                      <Input.Label className="flex gap-2 items-center">
                         <span className="text-sm font-semibold">Reasoning</span>
-                        <span className="text-sm text-neutral-light_gray">0/100 words</span>
+                        <span className="text-sm text-neutral-light_gray">{length}/500 characters</span>
                      </Input.Label>
-                     <Input.TextArea defaultValue={reason} placeholder="Explain your reasoning" onInput={(e) => setReason(e.currentTarget.value)} />
+                     <Input.TextArea
+                        defaultValue={reason}
+                        placeholder="Explain your reasoning"
+                        onInput={(e) => {
+                           characterLimit({
+                              e: e,
+                              limit: 100,
+                              onInput: (value) => {
+                                 setReason(value.currentTarget.value)
+                              }
+                           })
+                        }}
+                     />
                   </Input.Root>
                   <div className="grid gap-4">
                      <Button.Button className="py-3 px-8" onClick={() => onConfirm(reason)}>
