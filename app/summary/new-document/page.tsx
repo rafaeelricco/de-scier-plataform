@@ -3,6 +3,7 @@
 import Box from '@/components/common/Box/Box'
 import { AuthorsListDragabble } from '@/components/common/Lists/Authors/Authors'
 import { NewAuthor } from '@/components/modules/Summary/NewArticle/Authors/NewAuthor'
+import { useLimitCharacters } from '@/hooks/useLimitCharacters'
 import { access_type_options } from '@/mock/access_type'
 import { articles_categories } from '@/mock/articles_categories'
 import { articles_types } from '@/mock/articles_types'
@@ -292,6 +293,8 @@ export default function SubmitNewPaperPage() {
       setDialog({ ...dialog, share_split: false, edit_author: false })
       setEditShare(null)
    }
+
+   const { characterLimit: fieldLimit, length: fieldLength } = useLimitCharacters()
    return (
       <React.Fragment>
          <Dialog.Root open={dialog.author || dialog.share_split || dialog.edit_author || dialog.edit_share_split}>
@@ -448,9 +451,22 @@ export default function SubmitNewPaperPage() {
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
                            <span className="text-sm  font-semibold">Field</span>
-                           <span className="text-sm text-neutral-light_gray">0/300 characters</span>
+                           <span className="text-sm text-neutral-light_gray">{fieldLength}/300 characters</span>
                         </Input.Label>
-                        <Input.Input placeholder="Title of the field" {...register('field')} />
+                        <Input.Input
+                           placeholder="Title of the field"
+                           {...register('field')}
+                           onInput={(e) => {
+                              fieldLimit({
+                                 e: e as React.ChangeEvent<HTMLInputElement>,
+                                 limit: 300,
+                                 onInput: (value) => {
+                                    setValue('field', value.currentTarget.value)
+                                    trigger('field')
+                                 }
+                              })
+                           }}
+                        />
                         <Input.Error>{errors.field?.message}</Input.Error>
                      </Input.Root>
                   </div>

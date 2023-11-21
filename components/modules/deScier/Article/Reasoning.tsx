@@ -5,7 +5,7 @@ import React from 'react'
 import { X } from 'react-bootstrap-icons'
 
 const Reasoning: React.FC<ArticleUnderReviewProps> = ({ onClose, onConfirm, message, documentAuthor }: ArticleUnderReviewProps) => {
-   const { characterLimit, length } = useLimitCharacters(500)
+   const { characterLimit, length } = useLimitCharacters()
    const [reason, setReason] = React.useState(message || '')
 
    return (
@@ -43,7 +43,7 @@ const Reasoning: React.FC<ArticleUnderReviewProps> = ({ onClose, onConfirm, mess
                         onInput={(e) => {
                            characterLimit({
                               e: e,
-                              limit: 100,
+                              limit: 500,
                               onInput: (value) => {
                                  setReason(value.currentTarget.value)
                               }

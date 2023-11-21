@@ -1,20 +1,20 @@
 import React from 'react'
 
 interface CharacterLimit {
-   e: React.FormEvent<HTMLTextAreaElement>
-   onInput: (e: React.FormEvent<HTMLTextAreaElement>) => void
+   e: React.FormEvent<HTMLInputElement> | React.FormEvent<HTMLTextAreaElement>
+   onInput: (e: React.FormEvent<HTMLInputElement> | React.FormEvent<HTMLTextAreaElement>) => void
    limit: number
 }
 
-export const useLimitCharacters = (limit: number) => {
+export const useLimitCharacters = () => {
    const [length, setLength] = React.useState(0)
 
-   const characterLimit = ({ e, onInput }: CharacterLimit) => {
+   const characterLimit = ({ e, onInput, limit }: CharacterLimit) => {
       const value = e.currentTarget.value
       const valueWithoutSpaces = value.replace(/\s/g, '')
 
       if (valueWithoutSpaces.length < limit) {
-         onInput(e)
+         onInput(e as React.FormEvent<HTMLInputElement>)
       } else {
          e.currentTarget.value = valueWithoutSpaces.slice(0, limit - 1)
       }
@@ -22,5 +22,5 @@ export const useLimitCharacters = (limit: number) => {
       setLength(valueWithoutSpaces.length)
    }
 
-   return { length, limit, characterLimit }
+   return { length, characterLimit }
 }
