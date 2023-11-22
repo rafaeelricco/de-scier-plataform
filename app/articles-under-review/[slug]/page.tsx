@@ -15,6 +15,7 @@ import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useGetApprovals } from '@/hooks/useGetApprovals'
+import { useLimitCharacters } from '@/hooks/useLimitCharacters'
 import { access_type_options } from '@/mock/access_type'
 import { header_editor_reviewer } from '@/mock/article_under_review'
 import { articles_categories } from '@/mock/articles_categories'
@@ -431,6 +432,9 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
    }
 
    const [author_to_edit, setAuthorToEdit] = React.useState<Author | undefined>(undefined)
+
+   const { characterLimit: fieldLimit, length: fieldLength } = useLimitCharacters(watch('field') || '')
+   const { characterLimit: titleLimit, length: titleLenght } = useLimitCharacters(watch('title') || '')
    return (
       <React.Fragment>
          <Dialog.Root open={dialog.reasoning || dialog.edit_comment || dialog.author}>
@@ -541,9 +545,22 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
                            <span className="text-sm font-semibold">Title</span>
-                           <span className="text-sm text-neutral-light_gray">up to 15 words</span>
+                           <span className="text-sm text-neutral-light_gray">{titleLenght}/100 characters</span>
                         </Input.Label>
-                        <Input.Input placeholder="Title of the article" {...register('title')} />
+                        <Input.Input
+                           placeholder="Title of the article"
+                           {...register('title')}
+                           onInput={(e) => {
+                              titleLimit({
+                                 e: e as React.ChangeEvent<HTMLInputElement>,
+                                 limit: 100,
+                                 onInput: (value) => {
+                                    setValue('title', value.currentTarget.value)
+                                    trigger('title')
+                                 }
+                              })
+                           }}
+                        />
                         <Input.Error>{errors.title?.message}</Input.Error>
                      </Input.Root>
                      <Input.Root>
@@ -596,10 +613,23 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   <div className="grid md:grid-cols-2 items-start gap-6">
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
-                           <span className="text-sm font-semibold">Field</span>
-                           <span className="text-sm text-neutral-light_gray">0/300 characters</span>
+                           <span className="text-sm  font-semibold">Field</span>
+                           <span className="text-sm text-neutral-light_gray">{fieldLength}/300 characters</span>
                         </Input.Label>
-                        <Input.Input placeholder="Title of the field" {...register('field')} />
+                        <Input.Input
+                           placeholder="Title of the field"
+                           {...register('field')}
+                           onInput={(e) => {
+                              fieldLimit({
+                                 e: e as React.ChangeEvent<HTMLInputElement>,
+                                 limit: 300,
+                                 onInput: (value) => {
+                                    setValue('field', value.currentTarget.value)
+                                    trigger('field')
+                                 }
+                              })
+                           }}
+                        />
                         <Input.Error>{errors.field?.message}</Input.Error>
                      </Input.Root>
                   </div>
