@@ -295,6 +295,7 @@ export default function SubmitNewPaperPage() {
    }
 
    const { characterLimit: fieldLimit, length: fieldLength } = useLimitCharacters()
+   const { characterLimit: titleLimit, length: titleLenght } = useLimitCharacters()
    return (
       <React.Fragment>
          <Dialog.Root open={dialog.author || dialog.share_split || dialog.edit_author || dialog.edit_share_split}>
@@ -395,9 +396,22 @@ export default function SubmitNewPaperPage() {
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
                            <span className="text-sm font-semibold">Title</span>
-                           <span className="text-sm text-neutral-light_gray">up to 15 words</span>
+                           <span className="text-sm text-neutral-light_gray">{titleLenght}/100 characters</span>
                         </Input.Label>
-                        <Input.Input placeholder="Title of the article" {...register('title')} />
+                        <Input.Input
+                           placeholder="Title of the article"
+                           {...register('title')}
+                           onInput={(e) => {
+                              titleLimit({
+                                 e: e as React.ChangeEvent<HTMLInputElement>,
+                                 limit: 100,
+                                 onInput: (value) => {
+                                    setValue('title', value.currentTarget.value)
+                                    trigger('title')
+                                 }
+                              })
+                           }}
+                        />
                         <Input.Error>{errors.title?.message}</Input.Error>
                      </Input.Root>
                      <Input.Root>
@@ -521,6 +535,7 @@ export default function SubmitNewPaperPage() {
                      <span className="text-sm font-semibold">Abstract</span>
                      <span className="text-sm text-neutral-light_gray">up to 250 words</span>
                      <span className="text-sm text-neutral-light_gray italic">Optional</span>
+                     <Tooltip.Information content="Abstract might change after revision, so don't worry too much." />
                   </Input.Label>
                   <Input.TextArea {...register('abstract')} rows={4} placeholder="Type your abstract" />
                   <Input.Error>{errors.abstract?.message}</Input.Error>
