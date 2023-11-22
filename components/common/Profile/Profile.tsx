@@ -6,19 +6,75 @@ import * as Button from '@components/common/Button/Button'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Web3Auth } from '@web3auth/modal'
+import { SafeEventEmitterProvider } from '@web3auth/base'
 import ShapeDeScierHandBookBottom from 'public/svgs/modules/sidebar/Ellipse 46.svg'
 import ShapeDeScierHandBookTop from 'public/svgs/modules/sidebar/Ellipse 48.svg'
 import IllustrationHandBook from 'public/svgs/modules/sidebar/emojione-v1_document.svg'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { CaretRight, PlusCircle, X } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 import SubmitedItem from './SubmitedItem/SubmitedItem'
 import { useArticles } from '@/services/document/getArticles.service'
+import { connectWeb3AuthWallet, initWeb3Auth } from '@/services/web3auth/web3auth.service'
+import { toast } from 'react-toastify'
 
 const Profile: React.FC<ProfileProps> = ({ className, onClose }: ProfileProps) => {
-   const { data: session } = useSession()
+   const { data: session, update: updateSession } = useSession()
 
    const { articles } = useArticles()
+
+   const [web3auth, setWeb3Auth] = useState<Web3Auth | null>(null)
+   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null)
+   const [connectLoading, setConnectLoading] = useState<boolean>(false)
+   const [walletAddress, setWalletAddress] = useState<string | undefined>(session?.user?.userInfo.walletAddress || '')
+
+   const handleConnectWallet = async () => {
+      setConnectLoading(true)
+      const response = await connectWeb3AuthWallet({
+         provider,
+         setProvider,
+         web3auth
+      })
+
+      setConnectLoading(false)
+
+      if (!response?.success) {
+         toast.error('Error in connect wallet!')
+         return
+      }
+
+      const udpatedInfo = {
+         ...session,
+         user: {
+            ...session?.user,
+            userInfo: {
+               ...session?.user?.userInfo,
+               walletAddress: response.walletAddress
+            }
+         }
+      }
+
+      await updateSession(udpatedInfo)
+
+      setWalletAddress(response.walletAddress)
+
+      toast.success('Wallet connected successfully.')
+   }
+
+   useEffect(() => {
+      initWeb3Auth({
+         setProvider,
+         setWeb3Auth
+      })
+   }, [])
+
+   useEffect(() => {
+      if (session?.user) {
+         setWalletAddress(session?.user?.userInfo.walletAddress || '')
+      }
+   }, [session?.user])
+
    return (
       <React.Fragment>
          <aside className={twMerge('hidden md:relative md:block overflow-hidden', className)}>
@@ -50,10 +106,19 @@ const Profile: React.FC<ProfileProps> = ({ className, onClose }: ProfileProps) =
                         <h1 className="text-xl text-secundary_blue-main font-semibold flex justify-center lg:text-lg 2xl:text-xl">
                            {session?.user?.userInfo.name}
                         </h1>
-                        <Button.Button variant="outline" className="mx-auto px-2 py-3 my-0 text-sm">
-                           Connect a wallet
-                           <PlusCircle className="w-4" />
-                        </Button.Button>
+
+                        {!walletAddress ? (
+                           <Button.Button
+                              variant={web3auth ? 'outline' : 'disabled'}
+                              className="mx-auto px-2 py-3 my-0 text-sm"
+                              onClick={handleConnectWallet}
+                           >
+                              Connect a wallet
+                              <PlusCircle className="w-4" />
+                           </Button.Button>
+                        ) : (
+                           <div className="mx-auto px-2 py-3 my-0 text-sm w-52 overflow-hidden truncate ...">{walletAddress}</div>
+                        )}
                      </div>
                   </div>
                   <div className="relative rounded-lg w-full p-4 h-20 gradient-grad-dark overflow-hidden">
