@@ -31,7 +31,7 @@ export const useLimitCharacters = (initialValue: string = '') => {
       if (valueWithoutSpaces.length <= limit) {
          onInput(e)
       } else {
-         e.currentTarget.value = valueWithoutSpaces.slice(0, limit)
+         e.currentTarget.value = valueWithoutSpaces.slice(0, limit - 1)
       }
 
       /** @dev Update the length state with the current length of the input. */
