@@ -38,6 +38,7 @@ import { keywordsArray } from '@/utils/keywords_format'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
+import * as Tooltip from '@components/common/Tooltip/Tooltip'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Reorder } from 'framer-motion'
 import { isEqual, uniqueId } from 'lodash'
@@ -435,6 +436,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
 
    const { characterLimit: fieldLimit, length: fieldLength } = useLimitCharacters(watch('field') || '')
    const { characterLimit: titleLimit, length: titleLenght } = useLimitCharacters(watch('title') || '')
+   const { characterLimit: abstractLimit, length: abstractLenght } = useLimitCharacters(watch('abstract') || '')
    return (
       <React.Fragment>
          <Dialog.Root open={dialog.reasoning || dialog.edit_comment || dialog.author}>
@@ -663,10 +665,27 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                <Input.Root>
                   <Input.Label className="flex gap-2 items-center">
                      <span className="text-sm font-semibold">Abstract</span>
-                     <span className="text-sm text-neutral-light_gray">up to 250 words</span>
+                     <span className="text-sm text-neutral-light_gray">{abstractLenght}/1000 characters</span>
                      <span className="text-sm text-neutral-light_gray italic">Optional</span>
+                     <Tooltip.Information content="Abstract might change after revision, so don't worry too much." />
                   </Input.Label>
-                  <Input.TextArea defaultValue={article?.document.abstract} rows={4} placeholder="Title of the field" />
+                  <Input.TextArea
+                     {...register('abstract')}
+                     rows={4}
+                     defaultValue={article?.document.abstract}
+                     placeholder="Type your abstract"
+                     onInput={(e) => {
+                        abstractLimit({
+                           e: e,
+                           limit: 1000,
+                           onInput: (value) => {
+                              setValue('abstract', value.currentTarget.value)
+                              trigger('abstract')
+                           }
+                        })
+                     }}
+                  />
+                  <Input.Error>{errors.abstract?.message}</Input.Error>
                </Input.Root>
                <div className="grid gap-4">
                   <p className="text-sm font-semibold">Cover</p>
