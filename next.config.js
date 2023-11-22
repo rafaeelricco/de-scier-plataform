@@ -32,7 +32,6 @@ const nextConfig = {
       domains: ['random.imagecdn.app', 'source.unsplash.com', 'descier-tcc.s3.sa-east-1.amazonaws.com']
    },
    env: {
-      WEB3_SIGN_PASSWORD: process.env.WEB3_SIGN_PASSWORD,
       WEB3AUTH_CLIENT_ID: process.env.WEB3AUTH_CLIENT_ID,
       WEB3AUTH_CLIENT_ID_TEST: process.env.WEB3AUTH_CLIENT_ID_TEST,
       ALCHEMY_API_URL: process.env.ALCHEMY_API_URL,
