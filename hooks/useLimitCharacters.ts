@@ -24,18 +24,15 @@ export const useLimitCharacters = (initialValue: string = '') => {
       /** @dev Extract the value from the event's current target. */
       const value = e.currentTarget.value
 
-      /** @dev Remove spaces from the value for length calculation. */
-      const valueWithoutSpaces = value.replace(/\s/g, '')
-
       /** @dev Check if the length is within the limit and call onInput, else truncate the value. */
-      if (valueWithoutSpaces.length <= limit) {
+      if (value.length <= limit - 1) {
          onInput(e)
       } else {
-         e.currentTarget.value = valueWithoutSpaces.slice(0, limit - 1)
+         e.currentTarget.value = value.substring(0, limit - 1)
       }
 
       /** @dev Update the length state with the current length of the input. */
-      setLength(valueWithoutSpaces.length)
+      setLength(value.length)
    }
 
    return { length, characterLimit }
