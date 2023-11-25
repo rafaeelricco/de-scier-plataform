@@ -56,7 +56,7 @@ export const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
                            </React.Fragment>
                         ) : (
                            <React.Fragment>
-                              <div className="flex items-center flex-grow">
+                              <div className="flex items-center flex-grow gap-2">
                                  <p className="text-sm text-neutral-gray lg:text-sm truncate">Under review since</p>
                                  <p className="text-base font-semibold lg:text-sm 2xl:text-base truncate">{since}</p>
                               </div>

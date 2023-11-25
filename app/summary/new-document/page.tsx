@@ -3,6 +3,7 @@
 import Box from '@/components/common/Box/Box'
 import { AuthorsListDragabble } from '@/components/common/Lists/Authors/Authors'
 import { NewAuthor } from '@/components/modules/Summary/NewArticle/Authors/NewAuthor'
+import { useLimitCharacters } from '@/hooks/useLimitCharacters'
 import { access_type_options } from '@/mock/access_type'
 import { articles_categories } from '@/mock/articles_categories'
 import { articles_types } from '@/mock/articles_types'
@@ -292,6 +293,10 @@ export default function SubmitNewPaperPage() {
       setDialog({ ...dialog, share_split: false, edit_author: false })
       setEditShare(null)
    }
+
+   const { characterLimit: fieldLimit, length: fieldLength } = useLimitCharacters()
+   const { characterLimit: titleLimit, length: titleLenght } = useLimitCharacters()
+   const { characterLimit: abstractLimit, length: abstractLenght } = useLimitCharacters()
    return (
       <React.Fragment>
          <Dialog.Root open={dialog.author || dialog.share_split || dialog.edit_author || dialog.edit_share_split}>
@@ -392,9 +397,22 @@ export default function SubmitNewPaperPage() {
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
                            <span className="text-sm font-semibold">Title</span>
-                           <span className="text-sm text-neutral-light_gray">up to 15 words</span>
+                           <span className="text-sm text-neutral-light_gray">{titleLenght}/100 characters</span>
                         </Input.Label>
-                        <Input.Input placeholder="Title of the article" {...register('title')} />
+                        <Input.Input
+                           placeholder="Title of the article"
+                           {...register('title')}
+                           onInput={(e) => {
+                              titleLimit({
+                                 e: e as React.ChangeEvent<HTMLInputElement>,
+                                 limit: 100,
+                                 onInput: (value) => {
+                                    setValue('title', value.currentTarget.value)
+                                    trigger('title')
+                                 }
+                              })
+                           }}
+                        />
                         <Input.Error>{errors.title?.message}</Input.Error>
                      </Input.Root>
                      <Input.Root>
@@ -448,9 +466,22 @@ export default function SubmitNewPaperPage() {
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
                            <span className="text-sm  font-semibold">Field</span>
-                           <span className="text-sm text-neutral-light_gray">0/300 characters</span>
+                           <span className="text-sm text-neutral-light_gray">{fieldLength}/300 characters</span>
                         </Input.Label>
-                        <Input.Input placeholder="Title of the field" {...register('field')} />
+                        <Input.Input
+                           placeholder="Title of the field"
+                           {...register('field')}
+                           onInput={(e) => {
+                              fieldLimit({
+                                 e: e as React.ChangeEvent<HTMLInputElement>,
+                                 limit: 300,
+                                 onInput: (value) => {
+                                    setValue('field', value.currentTarget.value)
+                                    trigger('field')
+                                 }
+                              })
+                           }}
+                        />
                         <Input.Error>{errors.field?.message}</Input.Error>
                      </Input.Root>
                   </div>
@@ -503,10 +534,25 @@ export default function SubmitNewPaperPage() {
                <Input.Root>
                   <Input.Label className="flex gap-2 items-center">
                      <span className="text-sm font-semibold">Abstract</span>
-                     <span className="text-sm text-neutral-light_gray">up to 250 words</span>
+                     <span className="text-sm text-neutral-light_gray">{abstractLenght}/1000 characters</span>
                      <span className="text-sm text-neutral-light_gray italic">Optional</span>
+                     <Tooltip.Information content="Abstract might change after revision, so don't worry too much." />
                   </Input.Label>
-                  <Input.TextArea {...register('abstract')} rows={4} placeholder="Type your abstract" />
+                  <Input.TextArea
+                     {...register('abstract')}
+                     rows={4}
+                     placeholder="Type your abstract"
+                     onInput={(e) => {
+                        abstractLimit({
+                           e: e,
+                           limit: 1000,
+                           onInput: (value) => {
+                              setValue('abstract', value.currentTarget.value)
+                              trigger('abstract')
+                           }
+                        })
+                     }}
+                  />
                   <Input.Error>{errors.abstract?.message}</Input.Error>
                </Input.Root>
                <div className="grid gap-4">
