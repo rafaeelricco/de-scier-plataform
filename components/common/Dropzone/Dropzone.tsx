@@ -8,15 +8,25 @@ import { Accept, useDropzone } from 'react-dropzone'
 import { twMerge } from 'tailwind-merge'
 import { DropzoneProps, StoredFile } from './Typing'
 
+/** @title Dropzone Component
+ *  @notice This component creates a customizable dropzone for file uploads, allowing for thumbnail display and specific file type restrictions.
+ */
 const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, message, thumbnail = true, accept, defaultCover }: DropzoneProps) => {
+   /** @dev State to store the files uploaded */
    const [files, setFiles] = React.useState<Array<StoredFile>>([])
 
+   /** @dev Effect to set a default cover image if provided */
    useEffect(() => {
       if (defaultCover) {
          setFiles([defaultCover])
       }
    }, [defaultCover])
 
+   /**
+    * @dev Creates a preview of the file for display purposes
+    * @param file The file to create a preview for
+    * @return Object containing file details and preview URL
+    */
    const createFilePreview = (file: StoredFile) => {
       const fileWithPreview = {
          path: file.name,
@@ -30,6 +40,10 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
       return fileWithPreview
    }
 
+   /**
+    * @dev Handles the accepted files, updates state, and triggers callbacks
+    * @param acceptedFiles Array of files that have been accepted by the dropzone
+    */
    const handleAcceptedFiles = (acceptedFiles: Array<StoredFile>) => {
       acceptedFiles.forEach((fileWithPreview: StoredFile) => {
          setFiles((prev) => [...prev, fileWithPreview])
@@ -39,9 +53,15 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
       setValue?.('file.name', acceptedFiles[0]?.name as string)
    }
 
+   /**
+    * @dev Handles the drop event, processing files
+    * @param acceptedFiles Array of files dropped into the zone
+    */
    const onDrop = (acceptedFiles: Array<File>) => {
       handleAcceptedFiles(acceptedFiles.map((file) => createFilePreview(file as unknown as StoredFile)))
    }
+
+   /** @dev Lists allowed file extensions and mime types for images and documents */
    const allowedExtensions: Record<'images' | 'documents', string[]> = {
       images: ['.jpeg', '.png', '.webp', '.jpg'],
       documents: ['.docx', '.pdf']
@@ -52,6 +72,11 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
       documents: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/pdf']
    }
 
+   /**
+    * @dev Generates accepted MIME types based on the provided type
+    * @param acceptType Type of files to accept ('images' or 'documents')
+    * @return Object mapping MIME types to file extensions
+    */
    const getAcceptedMimeTypes = (acceptType: keyof typeof allowedExtensions): Accept => {
       const type = acceptType || 'documents'
       const mimeTypes = allowedTypes[type]
@@ -62,8 +87,7 @@ const Dropzone = React.forwardRef(({ setSelectedFile, setValue, placeholder, mes
       }, {})
    }
 
-   // get files from dropzone using useDropzone hook
-   // see more about useDropzone here: https://react-dropzone.js.org/
+   /** @dev Utilizes the useDropzone hook to create the dropzone functionality */
    const { getRootProps, getInputProps, isDragAccept, isDragActive, isDragReject, isFocused } = useDropzone({
       onDrop,
       multiple: false,

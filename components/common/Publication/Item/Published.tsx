@@ -5,20 +5,22 @@ import React from 'react'
 import { Eye, HandThumbsUpFill } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 
-export interface PublicationItemProps {
-   id?: string
-   date: string
-   likes: string
-   views: string
-   title: string
-   link: string
-   image: string
-   access_type?: string
-   className?: string
-   published?: boolean
-}
-
-const PublicationItem: React.FC<PublicationItemProps> = ({ date, link, likes, views, id, title, image, className, published }: PublicationItemProps) => {
+/**
+ * @title PublicationItem Component
+ * @notice This component displays a publication item with details like title, likes, views, and date.
+ * @dev Component for displaying individual publication items in a list or grid format.
+ */
+export const PublicationItem: React.FC<PublicationItemProps> = ({
+   date,
+   link,
+   likes,
+   views,
+   id,
+   title,
+   image,
+   className,
+   published
+}: PublicationItemProps) => {
    const { windowDimension } = useDimension()
    const isSmallDesktop = windowDimension && windowDimension < 1440 && windowDimension >= 1024
    return (
@@ -62,4 +64,15 @@ const PublicationItem: React.FC<PublicationItemProps> = ({ date, link, likes, vi
    )
 }
 
-export default PublicationItem
+export interface PublicationItemProps {
+   id?: string
+   date: string
+   likes: string
+   views: string
+   title: string
+   link: string
+   image: string
+   access_type?: string
+   className?: string
+   published?: boolean
+}

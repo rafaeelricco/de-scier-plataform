@@ -10,7 +10,13 @@ import { twMerge } from 'tailwind-merge'
 import { MobileSidebarComponent } from './MobileSidebar'
 import { MobileProfileComponent } from './ProfileSidebar'
 
+/**
+ * @title Mobile Sidebar Component
+ * @notice Implements a mobile sidebar navigation with profile and dashboard access.
+ * @dev This component uses React state to toggle between sidebar and profile views in a mobile environment.
+ */
 export function SidebarMobile() {
+   /** @dev State to manage the open status of navigation ('sidebar', 'profile', or false) */
    const [openNav, setOpenNav] = React.useState<'sidebar' | 'profile' | false>(false)
 
    return (

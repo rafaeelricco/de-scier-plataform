@@ -13,9 +13,25 @@ import Item from '../Item/Item'
 import Logout from '../Logout/Logout'
 import { SidesProps } from '../Typing'
 
+/**
+ * @title Mobile Sidebar Component
+ * @notice This component renders a mobile-friendly sidebar with navigation and session management options.
+ * @dev This component uses the Next.js router and session hooks for navigation and session state management.
+ */
 export const MobileSidebarComponent: React.FC<SidesProps> = ({ onClose }: SidesProps) => {
+   /**
+    * @dev Initialize the router using the useRouter hook from Next.js for navigation.
+    */
    const router = useRouter()
+
+   /**
+    * @dev Retrieve the current path from the usePathname hook.
+    */
    const currentPath = usePathname()
+
+   /**
+    * @dev Initialize session state using useSession hook.
+    */
    const { data: session } = useSession()
    return (
       <React.Fragment>

@@ -3,13 +3,13 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { articles_types_filter } from '@/mock/articles_types'
 import React from 'react'
 import { twMerge } from 'tailwind-merge'
+import { SelectArticleTypeProps } from './Typing'
 
-interface SelectArticleTypeProps {
-   onValueChange: (value: string) => void
-   selected: string | null
-   placeholder?: string
-}
-
+/**
+ * @title SelectArticleType Component
+ * @notice This component renders a dropdown select for choosing an article type.
+ * @dev Component for selecting an article type from a predefined list of options.
+ */
 export const SelectArticleType: React.FC<SelectArticleTypeProps> = ({ onValueChange, selected, placeholder }: SelectArticleTypeProps) => {
    return (
       <React.Fragment>

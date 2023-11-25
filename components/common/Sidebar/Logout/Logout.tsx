@@ -7,11 +7,22 @@ import { useRouter } from 'next/navigation'
 import LogoutIcon from 'public/svgs/common/sidebar/Icons/logout.svg'
 import React from 'react'
 
+/**
+ * @title Logout Component
+ * @notice Handles user logout functionality and displays user's avatar and name.
+ * @dev This component takes a logout function as a prop and uses Next.js's useRouter and useSession hooks.
+ */
 const Logout: React.FC<{ onLogout: () => void }> = ({ onLogout }: { onLogout: () => void }) => {
+   /** @dev Initialize Next.js router and session hook. */
    const router = useRouter()
-   const { data, status } = useSession()
-   console.log(status)
 
+   /** @dev Retrieve the session data and status from the useSession hook. */
+   const { data, status } = useSession()
+
+   /**
+    * @dev Handles the logout process.
+    * @notice When invoked, it signs the user out and redirects to the home page.
+    */
    const handleLogout = async () => {
       await signOut()
       router.push(home_routes.home.index)

@@ -9,11 +9,17 @@ import IllustrationHandBook from 'public/svgs/modules/sidebar/emojione-v1_docume
 import React from 'react'
 import { CaretRight } from 'react-bootstrap-icons'
 
+/**
+ * @title ProfileDeScier Component
+ * @notice Component to display the user profile in a styled format with various sections.
+ * @dev This component uses Next.js's useRouter and a custom usePathname hook to handle routing and path information.
+ */
 const ProfileDeScier: React.FC = () => {
-   // See more about in https://nextjs.org/docs/app/api-reference/functions/use-pathname
+   /** @dev Retrieve the current path using the custom usePathname hook. */
    const currentPath = usePathname()
-   const router = useRouter()
 
+   /** @dev Initialize Next.js router for navigation purposes. */
+   const router = useRouter()
    return (
       <React.Fragment>
          <div className="relative overflow-hidden h-fit">

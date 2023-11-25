@@ -3,20 +3,11 @@ import * as Dialog from '@radix-ui/react-dialog'
 import '@styles/dialog.css'
 import React from 'react'
 import { X } from 'react-bootstrap-icons'
-/**
- * @notice A utility function imported from the 'tailwind-merge' library.
- * It is used to merge multiple tailwind classes into a single string that can be applied as a className to a component.
- * It avoids conflicts between different tailwind classes and ensures the proper cascading of styles.
- * @param {...string} classes - The tailwind classes to be merged
- * @returns {string} A single string of merged tailwind classes
- */
 import { twMerge } from 'tailwind-merge'
 
 /**
- * @notice The Root component is a wrapper component that encapsulates dialog functionalities.
- * @dev This component uses the React.FC functional component type and accepts the DialogProps props type from @radix-ui/react-dialog.
- * @param props Contains the properties provided to the component.
- * @param props.children React children nodes passed to this component.
+ * @title Dialog Root Component
+ * @dev This component serves as the root wrapper for the dialog component. Utilizes Radix UI's Dialog component.
  */
 const Root: React.FC<Dialog.DialogProps> = ({ children, ...props }: Dialog.DialogProps) => {
    return (
@@ -27,11 +18,10 @@ const Root: React.FC<Dialog.DialogProps> = ({ children, ...props }: Dialog.Dialo
 }
 
 /**
- * @notice The Overlay component is used to provide an overlay effect around the dialog.
- * @dev This component uses the React.FC functional component type and accepts the DialogOverlayProps props type from @radix-ui/react-dialog.
- * @param props Contains the properties provided to the component.
- * @param props.className An additional CSS class that can be applied to the component.
- * @param props.children React children nodes passed to this component.
+ * @title Dialog Overlay Component
+ * @dev This component is the overlay part of the dialog, handling UI aspects like background dimming.
+ * @param children - React node children of the component.
+ * @param className - CSS class name for additional styling.
  */
 const Overlay: React.FC<Dialog.DialogOverlayProps> = ({ children, className, ...props }: Dialog.DialogOverlayProps) => {
    return (
@@ -44,11 +34,10 @@ const Overlay: React.FC<Dialog.DialogOverlayProps> = ({ children, className, ...
 }
 
 /**
- * @notice The Content component is used to render the content of the dialog.
- * @dev This component uses the React.FC functional component type and accepts the DialogContentProps props type from @radix-ui/react-dialog.
- * @param props Contains the properties provided to the component.
- * @param props.className An additional CSS class that can be applied to the component.
- * @param props.children React children nodes passed to this component.
+ * @title Dialog Content Component
+ * @dev This component represents the main content area of the dialog.
+ * @param children - React node children of the component.
+ * @param className - CSS class name for additional styling.
  */
 const Content: React.FC<Dialog.DialogContentProps> = ({ children, className, ...props }: Dialog.DialogContentProps) => {
    return (
@@ -64,12 +53,11 @@ const Content: React.FC<Dialog.DialogContentProps> = ({ children, className, ...
 }
 
 /**
- * @notice This component renders the title of a dialog. It provides an interface for the user to clear filters and close the dialog.
- * @dev The Title component uses the `TitleProps` type to specify the expected properties. It includes callback functions for clearing filters and closing the dialog, and a title property for the dialog's title.
- *
- * @param {Function} onClear - A callback function triggered when the user wants to clear filters.
- * @param {Function} onClose - A callback function triggered when the user wants to close the dialog.
- * @param {string} title - The title of the dialog. If not provided, defaults to 'Filtros'.
+ * @title Dialog Title Component
+ * @dev Component for rendering the title of the dialog, along with optional clear and close functionality.
+ * @param onClear - Function to execute when the clear filters option is clicked.
+ * @param onClose - Function to close the dialog.
+ * @param title - Title text of the dialog.
  */
 const Title: React.FC<TitleProps> = ({ onClear, onClose, title }: TitleProps) => {
    return (

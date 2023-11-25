@@ -5,18 +5,11 @@ import Link from 'next/link'
 import React from 'react'
 import './Item.css'
 
-export interface ArticleUnderReviewProps {
-   id?: string
-   status_editor?: 'pending' | 'approved'
-   status_reviewer?: 'pending' | 'approved'
-   status?: string
-   image: string
-   since: string
-   title: string
-   link: string
-   document_type?: string
-}
-
+/**
+ * @title Article Under Review Component
+ * @notice This component displays an article that is under review or published, including its status and details.
+ * @dev The component takes `ArticleUnderReviewProps` as props to render the article details and status.
+ */
 export const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
    since,
    link,
@@ -104,6 +97,11 @@ export const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
    )
 }
 
+/**
+ * @title Article Under Review Skeleton Component
+ * @notice This component displays a skeleton or placeholder for the 'ArticleUnderReview' component while the data is loading.
+ * @dev This component is used to maintain a consistent layout during data fetching.
+ */
 export const ArticleUnderReviewSkeleton: React.FC = () => {
    return (
       <React.Fragment>
@@ -128,4 +126,16 @@ export const ArticleUnderReviewSkeleton: React.FC = () => {
          </div>
       </React.Fragment>
    )
+}
+
+export interface ArticleUnderReviewProps {
+   id?: string
+   status_editor?: 'pending' | 'approved'
+   status_reviewer?: 'pending' | 'approved'
+   status?: string
+   image: string
+   since: string
+   title: string
+   link: string
+   document_type?: string
 }

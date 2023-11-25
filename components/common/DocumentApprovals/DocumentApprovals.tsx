@@ -1,12 +1,13 @@
-import React from 'react'
 import { uniqueId } from 'lodash'
+import React from 'react'
 import { Check, Clock, X } from 'react-bootstrap-icons'
+import { DocumentApprovalsProps } from './Typing'
 
-type DocumentApprovalsProps = {
-   reviewerApprovals: string[]
-   editorApprovals: string[]
-}
-
+/**
+ * @title Document Approvals Component
+ * @notice This component displays the approval status of documents by reviewers and editors.
+ * @dev The component `DocumentApprovals` takes `editorApprovals` and `reviewerApprovals` as props and displays their statuses.
+ */
 const DocumentApprovals: React.FC<DocumentApprovalsProps> = ({ editorApprovals, reviewerApprovals }: DocumentApprovalsProps) => {
    return (
       <React.Fragment>

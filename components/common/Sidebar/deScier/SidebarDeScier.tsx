@@ -9,9 +9,16 @@ import LogoutIcon from 'public/svgs/common/sidebar/Icons/logout.svg'
 import React from 'react'
 import Item from '../Item/Item'
 
+/**
+ * @title Sidebar Component for the DeScier Platform
+ * @notice Implements the sidebar navigation for the DeScier web application.
+ * @dev This component utilizes Next.js's routing and image optimization features.
+ */
 const SidebarDeScier: React.FC = () => {
-   // See more about in https://nextjs.org/docs/app/api-reference/functions/use-pathname
+   /** @dev Retrieves the current URL path using Next.js's usePathname hook. */
    const currentPath = usePathname()
+
+   /** @dev Initializes Next.js router for navigation purposes. */
    const router = useRouter()
 
    return (
@@ -37,9 +44,20 @@ const SidebarDeScier: React.FC = () => {
    )
 }
 
+/**
+ * @title Logout Component for the DeScier Platform
+ * @notice Provides a UI for user logout functionality.
+ * @dev This subcomponent handles the user logout process.
+ * @param onLogout A function triggered on logout event.
+ */
 const Logout: React.FC<{ onLogout: () => void }> = ({ onLogout }: { onLogout: () => void }) => {
+   /** @dev Initializes Next.js router for navigation after logout. */
    const router = useRouter()
 
+   /**
+    * @dev Handles the logout process, signs out the user and redirects to the homepage.
+    * @return Redirects to the homepage after logout.
+    */
    const handleLogout = async () => {
       await signOut()
       router.push(home_routes.home.index)

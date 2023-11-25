@@ -1,19 +1,22 @@
 import '@styles/loading.css'
-
 /**
- * @notice The Spinner component provides a visual representation of a loading state.
- * @param {Object} props The properties provided to the component.
- * @param {string} [props.color='white'] The color of the spinner.
- * @param {string} [props.size='24px'] The width and height of the spinner.
- * @param {string} [props.borderWidth='3px'] The border width of the spinner.
+ * @title Spinner Component
+ * @notice This component renders a spinning loader.
+ * @dev Spinner component used to show a loading state in the UI. The component
+ * can be customized with different colors, sizes, and border widths.
  */
 const Spinner = ({ color = 'white', size = '24px', borderWidth = '3px' }) => {
+   /** @dev Style object for the spinner, derived from props. */
    const style = {
       width: size,
       height: size,
       borderWidth: borderWidth
    }
 
+   /**
+    * @return Returns a span element with the spinner class and dynamic styling.
+    * @dev Renders the spinner with the provided style attributes.
+    */
    return <span className="spinner" style={style}></span>
 }
 

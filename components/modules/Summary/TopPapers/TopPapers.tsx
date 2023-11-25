@@ -1,4 +1,4 @@
-import PublicationItem from '@/components/common/Publication/Item/Published'
+import { PublicationItem } from '@/components/common/Publication/Item/Published'
 import { DocumentBasicProps } from '@/services/document/getStatistics.service'
 import { addNumberSuffix } from '@/utils/format_number'
 import React from 'react'

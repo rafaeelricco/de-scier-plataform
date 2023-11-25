@@ -5,15 +5,7 @@ import React from 'react'
 import { twMerge } from 'tailwind-merge'
 import { tv } from 'tailwind-variants'
 
-/**
- * @notice Defines style variants for the select component using the `tv` function from `tailwind-variants`.
- *
- * Variants:
- * - `small`: Compact design with specific styles for placeholders and general text.
- * - `input`: Similar to `small` but taller and full-width, with different placeholder and text styles.
- *
- * @returns {object} An object of Tailwind CSS style variants.
- */
+/** @dev Defines a set of styles for different types of select components */
 const select = tv({
    variants: {
       type: {
@@ -24,30 +16,25 @@ const select = tv({
 })
 
 /**
- * @notice The root component of the Select module.
- * @param {ReactNode} children - The children components or nodes.
- * @returns JSX.Element - A Root Select component.
+ * @title Select Component Root
+ * @dev Root component for the select, passing all props and children
  */
 const Root: React.FC<Select.SelectProps> = ({ children, ...props }: Select.SelectProps) => {
    return <Select.Root {...props}>{children}</Select.Root>
 }
 
 /**
- * @notice Icon component for the Select dropdown.
- * @param {ReactNode} children - The children components or nodes.
- * @param {string} [className] - Additional classes for styling the component.
- * @returns JSX.Element - A Select Icon component.
+ * @title Select Component Icon
+ * @dev Icon component for the select, passing className and children
  */
 const Icon: React.FC<Select.SelectIconProps> = ({ children, className }: Select.SelectIconProps) => {
    return <Select.Icon className={twMerge('text-black-primary', className)}>{children}</Select.Icon>
 }
 
 /**
- * @notice Trigger component that toggles the Select dropdown.
- * @param {ReactNode} children - The children components or nodes.
- * @param {string} [className] - Additional classes for styling the component.
- * @param {string} [variant='small'] - Defines the visual variant of the trigger. Available options: 'small', 'input'.
- * @returns JSX.Element - A Trigger component for the Select dropdown.
+ * @title Select Component Trigger
+ * @dev Trigger component for the select, allowing for custom variants
+ * @param variant Variant of the select trigger
  */
 const Trigger: React.FC<TriggerProps> = ({ children, className, variant = 'small', ...props }: TriggerProps) => {
    return (
@@ -65,10 +52,8 @@ const Trigger: React.FC<TriggerProps> = ({ children, className, variant = 'small
 }
 
 /**
- * @notice Content component for displaying select options.
- * @param {ReactNode} children - The children components or nodes.
- * @param {string} [className] - Additional classes for styling the component.
- * @returns JSX.Element - A Content container for Select options.
+ * @title Select Component Content
+ * @dev Content component for the select, rendering children with additional class names
  */
 const Content: React.FC<Select.SelectContentProps> = ({ children, className, ...props }: Select.SelectContentProps) => {
    return (
@@ -83,9 +68,8 @@ const Content: React.FC<Select.SelectContentProps> = ({ children, className, ...
 }
 
 /**
- * @notice Individual select item component.
- * @param {ReactNode} props.children The children components or nodes.
- * @param {string} [props.className] Additional classes for styling the component.
+ * @title Select Component Item
+ * @dev Item component for the select, rendering children with additional class names
  */
 const Item: React.FC<Select.SelectItemProps> = ({ children, className, ...props }: Select.SelectItemProps) => {
    return (
@@ -102,9 +86,8 @@ const Item: React.FC<Select.SelectItemProps> = ({ children, className, ...props 
 }
 
 /**
- * @notice Text component for select items.
- * @param {ReactNode} props.children The children components or nodes.
- * @param {string} [props.className] Additional classes for styling the component.
+ * @title Select Component Item Text
+ * @dev ItemText component for the select, rendering children with additional class names
  */
 const ItemText: React.FC<Select.SelectItemTextProps> = ({ children, className, ...props }: Select.SelectItemTextProps) => {
    return (
@@ -115,9 +98,8 @@ const ItemText: React.FC<Select.SelectItemTextProps> = ({ children, className, .
 }
 
 /**
- * @notice Value component to display selected value.
- * @param {ReactNode} props.children The children components or nodes.
- * @param {string} [props.className] Additional classes for styling the component.
+ * @title Select Component Value
+ * @dev Value component for the select, rendering children with additional class names
  */
 const Value: React.FC<Select.SelectValueProps> = ({ children, className, ...props }: Select.SelectValueProps) => {
    return (
@@ -128,9 +110,8 @@ const Value: React.FC<Select.SelectValueProps> = ({ children, className, ...prop
 }
 
 /**
- * @notice The viewport component of the Select module.
- * @param {ReactNode} props.children The children components or nodes.
- * @param {string} [props.className] Additional classes for styling the component.
+ * @title Select Component Viewport
+ * @dev Viewport component for the select, rendering children with additional class names
  */
 const Viewport: React.FC<Select.SelectViewportProps> = ({ children, className, ...props }: Select.SelectViewportProps) => {
    return (
@@ -141,17 +122,16 @@ const Viewport: React.FC<Select.SelectViewportProps> = ({ children, className, .
 }
 
 /**
- * @notice The portal component of the Select module, for rendering children outside the DOM hierarchy.
- * @param {ReactNode} props.children The children components or nodes.
+ * @title Select Component Portal
+ * @dev Portal component for the select, rendering children with props
  */
 const Portal: React.FC<Select.SelectPortalProps> = ({ children, ...props }: Select.SelectPortalProps) => {
    return <Select.Portal {...props}>{children}</Select.Portal>
 }
 
 /**
- * @notice Group component to group related select items.
- * @param {ReactNode} props.children The children components or nodes.
- * @param {string} [props.className] Additional classes for styling the component.
+ * @title Select Component Group
+ * @dev Group component for the select, rendering children with additional class names
  */
 const Group: React.FC<Select.SelectGroupProps> = ({ children, className, ...props }) => {
    return (

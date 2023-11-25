@@ -4,7 +4,15 @@ import Image from 'next/image'
 import React from 'react'
 import './Item.css'
 
-const InReviewItem: React.FC<InReviewItemProps> = ({ date, link, ready_to_publish, status_editor, status_reviewer, image, title }: InReviewItemProps) => {
+export const InReviewItem: React.FC<InReviewItemProps> = ({
+   date,
+   link,
+   ready_to_publish,
+   status_editor,
+   status_reviewer,
+   image,
+   title
+}: InReviewItemProps) => {
    const { windowDimension } = useDimension()
    const isSmallDesktop = windowDimension && windowDimension < 1440 && windowDimension >= 1024
    return (
@@ -73,5 +81,3 @@ export interface InReviewItemProps {
    title: string
    link: string
 }
-
-export default InReviewItem

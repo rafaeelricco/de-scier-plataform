@@ -2,6 +2,11 @@ import '@styles/sidebar.css'
 import Link from 'next/link'
 import React from 'react'
 
+/**
+ * @title Item Component
+ * @notice This component renders an item with optional icons and text, supports active state, and can act as a link or a clickable item.
+ * @dev Component to display a list item with icons and text. It can be used as a link or a clickable div. Supports active states and dividers.
+ */
 const Item: React.FC<ItemProps> = ({ icon, icon_end, text, active = false, href, divider, onClick }: ItemProps) => {
    return (
       <React.Fragment>

@@ -1,12 +1,20 @@
 import CommentItem from '@/components/common/Comment/Comment'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { DocumentGetProps } from '@/services/document/getArticles'
 import { comments_initial_state, reducer_comments } from '@/states/reducer_comments'
 import React, { useReducer } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { CommentItemProps } from '../../Comment/Typing'
+import { EditorReviewListProps } from './Typing'
 
+/**
+ * @title Comments List Component
+ * @notice Handles the display and interaction with comments on an article.
+ * @dev This component renders a list of comments and provides functionality for approval, rejection, and viewing reasons for the comments.
+ */
 export const CommentsList: React.FC<EditorReviewListProps> = ({ article, onApprove, onReject, onSeeReasoning }: EditorReviewListProps) => {
+   /**
+    * @dev Initializes the useReducer hook with the reducer_comments function and comments_initial_state initial state.
+    * @return State and dispatch function from the useReducer hook.
+    */
    const [state, dispatch] = useReducer(reducer_comments, comments_initial_state)
    return (
       <React.Fragment>
@@ -42,10 +50,4 @@ export const CommentsList: React.FC<EditorReviewListProps> = ({ article, onAppro
          </div>
       </React.Fragment>
    )
-}
-interface EditorReviewListProps {
-   article: DocumentGetProps | null
-   onApprove?: (comment: CommentItemProps) => void
-   onReject?: (comment: CommentItemProps) => void
-   onSeeReasoning?: (comment: CommentItemProps) => void
 }
