@@ -74,7 +74,7 @@ export default function AsReviewerPage() {
       setResults(filteredArticles)
    }, [articles, documentType, status, debouncedSearchTerm, current])
 
-   const withoutFilters = documentType === null && status === 'pending' && debouncedSearchTerm === ''
+   const withoutFilters = documentType === null && status === '' && debouncedSearchTerm === ''
 
    return (
       <React.Fragment>
@@ -111,7 +111,7 @@ export default function AsReviewerPage() {
                   </div>
                   <div className="flex flex-col md:flex-row md:items-center gap-2">
                      <SelectArticleType
-                        placeholder={`Article type: ${documentType || 'All'}`}
+                        placeholder={'Article type:'}
                         selected={documentType}
                         onValueChange={(value) => {
                            if (value === 'all') setDocumentType(null)
