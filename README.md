@@ -8,8 +8,6 @@
    <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="typescript" style="border-radius: 4px; height: 24px">
    <img src="https://img.shields.io/badge/Blockchain.com-121D33?logo=blockchaindotcom&logoColor=fff&style=for-the-badge" alt="blockchain" style="border-radius: 4px; height: 24px">
    <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="vercel" style="border-radius: 4px; height: 24px">
-   <img src="https://img.shields.io/badge/web3%20js-F16822?style=for-the-badge&logo=web3.js&logoColor=white
-" alt="web-3" style="border-radius: 4px; height: 24px">
 </p>
 </h4>
 
