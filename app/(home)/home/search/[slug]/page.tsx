@@ -112,7 +112,9 @@ export default function Page({ params }: { params: { slug: string } }) {
          processing: false
       })
 
-      window.open(response.checkoutUrl)
+      if (typeof window !== 'undefined') {
+         window.open(response.checkoutUrl)
+      }
    }
 
    const handleDownloadDocument = async () => {

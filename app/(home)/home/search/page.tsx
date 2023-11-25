@@ -1,4 +1,5 @@
 'use client'
+
 import { Dropdown } from '@/components/common/Dropdown/Dropdown'
 import { SelectArticleType } from '@/components/common/Filters/SelectArticleType/SelectArticleType'
 import PaginationComponent from '@/components/common/Pagination/Pagination'
@@ -15,7 +16,7 @@ import React from 'react'
 import { Person, Search } from 'react-bootstrap-icons'
 
 export default function SearchArticlesPage() {
-   const { articles, loading } = useArticles()
+   const { articles } = useArticles()
 
    const searchQueries = useSearchParams()
 
