@@ -134,7 +134,14 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onBack, onClo
             <InserEmail errors={errors} onClose={onClose} onContinue={handleInsertEmailContinue} onBack={onBack} register={register} />
          )}
          {component.insert_code && (
-            <InsertCode onClose={onClose} onContinue={handleInsertCodeContinue} onBack={handleInsertCodeBack} register={register} errors={errors} />
+            <InsertCode
+               onClose={onClose}
+               onContinue={handleInsertCodeContinue}
+               onBack={handleInsertCodeBack}
+               resendCode={handleInsertEmailContinue}
+               register={register}
+               errors={errors}
+            />
          )}
          {component.insert_new_password && (
             <InsertNewPassword
@@ -203,11 +210,12 @@ type InsertCodeProps = {
    onClose: () => void
    onBack: () => void
    onContinue: () => void
+   resendCode: () => void
    register: UseFormRegister<ConfirmRecoveryPasswordProps>
    errors: FormState<ConfirmRecoveryPasswordProps>['errors']
 }
 
-const InsertCode: React.FC<InsertCodeProps> = ({ onBack, onClose, onContinue, register, errors }: InsertCodeProps) => {
+const InsertCode: React.FC<InsertCodeProps> = ({ onBack, onClose, onContinue, resendCode, register, errors }: InsertCodeProps) => {
    return (
       <React.Fragment>
          <div className="w-ful grid gap-6 md:p-16 relative p-6 pb-12">
@@ -215,7 +223,9 @@ const InsertCode: React.FC<InsertCodeProps> = ({ onBack, onClose, onContinue, re
             <div className="grid gap-6">
                <p className="text-base">
                   We’ve sent you a confirmation code in your email. Didn’t receive the e-mail?{' '}
-                  <span className="font-semibold text-terciary-main hover:cursor-pointer hover:underline">Send code again.</span>
+                  <span className="font-semibold text-terciary-main hover:cursor-pointer hover:underline" onClick={resendCode}>
+                     Send code again.
+                  </span>
                </p>
                <div className="grid gap-6">
                   <Input.Root>
