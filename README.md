@@ -1,7 +1,7 @@
 <h1 align="center">
   <img src="public/images/de-scier-plataform.png" alt="g2-capital">
 </h1>
-  <p align="center">The deScier project represents an innovation in scientific publishing, making it more accessible, fast, and fair. We emphasize decentralization to enhance transparency, allowing authors to have a more active participation and control over their work, significantly reducing costs. Our differentiator includes unique peer review processes and advanced technologies, promoting unprecedented global collaboration and co-creation. With deScier, we democratize access to scientific publishing, driving the advancement of knowledge on a global scale, and highlighting how our approach is more efficient and beneficial compared to traditional methods.</p>
+  <p align="center">The deScier project represents an innovation in scientific publishing, making it more accessible, faster, and fairer. Our decentralized approach increases transparency and empowers authors, ensuring 100% ownership and control over their work while significantly reducing costs. Our differentiator includes unique peer review processes and advanced technologies, promoting global collaboration and unprecedented co-creation. With deScier, we democratize access to scientific publishing, driving the advancement of knowledge on a global scale and demonstrating the efficiency and benefits of our approach compared to traditional methods.</p>
 <h4 align="center">
  <p align="center">
    <img src="https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="nextjs" style="border-radius: 4px; height: 24px">
