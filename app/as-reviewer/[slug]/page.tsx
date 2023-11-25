@@ -341,7 +341,6 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                      <span className="text-sm font-semibold">Title</span>
                      <span className="text-sm">{article?.document?.title}</span>
                   </div>
-
                   <div className="grid gap-2">
                      <p className="text-sm font-semibold">Add keywords</p>
                      <div className="flex flex-wrap gap-1 sm:gap-2">
@@ -372,7 +371,6 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                   <h3 className="text-sm font-semibold">Document type</h3>
                   <p className="text-sm font-regular">{getArticleTypeLabel(article?.document.documentType as string)}</p>
                </div>
-
                <div className="grid gap-2">
                   <h3 className="text-sm font-semibold">Abstract</h3>
                   <p className="text-sm font-regular">{article?.document.abstract}</p>
