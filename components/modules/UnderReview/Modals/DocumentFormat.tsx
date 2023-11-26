@@ -3,7 +3,13 @@ import DocumentIllustration from 'public/svgs/modules/under-review/under-review-
 import React from 'react'
 import { X } from 'react-bootstrap-icons'
 
-export const DocumentFormatModal: React.FC<DocumentFormatProps> = ({ onClose }: DocumentFormatProps) => {
+/**
+ * @title DocumentFormatModal Component
+ * @notice This component provides information about the required document format for final upload and display on the platform.
+ */
+export const DocumentFormatModal: React.FC<{
+   onClose: () => void
+}> = ({ onClose }: { onClose: () => void }) => {
    return (
       <div className="grid gap-6">
          <X
@@ -22,18 +28,3 @@ export const DocumentFormatModal: React.FC<DocumentFormatProps> = ({ onClose }: 
       </div>
    )
 }
-
-interface DocumentFormatProps {
-   onClose: () => void
-}
-
-/* Usage
-
- <Dialog.Root open={true}>
-    <Dialog.Overlay />
-    <Dialog.Content className={twMerge('px-16 py-14 max-w-[600px]')}>
-        <DocumentFormatModal onClose={() => {}} />
-    </Dialog.Content>
-</Dialog.Root>
-
-*/

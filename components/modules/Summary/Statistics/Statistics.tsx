@@ -7,9 +7,17 @@ import ViewsIllustration from 'public/svgs/modules/statistics/views.svg'
 import React from 'react'
 import { CaretLeft, CaretRight } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
+import { StatisticsProps } from './Typing'
 
+/**
+ * @title Statistics Component
+ * @notice This component displays a carousel of various statistics such as total articles, likes, and views.
+ */
 const Statistics: React.FC<StatisticsProps> = (data: StatisticsProps) => {
+   /** @dev State for managing the current slide in the carousel */
    const [currentSlide, setCurrentSlide] = React.useState(0)
+
+   /** @dev Setting up the carousel slider with Keen Slider */
    const [sliderRef, instanceRef] = useKeenSlider({
       slides: { perView: 1, spacing: 0 },
       loop: true,
@@ -18,23 +26,27 @@ const Statistics: React.FC<StatisticsProps> = (data: StatisticsProps) => {
          '(max-width: 728px)': {}
       },
       slideChanged(s) {
+         /** @dev Updates current slide based on slider change */
          const realIndex = s.track.details.rel
          setCurrentSlide(realIndex)
       }
    })
 
+   /** @dev Function to navigate to the previous slide */
    const handlePrevClick = () => {
       if (instanceRef) {
          instanceRef.current?.prev()
       }
    }
 
+   /** @dev Function to navigate to the next slide */
    const handleNextClick = () => {
       if (instanceRef) {
          instanceRef.current?.next()
       }
    }
 
+   /** @dev Array of components for each statistic to be displayed in the carousel */
    const carrousel = [
       {
          id: 1,
@@ -49,7 +61,6 @@ const Statistics: React.FC<StatisticsProps> = (data: StatisticsProps) => {
          component: <TotalViews total_views={data.totalViews} />
       }
    ]
-
    return (
       <React.Fragment>
          <div className="grid content-start gap-6">
@@ -85,6 +96,10 @@ const Statistics: React.FC<StatisticsProps> = (data: StatisticsProps) => {
    )
 }
 
+/**
+ * @title TotalArticles Component
+ * @notice Displays the total number of articles published.
+ */
 const TotalArticles: React.FC<{ total_articles: number }> = ({ total_articles }) => {
    return (
       <div className="grid lg:grid-flow-col items-center">
@@ -97,6 +112,10 @@ const TotalArticles: React.FC<{ total_articles: number }> = ({ total_articles })
    )
 }
 
+/**
+ * @title TotalLikes Component
+ * @notice Displays the total number of likes on articles.
+ */
 const TotalLikes: React.FC<{ total_likes: number }> = ({ total_likes }) => {
    return (
       <div className="grid lg:grid-flow-col items-center">
@@ -109,6 +128,10 @@ const TotalLikes: React.FC<{ total_likes: number }> = ({ total_likes }) => {
    )
 }
 
+/**
+ * @title TotalViews Component
+ * @notice Displays the total number of views on articles.
+ */
 const TotalViews: React.FC<{ total_views: number }> = ({ total_views }) => {
    return (
       <div className="grid lg:grid-flow-col items-center">
@@ -122,9 +145,3 @@ const TotalViews: React.FC<{ total_views: number }> = ({ total_views }) => {
 }
 
 export default Statistics
-
-type StatisticsProps = {
-   totalArticlesPublished: number
-   totalLikes: number
-   totalViews: number
-}

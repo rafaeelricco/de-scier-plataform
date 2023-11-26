@@ -14,7 +14,12 @@ import { toast } from 'react-toastify'
 import LoginAnimation from '../Login/Animation/Animation'
 import { RegisterModalProps } from './Typing'
 
+/**
+ * @title RegisterModal Component
+ * @notice This component provides a user interface for registering a new account, including form validation and dynamic rendering based on registration status.
+ */
 const RegisterModal: React.FC<RegisterModalProps> = ({ onClose, onRegister, onBack, onLogin, onReturnToLogin }: RegisterModalProps) => {
+   /** @dev Initializes form handling and validation using useForm with Zod schema */
    const {
       register,
       handleSubmit,
@@ -22,19 +27,20 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ onClose, onRegister, onBa
       formState: { errors }
    } = useForm<RegisterProps>({
       resolver: zodResolver(RegisterSchema),
-      defaultValues: {
-         name: '',
-         email: '',
-         password: '',
-         confirmPassword: ''
-      }
+      defaultValues: { name: '', email: '', password: '', confirmPassword: '' }
    })
 
+   /** @dev Initialize loading state management */
    const { loading, start, stop } = useLoading()
 
+   /** @dev State to manage the current component view */
    const success_component = 'success'
    const [component, setComponent] = React.useState('')
 
+   /**
+    * @dev Submits registration data to server
+    * @param data Contains user input from registration form
+    */
    const onSubmit: SubmitHandler<RegisterProps> = async (data) => {
       start('loading')
 

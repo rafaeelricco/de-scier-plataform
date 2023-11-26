@@ -1,6 +1,10 @@
 import EarningsIllustration from 'public/svgs/modules/statistics/earnings.svg'
 import React from 'react'
 
+/**
+ * @title Earnings Component
+ * @notice This component displays the user's total and weekly earnings in a visually appealing layout.
+ */
 const Earnings: React.FC = () => {
    return (
       <React.Fragment>

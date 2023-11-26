@@ -1,8 +1,12 @@
 import { PublicationItem } from '@/components/common/Publication/Item/Published'
-import { DocumentBasicProps } from '@/services/document/getStatistics.service'
 import { addNumberSuffix } from '@/utils/format_number'
 import React from 'react'
+import { TopPapersProps } from './Typing'
 
+/**
+ * @title TopPapers Component
+ * @notice This component displays the user's top papers based on likes, incorporating a scrollable list.
+ */
 const TopPapers: React.FC<TopPapersProps> = ({ publishedDocuments }: TopPapersProps) => {
    return (
       <React.Fragment>
@@ -35,10 +39,6 @@ const TopPapers: React.FC<TopPapersProps> = ({ publishedDocuments }: TopPapersPr
          </div>
       </React.Fragment>
    )
-}
-
-type TopPapersProps = {
-   publishedDocuments: DocumentBasicProps[]
 }
 
 export default TopPapers
