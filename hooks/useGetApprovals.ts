@@ -2,7 +2,7 @@ import { ReviewersOnDocuments } from '@/services/document/getArticles'
 import { useState } from 'react'
 
 export const useGetApprovals = () => {
-   const [reviewerApprovals, setReviewerApprovals] = useState<string[]>(['PENDING', 'PENDING'])
+   const [reviewerApprovals, setReviewerApprovals] = useState<string[]>(['PENDING'])
    const [editorApprovals, setEditorApprovals] = useState<string[]>(['PENDING'])
 
    const getApprovals = (approvals: ReviewersOnDocuments[]) => {
