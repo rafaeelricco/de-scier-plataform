@@ -3,12 +3,6 @@ import { Web3Auth } from '@web3auth/modal'
 import { getSession } from 'next-auth/react'
 import { Web3 } from 'web3'
 
-const inProduction = process.env.NODE_ENV === 'production'
-
-const clientId = inProduction ? process.env.WEB3AUTH_CLIENT_ID! : process.env.WEB3AUTH_CLIENT_ID_TEST!
-
-const alchemyApiUrl = inProduction ? process.env.ALCHEMY_API_URL : process.env.ALCHEMY_API_URL_TEST
-
 interface InitWeb3Props {
    setWeb3Auth: (web3Auth: Web3Auth) => void
    setProvider: (provider: SafeEventEmitterProvider | null) => void
@@ -19,6 +13,10 @@ interface ConnectWeb3Props {
    provider: SafeEventEmitterProvider | null
    setProvider: (provider: SafeEventEmitterProvider | null) => void
 }
+
+const inProduction = process.env.NEXT_PUBLIC_NODE_ENV === 'production'
+const clientId = inProduction ? process.env.WEB3AUTH_CLIENT_ID! : process.env.WEB3AUTH_CLIENT_ID_TEST!
+const alchemyApiUrl = inProduction ? process.env.ALCHEMY_API_URL : process.env.ALCHEMY_API_URL_TEST
 
 export const initWeb3Auth = async ({ setWeb3Auth, setProvider }: InitWeb3Props) => {
    try {
