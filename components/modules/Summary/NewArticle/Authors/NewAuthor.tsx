@@ -1,32 +1,23 @@
-import React from 'react'
-
 import { AuthorProps, AuthorSchema } from '@/schemas/create_document'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { uniqueId } from 'lodash'
+import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { NewAuthorProps } from './Typing'
 
-interface NewAuthorProps {
-   onClose: () => void
-   onAddAuthor?: (author: AuthorProps) => void
-   onUpdateAuthor?: (author: AuthorProps) => void
-   onEditAuthor?: AuthorProps
-}
-
+/**
+ * @title NewAuthor Component
+ * @notice This component provides a form interface for adding or updating author information.
+ */
 export const NewAuthor: React.FC<NewAuthorProps> = ({ onAddAuthor, onEditAuthor, onClose, onUpdateAuthor }: NewAuthorProps) => {
+   /** @dev Initializes form handling with validation and default values */
    const {
       register,
       handleSubmit,
-      watch,
-      formState: { errors, isValid },
-      setValue,
-      trigger,
-      getValues,
-      control,
-      clearErrors,
-      setError
+      formState: { errors, isValid }
    } = useForm<AuthorProps>({
       resolver: zodResolver(AuthorSchema),
       defaultValues: {
@@ -38,8 +29,11 @@ export const NewAuthor: React.FC<NewAuthorProps> = ({ onAddAuthor, onEditAuthor,
          walletAddress: onEditAuthor ? onEditAuthor.walletAddress : ''
       }
    })
-   console.log(errors)
 
+   /**
+    * @dev Submits the form data for author creation or update
+    * @param data The author data from the form
+    */
    const onSubmit: SubmitHandler<AuthorProps> = async (data) => {
       if (onEditAuthor) {
          onUpdateAuthor && onUpdateAuthor(data)

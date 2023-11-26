@@ -10,6 +10,10 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import GenericSuccess from './Success'
 
+/**
+ * @title UpdateEmail Component
+ * @notice Component for updating a user's email address, offering a form to input new email or password based on props received.
+ */
 const UpdateEmail: React.FC<UpdateEmailProps> = ({
    onClose,
    onSetNewEmail,

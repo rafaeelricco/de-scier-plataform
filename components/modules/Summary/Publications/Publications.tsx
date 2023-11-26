@@ -4,19 +4,29 @@ import { PublicationItem } from '@/components/common/Publication/Item/Published'
 import { DocumentBasicProps } from '@/services/document/getStatistics.service'
 import { addNumberSuffix } from '@/utils/format_number'
 import React from 'react'
+import { PublicationsProps } from './Typing'
 
+/**
+ * @title Publications Component
+ * @notice This component displays a list of published and under review articles with pagination.
+ */
 const Publications: React.FC<PublicationsProps> = ({ pendingDocuments, publishedDocuments }: PublicationsProps) => {
+   /** @dev States to toggle between published articles and articles under review */
    const [underReview, setUnderReview] = React.useState(false)
    const [publications, setPublications] = React.useState(true)
 
+   /** @dev Constant for the number of items per page */
    const per_page = 3
 
+   /** @dev Pagination states for published and under review articles */
    const [page, setPage] = React.useState(1)
    const [pageReview, setPageReview] = React.useState(1)
 
+   /** @dev States to store current page results */
    const [results, setResults] = React.useState<DocumentBasicProps[]>(publishedDocuments)
    const [resultsReview, setResultsReview] = React.useState<DocumentBasicProps[]>(pendingDocuments)
 
+   /** @dev States for total pages in pagination */
    const [totalPages, setTotalPages] = React.useState(Math.ceil(results.length / per_page))
    const [totalPagesReview, setTotalPagesReview] = React.useState(Math.ceil(resultsReview.length / per_page))
 
@@ -135,11 +145,6 @@ const Publications: React.FC<PublicationsProps> = ({ pendingDocuments, published
          </div>
       </React.Fragment>
    )
-}
-
-type PublicationsProps = {
-   publishedDocuments: DocumentBasicProps[]
-   pendingDocuments: DocumentBasicProps[]
 }
 
 export default Publications

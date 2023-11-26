@@ -3,7 +3,12 @@ import { home_routes } from '@/routes/home'
 import * as Button from '@components/common/Button/Button'
 import React from 'react'
 import { PlusCircle } from 'react-bootstrap-icons'
+import { SubmissionProps } from './Typing'
 
+/**
+ * @title Submission Component
+ * @notice This component provides a visual summary of submissions and allows for new submissions.
+ */
 const Submission: React.FC<SubmissionProps> = (data: SubmissionProps) => {
    return (
       <React.Fragment>
@@ -36,12 +41,6 @@ const Submission: React.FC<SubmissionProps> = (data: SubmissionProps) => {
          </div>
       </React.Fragment>
    )
-}
-
-type SubmissionProps = {
-   publishedAmount: number
-   pendingAmount: number
-   totalDocuments: number
 }
 
 export default Submission
