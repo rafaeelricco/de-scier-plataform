@@ -31,7 +31,7 @@ export const initWeb3Auth = async ({ setWeb3Auth, setProvider }: InitWeb3Props) 
             tickerName: 'Polygon'
          },
          clientId,
-         web3AuthNetwork: inProduction ? 'cyan' : 'testnet'
+         web3AuthNetwork: inProduction ? 'cyan' : 'sapphire_devnet'
       })
       await web3authInstance.initModal()
       setWeb3Auth(web3authInstance)
