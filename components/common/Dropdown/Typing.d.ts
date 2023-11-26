@@ -1,3 +1,5 @@
+import { FilterOption } from '@/mock/dropdow_filter_options'
+
 interface DropdownProps {
    label: string
    className?: string

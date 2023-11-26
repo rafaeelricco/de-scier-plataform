@@ -1,27 +1,29 @@
-export type FilterOption = {
-   id: number
+import { uniqueId } from 'lodash'
+
+export interface FilterOption {
+   id: number | string
    label: string
-   value: string
+   value: string | number | null
 }
 
 export const filter_order_by = [
    {
-      id: 1,
+      id: uniqueId(),
       label: 'Newest',
       value: 'newest'
    },
    {
-      id: 2,
+      id: uniqueId(),
       label: 'Oldest',
       value: 'oldest'
    },
    {
-      id: 3,
+      id: uniqueId(),
       label: 'Most viewed',
       value: 'most_viewed'
    },
    {
-      id: 4,
+      id: uniqueId(),
       label: 'Most liked',
       value: 'most_liked'
    }
@@ -29,12 +31,12 @@ export const filter_order_by = [
 
 export const filter_access = [
    {
-      id: 1,
+      id: uniqueId(),
       label: 'Open',
       value: 'open'
    },
    {
-      id: 2,
+      id: uniqueId(),
       label: 'Paid',
       value: 'paid'
    }
@@ -42,27 +44,27 @@ export const filter_access = [
 
 export const filter_document_type = [
    {
-      id: 1,
+      id: uniqueId(),
       label: 'Manuscript',
       value: 'manuscript'
    },
    {
-      id: 2,
+      id: uniqueId(),
       label: 'Paper',
       value: 'paper'
    },
    {
-      id: 3,
+      id: uniqueId(),
       label: 'Report',
       value: 'report'
    },
    {
-      id: 4,
+      id: uniqueId(),
       label: 'Review',
       value: 'review'
    },
    {
-      id: 5,
+      id: uniqueId(),
       label: 'Conference abstract',
       value: 'conference abstract'
    }
@@ -70,27 +72,27 @@ export const filter_document_type = [
 
 export const filter_field = [
    {
-      id: 1,
+      id: uniqueId(),
       label: 'Biology',
       value: 'biology'
    },
    {
-      id: 2,
+      id: uniqueId(),
       label: 'Technology',
       value: 'technology'
    },
    {
-      id: 3,
+      id: uniqueId(),
       label: 'Mathematics',
       value: 'mathematics'
    },
    {
-      id: 4,
+      id: uniqueId(),
       label: 'Physics',
       value: 'physics'
    },
    {
-      id: 5,
+      id: uniqueId(),
       label: 'Chemistry',
       value: 'chemistry'
    }
@@ -98,27 +100,27 @@ export const filter_field = [
 
 export const filter_by_year = [
    {
-      id: 1,
+      id: uniqueId(),
       label: '2019',
       value: 2019
    },
    {
-      id: 2,
+      id: uniqueId(),
       label: '2020',
       value: 2020
    },
    {
-      id: 3,
+      id: uniqueId(),
       label: '2021',
       value: 2021
    },
    {
-      id: 4,
+      id: uniqueId(),
       label: '2022',
       value: 2022
    },
    {
-      id: 5,
+      id: uniqueId(),
       label: '2023',
       value: 2023
    }
@@ -126,27 +128,27 @@ export const filter_by_year = [
 
 export const filter_status = [
    {
-      id: 1,
+      id: uniqueId(),
       label: 'Pending',
       value: 'pending'
    },
    {
-      id: 2,
+      id: uniqueId(),
       label: 'Approved',
       value: 'approved'
    },
    {
-      id: 3,
+      id: uniqueId(),
       label: 'Final approval pending',
       value: 'admin_approve'
    },
    {
-      id: 4,
+      id: uniqueId(),
       label: 'Rejected',
       value: 'rejected'
    },
    {
-      id: 5,
+      id: uniqueId(),
       label: 'Published',
       value: 'submitted'
    }
@@ -154,17 +156,17 @@ export const filter_status = [
 
 export const reviewer_filter_status = [
    {
-      id: 1,
+      id: uniqueId(),
       label: 'All',
       value: ''
    },
    {
-      id: 2,
+      id: uniqueId(),
       label: 'Pending',
       value: 'pending'
    },
    {
-      id: 3,
+      id: uniqueId(),
       label: 'You approved',
       value: 'approved'
    }

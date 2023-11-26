@@ -4,7 +4,7 @@ import { HeaderMobile } from '@/components/common/Header/HeaderHome'
 import '@styles/layout.css'
 import React from 'react'
 
-export default function ProfileLayout({ children }: { children: React.ReactNode }) {
+export default function HomeLayout({ children }: { children: React.ReactNode }) {
    return (
       <React.Fragment>
          <section className="relative lg:px-20 2xl:px-52 bg-aquarela z-0 2xl:min-h-[100vh] overflow-x-hidden">

@@ -12,6 +12,7 @@ import CurrencyInput, { CurrencyInputProps } from 'react-currency-input-field'
 import { twMerge } from 'tailwind-merge'
 import { tv } from 'tailwind-variants'
 
+/** @dev Tailwind CSS variant for standard input */
 const input = tv({
    base: 'flex items-center rounded-none border-b-[1px] border-neutral-light_gray p-2 pt-0 placeholder:text-gray-light placeholder:text-base focus:outline-none focus:text-neutral-black w-full placeholder-shown:text-neutral-black bg-transparent focus:border-b-primary-main',
    variants: {
@@ -27,6 +28,7 @@ const input = tv({
    }
 })
 
+/** @dev Tailwind CSS variant for text area input */
 const textArea = tv({
    base: 'flex border-b-[1px] border-neutral-light_gray p-2 pt-0 placeholder:text-gray-light placeholder:text-base  focus:outline-none focus:text-neutral-black w-full placeholder-shown:text-neutral-black bg-transparent focus:border-neutral-black',
    variants: {
@@ -38,33 +40,24 @@ const textArea = tv({
    }
 })
 
+/** @dev Tailwind CSS variant for password input */
 const password = tv({
    base: 'flex items-center rounded-none border-b-[1px] border-neutral-light_gray p-2 pt-0 placeholder:text-gray-light placeholder:text-base focus:outline-none focus:text-neutral-black w-full placeholder-shown:text-neutral-black bg-transparent focus:border-b-primary-main'
 })
 
 /**
- * @notice This component is used to render a container (div) with its children.
- * @dev This is a top-level component that accepts its children as props.
- * @param {ReactNode} props.children The child nodes this component will render.
+ * @dev Root component for wrapping input elements
+ * @param {WrapperInputProps} props - Properties for the input wrapper component
+ * @return JSX Element
  */
 const Root: React.FC<WrapperInputProps> = ({ children }: WrapperInputProps) => {
    return <div className="grid items-end gap-2 w-full relative">{children}</div>
 }
 
 /**
- * @notice This component is used to render a label with an optional tag if the 'optional' prop is provided.
- * @dev This is a functional component that extends the basic HTML label element properties.
- * @param {Object} props The properties provided to the component
- * @param {ReactNode} props.children The text of the label
- * @param {boolean} [props.optional] If set to true, an optional tag will be displayed
- */
-/**
- * @title Label Component
- * @notice A label component with optional icon and styling.
- * @param {ReactNode} children - The label content.
- * @param {boolean} optional - Indicates if the label represents an optional field.
- * @param {JSX.Element} icon - Icon element to be shown next to the label.
- * @return {JSX.Element} - A styled label.
+ * @dev Label component for inputs
+ * @param {LabelProps} props - Properties for the label component
+ * @return JSX Element
  */
 const Label: React.FC<LabelProps> = ({ children, optional, icon, tooltip_message, ...props }: LabelProps) => {
    return (
@@ -83,18 +76,19 @@ const Label: React.FC<LabelProps> = ({ children, optional, icon, tooltip_message
 }
 
 /**
- * @notice This component is used to render error messages.
- * @dev This is a functional component that accepts 'children' as props.
- * @param {ReactNode} props.children The error message to display
+ * @dev Error display component for inputs
+ * @param {ErrorProps} props - Properties for the error component
+ * @return JSX Element
  */
 const Error: React.FC<ErrorProps> = ({ children }: ErrorProps) => {
    return <React.Fragment>{children && <p className="text-red-500 text-sm">{children}</p>} </React.Fragment>
 }
 
 /**
- * @notice This component is used to render a textarea input field.
- * @dev This is a functional component that extends the basic HTML textarea element properties.
- * @param {Object} props The properties provided to the component. These properties are extensions of the basic HTML textarea attributes.
+ * @dev Text area input component
+ * @param {TextAreaProps} props - Properties for the text area component
+ * @param {LegacyRef<HTMLInputElement>} ref - Ref for the text area
+ * @return JSX Element
  */
 const TextArea = React.forwardRef<HTMLInputElement, TextAreaProps>(({ icon, start = icon ? true : false, end, className, ...props }, ref) => {
    /** @dev define if has icon */
@@ -116,13 +110,10 @@ const TextArea = React.forwardRef<HTMLInputElement, TextAreaProps>(({ icon, star
 })
 
 /**
- * @notice The Password component is a password input field with an option to toggle the visibility of the entered text.
- * @dev This component extends the basic HTML input element properties and includes additional properties for icon visibility.
- * @param {Object} props Contains the properties provided to the component. These properties are extensions of the basic HTML input attributes.
- * @param {ReactNode} [props.icon] The icon to be displayed
- * @param {boolean} [props.start] If true, the icon is positioned at the start of the input field
- * @param {boolean} [props.end] If true, the icon is positioned at the end of the input field
- * @param {boolean} [props.visible] If true, the entered text in the input field is visible
+ * @dev Password input component with visibility toggle
+ * @param {InputProps} props - Properties for the password input component
+ * @param {LegacyRef<HTMLInputElement>} ref - Ref for the input
+ * @return JSX Element
  */
 const Password = React.forwardRef<HTMLInputElement, InputProps>(({ ...props }, ref) => {
    const [isVisible, setIsVisible] = useState(false)
@@ -144,12 +135,10 @@ const Password = React.forwardRef<HTMLInputElement, InputProps>(({ ...props }, r
 })
 
 /**
- * @notice This component is used to render an input field, which can optionally have an icon at its start or end.
- * @dev This is a functional component that extends the basic HTML input element properties and includes additional properties for icon positioning.
- * @param {Object} props The properties provided to the component. These properties are extensions of the basic HTML input attributes.
- * @param {ReactNode} [props.icon] The icon to be displayed
- * @param {boolean} [props.start] If true, the icon is positioned at the start of the input field
- * @param {boolean} [props.end] If true, the icon is positioned at the end of the input field
+ * @dev Standard input component with optional icon
+ * @param {InputProps} props - Properties for the input component
+ * @param {LegacyRef<HTMLInputElement>} ref - Ref for the input
+ * @return JSX Element
  */
 const Input = React.forwardRef<HTMLInputElement, InputProps>(({ icon, start = icon ? true : false, end, disabled = false, className, ...props }, ref) => {
    /** @dev define if has icon */
@@ -184,14 +173,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({ icon, start = ic
 })
 
 /**
- * @notice This component renders an input field specialized for search functionalities. It includes an embedded search icon on the left side of the input.
- * @dev The `Search` component is a forward-ref React component that accepts `InputProps`. The component renders an input field with an embedded search icon and additional styles and configurations are possible through provided props.
- *
- * @param {boolean} [disabled=false] - Determines whether the search input should be disabled.
- * @param {string} [className] - An optional additional CSS class that can be applied to the input.
- * @param {...InputProps} props - Other properties passed to the input component.
- *
- * @return JSX.Element - A search input field.
+ * @dev Search bar input component
+ * @param {InputProps} props - Properties for the search input component
+ * @param {LegacyRef<HTMLInputElement>} ref - Ref for the input
+ * @return JSX Element
  */
 const Search = React.forwardRef<HTMLInputElement, InputProps>(({ disabled = false, className, ...props }, ref) => {
    return (
@@ -208,14 +193,10 @@ const Search = React.forwardRef<HTMLInputElement, InputProps>(({ disabled = fals
 })
 
 /**
- * @notice A custom select input component. It can display a list of options and supports custom styling, labels, and placeholders.
- *
- * @property {Array<Object>} options - An array of option objects. Each object should contain an `id`, `value`, and `title`.
- * @property {string} placeholder - A text that will be shown when no option is selected.
- * @property {string} [label] - Optional label for the select input.
- * @property {string} [className] - Additional classes to apply custom styles.
- *
- * @returns {ReactElement} A styled select input component.
+ * @dev Select input component with customizable options
+ * @param {SelectInputProps} props - Properties for the select input component
+ * @param {LegacyRef<HTMLInputElement>} ref - Ref for the input
+ * @return JSX Element
  */
 const Select = React.forwardRef<HTMLInputElement, SelectInputProps>(
    (
@@ -302,11 +283,10 @@ const Select = React.forwardRef<HTMLInputElement, SelectInputProps>(
 )
 
 /**
- * @title Percentage Input Component
- * @notice A specialized input component to capture percentage values with some validation checks.
- * @dev This component uses the MaskedInput library to format and validate the percentage input. It ensures the inputted percentage doesn't exceed certain thresholds.
- * @param {string} [mask] Mask pattern to format the input. This is currently unused and should be removed or made functional.
- * @return {ReactElement} Renders the Percentage input component.
+ * @dev Percentage input component using CurrencyInput
+ * @param {CurrencyInputProps} props - Properties for the currency input component
+ * @param {LegacyRef<HTMLInputElement>} ref - Ref for the input
+ * @return JSX Element
  */
 const Percentage = React.forwardRef<HTMLInputElement, CurrencyInputProps>(({ ...props }, ref) => {
    return (
@@ -331,15 +311,9 @@ const Percentage = React.forwardRef<HTMLInputElement, CurrencyInputProps>(({ ...
 })
 
 /**
- * @notice The Combobox component provides an interactive dropdown list of options.
- * @dev This component leverages the Popover component for rendering. It has controlled states for openness and the currently selected value.
- *
- * @param {Object[]} options - An array of options where each option is an object with `value` and `label` properties.
- * @param {string} [className] - Optional classes for additional styling.
- * @param {(value: string) => void} [onSelect] - Callback function that is triggered when an option is selected.
- * @param {string} [placeholder] - A placeholder text displayed when no value is selected.
- *
- * @return {JSX.Element} The rendered Combobox component.
+ * @dev Combobox component with customizable options
+ * @param {ComboboxProps} props - Properties for the combobox component
+ * @return JSX Element
  */
 const Combobox: React.FC<ComboboxProps> = ({
    options,

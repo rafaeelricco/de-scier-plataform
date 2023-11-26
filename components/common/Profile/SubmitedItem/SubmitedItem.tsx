@@ -1,12 +1,12 @@
 import React from 'react'
+import { BadgeProps, SubmitedItemProps } from '../Typing'
 
-type SubmitedItemProps = {
-   id?: number
-   title: string
-   date: string
-   status: string
-}
-
+/**
+ * @title SubmitedItem Functional Component
+ * @notice Displays individual submitted item with title, date, and status badge.
+ * @dev Renders a submitted item using the SubmitedItemProps interface.
+ * @param {SubmitedItemProps} props - The properties passed to the component.
+ */
 const SubmitedItem: React.FC<SubmitedItemProps> = ({ id, title, date, status }: SubmitedItemProps) => {
    return (
       <div>
@@ -19,9 +19,14 @@ const SubmitedItem: React.FC<SubmitedItemProps> = ({ id, title, date, status }: 
    )
 }
 
-type BadgeProps = { status: string }
-
+/**
+ * @title Badge Functional Component
+ * @notice Renders a badge indicating the status of a submission.
+ * @dev Component to display status of submissions with different styles based on status value.
+ * @param {BadgeProps} props - The properties passed to the Badge component.
+ */
 const Badge: React.FC<BadgeProps> = ({ status }: BadgeProps) => {
+   /** @dev Capitalizes the first letter of the status for display. */
    const status_text = status.charAt(0).toUpperCase() + status.slice(1)
 
    return (

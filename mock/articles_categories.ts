@@ -1,29 +1,29 @@
 import { Option } from '@/components/common/Input/Typing'
-import { random } from 'lodash'
+import { uniqueId } from 'lodash'
 
 export const articles_categories: Option[] = [
    {
-      id: random(1, 1000 * 9999),
+      id: uniqueId(),
       label: 'Research articles',
       value: 'research-articles'
    },
    {
-      id: random(1, 1000 * 9999),
+      id: uniqueId(),
       label: 'Cases and notes',
       value: 'cases-and-notes'
    },
    {
-      id: random(1, 1000 * 9999),
+      id: uniqueId(),
       label: 'Reviews',
       value: 'reviews'
    },
    {
-      id: random(1, 1000 * 9999),
+      id: uniqueId(),
       label: 'Communications',
       value: 'communications'
    },
    {
-      id: random(1, 1000 * 9999),
+      id: uniqueId(),
       label: 'Others',
       value: 'others'
    }
@@ -31,32 +31,32 @@ export const articles_categories: Option[] = [
 
 export const article_category_filter: Option[] = [
    {
-      id: random(1, 1000 * 9999),
+      id: uniqueId(),
       label: 'All',
       value: null
    },
    {
-      id: random(1, 1000 * 9999),
+      id: uniqueId(),
       label: 'Research articles',
       value: 'research-articles'
    },
    {
-      id: random(1, 1000 * 9999),
+      id: uniqueId(),
       label: 'Cases and notes',
       value: 'cases-and-notes'
    },
    {
-      id: random(1, 1000 * 9999),
+      id: uniqueId(),
       label: 'Reviews',
       value: 'reviews'
    },
    {
-      id: random(1, 1000 * 9999),
+      id: uniqueId(),
       label: 'Communications',
       value: 'communications'
    },
    {
-      id: random(1, 1000 * 9999),
+      id: uniqueId(),
       label: 'Others',
       value: 'others'
    }

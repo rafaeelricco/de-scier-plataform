@@ -2,35 +2,49 @@
 
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { home_routes } from '@/routes/home'
+import { useArticles } from '@/services/document/getArticles.service'
+import { connectWeb3AuthWallet, initWeb3Auth } from '@/services/web3auth/web3auth.service'
 import * as Button from '@components/common/Button/Button'
+import { SafeEventEmitterProvider } from '@web3auth/base'
+import { Web3Auth } from '@web3auth/modal'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Web3Auth } from '@web3auth/modal'
-import { SafeEventEmitterProvider } from '@web3auth/base'
 import ShapeDeScierHandBookBottom from 'public/svgs/modules/sidebar/Ellipse 46.svg'
 import ShapeDeScierHandBookTop from 'public/svgs/modules/sidebar/Ellipse 48.svg'
 import IllustrationHandBook from 'public/svgs/modules/sidebar/emojione-v1_document.svg'
 import React, { useEffect, useState } from 'react'
 import { CaretRight, PlusCircle, X } from 'react-bootstrap-icons'
+import { toast } from 'react-toastify'
 import { twMerge } from 'tailwind-merge'
 import SubmitedItem from './SubmitedItem/SubmitedItem'
-import { useArticles } from '@/services/document/getArticles.service'
-import { connectWeb3AuthWallet, initWeb3Auth } from '@/services/web3auth/web3auth.service'
-import { toast } from 'react-toastify'
+import { ProfileProps } from './Typing'
 
+/**
+ * @title Profile Component
+ * @notice This component renders the user's profile page, allowing them to view their profile details, connect a wallet, and access their submitted articles.
+ * @dev This component uses the `useSession` and `useArticles` hooks for session management and fetching articles, respectively. It also manages states for the Web3Auth, provider, and wallet connection.
+ */
 const Profile: React.FC<ProfileProps> = ({ className, onClose }: ProfileProps) => {
+   /** @dev Initialize session hook for user data */
    const { data: session, update: updateSession } = useSession()
 
+   /** @dev Initialize hook to fetch articles */
    const { articles } = useArticles()
 
+   /** @dev States for Web3 authentication, provider, and wallet connection */
    const [web3auth, setWeb3Auth] = useState<Web3Auth | null>(null)
    const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null)
    const [connectLoading, setConnectLoading] = useState<boolean>(false)
    const [walletAddress, setWalletAddress] = useState<string | undefined>(session?.user?.userInfo.walletAddress || '')
 
+   /**
+    * @dev Handles wallet connection logic
+    * @notice Connects the user's wallet and updates the session with the new wallet address
+    */
    const handleConnectWallet = async () => {
       setConnectLoading(true)
+      /** @dev Connects to Web3Auth wallet and manages the provider */
       const response = await connectWeb3AuthWallet({
          provider,
          setProvider,
@@ -39,11 +53,13 @@ const Profile: React.FC<ProfileProps> = ({ className, onClose }: ProfileProps) =
 
       setConnectLoading(false)
 
+      /** @dev Shows error message on connection failure */
       if (!response?.success) {
          toast.error('Error in connect wallet!')
          return
       }
 
+      /** @dev Updates the session with the new wallet address */
       const udpatedInfo = {
          ...session,
          user: {
@@ -55,13 +71,20 @@ const Profile: React.FC<ProfileProps> = ({ className, onClose }: ProfileProps) =
          }
       }
 
+      /** @dev Calls the session update function */
       await updateSession(udpatedInfo)
 
+      /** @dev Sets the new wallet address in state */
       setWalletAddress(response.walletAddress)
 
+      /** @dev Notification of successful wallet connection */
       toast.success('Wallet connected successfully.')
    }
 
+   /**
+    * @dev Initializes Web3 authentication on component mount
+    * @notice Sets up provider and Web3Auth instances
+    */
    useEffect(() => {
       initWeb3Auth({
          setProvider,
@@ -69,6 +92,9 @@ const Profile: React.FC<ProfileProps> = ({ className, onClose }: ProfileProps) =
       })
    }, [])
 
+   /**
+    * @dev Updates wallet address in state when session user data changes
+    */
    useEffect(() => {
       if (session?.user) {
          setWalletAddress(session?.user?.userInfo.walletAddress || '')
@@ -161,61 +187,5 @@ const Profile: React.FC<ProfileProps> = ({ className, onClose }: ProfileProps) =
       </React.Fragment>
    )
 }
-
-interface ProfileProps {
-   className?: string
-   onClose?: () => void
-}
-
-const submited_item_mock = [
-   {
-      id: 1,
-      title: 'LCDs - How the technology was concieved ....',
-      date: 'Aug 21, 2021',
-      status: 'published'
-   },
-   {
-      id: 2,
-      title: 'Blockchain and financial technology - How can we integrate with the te...',
-      date: 'Aug 21, 2021',
-      status: 'in_review'
-   },
-   {
-      id: 3,
-      title: 'Biology and isolated islands - How are the spieces influenciated by scarrce',
-      date: 'Aug 21, 2021',
-      status: 'published'
-   },
-   {
-      id: 4,
-      title: 'Solar energy - Harnessing the power of the sun for a sustainable future...',
-      date: 'Aug 22, 2021',
-      status: 'published'
-   },
-   {
-      id: 5,
-      title: 'Artificial Intelligence - The rise and implications of machine learning...',
-      date: 'Aug 22, 2021',
-      status: 'in_review'
-   },
-   {
-      id: 6,
-      title: 'Space exploration - The journey to Mars and beyond...',
-      date: 'Aug 23, 2021',
-      status: 'published'
-   },
-   {
-      id: 7,
-      title: 'Quantum computing - The next frontier in computational power...',
-      date: 'Aug 23, 2021',
-      status: 'in_review'
-   },
-   {
-      id: 8,
-      title: 'Augmented Reality - Blending the digital and physical worlds...',
-      date: 'Aug 24, 2021',
-      status: 'published'
-   }
-]
 
 export default Profile

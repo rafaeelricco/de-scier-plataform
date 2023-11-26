@@ -7,6 +7,11 @@ import { CaretDown } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 import { DropdownProps } from './Typing'
 
+/**
+ * @title Dropdown Component
+ * @notice Creates a customizable dropdown menu component for selecting items.
+ * @dev This component allows users to select an item from a dropdown menu. It can be customized with different styles and initial values.
+ */
 const Dropdown: React.FC<DropdownProps> = ({
    label,
    className,
@@ -16,9 +21,16 @@ const Dropdown: React.FC<DropdownProps> = ({
    selected: selected_value,
    onSelect
 }: DropdownProps) => {
+   /**
+    * @dev Determines the initial selected value based on props.
+    * @dev If `no_selected` is true, there is no initial selection, otherwise it uses `selected_value` or the first item in `items`.
+    */
    const initialSelected = no_selected ? null : selected_value || items[0].label
+
+   /** @dev State hook for managing the currently selected item. */
    const [selected, setSelected] = React.useState<string | null>(initialSelected)
 
+   /** @dev Effect hook to update the `selected` state when `selected_value`  prop changes. */
    React.useEffect(() => {
       if (selected_value !== undefined) {
          setSelected(selected_value)
@@ -44,7 +56,7 @@ const Dropdown: React.FC<DropdownProps> = ({
                {items.map((item: FilterOption) => (
                   <React.Fragment key={item.id}>
                      <DropdownMenuItem
-                        aria-valuetext={item.value}
+                        aria-valuetext={String(item.value)}
                         onClick={(e) => {
                            const value = e.currentTarget.getAttribute('aria-valuetext')
                            setSelected(item.label)

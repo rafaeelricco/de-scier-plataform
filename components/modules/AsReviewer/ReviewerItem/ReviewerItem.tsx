@@ -5,7 +5,23 @@ import React from 'react'
 import { CardText, Pencil } from 'react-bootstrap-icons'
 import { PublishedStatus } from '../../Home/Search/ArticleItem/ArticleItem'
 import { ReviewerItemProps } from './Typing'
-
+/**
+ * @title ReviewerItem Component
+ * @notice This component is used to display a reviewer item with various details.
+ * @dev This is a functional component in React.js using TypeScript.
+ * @param since - The time since the reviewer was added.
+ * @param link - The link to the reviewer's profile.
+ * @param status - The current status of the reviewer.
+ * @param image - The image URL of the reviewer.
+ * @param title - The title of the reviewer.
+ * @param added_as - The role of the reviewer (reviewer or editor).
+ * @param id - The unique identifier of the reviewer.
+ * @param published - The published status of the reviewer.
+ * @param access_type - The access type of the reviewer.
+ * @param likes - The number of likes the reviewer has received.
+ * @param published_date - The date when the reviewer was published.
+ * @param views - The number of views the reviewer has received.
+ */
 const ReviewerItem: React.FC<ReviewerItemProps> = ({
    since,
    link,
@@ -100,57 +116,5 @@ const ReviewerItem: React.FC<ReviewerItemProps> = ({
       </Link>
    )
 }
-
-// interface PublishedStatusProps {
-//    published_date?: string | null
-//    access_type?: 'open' | 'paid' | null
-//    likes?: number | null
-//    views?: number | null
-// }
-
-// const PublishedStatus: React.FC<PublishedStatusProps> = ({ published_date, access_type, likes, views }: PublishedStatusProps) => {
-//    return (
-//       <React.Fragment>
-//          <div className="grid gap-1">
-//             <p className="text-sm text-neutral-gray lg:text-sm 2xl:text-base">Published in {published_date}</p>
-//             <div className="grid gap-2">
-//                {access_type == 'open' ? (
-//                   <React.Fragment>
-//                      <div className="flex gap-2 items-center">
-//                         <div className="w-2 h-2 md:w-3 md:h-3 bg-status-green rounded-full" />
-//                         <p className="text-sm">Open access</p>
-//                         <span className="text-neutral-gray">•</span>
-//                         <div className="flex items-center gap-1">
-//                            <HandThumbsUpFill className="text-terciary-main w-4 h-4 md:w-5 md:h-5" />
-//                            <p className="text-sm md:text-base text-neutral-gray">{likes}</p>
-//                         </div>
-//                         <div className="flex items-center gap-1">
-//                            <Eye className="text-terciary-main w-4 h-4 md:w-5 md:h-5" />
-//                            <p className="text-sm md:text-base text-neutral-gray">{views}</p>
-//                         </div>
-//                      </div>
-//                   </React.Fragment>
-//                ) : (
-//                   <React.Fragment>
-//                      <div className="flex gap-2 items-center">
-//                         <div className="w-2 h-2 md:w-3 md:h-3 bg-secundary_purple-main rounded-full" />
-//                         <p className="text-sm">Paid access</p>
-//                         <div className="flex items-center gap-1">
-//                            <HandThumbsUpFill className="text-terciary-main w-4 h-4 md:w-5 md:h-5" />
-//                            <p className="text-sm md:text-base text-neutral-gray">{likes}</p>
-//                         </div>
-//                         <span className="text-neutral-gray">•</span>
-//                         <div className="flex items-center gap-1">
-//                            <Eye className="text-terciary-main w-4 h-4 md:w-5 md:h-5" />
-//                            <p className="text-sm md:text-base text-neutral-gray">{views}</p>
-//                         </div>
-//                      </div>
-//                   </React.Fragment>
-//                )}
-//             </div>
-//          </div>
-//       </React.Fragment>
-//    )
-// }
 
 export default ReviewerItem

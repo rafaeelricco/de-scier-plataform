@@ -6,9 +6,13 @@ type ButtonProps = ComponentProps<'button'> & {
    icon?: React.ReactNode
 }
 
-type LinkProps = {
+interface LinkProps {
    href: string
    children: React.ReactNode
 }
 
-export { ButtonProps, LinkProps }
+interface BackProps {
+   text?: string
+}
+
+export { BackProps, ButtonProps, LinkProps }

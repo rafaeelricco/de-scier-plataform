@@ -1,6 +1,12 @@
 import React from 'react'
 import { CardText, Person } from 'react-bootstrap-icons'
+import { YouAreProps } from './Typing'
 
+/**
+ * @title YouAreAuthor Component
+ * @notice Display a badge indicating that the user is the author of the article.
+ * @dev This component shows a badge with an icon and a text label.
+ */
 export const YouAreAuthor: React.FC = () => {
    return (
       <React.Fragment>
@@ -12,10 +18,12 @@ export const YouAreAuthor: React.FC = () => {
    )
 }
 
-interface YouAreProps {
-   role: 'editor' | 'reviewer'
-}
-
+/**
+ * @title YouAre Component
+ * @notice Display a badge indicating the user's role for an article.
+ * @dev Component takes a 'role' prop to display the user's role in the article.
+ * @param role The role of the user in the context of the article.
+ */
 export const YouAre: React.FC<YouAreProps> = ({ role }: YouAreProps) => {
    return (
       <React.Fragment>

@@ -1,7 +1,11 @@
-import { DocumentGetProps } from '@/services/document/getArticles'
 import React from 'react'
 import { twMerge } from 'tailwind-merge'
-
+import { RenderMermaidChartProps } from './Typing'
+/**
+ * @title RenderMermaidChart Component
+ * @notice This component is used for rendering mermaid charts in a flexible and error-handling way
+ * @dev This React functional component takes `RenderMermaidChartProps` and conditionally renders the chart or an error message
+ */
 export const RenderMermaidChart: React.FC<RenderMermaidChartProps> = ({ article, chartError }: RenderMermaidChartProps) => {
    return (
       <React.Fragment>
@@ -16,9 +20,4 @@ export const RenderMermaidChart: React.FC<RenderMermaidChartProps> = ({ article,
          </div>
       </React.Fragment>
    )
-}
-
-interface RenderMermaidChartProps {
-   article: DocumentGetProps | null
-   chartError: boolean
 }

@@ -3,7 +3,16 @@ import * as Input from '@components/common/Input/Input'
 import React from 'react'
 import { X } from 'react-bootstrap-icons'
 
+/**
+ * @title EditComment Component
+ * @notice This component allows users to edit their comments.
+ * @dev This is a functional component in React.js using TypeScript.
+ * @param onClose - Function to close the edit comment modal.
+ * @param onConfirm - Function to confirm the edit.
+ * @param comment - The current comment text.
+ */
 const EditComment: React.FC<EditCommentsProps> = ({ onClose, onConfirm, comment }: EditCommentsProps) => {
+   /** @dev Initialize state for the edited comment */
    const [reason, setReason] = React.useState(comment)
    return (
       <React.Fragment>

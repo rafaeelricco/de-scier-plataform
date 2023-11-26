@@ -1,6 +1,6 @@
 import PaginationComponent from '@/components/common/Pagination/Pagination'
-import InReviewItem from '@/components/common/Publication/Item/InReview'
-import PublicationItem from '@/components/common/Publication/Item/Published'
+import { InReviewItem } from '@/components/common/Publication/Item/InReview'
+import { PublicationItem } from '@/components/common/Publication/Item/Published'
 import { DocumentBasicProps } from '@/services/document/getStatistics.service'
 import { addNumberSuffix } from '@/utils/format_number'
 import React from 'react'

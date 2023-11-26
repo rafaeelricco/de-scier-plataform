@@ -16,13 +16,26 @@ import React from 'react'
 import { X } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 
+/**
+ * @title HeaderMobile Component
+ * @notice This component renders the mobile header for a web application, handling navigation, authentication status, and dynamic rendering of login, registration, and password recovery modals.
+ */
 export function HeaderMobile() {
+   /** @dev Initialize session hook to manage user authentication status */
    const { data, status } = useSession()
 
+   /** @dev Obtain the current URL path for navigation purposes */
    const currentPath = usePathname()
+   /** @dev Split the URL path into segments for easier manipulation */
    const url_splited = currentPath.split('/')
+   /** @dev Filter out irrelevant path segments */
    const array_path = url_splited.filter((item) => item !== 'home' && item !== '')
 
+   /**
+    * @dev Function to verify the current path against a given path
+    * @param path The path to check against the current URL path
+    * @return boolean indicating if the current path matches the given path
+    */
    function verifyPath(path: string): boolean {
       if (path === 'home') {
          return array_path.length === 0
@@ -33,10 +46,12 @@ export function HeaderMobile() {
       }
    }
 
+   /** @dev Predefined component names for modal rendering */
    const login_component = 'login'
    const register_component = 'register'
    const forgot_password_component = 'forgot_password'
 
+   /** @dev State hooks for managing navigation drawer and modal components */
    const [openNav, setOpenNav] = React.useState<'sidebar' | 'profile' | false>(false)
    const [component, setComponent] = React.useState(login_component)
    const [open, setOpen] = React.useState(false)

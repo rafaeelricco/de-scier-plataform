@@ -2,13 +2,19 @@ import { DocumentTypes } from '@/mock/document_types'
 import React from 'react'
 import { twMerge } from 'tailwind-merge'
 
-type PillsProps = {
-   items: DocumentTypes[]
-   onSelect?: (value: DocumentTypes) => void
-   selected?: string
-}
-
+/**
+ * @title Pills Component
+ * @notice This component represents a set of pills or buttons for user interaction.
+ * @dev The Pills component is used to create a set of selectable buttons.
+ *
+ * @param items - An array of objects representing the pills with labels and values.
+ * @param onSelect - A callback function that is called when a pill is selected.
+ * @param selected - The currently selected pill's value.
+ *
+ * @return A set of pills with labels that can be clicked to select.
+ */
 export const Pills: React.FC<PillsProps> = ({ items, onSelect, selected }: PillsProps) => {
+   /** @dev Initialize the active state to keep track of the currently active pill. */
    const [active, setActive] = React.useState<number>(0)
    return (
       <div className="grid grid-flow-col">
@@ -35,4 +41,10 @@ export const Pills: React.FC<PillsProps> = ({ items, onSelect, selected }: Pills
          ))}
       </div>
    )
+}
+
+type PillsProps = {
+   items: DocumentTypes[]
+   onSelect?: (value: DocumentTypes) => void
+   selected?: string
 }

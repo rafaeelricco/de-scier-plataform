@@ -1,8 +1,12 @@
-import { DocumentGetProps } from '@/services/document/getArticles'
 import { truncate } from '@/utils/format_texts'
 import React from 'react'
 import { twMerge } from 'tailwind-merge'
-
+import { EditorAndReviewerProps } from './Typing'
+/**
+ * @title Editors and Reviewers Component
+ * @notice This component displays the editors and reviewers associated with an article.
+ * @dev The EditorsAndReviewers component receives article data and renders information about its editors and reviewers.
+ */
 export const EditorsAndReviewers: React.FC<EditorAndReviewerProps> = ({ article }: EditorAndReviewerProps) => {
    return (
       <React.Fragment>
@@ -53,8 +57,4 @@ export const EditorsAndReviewers: React.FC<EditorAndReviewerProps> = ({ article 
          </div>
       </React.Fragment>
    )
-}
-
-interface EditorAndReviewerProps {
-   article: DocumentGetProps | null
 }

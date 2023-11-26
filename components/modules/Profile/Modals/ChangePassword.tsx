@@ -9,6 +9,10 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import GenericSuccess from './Success'
 
+/** @title UpdatePassword Component
+ *  @notice This component allows the user to update their password.
+ *  @dev It includes form handling, password checking and updating, and loading state.
+ */
 const UpdatePassword: React.FC<UpdatePasswordProps> = ({
    onClose,
    onSetNewPassword,
@@ -18,45 +22,60 @@ const UpdatePassword: React.FC<UpdatePasswordProps> = ({
    insert_current_password = true,
    success = false
 }: UpdatePasswordProps) => {
+   /** @dev Initialize form handling */
    const { register, handleSubmit } = useForm<UpdateUserProps>({})
 
+   /** @dev Initialize loading state */
    const [loading, setLoading] = React.useState(false)
+   /** @dev Initialize confirm password state */
    const [confirmPassword, setConfirmPassword] = React.useState('')
 
+   /** @dev Function to check the current password */
    const handleCheckPassword: SubmitHandler<UpdateUserProps> = async (data) => {
+      /** @dev Set loading state to true */
       setLoading(true)
+
+      /** @dev Check the current password */
       const response = await checkPasswordService({
          password: data.currentPassword!
       })
 
+      /** @dev If the password check is not successful, set loading state to false and show an error message */
       if (!response.success) {
          setLoading(false)
          toast.error(response.message)
          return
       }
 
+      /** @dev If the password check is successful, set loading state to false and call the onSetPassword function */
       setLoading(false)
-
       onSetPassword()
    }
 
+   /** @dev Function to update the password */
    const handleUpdatePassword: SubmitHandler<UpdateUserProps> = async (data) => {
+      /** @dev Set loading state to true */
       setLoading(true)
+
+      /** @dev If the new password and confirm password do not match, set loading state to false and show an error message */
       if (data.newPassword !== confirmPassword) {
          setLoading(false)
          toast.error("Passwords don't match")
          return
       }
+
+      /** @dev Update the password */
       const response = await updateUserService(data)
 
+      /** @dev If the password update is not successful, set loading state to false and show an error message */
       if (!response.success) {
          setLoading(false)
          toast.error(response.message)
          return
       }
 
+      /** @dev If the password update is successful, set loading state to false and call the onSetNewPassword function */
       setLoading(false)
-
       onSetNewPassword()
    }
    return (

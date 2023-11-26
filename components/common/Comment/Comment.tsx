@@ -1,12 +1,15 @@
+import { useSession } from 'next-auth/react'
 import React from 'react'
 import { Check, Pencil, X } from 'react-bootstrap-icons'
 import { CommentItemProps } from './Typing'
-import { useSession } from 'next-auth/react'
-
+/**
+ * @title CommentItem Component
+ * @notice Handles the display and interaction of a single comment item.
+ * @dev This component displays a comment along with action buttons based on its status and user permissions.
+ */
 const CommentItem: React.FC<CommentItemProps> = ({
    comment_author,
    comment_content,
-   id,
    onApprove,
    status = 'PENDING',
    onReject,
@@ -14,7 +17,9 @@ const CommentItem: React.FC<CommentItemProps> = ({
    onEdit,
    user_id
 }: CommentItemProps) => {
+   /** @dev Initialize session hook to access user session data */
    const { data: session } = useSession()
+
    return (
       <React.Fragment>
          <div className="grid gap-2">

@@ -9,6 +9,10 @@ import React from 'react'
 import { Eye, HandThumbsUp } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 
+/** @title ArticleCard Component
+ *  @notice This component creates a card to display article details such as authors, likes, tags, title, views, image, etc.
+ *  @dev The component receives several props to customize its behavior and appearance.
+ */
 export const ArticleCard: React.FC<ArticleCardProps> = ({
    authors,
    id,

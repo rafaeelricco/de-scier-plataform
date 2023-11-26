@@ -1,9 +1,13 @@
-import { DocumentGetProps } from '@/services/document/getArticles'
 import { truncate } from '@/utils/format_texts'
 import React from 'react'
 import { Check, Clock } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
-
+import { EditorReviewListProps } from './Typing'
+/**
+ * @title Editor Review List Component
+ * @notice This component displays a list of reviewers for a given article, including their names, titles, email addresses, roles, and approval status.
+ * @dev The `EditorReviewList` component is a functional React component that accepts `article` props. It uses a map function to iterate over `reviewersOnDocuments` and render individual reviewer details.
+ */
 export const EditorReviewList: React.FC<EditorReviewListProps> = ({ article }: EditorReviewListProps) => {
    return (
       <React.Fragment>
@@ -52,8 +56,4 @@ export const EditorReviewList: React.FC<EditorReviewListProps> = ({ article }: E
          </div>
       </React.Fragment>
    )
-}
-
-interface EditorReviewListProps {
-   article: DocumentGetProps | null
 }

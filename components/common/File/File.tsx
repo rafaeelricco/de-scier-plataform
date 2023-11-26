@@ -1,8 +1,13 @@
 import { formatDate } from '@/utils/date_format'
-import Link from 'next/link'
 import React from 'react'
 import { Download, FileEarmarkText } from 'react-bootstrap-icons'
+import { FileProps } from './Typing'
 
+/**
+ * @title File Component
+ * @notice Handles the display and download functionality for a single file.
+ * @dev This component takes in file properties and renders UI for file information and download option.
+ */
 const File: React.FC<FileProps> = ({ file_name, onDownload, uploaded_at, uploaded_by }: FileProps) => {
    return (
       <React.Fragment>
@@ -22,13 +27,6 @@ const File: React.FC<FileProps> = ({ file_name, onDownload, uploaded_at, uploade
          </div>
       </React.Fragment>
    )
-}
-
-interface FileProps {
-   file_name: string
-   uploaded_at: string
-   uploaded_by: string
-   onDownload: () => void
 }
 
 export { File }

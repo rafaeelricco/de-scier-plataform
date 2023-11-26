@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-   webpack(config) {
-      // Grab the existing rule that handles SVG imports
+   webpack: (config, { isServer }) => {
       const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.('.svg'))
 
       config.module.rules.push(

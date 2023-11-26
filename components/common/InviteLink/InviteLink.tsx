@@ -1,8 +1,13 @@
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
-import { DocumentGetProps } from '@/services/document/getArticles'
 import * as Button from '@components/common/Button/Button'
 import React from 'react'
+import { InviteLinkProps } from './Typing'
 
+/**
+ * @title InviteLink Component
+ * @notice This component renders an invite link for a document with copy functionality.
+ * @dev The component uses React.FC and takes InviteLinkProps as its props.
+ */
 export const InviteLink: React.FC<InviteLinkProps> = ({ article, onClick, open_status }: InviteLinkProps) => {
    return (
       <React.Fragment>
@@ -43,10 +48,4 @@ export const InviteLink: React.FC<InviteLinkProps> = ({ article, onClick, open_s
          </div>
       </React.Fragment>
    )
-}
-
-interface InviteLinkProps {
-   article: DocumentGetProps | null
-   open_status: boolean
-   onClick: () => void
 }

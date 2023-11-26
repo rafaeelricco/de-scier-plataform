@@ -20,15 +20,30 @@ import ArrowDown from 'public/svgs/modules/home/arrow-down.svg'
 import React from 'react'
 import { twMerge } from 'tailwind-merge'
 
+/**
+ * @title Header Component
+ * @notice Implements the main header navigation for the application, including login, registration, and navigation links.
+ */
 const Header: React.FC = () => {
+   /** @dev Initializes the Next.js router hook for navigation */
    const router = useRouter()
+
+   /** @dev Initializes the session hook to manage user authentication status */
    const { data, status } = useSession()
 
-   // See more about in https://nextjs.org/docs/app/api-reference/functions/use-pathname
+   /**
+    * @dev Utilizes the usePathname hook to get the current path and processes it
+    * for determining active navigation links
+    */
    const currentPath = usePathname()
    const url_splited = currentPath.split('/')
    const array_path = url_splited.filter((item) => item !== 'home' && item !== '')
 
+   /**
+    * @dev Function to verify the current path for navigation highlight
+    * @param path The path to check against the current URL
+    * @return Returns true if the current path matches the specified path, false otherwise
+    */
    function verifyPath(path: string): boolean {
       if (path === 'home') {
          return array_path.length === 0
@@ -39,12 +54,16 @@ const Header: React.FC = () => {
       }
    }
 
+   /** @dev Component states for various authentication and navigation modals */
    const login_component = 'login'
    const register_component = 'register'
    const forgot_password_component = 'forgot_password'
    const purchased = 'purchased'
 
+   /** @dev State to manage the open/closed state of modals */
    const [open, setOpen] = React.useState(false)
+
+   /** @dev State to manage which component is currently active in the modal */
    const [component, setComponent] = React.useState(login_component)
 
    return (

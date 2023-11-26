@@ -3,6 +3,11 @@ import { usePathname } from 'next/navigation'
 import React from 'react'
 import { twJoin, twMerge } from 'tailwind-merge'
 
+/**
+ * Overlay Component
+ * @dev Component for creating an overlay for the drawer
+ * @param {DrawerOverlayProps} props The properties passed to the Overlay component
+ */
 const Overlay: React.FC<DrawerOverlayProps> = ({ className, checked }: DrawerOverlayProps) => {
    return (
       <React.Fragment>
@@ -17,6 +22,11 @@ const Overlay: React.FC<DrawerOverlayProps> = ({ className, checked }: DrawerOve
    )
 }
 
+/**
+ * Root Component
+ * @dev Root container for the drawer component, managing the open state.
+ * @param {DrawerRootProps} props The properties passed to the Root component.
+ */
 const Root: React.FC<DrawerRootProps> = ({ children, className, open = false }: DrawerRootProps) => {
    const path = usePathname()
 
@@ -45,6 +55,11 @@ const Root: React.FC<DrawerRootProps> = ({ children, className, open = false }: 
    )
 }
 
+/**
+ * Content Component
+ * @dev Component for the content area of the drawer.
+ * @param {DrawerContentProps} props The properties passed to the Content component.
+ */
 const Content: React.FC<DrawerContentProps> = ({ children, className, position = 'right' }: DrawerContentProps) => {
    return (
       <React.Fragment>

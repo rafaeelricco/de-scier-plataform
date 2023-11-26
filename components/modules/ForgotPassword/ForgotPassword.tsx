@@ -11,13 +11,17 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import '@styles/login.css'
 import React from 'react'
 import { ArrowLeft, X } from 'react-bootstrap-icons'
-import { FormState, UseFormRegister, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import GenericSuccess from '../Profile/Modals/Success'
+import { ForgotPasswordModalProps, HeaderProps, InsertCodeProps, InsertEmailProps, InsertNewPasswordProps } from './Typing'
 
-type ForgotPasswordModalProps = { onClose: () => void; onBack: () => void }
-
+/**
+ * @title ForgotPasswordModal Component
+ * @notice This component handles the password recovery process, including email submission, code verification, and password reset.
+ */
 const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onBack, onClose }: ForgotPasswordModalProps) => {
+   /** @dev Using useForm hook for form handling and validation */
    const {
       register,
       getValues,
@@ -38,10 +42,8 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onBack, onClo
          confirmPassword: ''
       }
    })
-   console.log('watch', watch())
-   console.log('errors', errors)
-   console.log('isDirty', isDirty)
 
+   /** @dev State to control the visibility of different steps in the password recovery process */
    const [component, setComponent] = React.useState({
       insert_email: true,
       insert_code: false,
@@ -49,6 +51,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onBack, onClo
       success: false
    })
 
+   /** @dev Handles email submission and requests a recovery password code */
    const handleInsertEmailContinue = async () => {
       await trigger('email')
 
@@ -69,6 +72,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onBack, onClo
       }
    }
 
+   /** @dev Handles the confirmation code submission and validates it */
    const handleInsertCodeContinue = async () => {
       await trigger('confirmationCode')
 
@@ -92,6 +96,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onBack, onClo
       }
    }
 
+   /** @dev Resets the component to the initial state */
    const handleInsertCodeBack = async () => {
       setComponent({
          insert_email: true,
@@ -101,6 +106,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onBack, onClo
       })
    }
 
+   /** @dev Handles the new password submission and completes the recovery process */
    const handleInsertNewPasswordContinue = async () => {
       await trigger('newPassword')
       await trigger('confirmPassword')
@@ -161,8 +167,6 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onBack, onClo
    )
 }
 
-type HeaderProps = { onClose: () => void; onBack: () => void }
-
 const Header: React.FC<HeaderProps> = ({ onBack, onClose }: HeaderProps) => {
    return (
       <React.Fragment>
@@ -176,14 +180,6 @@ const Header: React.FC<HeaderProps> = ({ onBack, onClose }: HeaderProps) => {
          </div>
       </React.Fragment>
    )
-}
-
-type InsertEmailProps = {
-   onClose: () => void
-   onBack: () => void
-   onContinue: () => void
-   register: UseFormRegister<ConfirmRecoveryPasswordProps>
-   errors: FormState<ConfirmRecoveryPasswordProps>['errors']
 }
 
 const InserEmail: React.FC<InsertEmailProps> = ({ onBack, onClose, onContinue, register, errors }: InsertEmailProps) => {
@@ -204,15 +200,6 @@ const InserEmail: React.FC<InsertEmailProps> = ({ onBack, onClose, onContinue, r
          </div>
       </React.Fragment>
    )
-}
-
-type InsertCodeProps = {
-   onClose: () => void
-   onBack: () => void
-   onContinue: () => void
-   resendCode: () => void
-   register: UseFormRegister<ConfirmRecoveryPasswordProps>
-   errors: FormState<ConfirmRecoveryPasswordProps>['errors']
 }
 
 const InsertCode: React.FC<InsertCodeProps> = ({ onBack, onClose, onContinue, resendCode, register, errors }: InsertCodeProps) => {
@@ -239,14 +226,6 @@ const InsertCode: React.FC<InsertCodeProps> = ({ onBack, onClose, onContinue, re
          </div>
       </React.Fragment>
    )
-}
-
-type InsertNewPasswordProps = {
-   onClose: () => void
-   onBack: () => void
-   onContinue: () => void
-   register: UseFormRegister<ConfirmRecoveryPasswordProps>
-   errors: FormState<ConfirmRecoveryPasswordProps>['errors']
 }
 
 const InsertNewPassword: React.FC<InsertNewPasswordProps> = ({ onBack, onClose, onContinue, register, errors }: InsertNewPasswordProps) => {

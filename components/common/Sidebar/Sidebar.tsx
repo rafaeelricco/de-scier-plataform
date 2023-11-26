@@ -14,14 +14,25 @@ import { twMerge } from 'tailwind-merge'
 import Item from './Item/Item'
 import Logout from './Logout/Logout'
 
+/**
+ * @title Sidebar Component
+ * @notice Provides a sidebar navigation for the application, allowing users to navigate through different sections and functionalities.
+ * @dev This component utilizes React.FC for functional component structure, useSession for session management, useRouter for routing, and useState for state management.
+ */
 const Sidebar: React.FC = () => {
+   /** @dev Initialize session hook for user session management */
    const { data: session } = useSession()
 
+   /** @dev Initialize router for navigation control */
    const router = useRouter()
+
+   /** @dev Retrieve current path from the router for active link styling */
    const currentPath = usePathname()
 
+   /** @dev State to manage whether the user has made a purchase */
    const [purchased, setPurchased] = React.useState(false)
 
+   /** @dev Check if the user role is Administrator */
    const isAdministrator = session?.user?.userInfo.role !== 'ADMIN'
 
    return (

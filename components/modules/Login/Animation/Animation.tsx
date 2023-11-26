@@ -4,34 +4,44 @@ import deScierStamp from 'public/svgs/modules/login/selo.png'
 import BlobShape from 'public/svgs/modules/login/shape.svg'
 import React, { useEffect } from 'react'
 
-interface LoginAnimationProps {
-   animation_key?: string | number
-}
-
+/** @title LoginAnimation Component
+ *  @notice This component displays an animation during the login process.
+ *  @dev It includes a useEffect hook to check and play the animation.
+ */
 const LoginAnimation: React.FC<LoginAnimationProps> = ({ animation_key }: LoginAnimationProps) => {
+   /** @dev Effect to check and play the animation */
    useEffect(() => {
+      /** @dev Function to check and play the animation */
       const checkAndPlayAnimation = () => {
+         /** @dev Get the SVG animation object */
          const svgatorObject = document.getElementById('animated-svg') as HTMLObjectElement
 
+         /** @dev If the SVG object is not found, return */
          if (!svgatorObject) return
 
+         /** @dev Get the SVG document */
          const svgatorDocument = svgatorObject.contentDocument || svgatorObject.contentWindow?.document
 
+         /** @dev If the SVG document is not found, return */
          if (!svgatorDocument) return
 
+         /** @dev Get the SVG element and its player */
          const svgatorElement = svgatorDocument.getElementById('descier-login-animation') as unknown as SVGElement & {
             svgatorPlayer: {
                play: () => void
             }
          }
 
+         /** @dev If the SVG element is found, play the animation */
          if (svgatorElement) {
             svgatorElement?.svgatorPlayer?.play()
          } else {
+            /** @dev If the SVG element is not found, try again after 100ms */
             setTimeout(checkAndPlayAnimation, 100)
          }
       }
 
+      /** @dev Call the function to check and play the animation */
       checkAndPlayAnimation()
    }, [])
    return (
@@ -63,6 +73,10 @@ const LoginAnimation: React.FC<LoginAnimationProps> = ({ animation_key }: LoginA
          </div>
       </React.Fragment>
    )
+}
+
+interface LoginAnimationProps {
+   animation_key?: string | number
 }
 
 export default LoginAnimation

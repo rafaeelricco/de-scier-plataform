@@ -1,4 +1,5 @@
 'use client'
+
 import { Dropdown } from '@/components/common/Dropdown/Dropdown'
 import { SelectArticleType } from '@/components/common/Filters/SelectArticleType/SelectArticleType'
 import PaginationComponent from '@/components/common/Pagination/Pagination'
@@ -15,7 +16,7 @@ import React from 'react'
 import { Person, Search } from 'react-bootstrap-icons'
 
 export default function SearchArticlesPage() {
-   const { articles, loading } = useArticles()
+   const { articles } = useArticles()
 
    const searchQueries = useSearchParams()
 
@@ -89,7 +90,7 @@ export default function SearchArticlesPage() {
                <Dropdown no_selected items={filter_by_year} label="Year of publication:" onSelect={(value) => setPublicationYear(Number(value))} />
                <Dropdown no_selected label="Field:" className="min-w-fit px-8" items={filter_field} onSelect={(value) => setField(value)} />
                <SelectArticleType
-                  placeholder={`Article type: ${documentType || 'All'}`}
+                  placeholder={'Article type:'}
                   selected={documentType}
                   onValueChange={(value) => {
                      if (value === 'all') setDocumentType(null)

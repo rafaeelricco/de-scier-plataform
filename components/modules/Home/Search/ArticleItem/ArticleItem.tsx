@@ -11,6 +11,11 @@ import { twMerge } from 'tailwind-merge'
 import './ArticleItem.css'
 import { ArticleItemProps } from './Typing'
 
+/**
+ * @title ArticleItem Component
+ * @notice This component displays an individual article item with details like image, title, access type, likes, and views.
+ * @dev Component for rendering article information in a structured and styled layout.
+ */
 export const ArticleItem: React.FC<ArticleItemProps> = ({
    image,
    title,
@@ -96,13 +101,11 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({
    )
 }
 
-interface PublishedStatusProps {
-   published_date: string
-   access_type?: 'open' | 'paid' | null
-   likes?: number | null
-   views?: number | null
-}
-
+/**
+ * @title PublishedStatus Component
+ * @notice This component displays the status of an article, including access type, likes, views, and published date.
+ * @dev Component for rendering the status details of a published article.
+ */
 export const PublishedStatus: React.FC<PublishedStatusProps> = ({ published_date, access_type, likes, views }: PublishedStatusProps) => {
    return (
       <React.Fragment>
@@ -147,4 +150,11 @@ export const PublishedStatus: React.FC<PublishedStatusProps> = ({ published_date
          </div>
       </React.Fragment>
    )
+}
+
+interface PublishedStatusProps {
+   published_date: string
+   access_type?: 'open' | 'paid' | null
+   likes?: number | null
+   views?: number | null
 }

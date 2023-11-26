@@ -101,7 +101,7 @@ export default function ArticlesUnderReviewPage() {
                </div>
                <div className="flex flex-col md:flex-row md:items-center gap-2">
                   <SelectArticleType
-                     placeholder={`Article type: ${documentType || 'All'}`}
+                     placeholder={'Article type:'}
                      selected={documentType}
                      onValueChange={(value) => {
                         if (value === 'all') setDocumentType(null)
@@ -110,7 +110,7 @@ export default function ArticlesUnderReviewPage() {
                   />
                   <Dropdown
                      label="Status:"
-                     selected={status || undefined}
+                     selected={filter_status.find((item) => item.value === status)?.label || undefined}
                      className="min-w-[180px]"
                      items={filter_status}
                      onSelect={(value) => setStatus(value)}

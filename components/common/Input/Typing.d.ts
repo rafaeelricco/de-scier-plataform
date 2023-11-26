@@ -27,7 +27,7 @@ interface ErrorProps {
 }
 
 export type Option = {
-   id?: number
+   id: number | string
    label: string
    value: string | null
 }

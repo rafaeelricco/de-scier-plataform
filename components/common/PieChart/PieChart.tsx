@@ -1,6 +1,6 @@
 import useDimension from '@/hooks/useWindowDimension'
-import { useEffect, useState } from 'react'
 import { Pie, PieChart, ResponsiveContainer } from 'recharts'
+import { ChartProps } from './Typing'
 
 export default function PieChartComponent({ pendingAmount, publishedAmount, totalDocuments }: ChartProps) {
    const { windowDimension, md, lg, xl, xxl } = useDimension()
@@ -46,10 +46,4 @@ export default function PieChartComponent({ pendingAmount, publishedAmount, tota
          </div>
       </>
    )
-}
-
-export type ChartProps = {
-   publishedAmount: number
-   pendingAmount: number
-   totalDocuments: number
 }

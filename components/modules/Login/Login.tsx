@@ -14,11 +14,18 @@ import { toast } from 'react-toastify'
 import LoginAnimation from './Animation/Animation'
 import { LoginModalProps } from './Typing'
 
+/** @title LoginModal Component
+ *  @notice This component provides a modal interface for user login, with optional registration, password recovery, and third-party login via Google.
+ *  @dev The component uses React hooks for state management and routing, and integrates form handling and validation using the useForm hook.
+ */
 const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onForgotPassword, onLogin, onRegister, noRedirect }: LoginModalProps) => {
+   /** @dev Initialize Next.js router */
    const router = useRouter()
 
+   /** @dev State for managing loading status */
    const [loading, setLoading] = useState(false)
 
+   /** @dev Setup form handling with useForm hook, including form validation using zodResolver */
    const {
       register,
       handleSubmit,
@@ -29,6 +36,10 @@ const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onFo
       defaultValues: { email: '', password: '' }
    })
 
+   /**
+    * @dev Handles form submission, performs sign-in using credentials, and manages routing based on authentication result
+    * @param data The user's login credentials
+    */
    const onSubmit: SubmitHandler<LoginProps> = async (data) => {
       setLoading(true)
       const authResult = await signIn('credentials', {
@@ -53,11 +64,14 @@ const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onFo
       router.push(home_routes.summary)
    }
 
+   /**
+    * @dev Handles third-party login using Google
+    * @param e The mouse event from the click
+    */
    const loginWithGoogle = async (e: React.MouseEvent<HTMLElement>) => {
       e.preventDefault()
       await signIn('google', { callbackUrl: home_routes.summary })
    }
-
    return (
       <React.Fragment>
          <div className="grid md:grid-cols-2 relative">

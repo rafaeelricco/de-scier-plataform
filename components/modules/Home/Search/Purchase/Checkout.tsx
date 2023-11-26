@@ -10,19 +10,11 @@ import React from 'react'
 import { X } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 
-interface CheckoutProps {
-   article: {
-      id: string
-      title: string
-      date: string
-      price: number
-      image: string
-   }
-   onSetPaymentOption?: (option: string) => void
-   onPurchase: () => void
-   onClose: () => void
-}
-
+/**
+ * @title Checkout Component
+ * @notice This component provides a checkout interface for purchasing articles, including payment options and article details.
+ * @dev Checkout component for handling the purchase process of an article.
+ */
 export const Checkout: React.FC<CheckoutProps> = ({ article, onPurchase, onSetPaymentOption, onClose }: CheckoutProps) => {
    return (
       <React.Fragment>
@@ -46,10 +38,11 @@ export const Checkout: React.FC<CheckoutProps> = ({ article, onPurchase, onSetPa
    )
 }
 
-interface ItemProps {
-   article: CheckoutProps['article']
-}
-
+/**
+ * @title Item Component
+ * @notice This component displays details of an article, including its image, title, and date.
+ * @dev Component for rendering individual article details.
+ */
 const Item: React.FC<ItemProps> = ({ article }: ItemProps) => {
    return (
       <React.Fragment>
@@ -65,10 +58,16 @@ const Item: React.FC<ItemProps> = ({ article }: ItemProps) => {
    )
 }
 
-interface ResumeProps extends CheckoutProps {}
-
+/**
+ * @title Resume Component
+ * @notice This component displays the payment options and finalizes the purchase of an article.
+ * @dev Component for handling the selection of payment options and triggering the purchase.
+ */
 const Resume: React.FC<ResumeProps> = ({ article, onPurchase, onSetPaymentOption }: ResumeProps) => {
+   /** @dev Defines icons for each payment option */
    const mapping_icons = { credit_card: <CreditCardIcon className="w-6 h-6" />, metamask: <MetamaskIcon className="w-full h-6" /> }
+
+   /** @dev Hook to render icons based on the payment option */
    const { renderIcon } = useIconRenderer(mapping_icons)
 
    return (
@@ -123,3 +122,22 @@ const Resume: React.FC<ResumeProps> = ({ article, onPurchase, onSetPaymentOption
       </React.Fragment>
    )
 }
+
+interface CheckoutProps {
+   article: {
+      id: string
+      title: string
+      date: string
+      price: number
+      image: string
+   }
+   onSetPaymentOption?: (option: string) => void
+   onPurchase: () => void
+   onClose: () => void
+}
+
+interface ItemProps {
+   article: CheckoutProps['article']
+}
+
+interface ResumeProps extends CheckoutProps {}

@@ -1,11 +1,19 @@
 'use client'
 
+import { links, social_media } from '@/mock/footer_items'
+import { home_routes } from '@/routes/home'
+import Link from 'next/link'
 import EmailIcon from 'public/svgs/common/footer/icons-footer/email.svg'
 import LocationIcon from 'public/svgs/common/footer/icons-footer/location.svg'
 import WhatsApp from 'public/svgs/common/footer/icons-footer/whatsapp.svg'
 import LogoDeScier from 'public/svgs/common/footer/logo-de-scier-footer.svg'
 import React from 'react'
 
+/**
+ * @title Footer Component
+ * @notice This component renders the footer section of a web page with social media links, contact information, and copyright details.
+ * @dev This React functional component uses TailwindCSS for styling and renders links to social media, contact details, and other important website links.
+ */
 const Footer: React.FC = () => {
    return (
       <React.Fragment>
@@ -66,73 +74,5 @@ const Footer: React.FC = () => {
       </React.Fragment>
    )
 }
-
-import { home_routes } from '@/routes/home'
-import { uniqueId } from 'lodash'
-import Link from 'next/link'
-import InstagramIcon from 'public/svgs/common/footer/icons-footer/instagram.svg'
-import LinkdlIcon from 'public/svgs/common/footer/icons-footer/linkdl.svg'
-import XIcon from 'public/svgs/common/footer/icons-footer/x.svg'
-import YoutubeIcon from 'public/svgs/common/footer/icons-footer/youtube.svg'
-
-const social_media = [
-   {
-      id: 1,
-      name: '/desciers',
-      icon: <XIcon className="w-5 h-5" />,
-      link: 'https://twitter.com/desciers'
-   },
-   {
-      id: 2,
-      name: '/descier',
-      icon: <LinkdlIcon className="w-5 h-5" />,
-      link: 'https://www.linkedin.com/company/descier'
-   },
-   {
-      id: 3,
-      name: '/descier.science',
-      icon: <InstagramIcon className="w-5 h-5" />,
-      link: 'https://instagram.com/descier.science'
-   },
-   {
-      id: 4,
-      name: '/@desciers',
-      icon: <YoutubeIcon className="w-5 h-5" />,
-      link: 'https://www.youtube.com/@desciers'
-   }
-]
-
-const links = [
-   {
-      id: uniqueId(),
-      name: 'Home',
-      link: home_routes.home.index
-   },
-   {
-      id: uniqueId(),
-      name: 'Support',
-      link: 'https://wa.me/5511983432131'
-   },
-   {
-      id: uniqueId(),
-      name: 'Onboard Discord',
-      link: 'https://discord.com/invite/Z6U9P28YtV'
-   },
-   {
-      id: uniqueId(),
-      name: 'Join the community',
-      link: 'https://app.gosh.sh/o/descier'
-   },
-   {
-      id: uniqueId(),
-      name: 'Privacy Policy',
-      link: 'https://descier.science/policy/'
-   },
-   {
-      id: uniqueId(),
-      name: 'Terms',
-      link: 'https://descier.science/terms/'
-   }
-]
 
 export default Footer

@@ -6,6 +6,11 @@ import React from 'react'
 import { Coin, Download, Person, Tag } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 
+/**
+ * @title ArticleAccess Component
+ * @notice This component displays the access status and type of an article along with relevant actions like buying or viewing the document.
+ * @dev Component to handle and display different access types and statuses for an article.
+ */
 export const ArticleAcess: React.FC<ArticleAcessProps> = ({
    access_type,
    access_status,
@@ -62,13 +67,11 @@ export const ArticleAcess: React.FC<ArticleAcessProps> = ({
    )
 }
 
-interface ArticleTypeProps {
-   access_type: string
-   value: number
-   onBuyDocument?: () => void
-   onViewDocument?: () => void
-}
-
+/**
+ * @title ArticleType Component
+ * @notice This component is responsible for rendering the UI based on the article's access type, and providing action buttons based on this type.
+ * @dev Subcomponent of ArticleAccess, handles the display of article pricing and actions for different access types.
+ */
 const ArticleType: React.FC<ArticleTypeProps> = ({ access_type, value, onBuyDocument, onViewDocument }: ArticleTypeProps) => {
    return (
       <React.Fragment>
@@ -97,10 +100,11 @@ const ArticleType: React.FC<ArticleTypeProps> = ({ access_type, value, onBuyDocu
    )
 }
 
-interface BadgeProps {
-   access_type: ArticleAcessProps['access_type']
-}
-
+/**
+ * @title Badge Component
+ * @notice This component displays a badge indicating the access type of the article, either 'Paid access' or 'Open access'.
+ * @dev Subcomponent of ArticleAccess and ArticleType, displays a badge based on the article's access type.
+ */
 const Badge: React.FC<BadgeProps> = ({ access_type }: BadgeProps) => {
    return (
       <React.Fragment>
@@ -123,4 +127,23 @@ const Badge: React.FC<BadgeProps> = ({ access_type }: BadgeProps) => {
          )}
       </React.Fragment>
    )
+}
+
+/**
+ * @title BadgeProps Interface
+ * @dev Defines the props for the Badge component, specifically the access type of the article.
+ */
+interface BadgeProps {
+   access_type: ArticleAcessProps['access_type']
+}
+
+/**
+ * @title ArticleTypeProps Interface
+ * @dev Defines the props for the ArticleType component, including access type, value, and callback functions for buying or viewing the document.
+ */
+interface ArticleTypeProps {
+   access_type: string
+   value: number
+   onBuyDocument?: () => void
+   onViewDocument?: () => void
 }
