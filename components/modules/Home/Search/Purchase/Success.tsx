@@ -3,11 +3,11 @@ import SucessIllustration from 'public/svgs/modules/home/illustration-sucess.svg
 import React from 'react'
 import { X } from 'react-bootstrap-icons'
 
-interface PurchaseSuccessProps {
-   onClose: () => void
-   onReturn: () => void
-}
-
+/**
+ *  @title PurchaseSuccess Component
+ *  @notice This component displays a success message after a purchase is made.
+ *  @dev It includes a close button, a success message, an illustration, a confirmation message, and a return button.
+ */
 export const PurchaseSuccess: React.FC<PurchaseSuccessProps> = ({ onClose, onReturn }: PurchaseSuccessProps) => {
    return (
       <React.Fragment>
@@ -27,4 +27,9 @@ export const PurchaseSuccess: React.FC<PurchaseSuccessProps> = ({ onClose, onRet
          </div>
       </React.Fragment>
    )
+}
+
+interface PurchaseSuccessProps {
+   onClose: () => void
+   onReturn: () => void
 }

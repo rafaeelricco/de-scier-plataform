@@ -10,24 +10,42 @@ import { Person, Search, X } from 'react-bootstrap-icons'
 import { ArticleCardProps } from '../../Index/ArticleCard/Typing'
 import { ArticleCheckout } from './ArticleCheckout'
 
-interface PurchasedArticlesProps {
-   onClose: () => void
-}
-
+/**
+ * @title PurchasedArticles Component
+ * @notice This component displays a list of purchased articles with search and pagination functionalities.
+ */
 export const PurchasedArticles: React.FC<PurchasedArticlesProps> = ({ onClose }: PurchasedArticlesProps) => {
+   /** @dev Hook to handle responsive design based on screen size */
    const { lg } = useDimension()
 
+   /** @dev Hook to fetch purchased articles and their loading state */
    const { articles, loading } = useFetchPurchasedArticles()
 
+   /** @dev Determines number of articles per page based on screen size */
    const per_page = lg == true ? 8 : 6
+
+   /** @dev State to manage current page in pagination */
    const [page, setPage] = React.useState(1)
+
+   /** @dev State to store filtered results for display */
    const [results, setResults] = React.useState<ArticleCardProps[]>([])
+
+   /** @dev State to manage total number of pages for pagination */
    const [totalPages, setTotalPages] = React.useState(1)
+
+   /** @dev State for handling search term for articles */
    const [searchTerm, setSearchTerm] = React.useState('')
+
+   /** @dev State for handling search by author name */
    const [searchAuthor, setSearchAuthor] = React.useState('')
+
+   /** @dev Use debounce hook for delayed search to improve performance */
    const debouncedSearchTerm = useDebounce(searchTerm, 500)
    const debouncedSearchAuthor = useDebounce(searchAuthor, 500)
 
+   /**
+    * @dev Effect to update results and pagination details when articles data or per_page changes
+    */
    React.useEffect(() => {
       if (articles) {
          setResults(articles || [])
@@ -113,6 +131,10 @@ export const PurchasedArticles: React.FC<PurchasedArticlesProps> = ({ onClose }:
          </div>
       </React.Fragment>
    )
+}
+
+interface PurchasedArticlesProps {
+   onClose: () => void
 }
 
 const CardArticlePurchased: React.FC = () => {

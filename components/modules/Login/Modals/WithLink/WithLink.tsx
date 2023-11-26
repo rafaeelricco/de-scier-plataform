@@ -8,7 +8,14 @@ import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
+/**
+ * @title WithLink Component
+ * @notice This component provides an interface for responding to an invitation to review or edit an article.
+ * It allows the user to accept or decline the invitation and specify their expertise and role.
+ * @dev The component uses useForm for form handling and integrates routing with Next.js.
+ */
 const WithLink: React.FC<WithLinkProps> = ({ article_name, invited_by, inviteCode, onClose }: WithLinkProps) => {
+   /** @dev Initialize form handling with default values for invite status and role */
    const { register, handleSubmit, setValue, trigger } = useForm<UpdateInviteStatusProps>({
       defaultValues: {
          inviteCode: inviteCode,
@@ -18,10 +25,16 @@ const WithLink: React.FC<WithLinkProps> = ({ article_name, invited_by, inviteCod
       }
    })
 
+   /** @dev Initialize Next.js router */
    const router = useRouter()
 
+   /** @dev State to manage loading status during form submission */
    const [loading, setLoading] = React.useState(false)
 
+   /**
+    * @dev Handles form submission, updates invite status, and navigates user upon success or failure
+    * @param data The form data containing invite status, role, and title
+    */
    const handleSubmitReview: SubmitHandler<UpdateInviteStatusProps> = async (data) => {
       setLoading(true)
       const response = await updateInviteStatusService(data)
@@ -43,6 +56,9 @@ const WithLink: React.FC<WithLinkProps> = ({ article_name, invited_by, inviteCod
       toast.error(response.message)
    }
 
+   /**
+    * @dev Handles the action when the user declines the invitation
+    */
    const handleDecline = () => {
       const hasInviteOnLocalStorage = localStorage.getItem('invite')
       if (hasInviteOnLocalStorage) {
@@ -91,6 +107,13 @@ const WithLink: React.FC<WithLinkProps> = ({ article_name, invited_by, inviteCod
    )
 }
 
+/**
+ * @dev Props definition for the WithLink component
+ * @param invited_by The name of the person who extended the invitation
+ * @param article_name The title of the article for review/editing
+ * @param inviteCode The unique code for the invitation
+ * @param onClose Function to close the component
+ */
 interface WithLinkProps {
    invited_by: string
    article_name: string
@@ -98,6 +121,7 @@ interface WithLinkProps {
    onClose: () => void
 }
 
+/** @dev Predefined roles for the user to select from */
 const roles = [
    {
       id: 1,

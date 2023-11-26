@@ -3,10 +3,11 @@ import ErrorIllustration from 'public/svgs/modules/home/illustration-error.svg'
 import React from 'react'
 import { X } from 'react-bootstrap-icons'
 
-interface PurchaseErrorProps {
-   onClose: () => void
-}
-
+/**
+ * @title PurchaseError Component
+ * @notice This component displays an error message and an illustration for errors during the checkout process.
+ * @dev Component for handling display of checkout errors.
+ */
 export const PurchaseError: React.FC<PurchaseErrorProps> = ({ onClose }: PurchaseErrorProps) => {
    return (
       <React.Fragment>
@@ -24,4 +25,8 @@ export const PurchaseError: React.FC<PurchaseErrorProps> = ({ onClose }: Purchas
          </div>
       </React.Fragment>
    )
+}
+
+interface PurchaseErrorProps {
+   onClose: () => void
 }

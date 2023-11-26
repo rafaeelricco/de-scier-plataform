@@ -11,13 +11,20 @@ import IllustrationBannerFooter from 'public/svgs/modules/home/banner-footer/ill
 import React from 'react'
 import { twMerge } from 'tailwind-merge'
 
+/** @title BannerStartPublishing Component
+ *  @notice This component displays a banner with options to start publishing. It includes modals for login, registration, and password recovery.
+ */
 export const BannerStartPublishing: React.FC = () => {
+   /** @dev Initialize router and session status */
    const router = useRouter()
    const { status } = useSession()
+
+   /** @dev Define component names */
    const login_component = 'login'
    const register_component = 'register'
    const forgot_password_component = 'forgot_password'
 
+   /** @dev Initialize state for dialog open status and current component */
    const [open, setOpen] = React.useState(false)
    const [component, setComponent] = React.useState(login_component)
    return (

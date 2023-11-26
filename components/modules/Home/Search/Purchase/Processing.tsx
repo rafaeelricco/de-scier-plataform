@@ -1,5 +1,10 @@
 import React from 'react'
 
+/**
+ * @title PurchaseProcessing Component
+ * @notice This component displays a loading animation and message while an order is being processed.
+ * @dev Component for showing the order processing state to the user.
+ */
 export const PurchaseProcessing: React.FC = () => {
    return (
       <React.Fragment>

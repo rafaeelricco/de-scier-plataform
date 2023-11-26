@@ -4,8 +4,20 @@ import * as Input from '@components/common/Input/Input'
 import React from 'react'
 import { X } from 'react-bootstrap-icons'
 
+/**
+ * @title Reasoning Component
+ * @notice This component is used to provide a response to a reviewer's comments.
+ * @dev This is a functional component that takes in onClose, onConfirm, message, and documentAuthor as props.
+ * @param {function} onClose - Function to close the component.
+ * @param {function} onConfirm - Function to confirm the action.
+ * @param {string} message - The message to be displayed.
+ * @param {string} documentAuthor - The author of the document.
+ */
 const Reasoning: React.FC<ArticleUnderReviewProps> = ({ onClose, onConfirm, message, documentAuthor }: ArticleUnderReviewProps) => {
+   /** @dev Initialize characterLimit and length using useLimitCharacters hook */
    const { characterLimit, length } = useLimitCharacters(message || '')
+
+   /** @dev Initialize state for reason */
    const [reason, setReason] = React.useState(message || '')
 
    return (

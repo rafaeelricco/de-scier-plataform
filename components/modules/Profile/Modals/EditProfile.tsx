@@ -13,6 +13,11 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import GenericSuccess from './Success'
 
+/**
+ *  @title UpdateProfile Component
+ *  @notice This component allows the user to update their profile.
+ *  @dev It includes form handling, profile updating, file uploading, and loading state.
+ */
 const UpdateProfile: React.FC<UpdateProfileProps> = ({
    onClose,
    onConfirm,
@@ -22,22 +27,32 @@ const UpdateProfile: React.FC<UpdateProfileProps> = ({
    success = false,
    edit_profile = true
 }: UpdateProfileProps) => {
+   /** @dev Initialize session hook */
    const { data: session, update: updateSession } = useSession()
 
+   /** @dev Initialize form handling */
    const { register, handleSubmit } = useForm<UpdateUserProps>({})
 
+   /** @dev Initialize loading state */
    const [loading, setLoading] = React.useState(false)
+   /** @dev Initialize file state for the avatar */
    const [file, setFile] = React.useState<StoredFile | null>()
+   /** @dev Initialize avatar preview state */
    const [avatarPreview, setAvatarPreview] = useState<string | undefined>(image)
 
+   /** @dev Function to submit the form and update the profile */
    const onSubmit: SubmitHandler<UpdateUserProps> = async (data) => {
+      /** @dev Set loading state to true */
       setLoading(true)
+      /** @dev Update the user's profile */
       const response = await updateUserService(data)
 
+      /** @dev If the profile update is not successful, show an error message */
       if (!response.success) {
          toast.error('Error in edit profile.')
          return
       }
+      /** @dev If a new avatar is uploaded, upload the avatar and get the URL */
       let fileUrl = ''
       if (file) {
          fileUrl = await uploadAvatarService({
@@ -47,6 +62,7 @@ const UpdateProfile: React.FC<UpdateProfileProps> = ({
          })
       }
 
+      /** @dev Update the session with the new profile information */
       const udpatedInfo = {
          ...session,
          user: {
@@ -60,9 +76,12 @@ const UpdateProfile: React.FC<UpdateProfileProps> = ({
          }
       }
 
+      /** @dev Update the session */
       await updateSession(udpatedInfo)
+      /** @dev Set loading state to false */
       setLoading(false)
 
+      /** @dev Call the onConfirm function */
       onConfirm()
    }
 

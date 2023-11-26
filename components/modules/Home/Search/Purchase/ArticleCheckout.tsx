@@ -8,6 +8,10 @@ import React from 'react'
 import { Eye, HandThumbsUpFill } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
 
+/**
+ * @title ArticleCheckout Component
+ * @notice This component is used for displaying a card with article details like title, authors, likes, views, and tags.
+ */
 export const ArticleCheckout: React.FC<ArticleCardProps> = ({
    authors,
    id,
