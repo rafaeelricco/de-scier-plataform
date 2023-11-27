@@ -104,7 +104,7 @@ export function HeaderMobile() {
                         </div>
                      </button>
                      <Link href={home_routes.home.index}>
-                        <LogoDeScier data-name="logo_deScier" id="logo_deScier" className="w-9 h-9 mt-1" />
+                        <LogoDeScier data-name="logo_deScier" id="logo_deScier" className="w-9 mt-1" />
                      </Link>
                   </div>
                   <button

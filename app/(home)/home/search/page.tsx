@@ -3,17 +3,22 @@
 import { Dropdown } from '@/components/common/Dropdown/Dropdown'
 import { SelectArticleType } from '@/components/common/Filters/SelectArticleType/SelectArticleType'
 import PaginationComponent from '@/components/common/Pagination/Pagination'
+import ForgotPasswordModal from '@/components/modules/ForgotPassword/ForgotPassword'
 import { BannerStartPublishing } from '@/components/modules/Home/Index/BannerStartPublishing/BannerStartPublishing'
 import { ArticleItem } from '@/components/modules/Home/Search/ArticleItem/ArticleItem'
+import LoginModal from '@/components/modules/Login/Login'
+import RegisterModal from '@/components/modules/Register/Register'
 import useDebounce from '@/hooks/useDebounce'
 import { filter_access, filter_by_year, filter_field } from '@/mock/dropdow_filter_options'
 import { useArticles } from '@/services/document/fetchPublic.service'
+import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
 import '@styles/home.css'
 import { useSearchParams } from 'next/navigation'
 import React from 'react'
 import { Person, Search } from 'react-bootstrap-icons'
+import { twMerge } from 'tailwind-merge'
 
 export default function SearchArticlesPage() {
    const { articles } = useArticles()
@@ -52,8 +57,47 @@ export default function SearchArticlesPage() {
 
    const withoutFilters = !searchTerm && !searchAuthor && !accessType && !documentType && !publicationYear && !field
 
+   /** @dev Component states for various authentication and navigation modals */
+   const login_component = 'login'
+   const register_component = 'register'
+   const forgot_password_component = 'forgot_password'
+
+   /** @dev State to manage the open/closed state of modals */
+   const [open, setOpen] = React.useState(false)
+
+   /** @dev State to manage which component is currently active in the modal */
+   const [component, setComponent] = React.useState(login_component)
+
    return (
       <React.Fragment>
+         <Dialog.Root open={open}>
+            <Dialog.Overlay />
+            <Dialog.Content className={twMerge('w-[80%] max-w-[1200px] p-0', component === forgot_password_component && 'max-w-[554px]')}>
+               {component === login_component && (
+                  <LoginModal
+                     onClose={() => setOpen(false)}
+                     onForgotPassword={() => setComponent(forgot_password_component)}
+                     onLogin={() => setComponent(login_component)}
+                     onRegister={() => setComponent(register_component)}
+                  />
+               )}
+               {component === register_component && (
+                  <RegisterModal
+                     onBack={() => setComponent(login_component)}
+                     onClose={() => {
+                        setOpen(false)
+                        setComponent(login_component)
+                     }}
+                     onLogin={() => setComponent(login_component)}
+                     onRegister={() => setComponent(register_component)}
+                     onReturnToLogin={() => setComponent(login_component)}
+                  />
+               )}
+               {component === forgot_password_component && (
+                  <ForgotPasswordModal onBack={() => setComponent(login_component)} onClose={() => setComponent(login_component)} />
+               )}
+            </Dialog.Content>
+         </Dialog.Root>
          <div className="flex flex-col gap-6">
             <Title.Root className="mt-8 mb-0 lg:mt-14 md:mb-0">
                <Title.Title className="text-3xl mb-0">Search</Title.Title>
@@ -160,7 +204,12 @@ export default function SearchArticlesPage() {
                </div>
             </div>
             <div className="mt-24 mb-32">
-               <BannerStartPublishing />
+               <BannerStartPublishing
+                  onPublishNow={() => {
+                     setOpen(true)
+                     setComponent(login_component)
+                  }}
+               />
             </div>
          </div>
       </React.Fragment>
