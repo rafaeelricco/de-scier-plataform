@@ -63,7 +63,7 @@ const Footer: React.FC = () => {
                <Link href={'https://maps.app.goo.gl/AMeEcTxsWRsABCAC6'} target="_blank" rel="noopener noreferrer" className="grid gap-1">
                   <div className="flex items-center gap-3">
                      <LocationIcon className="w-4 h-4" />
-                     <p className="text-sm text-neutral-white font-semibold select-none">Adress:</p>
+                     <p className="text-sm text-neutral-white font-semibold select-none">Address:</p>
                   </div>
                   <p className="text-sm text-neutral-white font-regular select-none hover:text-secundary-main cursor-pointer">
                      1636 Paulista Avenue | Group 1504 | São Paulo
