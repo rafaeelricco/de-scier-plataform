@@ -13,6 +13,8 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import LoginAnimation from '../Login/Animation/Animation'
 import { RegisterModalProps } from './Typing'
+import { home_routes } from '@/routes/home'
+import { signIn } from 'next-auth/react'
 
 /**
  * @title RegisterModal Component
@@ -60,6 +62,15 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ onClose, onRegister, onBa
       toast.error(response.message)
    }
 
+   /**
+    * @dev Handles third-party login using Google
+    * @param e The mouse event from the click
+    */
+   const loginWithGoogle = async (e: React.MouseEvent<HTMLElement>) => {
+      e.preventDefault()
+      await signIn('google', { callbackUrl: home_routes.summary })
+   }
+
    return (
       <form onSubmit={handleSubmit(onSubmit)}>
          <div className="grid md:grid-cols-2 relative">
@@ -97,7 +108,7 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ onClose, onRegister, onBa
                )}
                {component !== success_component && (
                   <div className="grid gap-6">
-                     <Button.Button variant="outline" className="rounded-full px-4 py-2">
+                     <Button.Button variant="outline" className="rounded-full px-4 py-2" onClick={loginWithGoogle}>
                         <GoogleIcon className="w-6" />
                         <span className="text-base font-semibold">Register with Google</span>
                      </Button.Button>
