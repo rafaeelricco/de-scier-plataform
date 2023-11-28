@@ -1,9 +1,12 @@
 'use client'
 
 import { ArticleUnderReviewSkeleton } from '@/components/common/Publication/Item/ArticlesUnderReview'
+import ForgotPasswordModal from '@/components/modules/ForgotPassword/ForgotPassword'
 import { ArticleCard } from '@/components/modules/Home/Index/ArticleCard/ArticleCard'
 import { ArticleCardProps } from '@/components/modules/Home/Index/ArticleCard/Typing'
 import { BannerStartPublishing } from '@/components/modules/Home/Index/BannerStartPublishing/BannerStartPublishing'
+import LoginModal from '@/components/modules/Login/Login'
+import RegisterModal from '@/components/modules/Register/Register'
 import useWindowDimension from '@/hooks/useWindowDimension'
 import { home_routes } from '@/routes/home'
 import { useArticles } from '@/services/document/fetchPublic.service'
@@ -12,6 +15,7 @@ import { formatAuthors } from '@/utils/format_authors'
 import { capitalizeWord } from '@/utils/format_texts'
 import { getArticleTypeLabel } from '@/utils/generate_labels'
 import * as Button from '@components/common/Button/Button'
+import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
 import '@styles/home.css'
 import Image from 'next/image'
@@ -27,6 +31,7 @@ import React, { useEffect, useState } from 'react'
 import { CaretRightFill, Eye, HandThumbsUpFill, Person, Search } from 'react-bootstrap-icons'
 import { toast } from 'react-toastify'
 import slug from 'slug'
+import { twMerge } from 'tailwind-merge'
 
 export default function HomePage() {
    const router = useRouter()
@@ -92,8 +97,47 @@ export default function HomePage() {
       }
    }, [articles])
 
+   /** @dev Component states for various authentication and navigation modals */
+   const login_component = 'login'
+   const register_component = 'register'
+   const forgot_password_component = 'forgot_password'
+
+   /** @dev State to manage the open/closed state of modals */
+   const [open, setOpen] = React.useState(false)
+
+   /** @dev State to manage which component is currently active in the modal */
+   const [component, setComponent] = React.useState(login_component)
+
    return (
       <React.Fragment>
+         <Dialog.Root open={open}>
+            <Dialog.Overlay />
+            <Dialog.Content className={twMerge('w-[80%] max-w-[1200px] p-0', component === forgot_password_component && 'max-w-[554px]')}>
+               {component === login_component && (
+                  <LoginModal
+                     onClose={() => setOpen(false)}
+                     onForgotPassword={() => setComponent(forgot_password_component)}
+                     onLogin={() => setComponent(login_component)}
+                     onRegister={() => setComponent(register_component)}
+                  />
+               )}
+               {component === register_component && (
+                  <RegisterModal
+                     onBack={() => setComponent(login_component)}
+                     onClose={() => {
+                        setOpen(false)
+                        setComponent(login_component)
+                     }}
+                     onLogin={() => setComponent(login_component)}
+                     onRegister={() => setComponent(register_component)}
+                     onReturnToLogin={() => setComponent(login_component)}
+                  />
+               )}
+               {component === forgot_password_component && (
+                  <ForgotPasswordModal onBack={() => setComponent(login_component)} onClose={() => setComponent(login_component)} />
+               )}
+            </Dialog.Content>
+         </Dialog.Root>
          <IllustrationHero className="hidden lg:block lg:w-[45%] xl:w-1/2 absolute right-0 md:top-48 lg:top-50 xl:top-40 2xl:top-60 h-full lg:max-w-[600px] xl:max-w-[708px] max-h-[554px]" />
          <ShapeHero className="hidden lg:block lg:w-3/4 xl:w-full absolute right-0 top-0 lg:-right-20 xl:-right-0 z-[-1] md:max-w-[600px] md:max-h-[700px] lg:max-w-[700px] lg:max-h-[800px] 2xl:max-w-[742px] 2xl:max-h-[872px]" />
          <div className="h-auto lg:pt-24 lg:h-[calc(100vh-14rem)]">
@@ -267,7 +311,12 @@ export default function HomePage() {
                      </div>
                   </div>
                   <div className="mt-12 sm:mt-16 lg:mt-24 px-2 sm:px-12 md:px-24 lg:px-56 mb-12 sm:mb-16 lg:mb-24">
-                     <BannerStartPublishing />
+                     <BannerStartPublishing
+                        onPublishNow={() => {
+                           setOpen(true)
+                           setComponent(login_component)
+                        }}
+                     />
                   </div>
                </div>
                <div className="articles-background" />

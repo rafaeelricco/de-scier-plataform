@@ -111,7 +111,7 @@ const Header: React.FC = () => {
          </Dialog.Root>
          <div className="py-3 px-8 bg-white flex items-center gap-8 rounded-full shadow-search w-fit justify-center">
             <div className="flex items-center gap-8">
-               <DeScierLogo className="w-10 h-fit" />
+               <DeScierLogo className="w-10" />
                <div className="grid grid-cols-5 justify-items-center items-center">
                   {links.map((link) => (
                      <React.Fragment key={link.id}>
