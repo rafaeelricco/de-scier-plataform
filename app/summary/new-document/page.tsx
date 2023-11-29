@@ -453,7 +453,7 @@ export default function SubmitNewPaperPage() {
                                  key={keyword.id}
                               >
                                  <X
-                                    className="w-5 h-fit fill-neutral-stroke_light hover:fill-status-error cursor-pointer transition-all duration-200 hover:scale-110"
+                                    className="w-5 fill-neutral-stroke_light hover:fill-status-error cursor-pointer transition-all duration-200 hover:scale-110"
                                     onClick={() => remove(index)}
                                  />
                                  <span className="text-xxs sm:text-xs text-primary-main">{keyword.name}</span>
@@ -465,7 +465,7 @@ export default function SubmitNewPaperPage() {
                   <div className="grid md:grid-cols-2 items-start gap-6">
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
-                           <span className="text-sm  font-semibold">Field</span>
+                           <span className="text-sm  font-semibold">Area of knowledge</span>
                            <span className="text-sm text-neutral-light_gray">{fieldLength}/300 characters</span>
                         </Input.Label>
                         <Input.Input

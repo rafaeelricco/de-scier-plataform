@@ -632,7 +632,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   <div className="grid md:grid-cols-2 items-start gap-6">
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
-                           <span className="text-sm  font-semibold">Field</span>
+                           <span className="text-sm  font-semibold">Area of knowledge</span>
                            <span className="text-sm text-neutral-light_gray">{fieldLength}/300 characters</span>
                         </Input.Label>
                         <Input.Input

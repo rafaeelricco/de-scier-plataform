@@ -363,7 +363,7 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
                </div>
                <div className="grid grid-cols-2 gap-6">
                   <div className="grid grid-cols-1">
-                     <span className="text-sm font-semibold">Field</span>
+                     <span className="text-sm font-semibold">Area of knowledge</span>
                      <span className="text-sm">{article?.document?.field}</span>
                   </div>
                </div>
