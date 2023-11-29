@@ -76,7 +76,7 @@ export default function SubmitNewPaperPage() {
          accessType: 'FREE',
          documentType: '',
          field: '',
-         price: '0',
+         price: '',
          title: '',
          file: {
             lastModified: 0,
@@ -97,7 +97,7 @@ export default function SubmitNewPaperPage() {
             type: ''
          },
          category: '',
-         authors: [{}],
+         authors: [],
          keywords: []
       }
    })
@@ -293,6 +293,8 @@ export default function SubmitNewPaperPage() {
       setDialog({ ...dialog, share_split: false, edit_author: false })
       setEditShare(null)
    }
+
+   console.log('authos', watch('authors'))
 
    const { characterLimit: fieldLimit, length: fieldLength } = useLimitCharacters()
    const { characterLimit: titleLimit, length: titleLenght } = useLimitCharacters()
@@ -660,7 +662,7 @@ export default function SubmitNewPaperPage() {
                               setValue('price', '0')
                            } else {
                               setAccessType(value)
-                              setValue('price', '10,00')
+                              setValue('price', '')
                            }
                         }}
                         value={access_type}
