@@ -1,7 +1,7 @@
 import { Option } from '@/components/common/Input/Typing'
 import { random } from 'lodash'
 
-interface ArticlesTypesFilter extends Option {
+export interface ArticlesTypesFilter extends Option {
    type?: string
 }
 
@@ -108,6 +108,44 @@ export const others = articles_types.slice(13, 15)
 
 export const articles_types_filter: ArticlesTypesFilter[] = [
    ...all,
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Research article',
+      value: 'research-article',
+      type: 'label'
+   },
+   ...research_article,
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Cases and notes',
+      value: 'cases-and-notes',
+      type: 'label'
+   },
+   ...cases_and_notes,
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Reviews',
+      value: 'reviews',
+      type: 'label'
+   },
+   ...reviews,
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Communications',
+      value: 'communications',
+      type: 'label'
+   },
+   ...communications,
+   {
+      id: random(1, 1000 * 9999),
+      label: 'Others',
+      value: 'others',
+      type: 'label'
+   },
+   ...others
+]
+
+export const article_types_submit_article: ArticlesTypesFilter[] = [
    {
       id: random(1, 1000 * 9999),
       label: 'Research article',

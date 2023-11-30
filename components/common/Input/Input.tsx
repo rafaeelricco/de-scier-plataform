@@ -13,7 +13,7 @@ import { twMerge } from 'tailwind-merge'
 import { tv } from 'tailwind-variants'
 
 /** @dev Tailwind CSS variant for standard input */
-const input = tv({
+export const input = tv({
    base: 'flex items-center rounded-none border-b-[1px] border-neutral-light_gray p-2 pt-0 placeholder:text-gray-light placeholder:text-base focus:outline-none focus:text-neutral-black w-full placeholder-shown:text-neutral-black bg-transparent focus:border-b-primary-main',
    variants: {
       hasIcon: {

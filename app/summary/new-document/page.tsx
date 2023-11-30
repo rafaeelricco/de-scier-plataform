@@ -1,12 +1,12 @@
 'use client'
 
 import Box from '@/components/common/Box/Box'
+import { SelectArticleType } from '@/components/common/Filters/SelectArticleType/SelectArticleType'
 import { AuthorsListDragabble } from '@/components/common/Lists/Authors/Authors'
 import { NewAuthor } from '@/components/modules/Summary/NewArticle/Authors/NewAuthor'
 import { useLimitCharacters } from '@/hooks/useLimitCharacters'
 import { access_type_options } from '@/mock/access_type'
-import { articles_categories } from '@/mock/articles_categories'
-import { articles_types } from '@/mock/articles_types'
+import { article_types_submit_article } from '@/mock/articles_types'
 import { Author, authors_headers, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
 import { AuthorProps, CreateDocumentProps, CreateDocumentSchema } from '@/schemas/create_document'
@@ -28,6 +28,7 @@ import { Clipboard, Pencil, PlusCircle, PlusCircleDotted, Trash, X } from 'react
 import { CurrencyInput } from 'react-currency-mask'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
+import slug from 'slug'
 import { twMerge } from 'tailwind-merge'
 
 const Dropzone = dynamic(() => import('@/components/common/Dropzone/Dropzone'), { ssr: false })
@@ -49,6 +50,8 @@ export default function SubmitNewPaperPage() {
    const [author_to_edit, setAuthorToEdit] = useState<Author | undefined>(undefined)
    const [keywords_temp, setKeywordsTemp] = useState<string | undefined>()
    const [abstractChart, setAbstractChart] = useState<string>('')
+   const [documentType, setDocumentType] = React.useState<string | null>(null)
+   console.log('documentType', documentType)
 
    /**
     * @dev Using `useForm` hook from React Hook Form for form state management and validation
@@ -484,10 +487,27 @@ export default function SubmitNewPaperPage() {
                         />
                         <Input.Error>{errors.field?.message}</Input.Error>
                      </Input.Root>
+                     <Input.Root>
+                        <Input.Label className="flex gap-2 items-center">
+                           <span className="text-sm  font-semibold">Area of knowledge</span>
+                        </Input.Label>
+                        <SelectArticleType
+                           variant="input"
+                           placeholder={'Article type:'}
+                           selected={documentType}
+                           items={article_types_submit_article}
+                           onValueChange={(value, name) => {
+                              setDocumentType(value)
+                              setValue('category', slug(value, { lower: true }))
+                              console.log('value', value)
+                              console.log('name', name)
+                           }}
+                        />
+                     </Input.Root>
                   </div>
                </div>
                <div className="grid md:grid-cols-2 items-start gap-6">
-                  <Input.Root>
+                  {/* <Input.Root>
                      <Input.Select
                         label={'Article category'}
                         options={articles_categories}
@@ -508,7 +528,7 @@ export default function SubmitNewPaperPage() {
                         }}
                      />
                      <Input.Error>{errors.documentType?.message}</Input.Error>
-                  </Input.Root>
+                  </Input.Root> */}
                </div>
                <div className="flex flex-col gap-2">
                   <Dropzone
