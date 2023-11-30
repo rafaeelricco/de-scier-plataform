@@ -1,7 +1,8 @@
 import { DropdownMenuSeparator } from '@/components/ui/dropdown-menu'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger } from '@/components/ui/select'
-import { articles_types_filter } from '@/mock/articles_types'
+import { article_types_submit_article, articles_types_filter } from '@/mock/articles_types'
 import React from 'react'
+import slug from 'slug'
 import { twMerge } from 'tailwind-merge'
 import { tv } from 'tailwind-variants'
 import { SelectArticleTypeProps } from './Typing'
@@ -40,10 +41,16 @@ export const SelectArticleType: React.FC<SelectArticleTypeProps> = ({
          <Select
             onValueChange={(value) => {
                setSelected(value)
-               onValueChange(
-                  value,
-                  label ? label : (articles_types_filter.find((item) => item.type === 'label' && item.value === value)?.label as string)
-               )
+
+               const findLabelItem = article_types_submit_article.find((item) => item.type === 'label' && item.related?.includes(value))
+
+               if (findLabelItem) {
+                  const labelName = findLabelItem.label
+                  setLabel(labelName)
+                  onValueChange(value, slug(labelName, { lower: true, replacement: '-' }))
+               } else {
+                  onValueChange(value)
+               }
             }}
          >
             <SelectTrigger
@@ -56,9 +63,13 @@ export const SelectArticleType: React.FC<SelectArticleTypeProps> = ({
                   `${variant === 'input' && 'border-t-0 border-l-0 border-r-0 h-[34px]'}`
                )}
             >
-               <span className={twMerge(`${variant === 'filter' && 'text-sm font-semibold text-primary-main'}`)}>
-                  {placeholder} {articles_types_filter.find((item) => item.type === 'item' && item.value === selected)?.label}
-               </span>
+               {items && selected === null ? (
+                  <span className={twMerge(`${variant === 'filter' && 'text-sm font-semibold text-primary-main'}`)}>{placeholder}</span>
+               ) : (
+                  <span className={twMerge(`${variant === 'filter' && 'text-sm font-semibold text-primary-main'}`)}>
+                     {articles_types_filter.find((item) => item.type === 'item' && item.value === selected)?.label}
+                  </span>
+               )}
             </SelectTrigger>
             <SelectContent>
                <SelectGroup>

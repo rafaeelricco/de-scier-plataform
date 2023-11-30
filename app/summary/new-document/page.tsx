@@ -28,7 +28,6 @@ import { Clipboard, Pencil, PlusCircle, PlusCircleDotted, Trash, X } from 'react
 import { CurrencyInput } from 'react-currency-mask'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import slug from 'slug'
 import { twMerge } from 'tailwind-merge'
 
 const Dropzone = dynamic(() => import('@/components/common/Dropzone/Dropzone'), { ssr: false })
@@ -51,7 +50,6 @@ export default function SubmitNewPaperPage() {
    const [keywords_temp, setKeywordsTemp] = useState<string | undefined>()
    const [abstractChart, setAbstractChart] = useState<string>('')
    const [documentType, setDocumentType] = React.useState<string | null>(null)
-   console.log('documentType', documentType)
 
    /**
     * @dev Using `useForm` hook from React Hook Form for form state management and validation
@@ -493,14 +491,14 @@ export default function SubmitNewPaperPage() {
                         </Input.Label>
                         <SelectArticleType
                            variant="input"
-                           placeholder={'Article type:'}
+                           placeholder="Select the article type"
                            selected={documentType}
                            items={article_types_submit_article}
                            onValueChange={(value, name) => {
                               setDocumentType(value)
-                              setValue('category', slug(value, { lower: true }))
-                              console.log('value', value)
-                              console.log('name', name)
+
+                              setValue('documentType', value), trigger('documentType')
+                              setValue('category', name as string), trigger('category')
                            }}
                         />
                      </Input.Root>
