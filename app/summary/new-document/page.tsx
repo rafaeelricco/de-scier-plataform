@@ -489,7 +489,7 @@ export default function SubmitNewPaperPage() {
                      </Input.Root>
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
-                           <span className="text-sm  font-semibold">Area of knowledge</span>
+                           <span className="text-sm  font-semibold">Article type</span>
                         </Input.Label>
                         <SelectArticleType
                            variant="input"
