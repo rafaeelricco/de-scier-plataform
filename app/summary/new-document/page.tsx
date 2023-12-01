@@ -359,7 +359,7 @@ export default function SubmitNewPaperPage() {
                                  <Input.Label optional>Wallet</Input.Label>
                                  <Input.Input
                                     defaultValue={edit_share_split?.wallet || undefined}
-                                    placeholder="Crypto wallet adress to recieve the revenue"
+                                    placeholder="Crypto wallet address to receive $"
                                     onChange={(e) => setWallet(e.target.value)}
                                  />
                               </Input.Root>
@@ -505,30 +505,6 @@ export default function SubmitNewPaperPage() {
                         />
                      </Input.Root>
                   </div>
-               </div>
-               <div className="grid md:grid-cols-2 items-start gap-6">
-                  {/* <Input.Root>
-                     <Input.Select
-                        label={'Article category'}
-                        options={articles_categories}
-                        placeholder="Select the article category"
-                        onValueChange={(value) => {
-                           setValue('category', value), trigger('category')
-                        }}
-                     />
-                     <Input.Error>{errors.documentType?.message}</Input.Error>
-                  </Input.Root>
-                  <Input.Root>
-                     <Input.Select
-                        label={'Article type'}
-                        options={articles_types}
-                        placeholder="Select the article type"
-                        onValueChange={(value) => {
-                           setValue('documentType', value), trigger('documentType')
-                        }}
-                     />
-                     <Input.Error>{errors.documentType?.message}</Input.Error>
-                  </Input.Root> */}
                </div>
                <div className="flex flex-col gap-2">
                   <Dropzone

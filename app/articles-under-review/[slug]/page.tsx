@@ -6,6 +6,7 @@ import DocumentApprovals from '@/components/common/DocumentApprovals/DocumentApp
 import Dropzone from '@/components/common/Dropzone/Dropzone'
 import { StoredFile } from '@/components/common/Dropzone/Typing'
 import { File } from '@/components/common/File/File'
+import { SelectArticleType } from '@/components/common/Filters/SelectArticleType/SelectArticleType'
 import { YouAre, YouAreAuthor } from '@/components/common/Flags/Author/AuthorFlags'
 import { InviteLink } from '@/components/common/InviteLink/InviteLink'
 import { EditorReviewList } from '@/components/common/Lists/EditorReview/EditorReview'
@@ -18,8 +19,7 @@ import { useGetApprovals } from '@/hooks/useGetApprovals'
 import { useLimitCharacters } from '@/hooks/useLimitCharacters'
 import { access_type_options } from '@/mock/access_type'
 import { header_editor_reviewer } from '@/mock/article_under_review'
-import { articles_categories } from '@/mock/articles_categories'
-import { articles_types } from '@/mock/articles_types'
+import { article_types_submit_article } from '@/mock/articles_types'
 import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
 import { AddCommentProps, addCommentSchema } from '@/schemas/comments'
@@ -651,33 +651,22 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                         />
                         <Input.Error>{errors.field?.message}</Input.Error>
                      </Input.Root>
+                     <Input.Root>
+                        <Input.Label className="flex gap-2 items-center">
+                           <span className="text-sm  font-semibold">Article type</span>
+                        </Input.Label>
+                        <SelectArticleType
+                           variant="input"
+                           placeholder="Select the article type"
+                           selected={watch('documentType') as string}
+                           items={article_types_submit_article}
+                           onValueChange={(value, name) => {
+                              setValue('documentType', value), trigger('documentType')
+                              setValue('category', name as string), trigger('category')
+                           }}
+                        />
+                     </Input.Root>
                   </div>
-               </div>
-               <div className="grid md:grid-cols-2 items-start gap-6">
-                  <Input.Root>
-                     <Input.Select
-                        label={'Article category'}
-                        options={articles_categories}
-                        placeholder="Select a category"
-                        value={watch('category') || undefined}
-                        onValueChange={(value) => {
-                           setValue('category', value), trigger('category')
-                        }}
-                     />
-                     <Input.Error>{errors.category?.message}</Input.Error>
-                  </Input.Root>
-                  <Input.Root>
-                     <Input.Select
-                        label={'Article type'}
-                        options={articles_types}
-                        placeholder="Select the article type"
-                        value={watch('documentType') || undefined}
-                        onValueChange={(value) => {
-                           setValue('documentType', value), trigger('documentType')
-                        }}
-                     />
-                     <Input.Error>{errors.documentType?.message}</Input.Error>
-                  </Input.Root>
                </div>
                <Input.Root>
                   <Input.Label className="flex gap-2 items-center">
