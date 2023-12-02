@@ -16,7 +16,6 @@ export const FileSchema = zod.object({
 })
 
 export const AuthorSchema = zod.object({
-   id: zod.string().min(3, 'Id must be at least 3 characters.'),
    name: zod.string({ required_error: 'Name is required' }),
    email: zod.string({ required_error: 'Email is required' }).email(),
    title: zod.string({ required_error: 'Title is required' }),
