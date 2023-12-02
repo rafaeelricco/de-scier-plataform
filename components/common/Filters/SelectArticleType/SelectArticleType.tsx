@@ -60,7 +60,8 @@ export const SelectArticleType: React.FC<SelectArticleTypeProps> = ({
                      'flex items-center gap-1 justify-center py-2 px-4 text-sm rounded-full min-w-[200px] w-fit border-[1px] border-primary-main text-primary-main hover:scale-105 transition-all duration- bg-transparent font-semibold'
                   }`,
                   `${variant === 'input' && input()}`,
-                  `${variant === 'input' && 'border-t-0 border-l-0 border-r-0 h-[34px]'}`
+                  `${variant === 'input' && 'border-t-0 border-l-0 border-r-0 h-[34px]'}`,
+                  `${variant === 'input' && selected === null ? 'text-neutral-light_gray text-base' : 'text-black text-base'}`
                )}
             >
                {items && selected === null ? (
