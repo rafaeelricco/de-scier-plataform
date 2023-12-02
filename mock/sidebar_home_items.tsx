@@ -26,13 +26,13 @@ export const links = [
    {
       id: uniqueId(),
       label: 'About us',
-      link: 'https://descier.science/',
+      link: 'https://descier.science',
       icon: <RedirectIcon className="w-4 h-4 fill-blue-gray mb-1 hover:text-secundary_blue-main transition-all duration-200" />
    },
    {
       id: uniqueId(),
       label: 'My IP',
-      link: 'https://app.registermaxi.io/login',
+      link: 'https://registermaxi.io',
       icon: <RedirectIcon className="w-4 hs-4 fill-blue-gray mb-1 hover:text-secundary_blue-main transition-all duration-200" />
    }
 ]

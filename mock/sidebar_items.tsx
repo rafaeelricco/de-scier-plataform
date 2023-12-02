@@ -76,7 +76,7 @@ export const items: Item[] = [
       id: uniqueId(),
       text: 'About us',
       icon: <AboutUsIcon className="w-6 fill-neutral-light_gray md:w-5 lg:w-6" />,
-      path: home_routes.about_us,
+      path: 'https://descier.science',
       icon_end: <RedirectIcon className="w-4 h-4 fill-neutral-light_gray transition-all duration-200" />,
       divider: false
    },
@@ -84,7 +84,7 @@ export const items: Item[] = [
       id: uniqueId(),
       text: 'My IP',
       icon: <MyIPIcon className="w-6 fill-neutral-light_gray md:w-5 lg:w-6" />,
-      path: 'https://app.registermaxi.io/login',
+      path: 'https://registermaxi.io',
       icon_end: <RedirectIcon className="w-4 h-4 fill-neutral-light_gray transition-all duration-200" />,
       divider: false
    },
