@@ -35,7 +35,7 @@ export const BannerStartPublishing: React.FC<BannerStartPublishingModalProps> = 
                            if (status === 'unauthenticated') {
                               onPublishNow()
                            } else {
-                              router.push(home_routes.summary)
+                              router.push(home_routes.summary_routes.new_document)
                            }
                         }}
                      >

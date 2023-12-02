@@ -6,6 +6,7 @@ import DocumentApprovals from '@/components/common/DocumentApprovals/DocumentApp
 import Dropzone from '@/components/common/Dropzone/Dropzone'
 import { StoredFile } from '@/components/common/Dropzone/Typing'
 import { File } from '@/components/common/File/File'
+import { SelectArticleType } from '@/components/common/Filters/SelectArticleType/SelectArticleType'
 import { YouAre, YouAreAuthor } from '@/components/common/Flags/Author/AuthorFlags'
 import { InviteLink } from '@/components/common/InviteLink/InviteLink'
 import { EditorReviewList } from '@/components/common/Lists/EditorReview/EditorReview'
@@ -18,16 +19,17 @@ import { useGetApprovals } from '@/hooks/useGetApprovals'
 import { useLimitCharacters } from '@/hooks/useLimitCharacters'
 import { access_type_options } from '@/mock/access_type'
 import { header_editor_reviewer } from '@/mock/article_under_review'
-import { articles_categories } from '@/mock/articles_categories'
-import { articles_types } from '@/mock/articles_types'
+import { article_types_submit_article } from '@/mock/articles_types'
 import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
 import { AddCommentProps, addCommentSchema } from '@/schemas/comments'
+import { AuthorProps } from '@/schemas/create_document'
 import { UpdateDocumentProps, UpdateDocumentSchema } from '@/schemas/update_document'
 import { downloadDocumentVersionService } from '@/services/document/download.service'
 import { finalSubmitDocumentService } from '@/services/document/finalSubmit.service'
 import { DocumentGetProps } from '@/services/document/getArticles'
 import { useArticles } from '@/services/document/getArticles.service'
+import { UpdateAuthor, updateDocumentService } from '@/services/document/update.service'
 import { uploadDocumentFileService } from '@/services/file/file.service'
 import { addCommentService } from '@/services/reviewer/addComment.service'
 import { ApproveStatus, approveCommentService } from '@/services/reviewer/approveComment.service'
@@ -62,7 +64,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
 
    const [article, setArticle] = React.useState<DocumentGetProps | null>(null)
    const [items, setItems] = React.useState(authors_mock)
-   const [authors, setAuthors] = React.useState<Author[]>(authors_mock)
+   const [authors, setAuthors] = React.useState<Author[]>([])
    const [access_type, setAccessType] = React.useState('open-access')
    const [authorship_settings, setAuthorshipSettings] = React.useState<Author>()
    const [mermaid_error, setMermaidError] = React.useState('' as string | null)
@@ -76,6 +78,11 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
    const [keywords_temp, setKeywordsTemp] = React.useState<string | undefined>()
    const [file, setFile] = React.useState<StoredFile | null>()
    const [buttonLoading, setButtonLoading] = React.useState({ comment: false })
+   const [updateAuthors, setUpdateAuthors] = React.useState<UpdateAuthor[]>([])
+   const [removeAuthors, setRemoveAuthors] = React.useState<string[]>([])
+   const [edit_share_split, setEditShare] = React.useState<Author | null>()
+   const [share, setShare] = React.useState('')
+   const [wallet, setWallet] = React.useState('')
 
    const {
       register,
@@ -97,7 +104,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
          price: '',
          title: '',
          file: [],
-         authors: [{}],
+         authors: [],
          keywords: [],
          category: '',
          cover: {}
@@ -164,6 +171,21 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                type: 'store_comments_from_api',
                payload: commentsPayload
             } as ActionComments)
+         }
+
+         if (res?.document?.authorsOnDocuments && res.document.authorsOnDocuments.length > 0) {
+            const documentAuthors: Author[] = res.document.authorsOnDocuments.map((item) => {
+               return {
+                  email: item.authorEmail!,
+                  id: item.id,
+                  name: item.author?.name!,
+                  title: item.author?.title!,
+                  share: item.revenuePercent ? String(item.revenuePercent) : '',
+                  wallet: item.author?.walletAddress
+               }
+            })
+
+            setAuthors(documentAuthors)
          }
       })
    }
@@ -272,9 +294,41 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
       router.push(home_routes.articles_under_review)
    }
 
+   const createNewAuthors = () => {
+      const documentAuthors = article?.document.authorsOnDocuments || []
+      const newAuthors = getValues('authors')?.filter((item) => !documentAuthors.some((author) => author.authorEmail === item.email))
+
+      return newAuthors?.map((item) => ({ ...item, revenuePercent: Number(item.revenuePercent) || 0 })) || []
+   }
+
    const handleSaveDocument = async () => {
+      console.log('update')
       if (!article) return
       setSaveLoading(true)
+      console.log('access', access_type)
+      const updateResponse = await updateDocumentService({
+         documentId: article.document.id!,
+         document: {
+            abstract: getValues('abstract'),
+            title: getValues('title'),
+            abstractChart: getValues('abstractChart'),
+            accessType: access_type === 'open-access' ? 'FREE' : 'PAID',
+            authors: createNewAuthors(),
+            category: getValues('category'),
+            documentType: getValues('documentType'),
+            field: getValues('field'),
+            keywords: getValues('keywords')?.map((item) => item.name),
+            price: Number(getValues('price')) || 0
+         },
+         authorsToRemove: removeAuthors,
+         updateAuthors: updateAuthors
+      })
+
+      if (!updateResponse.success) {
+         setSaveLoading(false)
+         toast.error(updateResponse.message)
+         return
+      }
 
       if (file) {
          const response = await uploadDocumentFileService({
@@ -290,11 +344,26 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
             return
          }
       }
+      console.log(getValues('cover'))
+      if (getValues('cover')?.preview && getValues('cover')?.preview !== article?.document.cover) {
+         const uploadCoverSuccess = await uploadDocumentFileService({
+            documentId: article?.document.id!,
+            fileLocalUrl: getValues('cover')?.preview!,
+            filename: getValues('cover')?.name!,
+            mimetype: getValues('cover')?.type!
+         })
+
+         if (!uploadCoverSuccess) {
+            toast.warning('There was an error uploading your cover file. But you can upload later.')
+         }
+      }
 
       toast.success('Document updated successfully')
       setDocumentSaved(true)
 
       setSaveLoading(false)
+      setUpdateAuthors([])
+      setRemoveAuthors([])
       fetchSingleArticle(article.document.id)
    }
 
@@ -451,12 +520,20 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
 
    const [author_to_edit, setAuthorToEdit] = React.useState<Author | undefined>(undefined)
 
+   const onSaveShareSettings = () => {
+      if (edit_share_split && share) {
+         const shareValue = parseInt(share.replace('%', ''))
+         setDialog({ ...dialog, share_split: false, edit_author: false })
+         setEditShare(null)
+      }
+   }
+
    const { characterLimit: fieldLimit, length: fieldLength } = useLimitCharacters(watch('field') || '')
    const { characterLimit: titleLimit, length: titleLenght } = useLimitCharacters(watch('title') || '')
    const { characterLimit: abstractLimit, length: abstractLenght } = useLimitCharacters(watch('abstract') || '')
    return (
       <React.Fragment>
-         <Dialog.Root open={dialog.reasoning || dialog.edit_comment || dialog.author}>
+         <Dialog.Root open={dialog.reasoning || dialog.edit_comment || dialog.author || dialog.edit_author || dialog.share_split}>
             <Dialog.Overlay />
             <Dialog.Content className={twMerge('md:px-16 md:py-14 pb-20')}>
                {dialog.reasoning && (
@@ -523,6 +600,117 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                      }}
                      onClose={() => setDialog({ ...dialog, author: false })}
                   />
+               )}
+               {dialog.edit_author && (
+                  <NewAuthor
+                     onEditAuthor={author_to_edit}
+                     onUpdateAuthor={(updatedAuthor) => {
+                        setAuthors((prevItems) => {
+                           return prevItems.map((item) => (item.id === author_to_edit?.id ? { ...item, ...updatedAuthor } : item))
+                        })
+                        if (!updatedAuthor.id.includes('author')) {
+                           const authorIndex = updateAuthors.findIndex((item) => item.id === updatedAuthor.id)
+                           if (authorIndex > 0) {
+                              updateAuthors[authorIndex].revenuePercent = Number(share) || 0
+                              setUpdateAuthors(updateAuthors)
+                           } else {
+                              setUpdateAuthors((prev) => [...prev, { ...updatedAuthor, revenuePercent: Number(updatedAuthor.revenuePercent || '0') }])
+                           }
+                        }
+                     }}
+                     onClose={() => setDialog({ ...dialog, edit_author: false })}
+                  />
+               )}
+               {dialog.share_split && (
+                  <React.Fragment>
+                     <div className="grid gap-6">
+                        <Dialog.Title title="Share split" onClose={() => setDialog({ ...dialog, share_split: false })} />
+                        <div className="grid gap-6">
+                           <div className="flex items-center gap-6">
+                              <Input.Root>
+                                 <Input.Label>Share</Input.Label>
+                                 <Input.Percentage
+                                    defaultValue={edit_share_split?.share?.replace('%', '') || undefined}
+                                    placeholder="% of the revenue"
+                                    onValueChange={(value) => {
+                                       setShare(value as string)
+                                    }}
+                                 />
+                              </Input.Root>
+                              <Input.Root>
+                                 <Input.Label optional>Wallet</Input.Label>
+                                 <Input.Input
+                                    defaultValue={edit_share_split?.wallet || undefined}
+                                    placeholder="Crypto wallet adress to recieve the revenue"
+                                    onChange={(e) => setWallet(e.target.value)}
+                                 />
+                              </Input.Root>
+                           </div>
+                           <Button.Button
+                              variant="primary"
+                              onClick={() => {
+                                 if (!authorship_settings?.id) {
+                                    console.error('Authorship settings does not have an ID!')
+                                    return
+                                 }
+
+                                 const updatedAuthor: Author = {
+                                    ...authorship_settings!,
+                                    id: authorship_settings!.id,
+                                    name: authorship_settings!.name,
+                                    title: authorship_settings!.title,
+                                    email: authorship_settings!.email,
+                                    wallet: authorship_settings!.wallet,
+                                    share: share.includes('%') ? share : share + '%'
+                                 }
+
+                                 const authorIndex = authors.findIndex((author) => author.id === authorship_settings!.id)
+
+                                 const updatedAuthors = [...authors]
+                                 updatedAuthors[authorIndex].share = share.includes('%') ? share : share + '%'
+                                 updatedAuthors[authorIndex].wallet = wallet
+                                 setAuthors(updatedAuthors)
+
+                                 if (!updatedAuthor.id.includes('author')) {
+                                    console.log('updte', updateAuthors)
+                                    const authorIndex = updateAuthors.findIndex((item) => item.email === updatedAuthor.email)
+                                    console.log('index', authorIndex)
+                                    if (authorIndex >= 0) {
+                                       updateAuthors[authorIndex].revenuePercent = Number(share) || 0
+                                       setUpdateAuthors(updateAuthors)
+                                    } else {
+                                       setUpdateAuthors((prev) => [
+                                          ...prev,
+                                          {
+                                             id: updatedAuthor.id,
+                                             email: updatedAuthor.email,
+                                             name: updatedAuthor.email,
+                                             revenuePercent: Number(share) || 0,
+                                             walletAddress: wallet
+                                          }
+                                       ])
+                                    }
+                                 } else {
+                                    const newAuthorsUpdate = updatedAuthors.map((item) => ({
+                                       email: item.email,
+                                       name: item.name,
+                                       title: item.title,
+                                       revenuePercent: share,
+                                       walletAddress: item.wallet || ''
+                                    }))
+
+                                    setValue('authors', newAuthorsUpdate)
+                                    trigger('authors')
+                                 }
+
+                                 onSaveShareSettings()
+                              }}
+                           >
+                              Add share split
+                           </Button.Button>
+                        </div>
+                     </div>
+                  </React.Fragment>
                )}
             </Dialog.Content>
          </Dialog.Root>
@@ -632,7 +820,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   <div className="grid md:grid-cols-2 items-start gap-6">
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
-                           <span className="text-sm  font-semibold">Field</span>
+                           <span className="text-sm  font-semibold">Area of knowledge</span>
                            <span className="text-sm text-neutral-light_gray">{fieldLength}/300 characters</span>
                         </Input.Label>
                         <Input.Input
@@ -651,33 +839,22 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                         />
                         <Input.Error>{errors.field?.message}</Input.Error>
                      </Input.Root>
+                     <Input.Root>
+                        <Input.Label className="flex gap-2 items-center">
+                           <span className="text-sm  font-semibold">Article type</span>
+                        </Input.Label>
+                        <SelectArticleType
+                           variant="input"
+                           placeholder="Select the article type"
+                           selected={watch('documentType') as string}
+                           items={article_types_submit_article}
+                           onValueChange={(value, name) => {
+                              setValue('documentType', value), trigger('documentType')
+                              setValue('category', name as string), trigger('category')
+                           }}
+                        />
+                     </Input.Root>
                   </div>
-               </div>
-               <div className="grid md:grid-cols-2 items-start gap-6">
-                  <Input.Root>
-                     <Input.Select
-                        label={'Article category'}
-                        options={articles_categories}
-                        placeholder="Select a category"
-                        value={watch('category') || undefined}
-                        onValueChange={(value) => {
-                           setValue('category', value), trigger('category')
-                        }}
-                     />
-                     <Input.Error>{errors.category?.message}</Input.Error>
-                  </Input.Root>
-                  <Input.Root>
-                     <Input.Select
-                        label={'Article type'}
-                        options={articles_types}
-                        placeholder="Select the article type"
-                        value={watch('documentType') || undefined}
-                        onValueChange={(value) => {
-                           setValue('documentType', value), trigger('documentType')
-                        }}
-                     />
-                     <Input.Error>{errors.documentType?.message}</Input.Error>
-                  </Input.Root>
                </div>
                <Input.Root>
                   <Input.Label className="flex gap-2 items-center">
@@ -841,9 +1018,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                      type="button"
                      variant="outline"
                      className="px-4 py-3 w-full text-sm"
-                     onClick={() => {
-                        setDialog({ ...dialog, author: true })
-                     }}
+                     onClick={() => setDialog({ ...dialog, author: true })}
                   >
                      Add authors for this paper
                      <PlusCircle className="w-4 fill-primary-main" />
@@ -998,16 +1173,18 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                         </div>
                         <div>
                            <div>
-                              {article?.document.authorsOnDocuments?.map((author, index) => (
+                              {authors.map((author, index) => (
                                  <React.Fragment key={index}>
-                                    <div className="grid gap-2 md:grid-cols-3 items-center py-3">
+                                    <div className="grid grid-cols-3 items-center py-3">
                                        <div>
-                                          <p className="text-sm font-semibold text-secundary_blue-main">{author.author?.name}</p>
+                                          <p className="text-sm text-secundary_blue-main">{author.name}</p>
                                        </div>
                                        <div>
-                                          {author.revenuePercent ? (
+                                          {author.share ? (
                                              <div className="flex gap-2 px-4 py-1 border rounded-md border-terciary-main w-fit">
-                                                <p className="text-sm text-center text-terciary-main w-8">{author.revenuePercent}%</p>
+                                                <p className="text-sm text-center text-terciary-main w-8">
+                                                   {author.share.includes('%') ? author.share : author.share + '%'}
+                                                </p>
                                                 <p className="text-sm text-terciary-main">Authorship</p>
                                              </div>
                                           ) : (
@@ -1016,13 +1193,9 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                                                 className="px-4 py-2 w-fit text-sm"
                                                 onClick={() => {
                                                    setDialog({ ...dialog, share_split: true })
-                                                   setAuthorshipSettings({
-                                                      email: author.authorEmail || '',
-                                                      id: author.id,
-                                                      name: author.author?.name || '',
-                                                      title: author.author?.title || '',
-                                                      share: `${author.revenuePercent}`
-                                                   })
+                                                   console.log(author)
+                                                   setAuthorshipSettings(author)
+                                                   setEditShare(author)
                                                 }}
                                              >
                                                 Add authorship settings
@@ -1030,8 +1203,53 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                                              </Button.Button>
                                           )}
                                        </div>
-                                       <div className="w-fit">
-                                          <p className="text-sm text-center text-black w-8">{author.author?.walletAddress || '-'}</p>
+                                       <div className="w-full flex items-center justify-between">
+                                          <p className="text-base text-center text-black w-8">{author.wallet || '-'}</p>
+                                          <div className="flex items-center gap-2">
+                                             <Trash
+                                                size={20}
+                                                className=" fill-status-error hover:scale-110 transition-all duration-200 cursor-pointer"
+                                                onClick={() => {
+                                                   const author_whitout_share = authors.filter((item) => item.id !== author.id)
+                                                   const author_updated: Author = {
+                                                      id: author.id,
+                                                      email: author.email,
+                                                      name: author.name,
+                                                      title: author.title,
+                                                      share: '0',
+                                                      wallet: author.wallet || ''
+                                                   }
+
+                                                   setAuthors((prevItems) => [...author_whitout_share, author_updated])
+                                                   if (!author.id.includes('author')) {
+                                                      const author_updated: UpdateAuthor = {
+                                                         id: author.id,
+                                                         email: author.email,
+                                                         name: author.name,
+                                                         title: author.title,
+                                                         revenuePercent: 0,
+                                                         walletAddress: author.wallet || ''
+                                                      }
+                                                      const authorIndex = updateAuthors.findIndex((item) => item.id === author_updated.id)
+                                                      if (authorIndex >= 0) {
+                                                         updateAuthors[authorIndex].revenuePercent = 0
+                                                         setUpdateAuthors(updateAuthors)
+                                                      } else {
+                                                         setUpdateAuthors((prevItems) => [...prevItems, author_updated])
+                                                      }
+                                                   }
+                                                }}
+                                             />
+                                             <Pencil
+                                                size={20}
+                                                className=" fill-primary-main hover:scale-110 transition-all duration-200 cursor-pointer"
+                                                onClick={() => {
+                                                   setEditShare(author)
+                                                   setAuthorshipSettings(author)
+                                                   setDialog({ ...dialog, share_split: true })
+                                                }}
+                                             />
+                                          </div>
                                        </div>
                                     </div>
                                     <hr className="divider-h" />
@@ -1049,7 +1267,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   The current status of this document refelects the collective input and consensus from our panel of expert reviewers and editos.
                </p>
                <DocumentApprovals editorApprovals={editorApprovals} reviewerApprovals={reviewerApprovals} />
-               {article?.document.status !== 'ADMIN_APPROVE' ? (
+               {['PENDING', 'APPROVED'].includes(article?.document.status!) && (
                   <React.Fragment>
                      <Button.Button variant="primary" className="flex items-center" onClick={handleSubmitDocument} loading={submitLoading}>
                         <FileEarmarkText className="w-5 h-5" />
@@ -1059,7 +1277,9 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                         Save
                      </Button.Button>
                   </React.Fragment>
-               ) : (
+               )}
+
+               {article?.document.status === 'ADMIN_APPROVE' && (
                   <Button.Button
                      variant="disabled"
                      className="flex items-center bg-status-disable_bg text-status-disable_text"
@@ -1068,6 +1288,30 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   >
                      <FileEarmarkText className="w-5 h-5" />
                      Waiting admin approval
+                  </Button.Button>
+               )}
+
+               {article?.document.status === 'SUBMITTED' && (
+                  <Button.Button
+                     variant="disabled"
+                     className="flex items-center bg-status-disable_bg text-status-disable_text"
+                     onClick={handleSubmitDocument}
+                     loading={submitLoading}
+                  >
+                     <FileEarmarkText className="w-5 h-5" />
+                     Document was submitted
+                  </Button.Button>
+               )}
+
+               {article?.document.status === 'REJECTED' && (
+                  <Button.Button
+                     variant="disabled"
+                     className="flex items-center bg-status-disable_bg text-status-disable_text"
+                     onClick={handleSubmitDocument}
+                     loading={submitLoading}
+                  >
+                     <FileEarmarkText className="w-5 h-5" />
+                     Document was rejected
                   </Button.Button>
                )}
 

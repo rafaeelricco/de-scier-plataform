@@ -24,7 +24,7 @@ const SelectTrigger = React.forwardRef<React.ElementRef<typeof SelectPrimitive.T
       >
          {children}
          <SelectPrimitive.Icon asChild>
-            <CaretDown className="ml-2" />
+            <CaretDown className="ml-2 fill-primary-main" />
          </SelectPrimitive.Icon>
       </SelectPrimitive.Trigger>
    )
@@ -112,14 +112,15 @@ const SelectSeparator = React.forwardRef<
 SelectSeparator.displayName = SelectPrimitive.Separator.displayName
 
 export {
-   Select,
-   SelectContent,
-   SelectGroup,
-   SelectItem,
-   SelectLabel,
-   SelectScrollDownButton,
-   SelectScrollUpButton,
-   SelectSeparator,
-   SelectTrigger,
-   SelectValue
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectScrollDownButton,
+    SelectScrollUpButton,
+    SelectSeparator,
+    SelectTrigger,
+    SelectValue
 }
+

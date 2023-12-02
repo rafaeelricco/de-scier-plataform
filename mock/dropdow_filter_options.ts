@@ -101,28 +101,13 @@ export const filter_field = [
 export const filter_by_year = [
    {
       id: uniqueId(),
-      label: '2019',
-      value: 2019
-   },
-   {
-      id: uniqueId(),
-      label: '2020',
-      value: 2020
-   },
-   {
-      id: uniqueId(),
-      label: '2021',
-      value: 2021
-   },
-   {
-      id: uniqueId(),
-      label: '2022',
-      value: 2022
-   },
-   {
-      id: uniqueId(),
       label: '2023',
       value: 2023
+   },
+   {
+      id: uniqueId(),
+      label: '2024',
+      value: 2024
    }
 ]
 

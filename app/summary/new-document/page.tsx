@@ -1,12 +1,12 @@
 'use client'
 
 import Box from '@/components/common/Box/Box'
+import { SelectArticleType } from '@/components/common/Filters/SelectArticleType/SelectArticleType'
 import { AuthorsListDragabble } from '@/components/common/Lists/Authors/Authors'
 import { NewAuthor } from '@/components/modules/Summary/NewArticle/Authors/NewAuthor'
 import { useLimitCharacters } from '@/hooks/useLimitCharacters'
 import { access_type_options } from '@/mock/access_type'
-import { articles_categories } from '@/mock/articles_categories'
-import { articles_types } from '@/mock/articles_types'
+import { article_types_submit_article } from '@/mock/articles_types'
 import { Author, authors_headers, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
 import { AuthorProps, CreateDocumentProps, CreateDocumentSchema } from '@/schemas/create_document'
@@ -23,6 +23,7 @@ import { uniqueId } from 'lodash'
 import { useSession } from 'next-auth/react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
+import NProgress from 'nprogress'
 import React, { useEffect, useState } from 'react'
 import { Clipboard, Pencil, PlusCircle, PlusCircleDotted, Trash, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
@@ -39,7 +40,7 @@ export default function SubmitNewPaperPage() {
 
    /** @dev Initialize states for loading indicators, dialog settings, and various form inputs */
    const [loading, setLoading] = useState(false)
-   const [dialog, setDialog] = useState({ author: false, share_split: false, edit_author: false, edit_share_split: false })
+   const [dialog, setDialog] = useState({ author: false, share_split: false, edit_author: false, edit_share_split: false, warning_on_change_page: false })
    const [access_type, setAccessType] = useState('open-access')
    const [share, setShare] = useState('')
    const [wallet, setWallet] = useState('')
@@ -49,6 +50,7 @@ export default function SubmitNewPaperPage() {
    const [author_to_edit, setAuthorToEdit] = useState<Author | undefined>(undefined)
    const [keywords_temp, setKeywordsTemp] = useState<string | undefined>()
    const [abstractChart, setAbstractChart] = useState<string>('')
+   const [documentType, setDocumentType] = React.useState<string | null>(null)
 
    /**
     * @dev Using `useForm` hook from React Hook Form for form state management and validation
@@ -58,7 +60,7 @@ export default function SubmitNewPaperPage() {
       register,
       handleSubmit,
       watch,
-      formState: { errors },
+      formState: { errors, isDirty },
       setValue,
       trigger,
       getValues,
@@ -101,10 +103,6 @@ export default function SubmitNewPaperPage() {
          keywords: []
       }
    })
-
-   /** @dev Logging watched values and errors for debugging */
-   console.log('watch', watch())
-   console.log('errors', errors)
 
    /** @dev Using `useFieldArray` to manage dynamic keyword fields */
    const { append, remove, fields: keywords } = useFieldArray({ name: 'keywords', control: control })
@@ -294,16 +292,55 @@ export default function SubmitNewPaperPage() {
       setEditShare(null)
    }
 
-   console.log('authos', watch('authors'))
-
    const { characterLimit: fieldLimit, length: fieldLength } = useLimitCharacters()
    const { characterLimit: titleLimit, length: titleLenght } = useLimitCharacters()
    const { characterLimit: abstractLimit, length: abstractLenght } = useLimitCharacters()
+
+   const [targetUrl, setTargetUrl] = useState('')
+
+   useEffect(() => {
+      const handleAnchorClick = (event: MouseEvent) => {
+         if (isDirty) {
+            const url = (event.currentTarget as HTMLAnchorElement).href
+            if (url.startsWith(window.location.origin) && url !== window.location.href) {
+               setTargetUrl(url)
+               setDialog({ ...dialog, warning_on_change_page: true })
+               event.preventDefault()
+               NProgress.done()
+            }
+         }
+      }
+
+      const handleMutation: MutationCallback = (mutationsList, observer) => {
+         const anchorElements = document.querySelectorAll('a')
+         anchorElements.forEach((anchor) => anchor.addEventListener('click', handleAnchorClick))
+      }
+
+      const mutationObserver = new MutationObserver(handleMutation)
+      mutationObserver.observe(document, { childList: true, subtree: true })
+
+      const originalPushState = window.history.pushState
+
+      return () => {
+         mutationObserver.disconnect()
+         window.history.pushState = originalPushState
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [isDirty])
+
+   const handleLeave = () => {
+      router.push(targetUrl)
+   }
+
+   const handleClose = () => {
+      setDialog({ ...dialog, warning_on_change_page: false })
+   }
+
    return (
       <React.Fragment>
-         <Dialog.Root open={dialog.author || dialog.share_split || dialog.edit_author || dialog.edit_share_split}>
+         <Dialog.Root open={dialog.author || dialog.share_split || dialog.edit_author || dialog.edit_share_split || dialog.warning_on_change_page}>
             <Dialog.Overlay />
-            <Dialog.Content className={twMerge('md:px-16 md:py-14 pb-20')}>
+            <Dialog.Content className={twMerge('md:px-16 md:py-14 pb-20', `${dialog.warning_on_change_page && 'max-w-[564px]'}`)}>
                {dialog.author && (
                   <NewAuthor
                      onAddAuthor={(value) => {
@@ -358,7 +395,7 @@ export default function SubmitNewPaperPage() {
                                  <Input.Label optional>Wallet</Input.Label>
                                  <Input.Input
                                     defaultValue={edit_share_split?.wallet || undefined}
-                                    placeholder="Crypto wallet adress to recieve the revenue"
+                                    placeholder="Crypto wallet address to receive $"
                                     onChange={(e) => setWallet(e.target.value)}
                                  />
                               </Input.Root>
@@ -385,6 +422,23 @@ export default function SubmitNewPaperPage() {
                            </Button.Button>
                         </div>
                      </div>
+                  </React.Fragment>
+               )}
+               {dialog.warning_on_change_page && (
+                  <React.Fragment>
+                     <Dialog.Title
+                        title="Submission not completed!"
+                        onClose={() => {
+                           setDialog({ ...dialog, share_split: false, warning_on_change_page: false })
+                        }}
+                     />
+                     <p className="text-base">Your document submission is not complete yet. If you leave the page, all your progress will be lost!</p>
+                     <Button.Button variant="primary" onClick={handleClose}>
+                        Cancel
+                     </Button.Button>
+                     <Button.Button variant="outline" onClick={handleLeave}>
+                        Leave without finishing
+                     </Button.Button>
                   </React.Fragment>
                )}
             </Dialog.Content>
@@ -455,7 +509,7 @@ export default function SubmitNewPaperPage() {
                                  key={keyword.id}
                               >
                                  <X
-                                    className="w-5 h-fit fill-neutral-stroke_light hover:fill-status-error cursor-pointer transition-all duration-200 hover:scale-110"
+                                    className="w-5 fill-neutral-stroke_light hover:fill-status-error cursor-pointer transition-all duration-200 hover:scale-110"
                                     onClick={() => remove(index)}
                                  />
                                  <span className="text-xxs sm:text-xs text-primary-main">{keyword.name}</span>
@@ -467,7 +521,7 @@ export default function SubmitNewPaperPage() {
                   <div className="grid md:grid-cols-2 items-start gap-6">
                      <Input.Root>
                         <Input.Label className="flex gap-2 items-center">
-                           <span className="text-sm  font-semibold">Field</span>
+                           <span className="text-sm  font-semibold">Area of knowledge</span>
                            <span className="text-sm text-neutral-light_gray">{fieldLength}/300 characters</span>
                         </Input.Label>
                         <Input.Input
@@ -486,31 +540,24 @@ export default function SubmitNewPaperPage() {
                         />
                         <Input.Error>{errors.field?.message}</Input.Error>
                      </Input.Root>
+                     <Input.Root>
+                        <Input.Label className="flex gap-2 items-center">
+                           <span className="text-sm  font-semibold">Article type</span>
+                        </Input.Label>
+                        <SelectArticleType
+                           variant="input"
+                           placeholder="Select the article type"
+                           selected={documentType}
+                           items={article_types_submit_article}
+                           onValueChange={(value, name) => {
+                              setDocumentType(value)
+
+                              setValue('documentType', value), trigger('documentType')
+                              setValue('category', name as string), trigger('category')
+                           }}
+                        />
+                     </Input.Root>
                   </div>
-               </div>
-               <div className="grid md:grid-cols-2 items-start gap-6">
-                  <Input.Root>
-                     <Input.Select
-                        label={'Article category'}
-                        options={articles_categories}
-                        placeholder="Select the article category"
-                        onValueChange={(value) => {
-                           setValue('category', value), trigger('category')
-                        }}
-                     />
-                     <Input.Error>{errors.documentType?.message}</Input.Error>
-                  </Input.Root>
-                  <Input.Root>
-                     <Input.Select
-                        label={'Article type'}
-                        options={articles_types}
-                        placeholder="Select the article type"
-                        onValueChange={(value) => {
-                           setValue('documentType', value), trigger('documentType')
-                        }}
-                     />
-                     <Input.Error>{errors.documentType?.message}</Input.Error>
-                  </Input.Root>
                </div>
                <div className="flex flex-col gap-2">
                   <Dropzone
