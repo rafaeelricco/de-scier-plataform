@@ -157,6 +157,10 @@ export default function Page({ params }: { params: { slug: string } }) {
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [session?.user])
 
+   const textToCopy = window.location.href
+
+   const [popoverOpen, setPopoverOpen] = React.useState(false)
+
    return (
       <React.Fragment>
          <Dialog.Root open={purchase.checkout || purchase.processing || purchase.success || purchase.error || purchase.my_articles || purchase.login}>
@@ -345,11 +349,90 @@ export default function Page({ params }: { params: { slug: string } }) {
 
                      <div className="flex items-center gap-4">
                         <p className="text-lg text-neutral-gray">Share</p>
-                        <LinkIcon className="w-6 h-6 flex shrink-0 cursor-pointer transition-all duration-200 hover:scale-110" />
-                        <TwitterIcon className="w-6 h-6 flex shrink-0 cursor-pointer transition-all duration-200 hover:scale-110" />
-                        <FacebookIcon className="w-6 h-6 flex shrink-0 cursor-pointer transition-all duration-200 hover:scale-110" />
-                        <WhatsAppIcon className="w-6 h-6 flex shrink-0 cursor-pointer transition-all duration-200 hover:scale-110" />
-                        <TelegramIcon className="w-6 h-6 flex shrink-0 cursor-pointer transition-all duration-200 hover:scale-110" />
+                        <HoverCard open={popoverOpen}>
+                           <HoverCardTrigger
+                              onClick={() => {
+                                 setPopoverOpen(true)
+
+                                 setTimeout(() => {
+                                    setPopoverOpen(false)
+                                 }, 3000)
+                              }}
+                           >
+                              <LinkIcon
+                                 className="w-6 h-6 flex shrink-0 cursor-pointer transition-all duration-200 hover:scale-110"
+                                 onClick={() => {
+                                    navigator.clipboard
+                                       .writeText(textToCopy)
+                                       .then(() => {})
+                                       .catch((err) => {
+                                          console.error('Erro ao copiar texto: ', err)
+                                       })
+                                 }}
+                              >
+                                 Copy Link
+                              </LinkIcon>
+                           </HoverCardTrigger>
+                           <HoverCardContent className="px-4 py-2" side="bottom">
+                              <h4 className="text-xs font-semibold text-status-green">O link foi copiado para a área de transferência!</h4>
+                           </HoverCardContent>
+                        </HoverCard>
+                        <div
+                           onClick={() => {
+                              navigator.clipboard
+                                 .writeText(textToCopy)
+                                 .then(() => {
+                                    window.open('https://twitter.com/compose/tweet')
+                                 })
+                                 .catch((err) => {
+                                    console.error('Erro ao copiar texto: ', err)
+                                 })
+                           }}
+                        >
+                           <TwitterIcon className="w-6 h-6 flex shrink-0 cursor-pointer transition-all duration-200 hover:scale-110" />
+                        </div>
+                        <div
+                           onClick={() => {
+                              navigator.clipboard
+                                 .writeText(textToCopy)
+                                 .then(() => {
+                                    window.open('https://www.facebook.com')
+                                 })
+                                 .catch((err) => {
+                                    console.error('Erro ao copiar texto: ', err)
+                                 })
+                           }}
+                        >
+                           <FacebookIcon className="w-6 h-6 flex shrink-0 cursor-pointer transition-all duration-200 hover:scale-110" />
+                        </div>
+                        <div
+                           onClick={() => {
+                              navigator.clipboard
+                                 .writeText(textToCopy)
+                                 .then(() => {
+                                    window.open('https://web.whatsapp.com')
+                                 })
+                                 .catch((err) => {
+                                    console.error('Erro ao copiar texto: ', err)
+                                 })
+                           }}
+                        >
+                           <WhatsAppIcon className="w-6 h-6 flex shrink-0 cursor-pointer transition-all duration-200 hover:scale-110" />
+                        </div>
+                        <div
+                           onClick={() => {
+                              navigator.clipboard
+                                 .writeText(textToCopy)
+                                 .then(() => {
+                                    window.open('https://web.telegram.org/a/')
+                                 })
+                                 .catch((err) => {
+                                    console.error('Erro ao copiar texto: ', err)
+                                 })
+                           }}
+                        >
+                           <TelegramIcon className="w-6 h-6 flex shrink-0 cursor-pointer transition-all duration-200 hover:scale-110" />
+                        </div>
                      </div>
                   </div>
                   <hr className="divider-h" />

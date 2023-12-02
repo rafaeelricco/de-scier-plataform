@@ -28,14 +28,13 @@ const Dropdown: React.FC<DropdownProps> = ({
    const initialSelected = no_selected ? null : selected_value || items[0].label
 
    /** @dev State hook for managing the currently selected item. */
-   const [selected, setSelected] = React.useState<string | null>(initialSelected)
+   const [selected, setSelected] = React.useState<string | null | undefined>(initialSelected)
 
    /** @dev Effect hook to update the `selected` state when `selected_value`  prop changes. */
    React.useEffect(() => {
-      if (selected_value !== undefined) {
-         setSelected(selected_value)
-      }
+      setSelected(selected_value)
    }, [selected_value])
+
    return (
       <React.Fragment>
          <DropdownMenu>
@@ -46,9 +45,13 @@ const Dropdown: React.FC<DropdownProps> = ({
                      className
                   )}
                >
-                  <span className="text-sm font-semibold text-primary-main">
-                     {label} {selected} {custom_intial_value}
-                  </span>
+                  <div className="flex items-center gap-1">
+                     <span className="text-sm font-semibold text-primary-main">{label}</span>
+                     <span className="text-sm font-semibold text-primary-main first-letter:uppercase">
+                        {selected !== undefined && selected !== null ? `${selected}` : ''}
+                     </span>
+                     <span className="text-sm font-semibold text-primary-main">{custom_intial_value}</span>
+                  </div>
                   <CaretDown className="ml-2" />
                </div>
             </DropdownMenuTrigger>

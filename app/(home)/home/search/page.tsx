@@ -32,9 +32,9 @@ export default function SearchArticlesPage() {
    const [searchTerm, setSearchTerm] = React.useState('')
    const [searchAuthor, setSearchAuthor] = React.useState('')
    const [accessType, setAccessType] = React.useState('')
-   const [documentType, setDocumentType] = React.useState<string | null>('')
-   const [publicationYear, setPublicationYear] = React.useState<number>()
-   const [field, setField] = React.useState('')
+   const [documentType, setDocumentType] = React.useState<string | null>(null)
+   const [publicationYear, setPublicationYear] = React.useState<number | null>(null)
+   const [field, setField] = React.useState<string | null>(null)
    const debouncedSearchTerm = useDebounce(searchTerm, 500)
    const debouncedSearchAuthor = useDebounce(searchAuthor, 500)
 
@@ -55,7 +55,19 @@ export default function SearchArticlesPage() {
       }
    }, [searchQueries])
 
-   const withoutFilters = !searchTerm && !searchAuthor && !accessType && !documentType && !publicationYear && !field
+   const clearFilters = () => {
+      setPage(1) // Resetar para a primeira página
+      setResults(articles) // Resetar os resultados (se necessário)
+      setTotalPages(1) // Resetar o total de páginas (se necessário)
+      setSearchTerm('')
+      setSearchAuthor('')
+      setAccessType('')
+      setDocumentType(null) // Usar null para indicar que nenhum tipo de documento está selecionado
+      setPublicationYear(null) // Alterado de undefined para null para consistência
+      setField(null)
+   }
+
+   const withoutFilters = !searchTerm && !searchAuthor && !accessType && documentType === null && publicationYear === null && field === null
 
    /** @dev Component states for various authentication and navigation modals */
    const login_component = 'login'
@@ -131,9 +143,23 @@ export default function SearchArticlesPage() {
                </div>
             </div>
             <div className="flex flex-wrap justify-center md:justify-start items-center gap-2">
-               <Dropdown no_selected items={filter_by_year} label="Year of publication:" onSelect={(value) => setPublicationYear(Number(value))} />
-               <Dropdown no_selected label="Field:" className="min-w-fit px-8" items={filter_field} onSelect={(value) => setField(value)} />
+               <Dropdown
+                  no_selected
+                  items={filter_by_year}
+                  label="Year of publication:"
+                  selected={publicationYear ? String(publicationYear) : undefined}
+                  onSelect={(value) => setPublicationYear(Number(value))}
+               />
+               <Dropdown
+                  no_selected
+                  label="Field:"
+                  selected={field || undefined}
+                  className="min-w-fit px-8"
+                  items={filter_field}
+                  onSelect={(value) => setField(value)}
+               />
                <SelectArticleType
+                  variant="filter"
                   placeholder={'Article type:'}
                   selected={documentType}
                   onValueChange={(value) => {
@@ -143,16 +169,7 @@ export default function SearchArticlesPage() {
                />
                <Dropdown no_selected label="Access:" className="min-w-fit px-8" items={filter_access} onSelect={(value) => setAccessType(value)} />
                {withoutFilters ? null : (
-                  <p
-                     className="text-base font-semibold text-terciary-main cursor-pointer hover:underline select-none"
-                     onClick={() => {
-                        setDocumentType('')
-                        setSearchTerm('')
-                        setSearchAuthor('')
-                        setAccessType('')
-                        setPublicationYear(undefined)
-                     }}
-                  >
+                  <p className="text-base font-semibold text-terciary-main cursor-pointer hover:underline select-none" onClick={clearFilters}>
                      Clear Filters
                   </p>
                )}
@@ -164,7 +181,7 @@ export default function SearchArticlesPage() {
                      .filter((article) => article.authors.some((author) => author.name.toLowerCase().includes(debouncedSearchAuthor.toLowerCase())))
                      .filter((article) => article.documentType?.includes(documentType || ''))
                      .filter((article) => article.accessType?.includes(accessType))
-                     .filter((article) => article.field?.toLowerCase()?.includes(field))
+                     .filter((article) => article.field?.toLowerCase()?.includes(field || ''))
                      .filter((article) => {
                         if (!publicationYear) {
                            return true

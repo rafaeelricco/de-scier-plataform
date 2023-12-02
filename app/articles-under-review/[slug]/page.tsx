@@ -830,9 +830,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                      type="button"
                      variant="outline"
                      className="px-4 py-3 w-full text-sm"
-                     onClick={() => {
-                        setDialog({ ...dialog, author: true })
-                     }}
+                     onClick={() => setDialog({ ...dialog, author: true })}
                   >
                      Add authors for this paper
                      <PlusCircle className="w-4 fill-primary-main" />
