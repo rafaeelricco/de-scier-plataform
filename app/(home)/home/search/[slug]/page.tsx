@@ -399,7 +399,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                                     window.open('https://www.facebook.com')
                                  })
                                  .catch((err) => {
-                                    console.error('Erro ao copiar texto: ', err)
+                                    console.error('Erro ao copiar texto:', err)
                                  })
                            }}
                         >
@@ -413,7 +413,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                                     window.open('https://web.whatsapp.com')
                                  })
                                  .catch((err) => {
-                                    console.error('Erro ao copiar texto: ', err)
+                                    console.error('Erro ao copiar texto:', err)
                                  })
                            }}
                         >
@@ -427,7 +427,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                                     window.open('https://web.telegram.org/a/')
                                  })
                                  .catch((err) => {
-                                    console.error('Erro ao copiar texto: ', err)
+                                    console.error('Erro ao copiar texto:', err)
                                  })
                            }}
                         >

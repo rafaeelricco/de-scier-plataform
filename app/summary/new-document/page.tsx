@@ -299,6 +299,10 @@ export default function SubmitNewPaperPage() {
    const [targetUrl, setTargetUrl] = useState('')
 
    useEffect(() => {
+      if (typeof window === 'undefined') {
+         return
+      }
+
       const handleAnchorClick = (event: MouseEvent) => {
          if (isDirty) {
             const url = (event.currentTarget as HTMLAnchorElement).href
