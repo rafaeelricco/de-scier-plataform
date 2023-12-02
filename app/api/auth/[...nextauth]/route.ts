@@ -10,7 +10,7 @@ const googleSecret = process.env.GOOGLE_SECRET || ''
 // NextAuth options object
 const authOptions: NextAuthOptions = {
    secret: process.env.NEXTAUTH_SECRET,
-   session: { strategy: 'jwt' },
+   session: { strategy: 'jwt', maxAge: 24 * 60 * 60 },
    providers: [
       CredentialsProvider({
          name: 'Sign in',
