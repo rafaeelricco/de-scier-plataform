@@ -11,13 +11,11 @@
  *
  * @return Formatted file name if it exceeds the character limit, or the original file name otherwise.
  */
-export function formatFileName(fileName: string): string {
-   const maxChars = 20
+export function formatFileName(fileName: string, max?: number): string {
+   const maxChars = max || 25
    if (String(fileName).length <= maxChars) return fileName
 
-   const fileExtension = fileName.slice(
-      ((fileName.lastIndexOf('.') - 1) >>> 0) + 2
-   )
+   const fileExtension = fileName.slice(((fileName.lastIndexOf('.') - 1) >>> 0) + 2)
    const mainPart = fileName.slice(0, fileName.lastIndexOf('.'))
 
    const halfLength = Math.floor((maxChars - 3) / 2)
