@@ -205,11 +205,7 @@ export default function AsReviewerPage() {
                                        ?.filter((item) => item.published)
                                        .map((article) => (
                                           <React.Fragment key={article.id}>
-                                             <ReviewerItem
-                                                published /// pass this prop to change the layout to the published one
-                                                {...article}
-                                                link={`/as-reviewer/${article.id}`}
-                                             />
+                                             <ReviewerItem published {...article} link={`/as-reviewer/${article.id}`} />
                                           </React.Fragment>
                                        ))
                                  )}
