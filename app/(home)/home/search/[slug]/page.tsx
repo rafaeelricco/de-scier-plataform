@@ -255,14 +255,14 @@ export default function Page({ params }: { params: { slug: string } }) {
             <div className="bg-white rounded-xl h-fit p-6 flex flex-col gap-4">
                <div className="flex flex-col gap-2">
                   <div className="hidden md:flex items-center gap-2">
-                     <Badge className="w-fit flex-shrink flex-grow-0" access_type={accessType as 'PAID' | 'FREE'} />
+                     <Badge className="w-fit flex-shrink flex-grow-0" access_type={article?.document.accessType as 'PAID' | 'FREE'} />
                      <span className="text-black font-semibold">•</span>
                      <p className="text-lg font-semibold">{capitalizeWord(article?.document?.documentType || 'paper')}</p>
                      <span className="text-black font-semibold">•</span>
                      <p className="text-lg font-semibold text-primary-main">{article?.document?.field}</p>
                   </div>
                   <div className="flex flex-col md:hidden md:items-center gap-2">
-                     <Badge className="w-full" access_type={accessType as 'PAID' | 'FREE'} />
+                     <Badge className="w-full" access_type={article?.document.accessType as 'PAID' | 'FREE'} />
                      <HoverCard>
                         <div className="grid gap-0">
                            <HoverCardTrigger className="flex flex-col md:flex-row md:items-center gap-4 flex-1 min-w-0">
