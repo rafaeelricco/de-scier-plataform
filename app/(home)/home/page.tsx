@@ -400,7 +400,7 @@ const CardSmall: React.FC<TopPapersProps> = (data: TopPapersProps) => {
                   {getArticleTypeLabel(data.documentType.toLowerCase())}
                </div>
                <Link href="/home/search/[slug]" as={`/home/search/${slug(data.id)}`}>
-                  <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-b-md rounded-tr-md font-semibold w-fit text-base sm:text-lg">
+                  <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-b-md rounded-tr-md font-semibold w-fit text-base sm:text-lg hover:underline">
                      {data.title}
                   </div>
                </Link>
