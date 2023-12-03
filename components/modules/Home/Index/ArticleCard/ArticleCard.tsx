@@ -5,8 +5,10 @@ import { ArticleCardProps } from '@components/modules/Home/Index/ArticleCard/Typ
 import '@styles/home.css'
 import { truncate } from 'lodash'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 import { Eye, HandThumbsUp } from 'react-bootstrap-icons'
+import slug from 'slug'
 import { twMerge } from 'tailwind-merge'
 
 /** @title ArticleCard Component
@@ -24,7 +26,8 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
    className,
    responsive,
    documentType,
-   with_dot = true
+   with_dot = true,
+   link
 }: ArticleCardProps) => {
    return (
       <div className="grid items-start">
@@ -59,7 +62,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
                   <React.Fragment>
                      {document_types.find((document) => document.value === documentType)?.label && (
                         <React.Fragment>
-                           <span className="text-sm font-semibold text-primary-main hover:underline transition-all duration-200">
+                           <span className="text-sm font-semibold text-primary-main transition-all duration-200">
                               {document_types.find((document) => document.value === documentType)?.label}
                            </span>
                            {with_dot && <span className="text-sm font-semibold hover:underline transition-all duration-200">•</span>}
@@ -69,7 +72,11 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
                )}
                <HoverCard openDelay={50} closeDelay={10}>
                   <HoverCardTrigger>
-                     <p className="text-sm sm:text-base text-secundary_blue-main font-semibold">{truncate(title, { length: 54 })}</p>
+                     <Link href="/home/search/[slug]" as={`/home/search/${slug(id)}`}>
+                        <p className="text-sm sm:text-base text-secundary_blue-main font-semibold hover:underline cursor-pointer">
+                           {truncate(title, { length: 54 })}
+                        </p>
+                     </Link>
                   </HoverCardTrigger>
                   <HoverCardContent>
                      <p className="text-xs sm:text-sm text-secundary_blue-main font-regular">{title}</p>

@@ -1,10 +1,8 @@
-import { ArticleUnderReviewProps } from '@/components/common/Publication/Item/ArticlesUnderReview'
-import { format } from 'date-fns'
-import { getSession, useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
-import { DocumentGetProps, DocumentPaginationProps, DocumentProps, GetDocumentPublicProps } from './getArticles'
 import { ArticleCardProps } from '@/components/modules/Home/Index/ArticleCard/Typing'
 import { uniqueId } from 'lodash'
+import { getSession, useSession } from 'next-auth/react'
+import { useEffect, useState } from 'react'
+import { DocumentPaginationProps, DocumentProps, GetDocumentPublicProps } from './getArticles'
 
 /**
  * @title useArticles
@@ -43,8 +41,6 @@ export const useArticles = () => {
 
          const response: DocumentPaginationProps = await request.json()
 
-         console.log('response', response)
-
          const formatted_response: ArticleCardProps[] = response?.documents?.map((article) => {
             return {
                id: article.id,
@@ -52,8 +48,8 @@ export const useArticles = () => {
                title: article.title,
                authors:
                   article.authorsOnDocuments?.map((item) => ({
-                     id: item.id,
-                     name: item.author?.name!
+                     id: item.id || uniqueId('author'),
+                     name: item.author?.name || ''
                   })) || [],
                likes: article.likes,
                views: article.views,
@@ -85,7 +81,6 @@ export const useArticles = () => {
                authorization: `Bearer ${session?.user?.token}`
             }
          })
-
          const response: GetDocumentPublicProps = await request.json().then((res) => {
             return res
          })

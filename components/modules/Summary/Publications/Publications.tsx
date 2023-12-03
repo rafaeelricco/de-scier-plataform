@@ -62,14 +62,14 @@ const Publications: React.FC<PublicationsProps> = ({ pendingDocuments, published
                </button>
             </div>
             {publications && (
-               <div className="bg-[#F1FFFF] h-full rounded-md transition-all duration-200 p-3 md:p-4 min-h-[371px] grid">
-                  <div className="grid gap-4 h-full">
+               <div className="bg-[#F1FFFF] rounded-md transition-all duration-200 p-3 md:p-4 min-h-[371px] flex flex-col justify-between">
+                  <div className="flex-grow">
                      {publishedDocuments?.length === 0 ? (
                         <div className="flex items-center justify-center">
                            <p className="text-neutral-gray">No published articles found.</p>
                         </div>
                      ) : (
-                        <React.Fragment>
+                        <div className="flex flex-col gap-4">
                            {publishedDocuments?.slice((page - 1) * per_page, page * per_page).map((item) => (
                               <React.Fragment key={item.id}>
                                  <PublicationItem
@@ -84,23 +84,24 @@ const Publications: React.FC<PublicationsProps> = ({ pendingDocuments, published
                                  <hr className="divider-h" />
                               </React.Fragment>
                            ))}
-                           <div className="mx-auto my-0">
-                              <PaginationComponent
-                                 key={totalPages}
-                                 current={page}
-                                 perPage={per_page}
-                                 total={publishedDocuments?.length || 1}
-                                 handleFirstPage={() => setPage(1)}
-                                 handleNextPage={() => setPage(page + 1)}
-                                 handlePreviousPage={() => setPage(page - 1)}
-                                 handleLastPage={() => setPage(totalPages)}
-                              />
-                           </div>
-                        </React.Fragment>
+                        </div>
                      )}
+                  </div>
+                  <div className="mx-auto my-0">
+                     <PaginationComponent
+                        key={totalPages}
+                        current={page}
+                        perPage={per_page}
+                        total={publishedDocuments?.length || 1}
+                        handleFirstPage={() => setPage(1)}
+                        handleNextPage={() => setPage(page + 1)}
+                        handlePreviousPage={() => setPage(page - 1)}
+                        handleLastPage={() => setPage(totalPages)}
+                     />
                   </div>
                </div>
             )}
+
             {underReview && (
                <div className="bg-[#FFF4DE] h-full rounded-md transition-all duration-200  p-3 md:p-4 min-h-[371px] grid">
                   <div className="grid gap-4 h-full">

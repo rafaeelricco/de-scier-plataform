@@ -362,7 +362,7 @@ const CardBig: React.FC<TopPapersProps> = (data: TopPapersProps) => {
                   • {getArticleTypeLabel(data.documentType.toLowerCase())}
                </div>
                <Link href="/home/search/[slug]" as={`/home/search/${slug(data.id)}`}>
-                  <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-b-md rounded-tr-md font-semibold max-w-[24ch] text-lg sm:text-3xl">
+                  <div className="bg-white px-2 sm:px-3 py-1 text-secundary_blue-main rounded-b-md rounded-tr-md font-semibold max-w-[24ch] text-lg sm:text-3xl hover:underline">
                      {data.title}
                   </div>
                </Link>

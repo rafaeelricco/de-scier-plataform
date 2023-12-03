@@ -9,6 +9,7 @@ import { File } from '@/components/common/File/File'
 import { SelectArticleType } from '@/components/common/Filters/SelectArticleType/SelectArticleType'
 import { YouAre, YouAreAuthor } from '@/components/common/Flags/Author/AuthorFlags'
 import { InviteLink } from '@/components/common/InviteLink/InviteLink'
+import { AuthorsListDragabble } from '@/components/common/Lists/Authors/Authors'
 import { EditorReviewList } from '@/components/common/Lists/EditorReview/EditorReview'
 import { NewAuthor } from '@/components/modules/Summary/NewArticle/Authors/NewAuthor'
 import EditComment from '@/components/modules/deScier/Article/EditComment'
@@ -579,6 +580,15 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                         setAuthors((prevItems) => {
                            return prevItems.map((item) => (item.id === author_to_edit?.id ? { ...item, ...updatedAuthor } : item))
                         })
+                        if (!updatedAuthor.id.includes('author')) {
+                           const authorIndex = updateAuthors.findIndex((item) => item.id === updatedAuthor.id)
+                           if (authorIndex > 0) {
+                              updateAuthors[authorIndex].revenuePercent = Number(share) || 0
+                              setUpdateAuthors(updateAuthors)
+                           } else {
+                              setUpdateAuthors((prev) => [...prev, { ...updatedAuthor, revenuePercent: Number(updatedAuthor.revenuePercent || '0') }])
+                           }
+                        }
                      }}
                      onClose={() => setDialog({ ...dialog, edit_author: false })}
                   />
@@ -1033,57 +1043,24 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                               </React.Fragment>
                            ))}
                         </div>
-                        <Reorder.Group axis="y" values={authors} onReorder={onReorder}>
-                           <div className="grid gap-2">
-                              {article?.document.authorsOnDocuments?.map((item, index) => (
-                                 <Reorder.Item key={item.id} value={item} id={item.id}>
-                                    <div className="grid md:grid-cols-3 items-center px-0 py-3 rounded-md cursor-grab">
-                                       <div className="flex items-center gap-4">
-                                          <div className="flex gap-0 items-center">
-                                             <CircleIcon className="w-8" />
-                                             <p className="text-sm text-blue-gray">{index + 1}º</p>
-                                          </div>
-                                          <div>
-                                             <p className="text-sm text-secundary_blue-main font-semibold md:font-regular">{item.author?.name}</p>
-                                             <div className="block md:hidden">
-                                                <p className="text-sm text-secundary_blue-main">{item.author?.title}</p>
-                                             </div>
-                                             <div className="block md:hidden">
-                                                <p className="text-sm text-secundary_blue-main">{item.author?.email}</p>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div className="hidden md:block">
-                                          <p className="text-sm text-secundary_blue-main">{item.author?.title}</p>
-                                       </div>
-                                       <div className="hidden md:flex items-center justify-between">
-                                          <p className="text-sm text-secundary_blue-main">{item.author?.email}</p>
-                                          {index !== 0 && (
-                                             <React.Fragment>
-                                                <div className="flex items-center gap-2">
-                                                   <Trash
-                                                      className="fill-status-error w-5 h-full cursor-pointer hover:scale-110 transition-all duration-200"
-                                                      onClick={() => {
-                                                         //  const new_list = authors.filter((author) => author.id !== item.id)
-                                                         //  setAuthors(new_list)
-                                                      }}
-                                                   />
-                                                   <Pencil
-                                                      className="fill-primary-main w-5 h-full cursor-pointer hover:scale-110 transition-all duration-200"
-                                                      onClick={() => {
-                                                         //  setAuthorToEdit(item as unknown as AuthorProps)
-                                                         //  setDialog({ ...dialog, edit_author: true })
-                                                      }}
-                                                   />
-                                                </div>
-                                             </React.Fragment>
-                                          )}
-                                       </div>
-                                    </div>
-                                 </Reorder.Item>
-                              ))}
-                           </div>
-                        </Reorder.Group>
+                        <AuthorsListDragabble
+                           article={null}
+                           authors={authors}
+                           onReorder={onReorder}
+                           onDelete={(item) => {
+                              const new_list = authors.filter((author) => author.id !== item.id)
+                              setAuthors(new_list)
+                              setValue('authors', new_list)
+                              const authorToRemove = authors.find((author) => author.id === item.id)
+                              if (!authorToRemove?.id.includes('author') && authorToRemove) {
+                                 setRemoveAuthors((prev) => [...prev, authorToRemove.id])
+                              }
+                           }}
+                           onEdit={(item) => {
+                              setAuthorToEdit(item)
+                              setDialog({ ...dialog, edit_author: true })
+                           }}
+                        />
                      </div>
                   </div>
                </div>

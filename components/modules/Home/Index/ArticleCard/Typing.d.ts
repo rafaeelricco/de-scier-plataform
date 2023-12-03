@@ -13,6 +13,7 @@ interface ArticleCardProps {
    accessType?: 'open' | 'paid'
    field?: string
    with_dot?: boolean
+   link?: string
 }
 
 export { ArticleCardProps }
