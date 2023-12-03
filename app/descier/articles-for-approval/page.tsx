@@ -42,13 +42,18 @@ export default function ArticlesForApprovalPage() {
                      <Search />
                   </Button.Button>
                </div>
-               <div className="flex items-center gap-2">
-                  <Dropdown items={article_category_filter} label="Order by:" onSelect={(value) => console.log(value)} />
-                  <Dropdown label="Status:" className="min-w-[180px]" items={filter_status} onSelect={(value) => console.log(value)} />
+               <div className="flex flex-wrap justify-center md:justify-start items-center gap-2">
+                  <Dropdown
+                     classNameTrigger="w-full md:w-fit"
+                     items={article_category_filter}
+                     label="Order by:"
+                     onSelect={(value) => console.log(value)}
+                  />
+                  <Dropdown classNameTrigger="w-full md:w-fit" label="Status:" items={filter_status} onSelect={(value) => console.log(value)} />
                </div>
             </div>
             <div className="grid gap-8">
-               <div className="grid grid-cols-2 gap-4">
+               <div className="grid grid-flow-row md:grid-flow-col gap-4">
                   {loading ? (
                      <React.Fragment>
                         <ArticleUnderReviewSkeleton />
