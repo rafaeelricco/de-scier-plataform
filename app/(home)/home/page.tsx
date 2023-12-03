@@ -46,6 +46,8 @@ export default function HomePage() {
    const [searchTerm, setSearchTerm] = useState('')
    const [searchAuthor, setSearchAuthor] = useState('')
 
+   const [inviteAuthorName, setInviteAuthorName] = useState('')
+
    const handleSearchArticle = () => {
       let searchQuery = '?'
       if (searchTerm && !searchAuthor) {
@@ -86,6 +88,9 @@ export default function HomePage() {
       const encodedReviewerInviteData = queryParams.get('invite')
       if (encodedReviewerInviteData) {
          localStorage.setItem('invite', encodedReviewerInviteData)
+         const decodedInviteData = JSON.parse(Buffer.from(encodedReviewerInviteData, 'base64').toString('ascii'))
+         setInviteAuthorName(decodedInviteData.user)
+         setOpen(true)
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [])
@@ -119,6 +124,8 @@ export default function HomePage() {
                      onForgotPassword={() => setComponent(forgot_password_component)}
                      onLogin={() => setComponent(login_component)}
                      onRegister={() => setComponent(register_component)}
+                     withLink={inviteAuthorName ? true : false}
+                     authorName={inviteAuthorName}
                   />
                )}
                {component === register_component && (

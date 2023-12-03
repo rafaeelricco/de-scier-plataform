@@ -18,7 +18,15 @@ import { LoginModalProps } from './Typing'
  *  @notice This component provides a modal interface for user login, with optional registration, password recovery, and third-party login via Google.
  *  @dev The component uses React hooks for state management and routing, and integrates form handling and validation using the useForm hook.
  */
-const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onForgotPassword, onLogin, onRegister, noRedirect }: LoginModalProps) => {
+const LoginModal: React.FC<LoginModalProps> = ({
+   withLink = false,
+   authorName,
+   onClose,
+   onForgotPassword,
+   onLogin,
+   onRegister,
+   noRedirect
+}: LoginModalProps) => {
    /** @dev Initialize Next.js router */
    const router = useRouter()
 
@@ -87,7 +95,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ withLink = false, onClose, onFo
                {withLink && (
                   <React.Fragment>
                      <p className="text-sm font-regular">
-                        “Author’s name” has extended a kind invitation for you to serve as Reviewer/ Editor. Sign in or register to continue.
+                        “{authorName}” has extended a kind invitation for you to serve as Reviewer/ Editor. Sign in or register to continue.
                      </p>
                   </React.Fragment>
                )}
