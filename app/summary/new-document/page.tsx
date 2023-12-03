@@ -349,7 +349,7 @@ export default function SubmitNewPaperPage() {
                   <NewAuthor
                      onAddAuthor={(value) => {
                         const newAuthor: AuthorProps = {
-                           id: value.id,
+                           id: uniqueId('author_' + Date.now() + '_' + Math.random()),
                            name: value.name,
                            title: value.title,
                            email: value.email,
@@ -732,7 +732,6 @@ export default function SubmitNewPaperPage() {
                            <Input.Label className="text-sm font-semibold">Price</Input.Label>
                            <CurrencyInput
                               currency="USD"
-                              defaultValue={watch('price')}
                               onChangeValue={(event, originalValue, maskedValue) => setValue('price', originalValue.toString())}
                               InputElement={<Input.Input placeholder="$10" />}
                            />

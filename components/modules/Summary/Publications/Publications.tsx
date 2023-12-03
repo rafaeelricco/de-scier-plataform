@@ -62,7 +62,7 @@ const Publications: React.FC<PublicationsProps> = ({ pendingDocuments, published
                </button>
             </div>
             {publications && (
-               <div className="bg-[#F1FFFF] rounded-md transition-all duration-200 p-3 md:p-4 min-h-[371px] flex flex-col justify-between">
+               <div className="bg-[#F1FFFF] rounded-md transition-all duration-200 p-3 md:p-4 min-h-[371px] flex flex-col justify-between gap-4">
                   <div className="flex-grow">
                      {publishedDocuments?.length === 0 ? (
                         <div className="flex items-center justify-center">

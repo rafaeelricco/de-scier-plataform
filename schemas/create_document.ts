@@ -1,3 +1,4 @@
+import { uniqueId } from 'lodash'
 import * as zod from 'zod'
 
 export const KeyWordSchema = zod.object({
@@ -16,7 +17,10 @@ export const FileSchema = zod.object({
 })
 
 export const AuthorSchema = zod.object({
-   id: zod.string().min(3, 'Id must be at least 3 characters.'),
+   id: zod
+      .string()
+      .min(3, 'Id must be at least 3 characters.')
+      .default(uniqueId('author_' + Date.now() + '_' + Math.random())),
    name: zod.string({ required_error: 'Name is required' }),
    email: zod.string({ required_error: 'Email is required' }).email(),
    title: zod.string({ required_error: 'Title is required' }),

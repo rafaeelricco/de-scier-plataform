@@ -47,10 +47,8 @@ export default function AsReviwerPageDetails({ params }: { params: { slug: strin
    const { fetch_article } = useArticleToReview()
 
    const [state, dispatch] = useReducer(reducer_comments, comments_initial_state)
-   console.log('state', state)
 
    const [article, setArticle] = React.useState<DocumentGetProps | null>(null)
-   console.log('article', article)
    const [items, setItems] = React.useState(authors_mock)
    const [authors, setAuthors] = React.useState<Author[]>(authors_mock)
    const [access_type, setAccessType] = React.useState('open-access')
