@@ -7,11 +7,9 @@ import { article_category_filter } from '@/mock/articles_categories'
 import { filter_status } from '@/mock/dropdow_filter_options'
 import { home_routes } from '@/routes/home'
 import { useFetchAdminArticles } from '@/services/admin/fetchDocuments.service'
-import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
 import React from 'react'
-import { Search } from 'react-bootstrap-icons'
 import slug from 'slug'
 
 export default function ArticlesForApprovalPage() {
@@ -37,10 +35,6 @@ export default function ArticlesForApprovalPage() {
             <div className="grid gap-6">
                <div className="flex items-center gap-2">
                   <Input.Search placeholder="Find articles with this terms" />
-                  <Button.Button className="px-4 py-3 h-fit text-sm">
-                     Search
-                     <Search />
-                  </Button.Button>
                </div>
                <div className="flex flex-wrap justify-center md:justify-start items-center gap-2">
                   <Dropdown

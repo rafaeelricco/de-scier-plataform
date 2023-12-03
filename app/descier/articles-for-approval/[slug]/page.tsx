@@ -156,7 +156,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
             </div>
             <Box className="grid gap-8 h-fit py-6 px-8">
                <ArticleStatus status={article?.document.status || 'PENDING'} />
-               <div className="grid grid-cols-2 gap-6">
+               <div className="grid md:grid-cols-2 gap-6">
                   <div className="grid grid-cols-1">
                      <span className="text-sm font-semibold">Title</span>
                      <span className="text-sm">{article?.document?.title}</span>
@@ -181,7 +181,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                      </div>
                   </div>
                </div>
-               <div className="grid grid-cols-2 gap-6">
+               <div className="grid md:grid-cols-2 gap-6">
                   <div className="grid grid-cols-1">
                      <span className="text-sm font-semibold">Area of knowledge</span>
                      <span className="text-sm">{article?.document?.field}</span>
@@ -191,7 +191,6 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                   <h3 className="text-sm font-semibold">Document type</h3>
                   <p className="text-sm font-regular first-letter:uppercase lowercase">{getArticleTypeLabel(article?.document.documentType as string)}</p>
                </div>
-
                <div className="grid gap-2">
                   <h3 className="text-sm font-semibold">Abstract</h3>
                   <p className="text-sm font-regular">{article?.document.abstract}</p>
@@ -240,7 +239,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                   </div>
                </div>
             </Box>
-            <Box className="grid gap-8 h-fit py-6 px-8">
+            <Box className="grid gap-4 md:gap-8 h-fit py-6 px-8">
                <div className="grid gap-2">
                   <h3 className="text-xl text-primary-main font-semibold lg:text-lg 2xl:text-xl">Comments</h3>
                   <p className="text-sm">The reviewing team can publish comments, suggesting updates on your document.</p>
@@ -265,7 +264,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                               </React.Fragment>
                            ))
                         ) : (
-                           <p className="text-center col-span-2 text-gray-500 mt-8">There are no comments inserted into this document.</p>
+                           <p className="text-center col-span-2 text-gray-500">There are no comments inserted into this document.</p>
                         )}
                      </div>
                   </ScrollArea>
@@ -285,11 +284,11 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                            </React.Fragment>
                         ))}
                      </div>
-                     <AuthorsListDragabble authors={[]} article={article} onReorder={onReorder} onDelete={(item) => {}} onEdit={(item) => {}} />
+                     <AuthorsListDragabble authors={[]} article={article} onReorder={onReorder} />
                   </div>
                </div>
             </Box>
-            <Box className="grid gap-8 h-fit py-6 px-8">
+            <Box className="grid gap-2 md:gap-8 h-fit py-6 px-8">
                <div className="grid gap-4">
                   <div className="grid gap-2">
                      <h3 className="text-lg md:text-xl text-primary-main font-semibold">Editors / Reviewers</h3>
@@ -300,7 +299,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                   </div>
                </div>
                <div>
-                  <div className="grid grid-cols-5">
+                  <div className="hidden md:grid grid-cols-5">
                      {header_editor_reviewer.map((header, index) => (
                         <React.Fragment key={index}>
                            <p className="text-sm font-semibold">{header.label}</p>
@@ -318,14 +317,14 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                      <span className="text-[#EFB521] font-semibold">Paid Access</span>
                   </p>
                </div>
-               <div className="grid grid-cols-2 items-start gap-6">
+               <div className="grid md:grid-cols-2 items-start gap-6">
                   <Input.Root>
                      <Input.Label>Type of access</Input.Label>
                      <Input.Input disabled defaultValue={access_type === 'open-access' ? 'Open access' : 'Paid access'} />
                   </Input.Root>
                   {access_type == 'open-access' && (
                      <Input.Root>
-                        <Input.Label className="text-neutral-gray text-sm font-semibold pl-2">Valor total</Input.Label>
+                        <Input.Label className="text-neutral-gray text-sm font-semibold pl-2">Price</Input.Label>
                         <Input.Input disabled placeholder="R$" />
                      </Input.Root>
                   )}

@@ -1097,8 +1097,8 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                <div className="grid gap-2">
                   <h3 className="text-lg md:text-xl text-status-green font-semibold">Authorship</h3>
                   <p className="text-sm">
-                     Decide if the project is <span className="text-terciary-main font-semibold">Open Access</span>,{' '}
-                     <span className="text-[#EFB521] font-semibold">Paid Access</span>
+                     Decide if the project is <span className="text-[#53AA22] font-semibold">Open Access</span> or{' '}
+                     <span className="text-[#AE66E6] font-semibold">Paid Access</span>
                   </p>
                </div>
                <div className="grid md:grid-cols-2 items-start gap-6">
@@ -1113,7 +1113,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   </Input.Root>
                   {access_type == 'open-access' && (
                      <Input.Root>
-                        <Input.Label className="text-neutral-gray text-sm font-semibold pl-2">Valor total</Input.Label>
+                        <Input.Label className="text-neutral-gray text-sm font-semibold pl-2">Price</Input.Label>
                         <Input.Input disabled placeholder="R$" />
                      </Input.Root>
                   )}

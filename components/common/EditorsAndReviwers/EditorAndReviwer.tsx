@@ -17,11 +17,13 @@ export const EditorsAndReviewers: React.FC<EditorAndReviewerProps> = ({ article 
                      <div className="grid md:grid-cols-5  items-center px-0 py-3 rounded-md">
                         <div className="flex items-center gap-4">
                            <div>
-                              <p className="text-sm text-secundary_blue-main font-regular">{item.reviewer.name}</p>
+                              <p className="text-sm text-secundary_blue-main font-semibold md:font-regular first-letter:uppercase">
+                                 {item.reviewer.name}
+                              </p>
                            </div>
                         </div>
                         <div>
-                           <p className="text-sm text-secundary_blue-main">{item.reviewer.title}</p>
+                           <p className="text-sm text-secundary_blue-main first-letter:uppercase">{item.reviewer.title}</p>
                         </div>
                         <div>
                            <p className="text-sm text-secundary_blue-main">{truncate(item.reviewer.email, 16)}</p>
