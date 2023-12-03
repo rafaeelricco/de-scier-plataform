@@ -27,6 +27,7 @@ export const PublicationItem: React.FC<PublicationItemProps> = ({
       <React.Fragment>
          <div className={twMerge('flex flex-col lg:flex-row lg:items-center lg:gap-4 gap-2', className)}>
             <Image
+               quality={50}
                src={image}
                width={420}
                height={420}
