@@ -15,7 +15,8 @@ export const AuthorsListDragabble: React.FC<AuthorsListDragabbleProps> = ({
    article,
    onReorder,
    onDelete,
-   onEdit
+   onEdit,
+   is_admin = false
 }: AuthorsListDragabbleProps) => {
    const { data: session } = useSession()
    return (
@@ -29,7 +30,7 @@ export const AuthorsListDragabble: React.FC<AuthorsListDragabbleProps> = ({
                            <div className="grid md:grid-cols-3 items-center px-0 py-3 rounded-md cursor-grab">
                               <div className="flex items-center gap-4">
                                  <div className="flex gap-0 items-center">
-                                    <CircleIcon className="w-8" />
+                                    {is_admin === true ? <></> : <CircleIcon className="w-8" />}
                                     <p className="text-sm text-blue-gray">{index + 1}º</p>
                                  </div>
                                  <div>

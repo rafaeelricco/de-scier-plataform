@@ -227,7 +227,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                               article?.document.documentVersions?.map((file) => (
                                  <File
                                     key={file.id}
-                                    file_name={formatFileName(file.fileName as string, lg ? 25 : 16) || 'file.docx'}
+                                    file_name={formatFileName(file.fileName as string) || 'file.docx'}
                                     onDownload={() => {
                                        handleDownloadDocument(file.id, file.fileName!)
                                     }}
@@ -268,7 +268,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                               </React.Fragment>
                            ))
                         ) : (
-                           <p className="text-center col-span-2 text-gray-500 mt-8">There are no comments inserted into this document.</p>
+                           <p className="text-sm md:text-base text-center col-span-2 text-gray-500">There are no comments inserted into this document.</p>
                         )}
                      </div>
                   </ScrollArea>
@@ -288,7 +288,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                            </React.Fragment>
                         ))}
                      </div>
-                     <AuthorsListDragabble authors={[]} article={article} onReorder={onReorder} />
+                     <AuthorsListDragabble is_admin authors={[]} article={article} onReorder={onReorder} />
                   </div>
                </div>
             </Box>
