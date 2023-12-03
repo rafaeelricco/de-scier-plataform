@@ -257,7 +257,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                   <div className="hidden md:flex items-center gap-2">
                      <Badge className="w-fit flex-shrink flex-grow-0" access_type={article?.document.accessType as 'PAID' | 'FREE'} />
                      <span className="text-black font-semibold">•</span>
-                     <p className="text-lg font-semibold">{capitalizeWord(article?.document?.documentType || 'paper')}</p>
+                     <p className="text-lg font-semibold">{capitalizeWord(getArticleTypeLabel(article?.document?.documentType as string) || 'paper')}</p>
                      <span className="text-black font-semibold">•</span>
                      <p className="text-lg font-semibold text-primary-main">{article?.document?.field}</p>
                   </div>
