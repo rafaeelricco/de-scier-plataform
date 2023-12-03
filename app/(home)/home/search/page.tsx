@@ -167,7 +167,14 @@ export default function SearchArticlesPage() {
                      setDocumentType(value)
                   }}
                />
-               <Dropdown no_selected label="Access:" className="min-w-fit px-8" items={filter_access} onSelect={(value) => setAccessType(value)} />
+               <Dropdown
+                  no_selected
+                  selected={accessType}
+                  label="Access:"
+                  className="min-w-fit px-8"
+                  items={filter_access}
+                  onSelect={(value) => setAccessType(value)}
+               />
                {withoutFilters ? null : (
                   <p className="text-base font-semibold text-terciary-main cursor-pointer hover:underline select-none" onClick={clearFilters}>
                      Clear Filters
@@ -178,7 +185,6 @@ export default function SearchArticlesPage() {
                <div className="grid md:grid-cols-2 gap-6 md:gap-4">
                   {results
                      ?.filter((article) => article.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
-                     .filter((article) => article.authors.some((author) => author.name.toLowerCase().includes(debouncedSearchAuthor.toLowerCase())))
                      .filter((article) => article.documentType?.includes(documentType || ''))
                      .filter((article) => article.accessType?.includes(accessType))
                      .filter((article) => article.field?.toLowerCase()?.includes(field || ''))
