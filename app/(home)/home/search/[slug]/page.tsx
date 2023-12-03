@@ -1,7 +1,7 @@
 'use client'
 
 import ForgotPasswordModal from '@/components/modules/ForgotPassword/ForgotPassword'
-import { ArticleAcess } from '@/components/modules/Home/Search/ArticleAccess/ArticleAcess'
+import { ArticleAcess, Badge } from '@/components/modules/Home/Search/ArticleAccess/ArticleAcess'
 import { Checkout } from '@/components/modules/Home/Search/Purchase/Checkout'
 import { PurchaseError } from '@/components/modules/Home/Search/Purchase/Error'
 import { PurchaseProcessing } from '@/components/modules/Home/Search/Purchase/Processing'
@@ -255,20 +255,14 @@ export default function Page({ params }: { params: { slug: string } }) {
             <div className="bg-white rounded-xl h-fit p-6 flex flex-col gap-4">
                <div className="flex flex-col gap-2">
                   <div className="hidden md:flex items-center gap-2">
-                     <div className="border border-neutral-stroke_light rounded-md px-2 py-1 w-fit flex items-center flex-shrink gap-2">
-                        <div className="w-3 h-3 bg-status-green rounded-full" />
-                        <p className="text-sm select-none">{accessType === 'FREE' ? 'Open access' : 'Paid access'}</p>
-                     </div>
+                     <Badge className="w-fit flex-shrink flex-grow-0" access_type={accessType as 'PAID' | 'FREE'} />
                      <span className="text-black font-semibold">•</span>
                      <p className="text-lg font-semibold">{capitalizeWord(article?.document?.documentType || 'paper')}</p>
                      <span className="text-black font-semibold">•</span>
                      <p className="text-lg font-semibold text-primary-main">{article?.document?.field}</p>
                   </div>
                   <div className="flex flex-col md:hidden md:items-center gap-2">
-                     <div className="border border-neutral-stroke_light rounded-md px-2 py-1 w-full flex items-center justify-center flex-shrink gap-2">
-                        <div className="w-3 h-3 bg-status-green rounded-full" />
-                        <p className="text-sm select-none">{accessType === 'FREE' ? 'Open access' : 'Paid access'}</p>
-                     </div>
+                     <Badge className="w-full" access_type={accessType as 'PAID' | 'FREE'} />
                      <HoverCard>
                         <div className="grid gap-0">
                            <HoverCardTrigger className="flex flex-col md:flex-row md:items-center gap-4 flex-1 min-w-0">

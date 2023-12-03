@@ -14,10 +14,10 @@ export const EditorReviewList: React.FC<EditorReviewListProps> = ({ article }: E
          <div>
             {article?.document.reviewersOnDocuments?.map((item, index) => (
                <div key={item.id}>
-                  <div className="grid grid-cols-5  items-center px-0 py-3 rounded-md">
+                  <div className="grid md:grid-cols-5 items-center px-0 py-3 rounded-md">
                      <div className="flex items-center gap-4">
                         <div>
-                           <p className="text-sm text-secundary_blue-main">{item.reviewer.name}</p>
+                           <p className="text-sm font-semibold md:font-regular text-secundary_blue-main">{item.reviewer.name}</p>
                         </div>
                      </div>
                      <div>
@@ -40,7 +40,7 @@ export const EditorReviewList: React.FC<EditorReviewListProps> = ({ article }: E
                      <div>
                         <p
                            className={twMerge(
-                              'text-sm text-secundary_blue-main font-semibold border py-[2px] px-1 text-center rounded-md md:border-none md:py-0 md:px-0 md:rounded-none md:text-start first-letter:uppercase lowercase'
+                              'hidden md:grid text-sm text-secundary_blue-main font-semibold border py-[2px] px-1 text-center rounded-md md:border-none md:py-0 md:px-0 md:rounded-none md:text-start first-letter:uppercase lowercase'
                            )}
                         >
                            {item.approvedStatus === 'APPROVED' ? (
@@ -49,6 +49,15 @@ export const EditorReviewList: React.FC<EditorReviewListProps> = ({ article }: E
                               <Clock size={24} className="fill-status-pending" />
                            )}
                         </p>
+                        <div className="md:hidden border py-[2px] px-1 text-center rounded-md md:border-none md:py-0 md:px-0 md:rounded-none md:text-start first-letter:uppercase lowercase">
+                           <p>
+                              {item.approvedStatus === 'APPROVED' ? (
+                                 <p className="text-status-green font-semibold text-sm first-letter:uppercase">Approved</p>
+                              ) : (
+                                 <p className="text-status-pending font-semibold text-sm first-letter:uppercase">Pending</p>
+                              )}
+                           </p>
+                        </div>
                      </div>
                   </div>
                </div>

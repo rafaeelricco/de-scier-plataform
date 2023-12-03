@@ -294,7 +294,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                   <div className="grid gap-2">
                      <h3 className="text-lg md:text-xl text-primary-main font-semibold">Editors / Reviewers</h3>
                      <p className="text-sm">
-                        At least 1 editor and 2 reviewers’ approval are required to publish the paper. The editors and reviewers cannot be authors in the
+                        At least 1 editor and 1 reviewers’ approval are required to publish the paper. The editors and reviewers cannot be authors in the
                         project. Invite them to the platform through the link:
                      </p>
                   </div>

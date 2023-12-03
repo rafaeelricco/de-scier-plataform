@@ -105,12 +105,12 @@ const ArticleType: React.FC<ArticleTypeProps> = ({ access_type, value, onBuyDocu
  * @notice This component displays a badge indicating the access type of the article, either 'Paid access' or 'Open access'.
  * @dev Subcomponent of ArticleAccess and ArticleType, displays a badge based on the article's access type.
  */
-const Badge: React.FC<BadgeProps> = ({ access_type }: BadgeProps) => {
+export const Badge: React.FC<BadgeProps> = ({ access_type, className }: BadgeProps) => {
    return (
       <React.Fragment>
          {access_type === 'PAID' ? (
             <React.Fragment>
-               <div className="flex flex-grow">
+               <div className={twMerge('flex flex-grow', className)}>
                   <div className="border border-neutral-stroke_light rounded-md px-2 py-1 w-full flex items-center flex-shrink gap-2 justify-center">
                      <div className="w-3 h-3 bg-secundary_purple-main rounded-full" />
                      <p className="text-sm select-none">Paid access</p>
@@ -119,7 +119,12 @@ const Badge: React.FC<BadgeProps> = ({ access_type }: BadgeProps) => {
             </React.Fragment>
          ) : (
             <React.Fragment>
-               <div className="border border-neutral-stroke_light rounded-md px-2 py-1 w-full flex items-center flex-shrink gap-2 justify-center">
+               <div
+                  className={twMerge(
+                     'border border-neutral-stroke_light rounded-md px-2 py-1 w-full flex items-center flex-shrink gap-2 justify-center',
+                     className
+                  )}
+               >
                   <div className="w-3 h-3 bg-status-green rounded-full" />
                   <p className="text-sm select-none">Open access</p>
                </div>
@@ -135,6 +140,7 @@ const Badge: React.FC<BadgeProps> = ({ access_type }: BadgeProps) => {
  */
 interface BadgeProps {
    access_type: ArticleAcessProps['access_type']
+   className?: string
 }
 
 /**

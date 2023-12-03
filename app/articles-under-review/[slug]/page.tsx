@@ -24,7 +24,6 @@ import { article_types_submit_article } from '@/mock/articles_types'
 import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
 import { AddCommentProps, addCommentSchema } from '@/schemas/comments'
-import { AuthorProps } from '@/schemas/create_document'
 import { UpdateDocumentProps, UpdateDocumentSchema } from '@/schemas/update_document'
 import { downloadDocumentVersionService } from '@/services/document/download.service'
 import { finalSubmitDocumentService } from '@/services/document/finalSubmit.service'
@@ -43,12 +42,10 @@ import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
 import * as Tooltip from '@components/common/Tooltip/Tooltip'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Reorder } from 'framer-motion'
 import { isEqual, uniqueId } from 'lodash'
 import mermaid from 'mermaid'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import CircleIcon from 'public/svgs/modules/new-document/circles.svg'
 import React, { useReducer } from 'react'
 import { ArrowLeft, FileEarmarkText, Pencil, PlusCircle, PlusCircleDotted, Trash, X } from 'react-bootstrap-icons'
 import { CurrencyInput } from 'react-currency-mask'
@@ -1070,7 +1067,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   <div className="grid gap-2">
                      <h3 className="text-lg md:text-xl text-primary-main font-semibold">Editors / Reviewers</h3>
                      <p className="text-sm">
-                        At least 1 editor and 2 reviewers’ approval are required to publish the paper. The editors and reviewers cannot be authors in the
+                        At least 1 editor and 1 reviewers’ approval are required to publish the paper. The editors and reviewers cannot be authors in the
                         project. Invite them to the platform through the link:
                      </p>
                   </div>
@@ -1086,7 +1083,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                   />
                </div>
                <div>
-                  <div className="grid grid-cols-5">
+                  <div className="hidden md:grid grid-cols-5">
                      {header_editor_reviewer.map((header, index) => (
                         <React.Fragment key={index}>
                            <p className="text-sm font-semibold">{header.label}</p>

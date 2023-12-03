@@ -694,7 +694,7 @@ export default function SubmitNewPaperPage() {
                <div className="grid gap-2">
                   <h3 className="text-lg md:text-xl text-status-green font-semibold">Access type</h3>
                   <p className="text-sm">
-                     Decide if the project is <span className="text-[#53AA22] font-semibold">Open Access</span>,{' '}
+                     Decide if the project is <span className="text-[#53AA22] font-semibold">Open Access</span> or{' '}
                      <span className="text-[#AE66E6] font-semibold">Paid Access</span>
                   </p>
                </div>
@@ -749,7 +749,7 @@ export default function SubmitNewPaperPage() {
                      <div className="grid gap-2">
                         <div className="grid grid-cols-3">
                            {authorship_headers.map((header, index) => (
-                              <div className="flex items-center justify-start gap-2" key={index}>
+                              <div className="hidden md:flex items-center justify-start gap-2" key={index}>
                                  <p className="text-sm font-semibold">{header.label}</p>
                                  {header.tooltip && <Tooltip.Information content={header.tooltip} />}
                               </div>
@@ -759,13 +759,13 @@ export default function SubmitNewPaperPage() {
                            <div>
                               {authors.map((author, index) => (
                                  <React.Fragment key={index}>
-                                    <div className="grid grid-cols-3 items-center py-3">
+                                    <div className="grid gap-2 md:gap-0 md:grid-cols-3 items-center py-3">
                                        <div>
                                           <p className="text-sm text-secundary_blue-main">{author.name}</p>
                                        </div>
                                        <div>
                                           {author.share ? (
-                                             <div className="flex gap-2 px-4 py-1 border rounded-md border-terciary-main w-fit">
+                                             <div className="flex gap-2 px-4 py-1 border rounded-md border-terciary-main justify-center md:justify-normal w-full md:w-fit">
                                                 <p className="text-sm text-center text-terciary-main">{author.share}</p>
                                                 <p className="text-sm text-terciary-main">Authorship</p>
                                              </div>
@@ -785,8 +785,10 @@ export default function SubmitNewPaperPage() {
                                           )}
                                        </div>
                                        <div className="w-full flex items-center justify-between">
-                                          <p className="text-base text-center text-black w-8">{author.wallet || '-'}</p>
-
+                                          <div className="flex items-center gap-1">
+                                             <p className="text-sm md:text-base text-center text-black font-semibold">Wallet:</p>
+                                             <p className="text-sm md:text-base text-center text-black w-8">{author.wallet || '-'}</p>
+                                          </div>
                                           <div className="flex items-center gap-2">
                                              {author.id !== session?.user?.userInfo.id && (
                                                 <Trash
@@ -826,7 +828,7 @@ export default function SubmitNewPaperPage() {
                                  </React.Fragment>
                               ))}
                            </div>
-                           <div className="grid grid-cols-3">
+                           <div className="grid grid-flow-col justify-start gap-4 md:grid-cols-3">
                               <p className="text-sm font-regular">Total authorship</p>
                               {authors.length > 0 && (
                                  <React.Fragment>
