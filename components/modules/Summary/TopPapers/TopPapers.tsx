@@ -12,7 +12,7 @@ const TopPapers: React.FC<TopPapersProps> = ({ publishedDocuments }: TopPapersPr
       <React.Fragment>
          <div className="grid gap-4">
             <h3 className="text-xl font-[500] lg:text-lg 2xl:text-xl">My top papers</h3>
-            <div className="grid gap-4 max-h-[13rem] overflow-y-scroll min-h-[188px]">
+            <div className="grid gap-4 max-h-[13rem] overflow-y-scroll min-h-[188px] content-start">
                {publishedDocuments.length === 0 ? (
                   <p className="text-gray-500 text-center flex items-center justify-center">No papers found.</p>
                ) : (
