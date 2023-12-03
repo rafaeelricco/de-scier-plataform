@@ -580,6 +580,15 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                         setAuthors((prevItems) => {
                            return prevItems.map((item) => (item.id === author_to_edit?.id ? { ...item, ...updatedAuthor } : item))
                         })
+                        if (!updatedAuthor.id.includes('author')) {
+                           const authorIndex = updateAuthors.findIndex((item) => item.id === updatedAuthor.id)
+                           if (authorIndex > 0) {
+                              updateAuthors[authorIndex].revenuePercent = Number(share) || 0
+                              setUpdateAuthors(updateAuthors)
+                           } else {
+                              setUpdateAuthors((prev) => [...prev, { ...updatedAuthor, revenuePercent: Number(updatedAuthor.revenuePercent || '0') }])
+                           }
+                        }
                      }}
                      onClose={() => setDialog({ ...dialog, edit_author: false })}
                   />
