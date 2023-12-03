@@ -1051,9 +1051,10 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                               const new_list = authors.filter((author) => author.id !== item.id)
                               setAuthors(new_list)
                               setValue('authors', new_list)
-                              const authorsFromApi = new_list.filter((item) => !item.id.includes('author'))
-                              const authorsIds = authorsFromApi.map((item) => item.id)
-                              setRemoveAuthors(authorsIds)
+                              const authorToRemove = authors.find((author) => author.id === item.id)
+                              if (!authorToRemove?.id.includes('author') && authorToRemove) {
+                                 setRemoveAuthors((prev) => [...prev, authorToRemove.id])
+                              }
                            }}
                            onEdit={(item) => {
                               setAuthorToEdit(item)
