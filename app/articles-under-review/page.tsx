@@ -101,6 +101,7 @@ export default function ArticlesUnderReviewPage() {
                </div>
                <div className="flex flex-col md:flex-row md:items-center gap-2">
                   <SelectArticleType
+                     className="w-full md:w-fit"
                      placeholder={'Article type:'}
                      selected={documentType}
                      onValueChange={(value) => {
@@ -111,7 +112,7 @@ export default function ArticlesUnderReviewPage() {
                   <Dropdown
                      label="Status:"
                      selected={filter_status.find((item) => item.value === status)?.label || undefined}
-                     className="min-w-[180px]"
+                     className="min-w-[180px] w-full"
                      items={filter_status}
                      onSelect={(value) => setStatus(value)}
                   />

@@ -63,7 +63,7 @@ export const MobileSidebarComponent: React.FC<SidesProps> = ({ onClose }: SidesP
                                  icon_end={item.icon_end}
                                  text={item.text as string}
                                  active={currentPath.includes(item.path as string)}
-                                 onClick={() => onClose()}
+                                 onClick={() => onClose(item.text as string)}
                               />
                            </div>
                         )

@@ -160,6 +160,7 @@ export default function SearchArticlesPage() {
                />
                <SelectArticleType
                   variant="filter"
+                  className="w-full md:w-fit"
                   placeholder={'Article type:'}
                   selected={documentType}
                   onValueChange={(value) => {
@@ -171,7 +172,7 @@ export default function SearchArticlesPage() {
                   no_selected
                   selected={accessType}
                   label="Access:"
-                  className="min-w-fit px-8"
+                  className="px-8 !min-w-full !w-full md:w-fit"
                   items={filter_access}
                   onSelect={(value) => setAccessType(value)}
                />

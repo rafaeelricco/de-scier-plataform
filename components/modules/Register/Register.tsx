@@ -1,10 +1,12 @@
 import { useLoading } from '@/hooks/useLoading'
+import { home_routes } from '@/routes/home'
 import { RegisterProps, RegisterSchema } from '@/schemas/register'
 import { registerUserService } from '@/services/user/register.service'
 import * as Button from '@components/common/Button/Button'
 import * as Input from '@components/common/Input/Input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import '@styles/login.css'
+import { signIn } from 'next-auth/react'
 import GoogleIcon from 'public/svgs/modules/login/google_icon.svg'
 import SuccessIllustration from 'public/svgs/modules/login/register-success.svg'
 import React from 'react'
@@ -13,8 +15,6 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import LoginAnimation from '../Login/Animation/Animation'
 import { RegisterModalProps } from './Typing'
-import { home_routes } from '@/routes/home'
-import { signIn } from 'next-auth/react'
 
 /**
  * @title RegisterModal Component
@@ -97,7 +97,7 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ onClose, onRegister, onBa
                {component === success_component && (
                   <React.Fragment>
                      <h2 className="font-semibold text-1xl">Almost there!</h2>
-                     <SuccessIllustration className="w-96" />
+                     <SuccessIllustration className="w-full md:w-96" />
                      <div className="grid gap-6">
                         <p className="text-base">Your account creation is almost complete -We’ve sent an account validation link to your e-mail inbox.</p>
                         <Button.Button variant="outline" onClick={onReturnToLogin}>

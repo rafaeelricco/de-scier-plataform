@@ -7,6 +7,7 @@ interface SelectArticleTypeProps {
    no_selected?: boolean
    variant?: 'filter' | 'input'
    items?: ArticlesTypesFilter[]
+   className?: string
 }
 
 export { SelectArticleTypeProps }

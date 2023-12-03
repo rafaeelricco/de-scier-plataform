@@ -1,6 +1,9 @@
 'use client'
 
+import { PurchasedArticles } from '@/components/modules/Home/Search/Purchase/PurchasedArticles'
+import { article_key } from '@/mock/sidebar_items'
 import { home_routes } from '@/routes/home'
+import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Drawer from '@components/common/Drawer/Drawer'
 import Link from 'next/link'
 import LogoDeScier from 'public/svgs/common/logo/deScier - Logo copy.svg'
@@ -18,9 +21,15 @@ import { MobileProfileComponent } from './ProfileSidebar'
 export function SidebarMobile() {
    /** @dev State to manage the open status of navigation ('sidebar', 'profile', or false) */
    const [openNav, setOpenNav] = React.useState<'sidebar' | 'profile' | false>(false)
+   /** @dev State to manage whether the user has made a purchase */
+   const [purchased, setPurchased] = React.useState(false)
 
    return (
       <React.Fragment>
+         <Dialog.Root open={purchased}>
+            <Dialog.Overlay />
+            <Dialog.Content>{purchased && <PurchasedArticles onClose={() => setPurchased(false)} />}</Dialog.Content>
+         </Dialog.Root>
          <aside className="md:hidden z-50">
             <div className="mx-auto max-w-screen-xl px-6 py-3 rounded-none bg-white shadow-ligh">
                <div className="flex items-center justify-between">
@@ -55,7 +64,14 @@ export function SidebarMobile() {
          <Drawer.Root open={openNav === 'sidebar'}>
             <Drawer.Overlay />
             <Drawer.Content position={'left'} className={twMerge('p-6')}>
-               <MobileSidebarComponent onClose={() => setOpenNav(false)} />
+               <MobileSidebarComponent
+                  onClose={(value) => {
+                     setOpenNav(false)
+                     setTimeout(() => {
+                        value === article_key && setPurchased(true)
+                     }, 500)
+                  }}
+               />
             </Drawer.Content>
          </Drawer.Root>
          <Drawer.Root open={openNav === 'profile'}>

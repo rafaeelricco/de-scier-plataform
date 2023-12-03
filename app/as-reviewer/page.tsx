@@ -111,6 +111,7 @@ export default function AsReviewerPage() {
                   </div>
                   <div className="flex flex-col md:flex-row md:items-center gap-2">
                      <SelectArticleType
+                        className="w-full md:w-fit"
                         placeholder={'Article type:'}
                         selected={documentType}
                         onValueChange={(value) => {

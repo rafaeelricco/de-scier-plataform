@@ -102,14 +102,14 @@ const Publications: React.FC<PublicationsProps> = ({ pendingDocuments, published
                </div>
             )}
             {underReview && (
-               <div className="bg-[#FFF4DE] h-full rounded-md transition-all duration-200  p-3 md:p-4 min-h-[456px] grid">
-                  <div className="grid gap-4 h-full">
+               <div className="bg-[#FFF4DE] rounded-md transition-all duration-200 p-3 md:p-4 min-h-[456px] flex flex-col justify-between gap-4">
+                  <div className="flex-grow">
                      {pendingDocuments?.length === 0 ? (
-                        <div className="flex items-center justify-center">
-                           <p className="text-neutral-gray">No published articles found.</p>
+                        <div className="flex items-center justify-center !h-full">
+                           <p className="text-neutral-gray">No articles under review found.</p>
                         </div>
                      ) : (
-                        <React.Fragment>
+                        <div className="flex flex-col gap-4">
                            {pendingDocuments?.slice((pageReview - 1) * per_page, pageReview * per_page).map((item) => (
                               <React.Fragment key={item.id}>
                                  <InReviewItem
@@ -125,20 +125,20 @@ const Publications: React.FC<PublicationsProps> = ({ pendingDocuments, published
                                  <hr className="divider-h" />
                               </React.Fragment>
                            ))}
-                           <div className="mx-auto my-0">
-                              <PaginationComponent
-                                 perPage={per_page}
-                                 current={pageReview}
-                                 key={totalPagesReview}
-                                 total={pendingDocuments?.length || 1}
-                                 handlePreviousPage={() => setPageReview(pageReview - 1)}
-                                 handleFirstPage={() => setPageReview(1)}
-                                 handleLastPage={() => setPageReview(totalPagesReview)}
-                                 handleNextPage={() => setPageReview(pageReview + 1)}
-                              />
-                           </div>
-                        </React.Fragment>
+                        </div>
                      )}
+                  </div>
+                  <div className="mx-auto my-0">
+                     <PaginationComponent
+                        perPage={per_page}
+                        current={pageReview}
+                        key={totalPagesReview}
+                        total={pendingDocuments?.length || 1}
+                        handlePreviousPage={() => setPageReview(pageReview - 1)}
+                        handleFirstPage={() => setPageReview(1)}
+                        handleLastPage={() => setPageReview(totalPagesReview)}
+                        handleNextPage={() => setPageReview(pageReview + 1)}
+                     />
                   </div>
                </div>
             )}

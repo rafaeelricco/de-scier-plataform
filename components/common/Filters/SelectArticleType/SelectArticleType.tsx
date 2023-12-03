@@ -18,7 +18,8 @@ export const SelectArticleType: React.FC<SelectArticleTypeProps> = ({
    selected: selected_value,
    no_selected,
    placeholder,
-   items
+   items,
+   className
 }: SelectArticleTypeProps) => {
    /**
     * @dev Determines the initial selected value based on props.
@@ -61,7 +62,8 @@ export const SelectArticleType: React.FC<SelectArticleTypeProps> = ({
                   }`,
                   `${variant === 'input' && input()}`,
                   `${variant === 'input' && 'border-t-0 border-l-0 border-r-0 h-[34px]'}`,
-                  `${variant === 'input' && selected === null ? 'text-neutral-light_gray text-base' : 'text-black text-base'}`
+                  `${variant === 'input' && selected === null ? 'text-neutral-light_gray text-base' : 'text-black text-base'}`,
+                  className
                )}
             >
                {items && selected === null ? (

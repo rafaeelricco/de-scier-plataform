@@ -1,5 +1,5 @@
 interface SidesProps {
-   onClose: () => void
+   onClose: (text?: string) => void
 }
 
 export { SidesProps }
