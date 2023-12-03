@@ -679,9 +679,8 @@ export default function SubmitNewPaperPage() {
                   <div className="grid gap-2">
                      <h3 className="text-lg md:text-xl text-primary-main font-semibold">Editors / Reviewers</h3>
                      <p className="text-sm">
-                        Article approval requirements vary according to the article type: typically, you will need the endorsement of at least one Editor
-                        and, depending on the type, one or two Reviewers. Editors and Reviewers cannot be Authors. After submitting your article for
-                        review, you will be able to send Reviewers an invitation to join this platform via a link that will be automatically generated.
+                        At least 1 editor and 1 reviewers´ approval are required to publish the the paper. The editors and reviewers cannot be authors in
+                        the project.
                      </p>
                   </div>
                   <div>
