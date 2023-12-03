@@ -23,7 +23,7 @@ const SidebarDeScier: React.FC = () => {
 
    return (
       <React.Fragment>
-         <div className="flex flex-col gap-8 left-0 sticky h-[100vh] pt-10 pb-14 px-6 w-[17.5rem] justify-between bg-[#FEFEFE]">
+         <aside className="hidden md:flex flex-col gap-8 left-0 sticky pt-10 pb-14 px-6 justify-between bg-[#FEFEFE] z-50 min-h-full">
             <div className="flex flex-col gap-8">
                <LogoDeScier className="w-20 h-20 mx-auto my-0" />
                <Button.Link href={home_routes.summary_routes.new_document}>
@@ -39,7 +39,7 @@ const SidebarDeScier: React.FC = () => {
                </div>
             </div>
             <Logout onLogout={() => router.push(home_routes.home.index)} />
-         </div>
+         </aside>
       </React.Fragment>
    )
 }

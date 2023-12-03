@@ -19,7 +19,8 @@ const Dropdown: React.FC<DropdownProps> = ({
    no_selected = false,
    custom_intial_value,
    selected: selected_value,
-   onSelect
+   onSelect,
+   classNameTrigger
 }: DropdownProps) => {
    /**
     * @dev Determines the initial selected value based on props.
@@ -38,7 +39,7 @@ const Dropdown: React.FC<DropdownProps> = ({
    return (
       <React.Fragment>
          <DropdownMenu>
-            <DropdownMenuTrigger className="focus:outline-none">
+            <DropdownMenuTrigger className={twMerge('focus:outline-none', classNameTrigger)}>
                <div
                   className={twMerge(
                      'flex items-center justify-center py-2 px-4 text-sm rounded-full min-w-[200px] border-[1px] border-primary-main text-primary-main hover:scale-105 transition-all duration-200',

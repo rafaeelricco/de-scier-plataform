@@ -8,6 +8,7 @@ import ShapeDeScierHandBookTop from 'public/svgs/modules/sidebar/Ellipse 48.svg'
 import IllustrationHandBook from 'public/svgs/modules/sidebar/emojione-v1_document.svg'
 import React from 'react'
 import { CaretRight } from 'react-bootstrap-icons'
+import { twMerge } from 'tailwind-merge'
 
 /**
  * @title ProfileDeScier Component
@@ -22,8 +23,8 @@ const ProfileDeScier: React.FC = () => {
    const router = useRouter()
    return (
       <React.Fragment>
-         <div className="relative overflow-hidden h-fit">
-            <div className="flex flex-col gap-8 sticky h-[100vh] right-0 py-14 px-6 justify-between w-[17.5rem] bg-[#FEFEFE]">
+         <aside className={twMerge('hidden md:relative md:block overflow-hidden')}>
+            <div className="flex flex-col gap-8 sticky h-[100vh] right-0 py-14 px-6 justify-between bg-[#FEFEFE]">
                <div className="flex flex-col gap-6">
                   <div className="flex justify-between items-center">
                      <h3 className="text-xl font-semibold">My profile</h3>
@@ -57,7 +58,7 @@ const ProfileDeScier: React.FC = () => {
                   <hr className="divider-h" />
                </div>
             </div>
-         </div>
+         </aside>
       </React.Fragment>
    )
 }
