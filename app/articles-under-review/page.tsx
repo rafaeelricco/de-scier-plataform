@@ -154,6 +154,7 @@ export default function ArticlesUnderReviewPage() {
                                        link={home_routes.articles.in_review + '/' + article.id}
                                        status_editor={article.status_editor as 'pending' | 'approved'}
                                        status_reviewer={article.status_reviewer as 'pending' | 'approved'}
+                                       status_admin={article.status_admin as 'pending' | 'approved'}
                                     />
                                  </React.Fragment>
                               ))

@@ -67,6 +67,7 @@ export default function ArticlesForApprovalPage() {
                                  link={home_routes.descier.articles_for_approval + '/' + slug(article.id!)}
                                  status_editor={article.status_editor as 'pending' | 'approved'}
                                  status_reviewer={article.status_reviewer as 'pending' | 'approved'}
+                                 status_admin={article.status_admin as 'pending' | 'approved'}
                               />
                            </React.Fragment>
                         ))}

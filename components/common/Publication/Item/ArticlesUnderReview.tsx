@@ -15,6 +15,7 @@ export const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
    link,
    status_editor,
    status_reviewer,
+   status_admin,
    image,
    title
 }: ArticleUnderReviewProps) => {
@@ -60,7 +61,7 @@ export const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
                   <div className="border-[1px] rounded-md px-2 border-neutral-stroke_light md:w-fit">
                      <div className="grid grid-flow-col items-center justify-center md:justify-start">
                         <div className="grid grid-flow-col gap-2 md:gap-1 items-center">
-                           {status_editor === 'approved' && status_reviewer === 'approved' ? (
+                           {status_admin === 'approved' ? (
                               <p className="text-sm 2xl:text-base font-semibold text-status-green">Published</p>
                            ) : (
                               <React.Fragment>
@@ -132,6 +133,7 @@ export interface ArticleUnderReviewProps {
    id?: string
    status_editor?: 'pending' | 'approved'
    status_reviewer?: 'pending' | 'approved'
+   status_admin?: 'pending' | 'approved'
    status?: string
    image: string
    since: string
