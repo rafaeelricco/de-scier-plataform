@@ -349,7 +349,7 @@ export default function SubmitNewPaperPage() {
                   <NewAuthor
                      onAddAuthor={(value) => {
                         const newAuthor: AuthorProps = {
-                           id: uniqueId('author_' + Date.now() + '_' + Math.random()),
+                           id: value.id,
                            name: value.name,
                            title: value.title,
                            email: value.email,

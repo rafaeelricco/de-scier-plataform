@@ -19,6 +19,7 @@ export const InReviewItem: React.FC<InReviewItemProps> = ({
       <React.Fragment>
          <div className="grid md:grid-cols-max-auto md:justify-start items-center gap-4">
             <Image
+               quality={50}
                src={image}
                width={420}
                height={80}

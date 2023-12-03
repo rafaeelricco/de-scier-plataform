@@ -10,17 +10,19 @@ import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Drawer from '@components/common/Drawer/Drawer'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import LogoDeScier from 'public/svgs/common/logo/deScier - Logo copy.svg'
 import React from 'react'
-import { X } from 'react-bootstrap-icons'
+import { PlusCircle, X } from 'react-bootstrap-icons'
 import { twMerge } from 'tailwind-merge'
+import Logout from '../Sidebar/Logout/Logout'
 
 /**
  * @title HeaderMobile Component
  * @notice This component renders the mobile header for a web application, handling navigation, authentication status, and dynamic rendering of login, registration, and password recovery modals.
  */
 export function HeaderMobile() {
+   const router = useRouter()
    /** @dev Initialize session hook to manage user authentication status */
    const { data, status } = useSession()
 
@@ -121,65 +123,90 @@ export function HeaderMobile() {
          <Drawer.Root open={openNav === 'sidebar'}>
             <Drawer.Overlay />
             <Drawer.Content position={'left'} className={twMerge('p-6')}>
-               <div className="grid gap-6">
-                  <div className="flex justify-between content-center items-center">
-                     <LogoDeScier className="max-w-[56px] w-full h-full" />
-                     <X
-                        className="w-10 h-10 mb-2 cursor-pointer hover:text-status-error transition-all duration-500 ease-out md:hover:scale-110 md:hover:rotate-180 transform"
-                        onClick={() => {
-                           setOpenNav(false)
-                           setTimeout(() => {
-                              setOpen(false), setComponent('')
-                           }, 300)
-                        }}
-                     />
-                  </div>
-                  <div className="grid gap-4">
-                     <Button.Button
-                        className="rounded-full px-4 w-full py-2"
-                        onClick={() => {
-                           setOpenNav(false)
-                           setTimeout(() => {
-                              setComponent(register_component), setOpen(true)
-                           }, 300)
-                        }}
-                     >
-                        Register
-                     </Button.Button>
-                     <Button.Button
-                        variant="outline"
-                        className="rounded-full px-4 w-full py-2"
-                        onClick={() => {
-                           setOpenNav(false)
-                           setTimeout(() => {
-                              setComponent(login_component), setOpen(true)
-                           }, 300)
-                        }}
-                     >
-                        Login
-                     </Button.Button>
-                  </div>
-                  <div className="grid gap-2">
-                     {links.map((link) => (
-                        <React.Fragment key={link.id}>
-                           {link.id === dashboard_key ? (
-                              status !== 'authenticated' ? (
-                                 <div className="flex min-w-[149px] py-2 px-4">
-                                    <div
-                                       onClick={() => {
-                                          setOpenNav(false)
-                                          setTimeout(() => {
-                                             setOpen(true), setComponent(login_component)
-                                          }, 300)
-                                       }}
-                                       className={twMerge(
-                                          'flex items-center gap-2 text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200 select-none cursor-pointer',
-                                          `${verifyPath(link.label.toLowerCase()) && 'font-semibold text-secundary_blue-main'}`
-                                       )}
-                                    >
-                                       {link.label} {link.icon !== null && link.icon}
+               <div className="flex flex-col justify-between h-full">
+                  <div className="grid gap-6">
+                     <div className="flex justify-between content-center items-center">
+                        <LogoDeScier className="max-w-[56px] w-full h-full" />
+                        <X
+                           className="w-10 h-10 mb-2 cursor-pointer hover:text-status-error transition-all duration-500 ease-out md:hover:scale-110 md:hover:rotate-180 transform"
+                           onClick={() => {
+                              setOpenNav(false)
+                              setTimeout(() => {
+                                 setOpen(false), setComponent('')
+                              }, 300)
+                           }}
+                        />
+                     </div>
+                     {status === 'authenticated' && (
+                        <Button.Link href={home_routes.summary_routes.new_document}>
+                           <Button.Button variant="primary" className="mx-auto my-0 p-3 text-sm" onClick={() => setOpenNav(false)}>
+                              Submit new article
+                              <PlusCircle size={20} />
+                           </Button.Button>
+                        </Button.Link>
+                     )}
+                     {status === 'unauthenticated' && (
+                        <div className="grid gap-4">
+                           <Button.Button
+                              className="rounded-full px-4 w-full py-2"
+                              onClick={() => {
+                                 setOpenNav(false)
+                                 setTimeout(() => {
+                                    setComponent(register_component), setOpen(true)
+                                 }, 300)
+                              }}
+                           >
+                              Register
+                           </Button.Button>
+                           <Button.Button
+                              variant="outline"
+                              className="rounded-full px-4 w-full py-2"
+                              onClick={() => {
+                                 setOpenNav(false)
+                                 setTimeout(() => {
+                                    setComponent(login_component), setOpen(true)
+                                 }, 300)
+                              }}
+                           >
+                              Login
+                           </Button.Button>
+                        </div>
+                     )}
+                     <div className="grid gap-2">
+                        {links.map((link) => (
+                           <React.Fragment key={link.id}>
+                              {link.id === dashboard_key ? (
+                                 status !== 'authenticated' ? (
+                                    <div className="flex min-w-[149px] py-2 px-4">
+                                       <div
+                                          onClick={() => {
+                                             setOpenNav(false)
+                                             setTimeout(() => {
+                                                setOpen(true), setComponent(login_component)
+                                             }, 300)
+                                          }}
+                                          className={twMerge(
+                                             'flex items-center gap-2 text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200 select-none cursor-pointer',
+                                             `${verifyPath(link.label.toLowerCase()) && 'font-semibold text-secundary_blue-main'}`
+                                          )}
+                                       >
+                                          {link.label} {link.icon !== null && link.icon}
+                                       </div>
                                     </div>
-                                 </div>
+                                 ) : (
+                                    <div className="flex min-w-[149px] py-2 px-4">
+                                       <Link
+                                          href={link.link}
+                                          className={twMerge(
+                                             'flex items-center gap-2 text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200',
+                                             `${verifyPath(link.label.toLowerCase()) && 'font-semibold text-secundary_blue-main'}`
+                                          )}
+                                          onClick={() => setOpenNav(false)}
+                                       >
+                                          {link.label} {link.icon !== null && link.icon}
+                                       </Link>
+                                    </div>
+                                 )
                               ) : (
                                  <div className="flex min-w-[149px] py-2 px-4">
                                     <Link
@@ -190,28 +217,16 @@ export function HeaderMobile() {
                                        )}
                                        onClick={() => setOpenNav(false)}
                                     >
-                                       {link.label} {link.icon !== null && link.icon}
+                                       {link.label}
+                                       {link.icon !== null && link.icon}
                                     </Link>
                                  </div>
-                              )
-                           ) : (
-                              <div className="flex min-w-[149px] py-2 px-4">
-                                 <Link
-                                    href={link.link}
-                                    className={twMerge(
-                                       'flex items-center gap-2 text-base text-terciary-main hover:text-secundary_blue-main transition-all duration-200',
-                                       `${verifyPath(link.label.toLowerCase()) && 'font-semibold text-secundary_blue-main'}`
-                                    )}
-                                    onClick={() => setOpenNav(false)}
-                                 >
-                                    {link.label}
-                                    {link.icon !== null && link.icon}
-                                 </Link>
-                              </div>
-                           )}
-                        </React.Fragment>
-                     ))}
+                              )}
+                           </React.Fragment>
+                        ))}
+                     </div>
                   </div>
+                  {status === 'authenticated' && <Logout onLogout={() => router.push(home_routes.home.index)} />}
                </div>
             </Drawer.Content>
          </Drawer.Root>

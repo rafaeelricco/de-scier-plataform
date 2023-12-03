@@ -62,10 +62,10 @@ const Publications: React.FC<PublicationsProps> = ({ pendingDocuments, published
                </button>
             </div>
             {publications && (
-               <div className="bg-[#F1FFFF] rounded-md transition-all duration-200 p-3 md:p-4 min-h-[371px] flex flex-col justify-between gap-4">
+               <div className="bg-[#F1FFFF] rounded-md transition-all duration-200 p-3 md:p-4 min-h-[456px] flex flex-col justify-between gap-4">
                   <div className="flex-grow">
                      {publishedDocuments?.length === 0 ? (
-                        <div className="flex items-center justify-center">
+                        <div className="flex items-center justify-center !h-full">
                            <p className="text-neutral-gray">No published articles found.</p>
                         </div>
                      ) : (
@@ -101,9 +101,8 @@ const Publications: React.FC<PublicationsProps> = ({ pendingDocuments, published
                   </div>
                </div>
             )}
-
             {underReview && (
-               <div className="bg-[#FFF4DE] h-full rounded-md transition-all duration-200  p-3 md:p-4 min-h-[371px] grid">
+               <div className="bg-[#FFF4DE] h-full rounded-md transition-all duration-200  p-3 md:p-4 min-h-[456px] grid">
                   <div className="grid gap-4 h-full">
                      {pendingDocuments?.length === 0 ? (
                         <div className="flex items-center justify-center">
