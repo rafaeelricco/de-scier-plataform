@@ -13,6 +13,7 @@ import { AuthorProps, CreateDocumentProps, CreateDocumentSchema } from '@/schema
 import { submitNewDocumentService } from '@/services/document/submit.service'
 import { uploadDocumentFileService } from '@/services/file/file.service'
 import { ErrorMessage } from '@/utils/error_message'
+import { truncate } from '@/utils/truncate'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
@@ -37,6 +38,7 @@ export default function SubmitNewPaperPage() {
    /** @dev Initialize router for navigation and session hook for user session management */
    const router = useRouter()
    const { data: session, update: updateSession } = useSession()
+   console.log('session', session)
 
    /** @dev Initialize states for loading indicators, dialog settings, and various form inputs */
    const [loading, setLoading] = useState(false)
@@ -760,7 +762,7 @@ export default function SubmitNewPaperPage() {
                                  <React.Fragment key={index}>
                                     <div className="grid gap-2 md:gap-0 md:grid-cols-3 items-center py-3">
                                        <div>
-                                          <p className="text-sm text-secundary_blue-main">{author.name}</p>
+                                          <p className="text-sm font-semibold md:font-regular text-secundary_blue-main">{author.name}</p>
                                        </div>
                                        <div>
                                           {author.share ? (
@@ -785,8 +787,10 @@ export default function SubmitNewPaperPage() {
                                        </div>
                                        <div className="w-full flex items-center justify-between">
                                           <div className="flex items-center gap-1">
-                                             <p className="text-sm md:text-base text-center text-black font-semibold">Wallet:</p>
-                                             <p className="text-sm md:text-base text-center text-black w-8">{author.wallet || '-'}</p>
+                                             <p className="text-sm md:hidden text-center text-black font-semibold">Wallet:</p>
+                                             <p className="text-sm md:text-base text-center text-black w-8">
+                                                {truncate(author.wallet as string, 24, false) || '-'}
+                                             </p>
                                           </div>
                                           <div className="flex items-center gap-2">
                                              {author.id !== session?.user?.userInfo.id && (
@@ -809,17 +813,15 @@ export default function SubmitNewPaperPage() {
                                                    }}
                                                 />
                                              )}
-                                             {author.id === session?.user?.userInfo.id && authors.length > 1 && (
-                                                <Pencil
-                                                   size={20}
-                                                   className=" fill-primary-main hover:scale-110 transition-all duration-200 cursor-pointer"
-                                                   onClick={() => {
-                                                      setEditShare(author)
-                                                      setAuthorshipSettings(author)
-                                                      setDialog({ ...dialog, share_split: true })
-                                                   }}
-                                                />
-                                             )}
+                                             <Pencil
+                                                size={20}
+                                                className=" fill-primary-main hover:scale-110 transition-all duration-200 cursor-pointer"
+                                                onClick={() => {
+                                                   setEditShare(author)
+                                                   setAuthorshipSettings(author)
+                                                   setDialog({ ...dialog, share_split: true })
+                                                }}
+                                             />
                                           </div>
                                        </div>
                                     </div>
