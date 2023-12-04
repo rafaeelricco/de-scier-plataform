@@ -112,12 +112,12 @@ const Header: React.FC = () => {
          <div className="py-3 px-8 bg-white flex items-center gap-8 rounded-full shadow-search w-fit justify-center">
             <div className="flex items-center gap-8">
                <DeScierLogo className="w-10" />
-               <div className="grid grid-cols-5 justify-items-center items-center">
+               <div className="grid grid-cols-6 justify-items-center items-center">
                   {links.map((link) => (
                      <React.Fragment key={link.id}>
                         {link.id === dashboard_key ? (
                            status !== 'authenticated' ? (
-                              <div className="flex justify-center min-w-[149px] py-2 px-4">
+                              <div className="flex justify-center py-2 px-4">
                                  <div
                                     onClick={() => {
                                        setOpen(true)
@@ -132,7 +132,7 @@ const Header: React.FC = () => {
                                  </div>
                               </div>
                            ) : (
-                              <div className="flex justify-center min-w-[149px] py-2 px-4">
+                              <div className="flex justify-center min-w-[160px] py-2 px-4">
                                  <Link
                                     href={link.link}
                                     className={twMerge(
@@ -145,7 +145,7 @@ const Header: React.FC = () => {
                               </div>
                            )
                         ) : (
-                           <div className="flex justify-center min-w-[149px] py-2 px-4 gap-4">
+                           <div className="flex justify-center min-w-[160px] py-2 px-4 gap-4">
                               <Link
                                  href={link.link}
                                  className={twMerge(
@@ -210,7 +210,7 @@ const Header: React.FC = () => {
                      </div>
                      <DropdownMenu>
                         <DropdownMenuTrigger>
-                           <div className="grid grid-flow-col items-center gap-4">
+                           <div className="flex items-center gap-4">
                               <p className="font-semibold text-sm text-primary-main select-none">{formatName(data?.user?.userInfo.name as string)}</p>
                               <ArrowDown className="w-[14px] fill-neutral-gray" />
                            </div>

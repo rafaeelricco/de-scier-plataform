@@ -25,6 +25,12 @@ export const links = [
    },
    {
       id: uniqueId(),
+      label: 'Maxi Science',
+      link: 'https://maxi.science',
+      icon: <RedirectIcon className="w-4 h-4 fill-blue-gray mb-1 hover:text-secundary_blue-main transition-all duration-200" />
+   },
+   {
+      id: uniqueId(),
       label: 'About us',
       link: 'https://descier.science',
       icon: <RedirectIcon className="w-4 h-4 fill-blue-gray mb-1 hover:text-secundary_blue-main transition-all duration-200" />
