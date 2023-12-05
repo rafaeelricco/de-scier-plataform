@@ -1,6 +1,7 @@
 'use client'
 
 import Box from '@/components/common/Box/Box'
+import { StoredFile } from '@/components/common/Dropzone/Typing'
 import { SelectArticleType } from '@/components/common/Filters/SelectArticleType/SelectArticleType'
 import { AuthorsListDragabble } from '@/components/common/Lists/Authors/Authors'
 import { NewAuthor } from '@/components/modules/Summary/NewArticle/Authors/NewAuthor'
@@ -105,6 +106,8 @@ export default function SubmitNewPaperPage() {
          keywords: []
       }
    })
+
+   console.log('errors', errors)
 
    /** @dev Using `useFieldArray` to manage dynamic keyword fields */
    const { append, remove, fields: keywords } = useFieldArray({ name: 'keywords', control: control })
@@ -571,10 +574,9 @@ export default function SubmitNewPaperPage() {
                      placeholder="Upload document file (.docx)"
                      thumbnail={false}
                      setSelectedFile={(file) => {
-                        if (file) {
-                           setValue('file', file)
-                           trigger('file')
-                        }
+                        setValue('file', file as StoredFile)
+                        trigger('file')
+                        clearErrors('file')
                      }}
                   />
                   <div className="flex w-full justify-center">
@@ -616,10 +618,9 @@ export default function SubmitNewPaperPage() {
                      accept="images"
                      placeholder="Upload cover picture (.png, .jpg)"
                      setSelectedFile={(file) => {
-                        if (file) {
-                           setValue('cover', file)
-                           trigger('cover')
-                        }
+                        setValue('cover', file as StoredFile)
+                        trigger('cover')
+                        clearErrors('cover')
                      }}
                   />
                   <div className="flex justify-center w-full">
