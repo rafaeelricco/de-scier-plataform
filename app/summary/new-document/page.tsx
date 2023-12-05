@@ -734,7 +734,10 @@ export default function SubmitNewPaperPage() {
                            <Input.Label className="text-sm font-semibold">Price</Input.Label>
                            <CurrencyInput
                               currency="USD"
-                              onChangeValue={(event, originalValue, maskedValue) => setValue('price', originalValue.toString())}
+                              onChangeValue={(event, originalValue, maskedValue) => {
+                                 setValue('price', originalValue.toString())
+                                 trigger('price')
+                              }}
                               InputElement={<Input.Input placeholder="$10" />}
                            />
                            <Input.Error>{errors.price?.message}</Input.Error>
@@ -830,16 +833,24 @@ export default function SubmitNewPaperPage() {
                                  </React.Fragment>
                               ))}
                            </div>
-                           <div className="grid grid-flow-col justify-start gap-4 md:grid-cols-3">
+                           <div className="grid md:grid-flow-col justify-start gap-4 md:grid-cols-3">
                               <p className="text-sm font-regular">Total authorship</p>
                               {authors.length > 0 && (
                                  <React.Fragment>
-                                    <p className="text-sm font-regular">
-                                       {authors.reduce((acc, author) => {
+                                    {(() => {
+                                       const totalShare = authors.reduce((acc, author) => {
                                           return acc + (author.share ? parseFloat(author.share.replace('%', '')) : 0)
-                                       }, 0)}
-                                       %
-                                    </p>
+                                       }, 0)
+
+                                       return (
+                                          <div className="col-span-2 grid gap-1">
+                                             <p className="text-sm font-regular">{totalShare}%</p>
+                                             {totalShare < 100 && (
+                                                <p className="text-sm text-status-error">The total ownership cannot be less than 100%!</p>
+                                             )}
+                                          </div>
+                                       )
+                                    })()}
                                  </React.Fragment>
                               )}
                            </div>
