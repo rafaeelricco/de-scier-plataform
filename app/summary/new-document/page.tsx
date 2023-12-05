@@ -485,7 +485,7 @@ export default function SubmitNewPaperPage() {
                            Add keywords
                         </Input.Label>
                         <Input.Input
-                           placeholder="Title of the article"
+                           placeholder="Type a keyword"
                            value={keywords_temp}
                            onKeyDown={(e) => handleKeyDown(e)}
                            onInput={(e) => setKeywordsTemp(e.currentTarget.value)}
