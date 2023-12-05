@@ -7,15 +7,18 @@ import { BadgeProps, SubmitedItemProps } from '../Typing'
  * @dev Renders a submitted item using the SubmitedItemProps interface.
  * @param {SubmitedItemProps} props - The properties passed to the component.
  */
-const SubmitedItem: React.FC<SubmitedItemProps> = ({ id, title, date, status }: SubmitedItemProps) => {
+const SubmitedItem: React.FC<SubmitedItemProps> = ({ id, title, date, status, onClick }: SubmitedItemProps) => {
+   console.log('SubmitedItemProps', status)
    return (
-      <div>
-         <p className="text-sm cursor-pointer hover:text-primary-hover hover:underline transition-all duration-200">{title}</p>
+      <React.Fragment>
+         <p className="text-sm cursor-pointer hover:text-primary-hover hover:underline transition-all duration-200" onClick={onClick}>
+            {title}
+         </p>
          <div className="flex items-center justify-between">
             <p className="text-sm text-neutral-light_gray">{date}</p>
             <Badge status={status} />
          </div>
-      </div>
+      </React.Fragment>
    )
 }
 
