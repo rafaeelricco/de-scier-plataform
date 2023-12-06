@@ -57,7 +57,9 @@ export const useArticles = () => {
                      title: article.title,
                      link: `/articles/${article.id}`,
                      document_type: article.documentType,
-                     status: article.status
+                     status: article.status,
+                     authors: article.authorsOnDocuments,
+                     userId: article.userId
                   }
                })
 

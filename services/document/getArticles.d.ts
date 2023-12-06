@@ -121,6 +121,7 @@ export type AuthorProps = {
    id?: string
    name: string
    email?: string
+   userId?: string
    title: string
    walletAddress?: string | null
    createdAt?: Date

@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import './Item.css'
+import { AuthorsOnDocuments } from '@/services/document/getArticles'
 
 /**
  * @title Article Under Review Component
@@ -140,4 +141,6 @@ export interface ArticleUnderReviewProps {
    title: string
    link: string
    document_type?: string
+   authors?: AuthorsOnDocuments[]
+   userId?: string
 }

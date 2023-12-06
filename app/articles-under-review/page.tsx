@@ -7,9 +7,11 @@ import { ArticleUnderReview, ArticleUnderReviewProps, ArticleUnderReviewSkeleton
 import useDebounce from '@/hooks/useDebounce'
 import { filter_status } from '@/mock/dropdow_filter_options'
 import { home_routes } from '@/routes/home'
+import { AuthorsOnDocuments } from '@/services/document/getArticles'
 import { useArticles } from '@/services/document/getArticles.service'
 import * as Input from '@components/common/Input/Input'
 import * as Title from '@components/common/Title/Page'
+import { useSession } from 'next-auth/react'
 import React from 'react'
 
 export default function ArticlesUnderReviewPage() {
@@ -18,6 +20,8 @@ export default function ArticlesUnderReviewPage() {
     * @dev Using a custom hook "useArticles" to fetch articles.
     */
    const { articles, loading } = useArticles()
+
+   const { data: session } = useSession()
 
    /** @dev Number of articles displayed per page. */
    const per_page = 8
@@ -42,6 +46,16 @@ export default function ArticlesUnderReviewPage() {
 
    /** @notice Holds the total number of pages based on the number of results and articles per page. */
    const [totalPages, setTotalPages] = React.useState(Math.ceil(results.length / per_page))
+
+   const redirectToArticle = (authors: AuthorsOnDocuments[], mainAuthorId: string, articleId: string) => {
+      const isCoAuthor = authors.some((item) => item.author?.userId === session?.user?.userInfo.id && item.author?.userId !== mainAuthorId)
+
+      if (isCoAuthor) {
+         return home_routes.articles.in_review + '/' + 'author' + '/' + articleId
+      }
+
+      return home_routes.articles.in_review + '/' + articleId
+   }
 
    /**
     * @notice Updates the results state whenever articles data changes.
@@ -151,7 +165,7 @@ export default function ArticlesUnderReviewPage() {
                                        title={article.title}
                                        since={article.since}
                                        image={article.image}
-                                       link={home_routes.articles.in_review + '/' + article.id}
+                                       link={redirectToArticle(article.authors!, article.userId!, article.id!)}
                                        status_editor={article.status_editor as 'pending' | 'approved'}
                                        status_reviewer={article.status_reviewer as 'pending' | 'approved'}
                                        status_admin={article.status_admin as 'pending' | 'approved'}
