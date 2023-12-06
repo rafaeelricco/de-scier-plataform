@@ -623,20 +623,6 @@ export default function AsAuhtorPageDetails({ params }: { params: { slug: string
                      </Button.Button>
                   </>
                )}
-               {getReviewStatus() === 'APPROVED' && (
-                  <>
-                     <Button.Button
-                        variant="primary"
-                        disabled
-                        className="flex items-center bg-status-disable_bg text-status-disable_text"
-                        onClick={() => handleApproveDocument(true)}
-                        loading={loading}
-                     >
-                        <Check className="w-5 h-5" />
-                        Approve article
-                     </Button.Button>
-                  </>
-               )}
             </Box>
          </div>
       </React.Fragment>

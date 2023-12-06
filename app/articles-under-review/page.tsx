@@ -51,7 +51,7 @@ export default function ArticlesUnderReviewPage() {
       const isCoAuthor = authors.some((item) => item.author?.userId === session?.user?.userInfo.id && item.author?.userId !== mainAuthorId)
 
       if (isCoAuthor) {
-         return home_routes.articles.in_review + '/' + 'author' + '/' + articleId
+         return home_routes.articles.in_review + '/' + 'only-view' + '/' + articleId
       }
 
       return home_routes.articles.in_review + '/' + articleId
