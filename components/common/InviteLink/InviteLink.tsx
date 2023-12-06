@@ -41,7 +41,7 @@ export const InviteLink: React.FC<InviteLinkProps> = ({ article, onClick, open_s
                      </Button.Button>
                   </HoverCardTrigger>
                   <HoverCardContent className="px-4 py-2" side="bottom">
-                     <h4 className="text-xs font-semibold text-status-green">O link foi copiado para a área de transferência!</h4>
+                     <h4 className="text-xs font-semibold text-status-green">Link copied to the clipboard!</h4>
                   </HoverCardContent>
                </HoverCard>
             </div>

@@ -41,7 +41,7 @@ const authOptions: NextAuthOptions = {
                })
 
                if (response.status !== 200) {
-                  throw new Error('Unauthorized')
+                  throw new Error('To perform this function please log in first.')
                }
 
                // Get the response from the API
@@ -145,7 +145,7 @@ const authOptions: NextAuthOptions = {
             }
 
             if (response.status !== 200) {
-               throw new Error('Unauthorized')
+               throw new Error('To perform this function please log in first.')
             }
 
             token.token = data.token

@@ -815,7 +815,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                                  key={keyword.id}
                               >
                                  <X
-                                    className="w-5 h-fit fill-neutral-stroke_light hover:fill-status-error cursor-pointer transition-all duration-200 hover:scale-110"
+                                    className="w-5 fill-neutral-stroke_light hover:fill-status-error cursor-pointer transition-all duration-200 hover:scale-110"
                                     onClick={() => remove(index)}
                                  />
                                  <span className="text-xxs sm:text-xs text-primary-main">{keyword.name}</span>
