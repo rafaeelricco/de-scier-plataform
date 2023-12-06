@@ -146,7 +146,7 @@ export default function ArticlesUnderReviewPage() {
             </div>
             <div className="flex flex-col gap-6 min-h-[calc(50vh)]">
                <div className="grid gap-8">
-                  <div className="grid md:grid-cols-2 gap-4">
+                  <div className="grid md:grid-cols-2 3xl:grid-cols-3 gap-4">
                      {loading ? (
                         <React.Fragment>
                            <ArticleUnderReviewSkeleton />

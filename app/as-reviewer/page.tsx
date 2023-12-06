@@ -147,7 +147,7 @@ export default function AsReviewerPage() {
                {current === 'under-review' && (
                   <React.Fragment>
                      <div className="grid gap-8">
-                        <div className="grid md:grid-cols-2 gap-4">
+                        <div className="grid md:grid-cols-2 3xl:grid-cols-3 gap-4">
                            {loading ? (
                               <React.Fragment>
                                  <ArticleUnderReviewSkeleton />
