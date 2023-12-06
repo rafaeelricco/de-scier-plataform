@@ -46,22 +46,20 @@ export const useFetchAdminArticles = () => {
 
                const response: DocumentPaginationProps = await request.json()
 
-               const formatted_response: ArticleUnderReviewProps[] = response?.documents
-                  ?.map((article) => {
-                     return {
-                        id: article.id,
-                        status_editor: article.editorsApprovals < 1 ? 'pending' : ('approved' as ArticleUnderReviewProps['status_editor']),
-                        status_reviewer: article.reviewerApprovals < 1 ? 'pending' : ('approved' as ArticleUnderReviewProps['status_reviewer']),
-                        status_admin: article.adminApproval < 1 ? 'pending' : ('approved' as 'pending' | 'approved'),
-                        image: article.cover || '',
-                        since: format(new Date(article.createdAt), 'dd/MM/yyyy'),
-                        title: article.title,
-                        link: `/articles/${article.id}`,
-                        document_type: article.documentType,
-                        status: article.status
-                     }
-                  })
-                  .filter((item) => item.status === 'ADMIN_APPROVE')
+               const formatted_response: ArticleUnderReviewProps[] = response?.documents?.map((article) => {
+                  return {
+                     id: article.id,
+                     status_editor: article.editorsApprovals < 1 ? 'pending' : ('approved' as ArticleUnderReviewProps['status_editor']),
+                     status_reviewer: article.reviewerApprovals < 1 ? 'pending' : ('approved' as ArticleUnderReviewProps['status_reviewer']),
+                     status_admin: article.adminApproval < 1 ? 'pending' : ('approved' as 'pending' | 'approved'),
+                     image: article.cover || '',
+                     since: format(new Date(article.createdAt), 'dd/MM/yyyy'),
+                     title: article.title,
+                     link: `/articles/${article.id}`,
+                     document_type: article.documentType,
+                     status: article.status
+                  }
+               })
 
                setArticles(formatted_response)
                setLoading(false)
