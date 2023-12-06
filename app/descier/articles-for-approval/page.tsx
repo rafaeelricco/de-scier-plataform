@@ -44,7 +44,7 @@ export default function ArticlesForApprovalPage() {
                </div> */}
             </div>
             <div className="grid gap-8">
-               <div className="grid grid-flow-row md:grid-flow-col gap-4">
+               <div className="grid md:grid-cols-2 3xl:grid-cols-3 gap-4">
                   {loading ? (
                      <React.Fragment>
                         <ArticleUnderReviewSkeleton />
