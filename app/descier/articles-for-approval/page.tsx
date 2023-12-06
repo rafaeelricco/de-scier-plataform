@@ -1,10 +1,7 @@
 'use client'
 
-import { Dropdown } from '@/components/common/Dropdown/Dropdown'
 import PaginationComponent from '@/components/common/Pagination/Pagination'
 import { ArticleUnderReview, ArticleUnderReviewProps, ArticleUnderReviewSkeleton } from '@/components/common/Publication/Item/ArticlesUnderReview'
-import { article_category_filter } from '@/mock/articles_categories'
-import { filter_status } from '@/mock/dropdow_filter_options'
 import { home_routes } from '@/routes/home'
 import { useFetchAdminArticles } from '@/services/admin/fetchDocuments.service'
 import * as Input from '@components/common/Input/Input'
@@ -36,7 +33,7 @@ export default function ArticlesForApprovalPage() {
                <div className="flex items-center gap-2">
                   <Input.Search placeholder="Find articles with this terms" />
                </div>
-               <div className="flex flex-wrap justify-center md:justify-start items-center gap-2">
+               {/* <div className="flex flex-wrap justify-center md:justify-start items-center gap-2">
                   <Dropdown
                      classNameTrigger="w-full md:w-fit"
                      items={article_category_filter}
@@ -44,7 +41,7 @@ export default function ArticlesForApprovalPage() {
                      onSelect={(value) => console.log(value)}
                   />
                   <Dropdown classNameTrigger="w-full md:w-fit" label="Status:" items={filter_status} onSelect={(value) => console.log(value)} />
-               </div>
+               </div> */}
             </div>
             <div className="grid gap-8">
                <div className="grid grid-flow-row md:grid-flow-col gap-4">

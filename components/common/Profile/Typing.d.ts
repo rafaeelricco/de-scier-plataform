@@ -12,6 +12,7 @@ interface SubmitedItemProps {
    title: string
    date: string
    status: string
+   onClick: () => void
 }
 
 export { BadgeProps, ProfileProps, SubmitedItemProps }

@@ -9,6 +9,7 @@ import { AuthorsListDragabble } from '@/components/common/Lists/Authors/Authors'
 import Reasoning from '@/components/modules/deScier/Article/Reasoning'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useGetApprovals } from '@/hooks/useGetApprovals'
+import useDimension from '@/hooks/useWindowDimension'
 import { header_editor_reviewer } from '@/mock/article_under_review'
 import { Author, authors_headers, authors_mock, authorship_headers } from '@/mock/submit_new_document'
 import { home_routes } from '@/routes/home'
@@ -16,6 +17,7 @@ import { approveByAdminService } from '@/services/admin/approve.service'
 import { useFetchAdminArticles } from '@/services/admin/fetchDocuments.service'
 import { downloadDocumentVersionService } from '@/services/document/download.service'
 import { DocumentComment, DocumentGetProps } from '@/services/document/getArticles'
+import { formatFileName } from '@/utils/format_file_name'
 import { getArticleTypeLabel } from '@/utils/generate_labels'
 import { keywordsArray } from '@/utils/keywords_format'
 import * as Button from '@components/common/Button/Button'
@@ -133,6 +135,8 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [article?.document.abstractChart])
 
+   const { lg } = useDimension()
+
    return (
       <React.Fragment>
          <Dialog.Root open={dialog.reasoning}>
@@ -223,7 +227,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                               article?.document.documentVersions?.map((file) => (
                                  <File
                                     key={file.id}
-                                    file_name={file.fileName || 'file.docx'}
+                                    file_name={formatFileName(file.fileName as string) || 'file.docx'}
                                     onDownload={() => {
                                        handleDownloadDocument(file.id, file.fileName!)
                                     }}
@@ -264,7 +268,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                               </React.Fragment>
                            ))
                         ) : (
-                           <p className="text-center col-span-2 text-gray-500">There are no comments inserted into this document.</p>
+                           <p className="text-sm md:text-base text-center col-span-2 text-gray-500">There are no comments inserted into this document.</p>
                         )}
                      </div>
                   </ScrollArea>
@@ -277,14 +281,14 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                      <p className="text-sm">Drag the Authors to reorder the list.</p>
                   </div>
                   <div className="grid gap-2">
-                     <div className="grid grid-cols-3">
+                     <div className="hidden md:grid md:grid-cols-3">
                         {authors_headers.map((header, index) => (
                            <React.Fragment key={index}>
                               <p className="text-sm font-semibold">{header.label}</p>
                            </React.Fragment>
                         ))}
                      </div>
-                     <AuthorsListDragabble authors={[]} article={article} onReorder={onReorder} />
+                     <AuthorsListDragabble is_admin authors={[]} article={article} onReorder={onReorder} />
                   </div>
                </div>
             </Box>
@@ -299,7 +303,7 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                   </div>
                </div>
                <div>
-                  <div className="hidden md:grid grid-cols-5">
+                  <div className="hidden md:grid md:grid-cols-5">
                      {header_editor_reviewer.map((header, index) => (
                         <React.Fragment key={index}>
                            <p className="text-sm font-semibold">{header.label}</p>
@@ -344,12 +348,12 @@ export default function ArticleForApprovalPage({ params }: { params: { slug: str
                </div>
                {access_type == 'paid-access' && (
                   <React.Fragment>
-                     <div className="grid gap-2">
+                     <div className="grid md:gap-2">
                         <p className="text-sm font-semibold">Authorship settings</p>
                         <p className="text-sm font-regular">The total added up authorship value must be 100%</p>
                      </div>
-                     <div className="grid gap-2">
-                        <div className="grid grid-cols-3">
+                     <div className="md:grid md:gap-2">
+                        <div className="hidden md:grid md:grid-cols-3">
                            {authorship_headers.map((header, index) => (
                               <React.Fragment key={index}>
                                  <p className="text-sm font-semibold">{header.label}</p>

@@ -9,8 +9,8 @@ export const KeyWordSchema = zod.object({
 export const FileSchema = zod.object({
    path: zod.string().min(3, 'Path must be at least 3 characters.'),
    name: zod.string().min(3, 'Name must be at least 3 characters.'),
-   lastModified: zod.number(),
-   lastModifiedDate: zod.date(),
+   lastModified: zod.number().optional().nullable(),
+   lastModifiedDate: zod.date().optional().nullable(),
    size: zod.number(),
    type: zod.string().min(3, 'Type must be at least 3 characters.'),
    preview: zod.string().min(3, 'Preview must be at least 3 characters.')

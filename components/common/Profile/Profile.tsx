@@ -10,6 +10,7 @@ import { Web3Auth } from '@web3auth/modal'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import ShapeDeScierHandBookBottom from 'public/svgs/modules/sidebar/Ellipse 46.svg'
 import ShapeDeScierHandBookTop from 'public/svgs/modules/sidebar/Ellipse 48.svg'
 import IllustrationHandBook from 'public/svgs/modules/sidebar/emojione-v1_document.svg'
@@ -101,6 +102,8 @@ const Profile: React.FC<ProfileProps> = ({ className, onClose }: ProfileProps) =
       }
    }, [session?.user])
 
+   const router = useRouter()
+
    return (
       <React.Fragment>
          <aside className={twMerge('hidden md:relative md:block overflow-hidden', className)}>
@@ -132,7 +135,6 @@ const Profile: React.FC<ProfileProps> = ({ className, onClose }: ProfileProps) =
                         <h1 className="text-xl text-secundary_blue-main font-semibold flex justify-center lg:text-lg 2xl:text-xl">
                            {session?.user?.userInfo.name}
                         </h1>
-
                         {!walletAddress ? (
                            <Button.Button
                               variant={web3auth ? 'outline' : 'disabled'}
@@ -176,7 +178,19 @@ const Profile: React.FC<ProfileProps> = ({ className, onClose }: ProfileProps) =
                      <ScrollArea className="h-[164px] lg:h-[300px] 2xl:h-[400px] pr-2">
                         <div className="grid gap-4">
                            {articles?.slice(0, 9)?.map((item) => (
-                              <SubmitedItem key={item.id} date={item.since} status={item.status as 'published' | 'in_review'} title={item.title} />
+                              <SubmitedItem
+                                 key={item.id}
+                                 date={item.since}
+                                 status={item.status as 'published' | 'in_review'}
+                                 title={item.title}
+                                 onClick={() => {
+                                    if (item.status === 'SUBMITTED') {
+                                       router.push(`/home/search/${item.id}`)
+                                    } else if (item.status === 'PENDING') {
+                                       router.push(home_routes.articles.in_review + '/' + item.id)
+                                    }
+                                 }}
+                              />
                            ))}
                         </div>
                      </ScrollArea>

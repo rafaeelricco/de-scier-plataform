@@ -22,79 +22,77 @@ export const ArticleUnderReview: React.FC<ArticleUnderReviewProps> = ({
 }: ArticleUnderReviewProps) => {
    return (
       <React.Fragment>
-         <Link href={link}>
-            <div className="grid md:grid-cols-max-min-auto md:justify-start items-center gap-4 bg-[#fff] py-3 px-4 rounded-lg">
-               <div className="relative w-full md:w-20 h-20">
-                  <Image
-                     fill
-                     src={image || 'https://random.imagecdn.app/150/150'}
-                     alt={title}
-                     quality={50}
-                     style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-                     className="rounded-md object-cover"
-                  />
+         <div className="grid md:grid-cols-max-min-auto md:justify-start items-center gap-4 bg-[#fff] py-3 px-4 rounded-lg">
+            <div className="relative w-full md:w-20 h-20">
+               <Image
+                  fill
+                  src={image || 'https://random.imagecdn.app/150/150'}
+                  alt={title}
+                  quality={50}
+                  style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                  className="rounded-md object-cover"
+               />
+            </div>
+            <hr className="hidden md:block divider-v" />
+            <hr className="block md:hidden divider-h" />
+            <div className="grid gap-2 mt-[-8px]">
+               <div>
+                  <Link href={link}>
+                     <h6 className="text-sm font-semibold text-secundary_blue-main lg:text-base cursor-pointer hover:text-primary-main hover:underline transition-all duration-200">
+                        {truncate(title, { length: 40 })}
+                     </h6>
+                  </Link>
+                  <div className="flex items-center gap-2">
+                     {status_editor === 'approved' && status_reviewer === 'approved' ? (
+                        <React.Fragment>
+                           <p className="text-sm text-neutral-gray lg:text-sm">Published in</p>
+                           <p className="text-base font-semibold lg:text-sm 2xl:text-base">{since}</p>
+                        </React.Fragment>
+                     ) : (
+                        <React.Fragment>
+                           <div className="flex items-center flex-grow gap-2">
+                              <p className="text-sm text-neutral-gray lg:text-sm truncate">Under review since</p>
+                              <p className="text-base font-semibold lg:text-sm 2xl:text-base truncate">{since}</p>
+                           </div>
+                        </React.Fragment>
+                     )}
+                  </div>
                </div>
-               <hr className="hidden md:block divider-v" />
-               <hr className="block md:hidden divider-h" />
-               <div className="grid gap-2 mt-[-8px]">
-                  <div>
-                     <Link href={link}>
-                        <h6 className="text-sm font-semibold text-secundary_blue-main lg:text-base cursor-pointer hover:text-primary-main hover:underline transition-all duration-200">
-                           {truncate(title, { length: 40 })}
-                        </h6>
-                     </Link>
-                     <div className="flex items-center gap-2">
-                        {status_editor === 'approved' && status_reviewer === 'approved' ? (
-                           <React.Fragment>
-                              <p className="text-sm text-neutral-gray lg:text-sm">Published in</p>
-                              <p className="text-base font-semibold lg:text-sm 2xl:text-base">{since}</p>
-                           </React.Fragment>
+               <div className="border-[1px] rounded-md px-2 border-neutral-stroke_light md:w-fit">
+                  <div className="grid grid-flow-col items-center justify-center md:justify-start">
+                     <div className="grid grid-flow-col gap-2 md:gap-1 items-center">
+                        {status_admin === 'approved' ? (
+                           <p className="text-sm 2xl:text-base font-semibold text-status-green">Published</p>
                         ) : (
                            <React.Fragment>
-                              <div className="flex items-center flex-grow gap-2">
-                                 <p className="text-sm text-neutral-gray lg:text-sm truncate">Under review since</p>
-                                 <p className="text-base font-semibold lg:text-sm 2xl:text-base truncate">{since}</p>
-                              </div>
+                              {status_editor === 'approved' && (
+                                 <p className="text-xs sm:text-base font-semibold text-status-green truncate xl:text-sm flex-shrink-0">
+                                    Approved by editor
+                                 </p>
+                              )}
+                              {status_editor === 'pending' && (
+                                 <p className="text-xs sm:text-base font-semibold text-status-pending truncate xl:text-sm flex-shrink-0">
+                                    Editor pending
+                                 </p>
+                              )}
+                              <span className="text-sm md:text-base font-semibold text-neutral-light_gray">/</span>
+                              {status_reviewer === 'approved' && (
+                                 <p className="text-xs sm:text-base font-semibold text-status-green truncate xl:text-sm flex-shrink-0">
+                                    Reviewer approval
+                                 </p>
+                              )}
+                              {status_reviewer === 'pending' && (
+                                 <p className="text-xs sm:text-base font-semibold text-status-pending truncate xl:text-sm flex-shrink-0">
+                                    Reviewer pending
+                                 </p>
+                              )}
                            </React.Fragment>
                         )}
                      </div>
                   </div>
-                  <div className="border-[1px] rounded-md px-2 border-neutral-stroke_light md:w-fit">
-                     <div className="grid grid-flow-col items-center justify-center md:justify-start">
-                        <div className="grid grid-flow-col gap-2 md:gap-1 items-center">
-                           {status_admin === 'approved' ? (
-                              <p className="text-sm 2xl:text-base font-semibold text-status-green">Published</p>
-                           ) : (
-                              <React.Fragment>
-                                 {status_editor === 'approved' && (
-                                    <p className="text-xs sm:text-base font-semibold text-status-green truncate xl:text-sm flex-shrink-0">
-                                       Approved by editor
-                                    </p>
-                                 )}
-                                 {status_editor === 'pending' && (
-                                    <p className="text-xs sm:text-base font-semibold text-status-pending truncate xl:text-sm flex-shrink-0">
-                                       Editor pending
-                                    </p>
-                                 )}
-                                 <span className="text-sm md:text-base font-semibold text-neutral-light_gray">/</span>
-                                 {status_reviewer === 'approved' && (
-                                    <p className="text-xs sm:text-base font-semibold text-status-green truncate xl:text-sm flex-shrink-0">
-                                       Reviewer approval
-                                    </p>
-                                 )}
-                                 {status_reviewer === 'pending' && (
-                                    <p className="text-xs sm:text-base font-semibold text-status-pending truncate xl:text-sm flex-shrink-0">
-                                       Reviewer pending
-                                    </p>
-                                 )}
-                              </React.Fragment>
-                           )}
-                        </div>
-                     </div>
-                  </div>
                </div>
             </div>
-         </Link>
+         </div>
       </React.Fragment>
    )
 }

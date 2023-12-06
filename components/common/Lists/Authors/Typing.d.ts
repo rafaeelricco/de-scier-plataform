@@ -4,6 +4,7 @@ import { DocumentGetProps } from '@/services/document/getArticles'
 interface AuthorsListDragabbleProps {
    article: DocumentGetProps | null
    authors: Author[]
+   is_admin?: boolean
    onReorder: (newOrder: any[]) => void
    onDelete?: (author: Author) => void
    onEdit?: (author: Author) => void

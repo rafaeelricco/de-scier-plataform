@@ -785,7 +785,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                            Add keywords
                         </Input.Label>
                         <Input.Input
-                           placeholder="Title of the article"
+                           placeholder="Type a keyword"
                            value={keywords_temp}
                            onKeyDown={(e) => handleKeyDown(e)}
                            onInput={(e) => setKeywordsTemp(e.currentTarget.value)}
@@ -1124,7 +1124,10 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                            <CurrencyInput
                               currency="USD"
                               defaultValue={article?.document.price}
-                              onChangeValue={(event, originalValue, maskedValue) => console.log(maskedValue)}
+                              onChangeValue={(event, originalValue, maskedValue) => {
+                                 setValue('price', originalValue.toString())
+                                 trigger('price')
+                              }}
                               InputElement={<Input.Input placeholder="USD" />}
                            />
                         </Input.Root>
@@ -1229,6 +1232,27 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
                                     <hr className="divider-h" />
                                  </React.Fragment>
                               ))}
+                              <div className="grid md:grid-flow-col justify-start gap-4 md:grid-cols-3 mt-4">
+                                 <p className="text-sm font-regular">Total authorship</p>
+                                 {authors.length > 0 && (
+                                    <React.Fragment>
+                                       {(() => {
+                                          const totalShare = authors.reduce((acc, author) => {
+                                             return acc + (author.share ? parseFloat(author.share.replace('%', '')) : 0)
+                                          }, 0)
+
+                                          return (
+                                             <div className="col-span-2 grid gap-1">
+                                                <p className="text-sm font-regular">{totalShare}%</p>
+                                                {totalShare < 100 && (
+                                                   <p className="text-sm text-status-error">The total ownership cannot be less than 100%!</p>
+                                                )}
+                                             </div>
+                                          )
+                                       })()}
+                                    </React.Fragment>
+                                 )}
+                              </div>
                            </div>
                         </div>
                      </div>
@@ -1238,7 +1262,7 @@ export default function ArticleInReviewPage({ params }: { params: { slug: string
             <Box className="grid gap-4 h-fit px-4 py-6 md:px-8">
                <h3 className="text-lg font-semibold">Document status:</h3>
                <p className="text-md">
-                  The current status of this document refelects the collective input and consensus from our panel of expert reviewers and editos.
+                  The current status of this document reflects the collective input and consensus from our panel of expert reviewers and editors.
                </p>
                <DocumentApprovals editorApprovals={editorApprovals} reviewerApprovals={reviewerApprovals} />
                {['PENDING', 'APPROVED'].includes(article?.document.status!) && (

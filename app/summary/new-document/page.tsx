@@ -1,6 +1,7 @@
 'use client'
 
 import Box from '@/components/common/Box/Box'
+import { StoredFile } from '@/components/common/Dropzone/Typing'
 import { SelectArticleType } from '@/components/common/Filters/SelectArticleType/SelectArticleType'
 import { AuthorsListDragabble } from '@/components/common/Lists/Authors/Authors'
 import { NewAuthor } from '@/components/modules/Summary/NewArticle/Authors/NewAuthor'
@@ -13,6 +14,7 @@ import { AuthorProps, CreateDocumentProps, CreateDocumentSchema } from '@/schema
 import { submitNewDocumentService } from '@/services/document/submit.service'
 import { uploadDocumentFileService } from '@/services/file/file.service'
 import { ErrorMessage } from '@/utils/error_message'
+import { truncate } from '@/utils/truncate'
 import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
@@ -37,6 +39,7 @@ export default function SubmitNewPaperPage() {
    /** @dev Initialize router for navigation and session hook for user session management */
    const router = useRouter()
    const { data: session, update: updateSession } = useSession()
+   console.log('session', session)
 
    /** @dev Initialize states for loading indicators, dialog settings, and various form inputs */
    const [loading, setLoading] = useState(false)
@@ -103,6 +106,8 @@ export default function SubmitNewPaperPage() {
          keywords: []
       }
    })
+
+   console.log('errors', errors)
 
    /** @dev Using `useFieldArray` to manage dynamic keyword fields */
    const { append, remove, fields: keywords } = useFieldArray({ name: 'keywords', control: control })
@@ -483,7 +488,7 @@ export default function SubmitNewPaperPage() {
                            Add keywords
                         </Input.Label>
                         <Input.Input
-                           placeholder="Title of the article"
+                           placeholder="Type a keyword"
                            value={keywords_temp}
                            onKeyDown={(e) => handleKeyDown(e)}
                            onInput={(e) => setKeywordsTemp(e.currentTarget.value)}
@@ -569,10 +574,9 @@ export default function SubmitNewPaperPage() {
                      placeholder="Upload document file (.docx)"
                      thumbnail={false}
                      setSelectedFile={(file) => {
-                        if (file) {
-                           setValue('file', file)
-                           trigger('file')
-                        }
+                        setValue('file', file as StoredFile)
+                        trigger('file')
+                        clearErrors('file')
                      }}
                   />
                   <div className="flex w-full justify-center">
@@ -614,10 +618,9 @@ export default function SubmitNewPaperPage() {
                      accept="images"
                      placeholder="Upload cover picture (.png, .jpg)"
                      setSelectedFile={(file) => {
-                        if (file) {
-                           setValue('cover', file)
-                           trigger('cover')
-                        }
+                        setValue('cover', file as StoredFile)
+                        trigger('cover')
+                        clearErrors('cover')
                      }}
                   />
                   <div className="flex justify-center w-full">
@@ -731,7 +734,10 @@ export default function SubmitNewPaperPage() {
                            <Input.Label className="text-sm font-semibold">Price</Input.Label>
                            <CurrencyInput
                               currency="USD"
-                              onChangeValue={(event, originalValue, maskedValue) => setValue('price', originalValue.toString())}
+                              onChangeValue={(event, originalValue, maskedValue) => {
+                                 setValue('price', originalValue.toString())
+                                 trigger('price')
+                              }}
                               InputElement={<Input.Input placeholder="$10" />}
                            />
                            <Input.Error>{errors.price?.message}</Input.Error>
@@ -760,7 +766,7 @@ export default function SubmitNewPaperPage() {
                                  <React.Fragment key={index}>
                                     <div className="grid gap-2 md:gap-0 md:grid-cols-3 items-center py-3">
                                        <div>
-                                          <p className="text-sm text-secundary_blue-main">{author.name}</p>
+                                          <p className="text-sm font-semibold md:font-regular text-secundary_blue-main">{author.name}</p>
                                        </div>
                                        <div>
                                           {author.share ? (
@@ -785,8 +791,10 @@ export default function SubmitNewPaperPage() {
                                        </div>
                                        <div className="w-full flex items-center justify-between">
                                           <div className="flex items-center gap-1">
-                                             <p className="text-sm md:text-base text-center text-black font-semibold">Wallet:</p>
-                                             <p className="text-sm md:text-base text-center text-black w-8">{author.wallet || '-'}</p>
+                                             <p className="text-sm md:hidden text-center text-black font-semibold">Wallet:</p>
+                                             <p className="text-sm md:text-base text-center text-black w-8">
+                                                {truncate(author.wallet as string, 24, false) || '-'}
+                                             </p>
                                           </div>
                                           <div className="flex items-center gap-2">
                                              {author.id !== session?.user?.userInfo.id && (
@@ -809,17 +817,15 @@ export default function SubmitNewPaperPage() {
                                                    }}
                                                 />
                                              )}
-                                             {author.id === session?.user?.userInfo.id && authors.length > 1 && (
-                                                <Pencil
-                                                   size={20}
-                                                   className=" fill-primary-main hover:scale-110 transition-all duration-200 cursor-pointer"
-                                                   onClick={() => {
-                                                      setEditShare(author)
-                                                      setAuthorshipSettings(author)
-                                                      setDialog({ ...dialog, share_split: true })
-                                                   }}
-                                                />
-                                             )}
+                                             <Pencil
+                                                size={20}
+                                                className=" fill-primary-main hover:scale-110 transition-all duration-200 cursor-pointer"
+                                                onClick={() => {
+                                                   setEditShare(author)
+                                                   setAuthorshipSettings(author)
+                                                   setDialog({ ...dialog, share_split: true })
+                                                }}
+                                             />
                                           </div>
                                        </div>
                                     </div>
@@ -827,16 +833,24 @@ export default function SubmitNewPaperPage() {
                                  </React.Fragment>
                               ))}
                            </div>
-                           <div className="grid grid-flow-col justify-start gap-4 md:grid-cols-3">
+                           <div className="grid md:grid-flow-col justify-start gap-4 md:grid-cols-3">
                               <p className="text-sm font-regular">Total authorship</p>
                               {authors.length > 0 && (
                                  <React.Fragment>
-                                    <p className="text-sm font-regular">
-                                       {authors.reduce((acc, author) => {
+                                    {(() => {
+                                       const totalShare = authors.reduce((acc, author) => {
                                           return acc + (author.share ? parseFloat(author.share.replace('%', '')) : 0)
-                                       }, 0)}
-                                       %
-                                    </p>
+                                       }, 0)
+
+                                       return (
+                                          <div className="col-span-2 grid gap-1">
+                                             <p className="text-sm font-regular">{totalShare}%</p>
+                                             {totalShare < 100 && (
+                                                <p className="text-sm text-status-error">The total ownership cannot be less than 100%!</p>
+                                             )}
+                                          </div>
+                                       )
+                                    })()}
                                  </React.Fragment>
                               )}
                            </div>
