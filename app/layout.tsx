@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { AuthProvider } from './auth-provider'
 
 export const metadata: Metadata = {
-   title: 'deScier Plataform - Decentralized Science',
+   title: 'deSci Publications - Decentralized Science',
    description:
       'A decentralized science-DeSci publishing platform uses blockchain technology and smart contracts to enable the publication and distribution of academic papers.'
 }

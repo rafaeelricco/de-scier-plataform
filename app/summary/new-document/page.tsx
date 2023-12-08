@@ -682,8 +682,8 @@ export default function SubmitNewPaperPage() {
                   <div className="grid gap-2">
                      <h3 className="text-lg md:text-xl text-primary-main font-semibold">Editors / Reviewers</h3>
                      <p className="text-sm">
-                        At least 1 editor and 1 reviewers´ approval are required to publish the the paper. The editors and reviewers cannot be authors in
-                        the project.
+                        At least 1 editor and 1 reviewers approval are required to publish the paper. The editors and reviewers cannot be authors in the
+                        project.
                      </p>
                   </div>
                   <div>
