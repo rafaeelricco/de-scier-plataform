@@ -46,6 +46,7 @@ const authOptions: NextAuthOptions = {
 
                // Get the response from the API
                const data = await response.json()
+               console.log('data', data)
 
                // Desestructure the token from the response
                const token = data?.token
@@ -133,6 +134,7 @@ const authOptions: NextAuthOptions = {
                   avatar: profile?.image
                })
             })
+            console.log('response', response)
 
             const data = await response.json()
 
@@ -165,6 +167,8 @@ const authOptions: NextAuthOptions = {
       },
 
       async session({ session, token }): Promise<any> {
+         console.log('session', session)
+         console.log('token', token)
          const user_infos = {
             name: token?.name,
             email: token?.email,

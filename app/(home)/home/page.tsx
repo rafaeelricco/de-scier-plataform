@@ -18,6 +18,7 @@ import * as Button from '@components/common/Button/Button'
 import * as Dialog from '@components/common/Dialog/Digalog'
 import * as Input from '@components/common/Input/Input'
 import '@styles/home.css'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -39,6 +40,8 @@ export default function HomePage() {
 
    const { lg } = useWindowDimension()
    const { articles, loading } = useArticles()
+   const { data } = useSession()
+   console.log('data', data)
 
    const [topPapers, setTopPapers] = useState<ArticleCardProps[]>([])
    const [isProfileConfirmed, setIsProfileConfirmed] = useState(false)
