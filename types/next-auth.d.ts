@@ -5,6 +5,7 @@ export type User = {
    title?: string
    lattes: string | null
    avatar: string | null
+   picture: string | null
    walletAddress: string | null
    aiUsageLimit: number
    role: string
@@ -18,6 +19,7 @@ export type UserSession = {
    redirectToRegister?: boolean
    googleId?: string
    role: string
+   picture: string | null
 }
 
 // format useSession interface to include user info

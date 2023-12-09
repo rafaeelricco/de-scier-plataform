@@ -1,6 +1,6 @@
 import { getToken } from 'next-auth/jwt'
-import { getSession } from 'next-auth/react'
 import { NextRequest, NextResponse } from 'next/server'
+import { UserSession } from './types/next-auth'
 /**
  * @title Authentication Middleware
  * @notice This middleware ensures that a user is authenticated by
@@ -17,15 +17,15 @@ const publicRoutes = ['/home']
 
 export async function middleware(request: NextRequest) {
    /** @dev Extract the 'next-auth.session-token' cookie from the request. */
-   const standard = request.cookies.get('next-auth.session-token') ?? request.cookies.get('next-auth.session-token.0')
-   const secure = request.cookies.get('__Secure-next-auth.session-token')
-
-   /** @dev Determine if the user is authenticated. */
-   const isAuthenticated = standard || secure
+   const standard = request.cookies.getAll().some((cookie) => cookie.name.includes('next-auth.session-token'))
+   const secure = request.cookies.getAll().some((cookie) => cookie.name.includes('Secure-next-auth.session-token'))
 
    const session = (await getToken({
       req: request
-   })) as any
+   })) as UserSession
+
+   /** @dev Determine if the user is authenticated. */
+   const isAuthenticated = standard || secure
 
    /**
     * @notice Check for the absence of the authentication cookie.
