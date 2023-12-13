@@ -38,7 +38,7 @@ We believe in the power of collaborative work and co-creation, accessible to eve
 Clone the repository by running the following command in your terminal:
 
 ```console
-git clone https://github.com/rafaeelricco/de-scier-plataform.git
+git clone https://github.com/GoretiFreitas/deSci-platform.git
 ```
 
 Once the repository is cloned, navigate to the project folder using the terminal and install the project dependencies:
