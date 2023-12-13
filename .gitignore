@@ -29,6 +29,10 @@ package-lock.json
 
 # local env files
 .env*.local
+.env
+
+# bun files
+bun.lockb
 
 # vercel
 .vercel
@@ -36,3 +40,8 @@ package-lock.json
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local env files
+.env*.local
+.env.local
+.env

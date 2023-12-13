@@ -1,6 +1,5 @@
 {
-   "printWidth": 200,
-   "proseWrap": "preserve",
+   "printWidth": 154,
    "semi": false,
    "singleQuote": true,
    "trailingComma": "none",
